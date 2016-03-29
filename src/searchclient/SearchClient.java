@@ -8,95 +8,28 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import sampleclients.Command;
-import searchclient.Heuristic.*;
-import searchclient.Strategy.*;
-import searchclient.Node;
+
+import searchclient.Heuristic.AStar;
+import strategies.Strategy;
+import strategies.StrategyBestFirst;
 
 public class SearchClient {
 	public static int MAX_ROW = 0;
 	public static int MAX_COLUMN = 0;
-	public static int time = 300;
+	private static int time = 300;
 	public static boolean[][] walls;
-	public static HashMap<Character, Byte[][]> precomputedGoalH = new HashMap<Character, Byte[][]>();
-	private BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-	public static List<Agent> agents = new ArrayList<Agent>();
-	public Map<Character, String> colors;
-
-	public class Agent {
-		public Agent(char id, String color) {
-			col = color;
-			System.err.println("Found " + color + " agent " + id);
-		}
-
-		public String act() {
-			return Command.every[1].toString();
-		}
-
-		public Node initialState = null;
-
-		public void SetInitialState(Node initial) {
-			initialState = initial;
-		}
-
-		public String col;
-
-		/* It would make sense if an agent contained a goal map */
-
-	}
-
-	public Byte[][] calculateDistanceValues(int x, int y, char id) {
-		Byte[][] result = new Byte[MAX_ROW][MAX_COLUMN];
-		result[x][y] = 0;
-
-		for (int i = 1; i < MAX_ROW - 1; i++) {
-			for (int j = 1; j < MAX_COLUMN - 1; j++) {
-				result[i][j] = (byte) (Math.abs(i - x) + Math.abs(j - y));
-			}
-		}
-		return result;
-	}
-
-	public static void error(String msg) throws Exception {
-		throw new Exception("GSCError: " + msg);
-	}
-
-	public static class Memory {
-		public static Runtime runtime = Runtime.getRuntime();
-		public static final float mb = 1024 * 1024;
-		public static final float limitRatio = .9f;
-		public static final int timeLimit = 180;
-
-		public static float used() {
-			return (runtime.totalMemory() - runtime.freeMemory()) / mb;
-		}
-
-		public static float free() {
-			return runtime.freeMemory() / mb;
-		}
-
-		public static float total() {
-			return runtime.totalMemory() / mb;
-		}
-
-		public static float max() {
-			return runtime.maxMemory() / mb;
-		}
-
-		public static boolean shouldEnd() {
-			return (used() / max() > limitRatio);
-		}
-
-		public static String stringRep() {
-			return String.format("[Used: %.2f MB, Free: %.2f MB, Alloc: %.2f MB, MaxAlloc: %.2f MB]", used(), free(),
-					total(), max());
-		}
-	}
+	public static HashMap<Character, Byte[][]> precomputedGoalH;
+	private BufferedReader in;
+	private static List<Agent> agents;
+	private Map<Character, String> colors;
 
 	public SearchClient(BufferedReader serverMessages) throws IOException {
+		precomputedGoalH = new HashMap<Character, Byte[][]>();
+		in = new BufferedReader(new InputStreamReader(System.in));
+		agents = new ArrayList<Agent>();
 		readMap();
 	}
-
+	
 	public boolean update() throws IOException {
 		String jointAction = "[";
 
@@ -132,8 +65,9 @@ public class SearchClient {
 			line = line.replaceAll("\\s", "");
 			color = line.split(":")[0];
 
-			for (String id : line.split(":")[1].split(","))
+			for (String id : line.split(":")[1].split(",")) {
 				colors.put(id.charAt(0), color);
+			}
 		}
 
 		// Read lines specifying level layout
@@ -142,6 +76,7 @@ public class SearchClient {
 			for (int i = 0; i < line.length(); i++) {
 				char id = line.charAt(i);
 				if ('0' <= id && id <= '9') {
+					System.err.println(colors.get(id));
 					agents.add(new Agent(id, colors.get(id)));
 				}
 			}
@@ -150,7 +85,6 @@ public class SearchClient {
 			}
 			row++;
 			line = in.readLine();
-
 		}
 		MAX_ROW = row;
 		MAX_COLUMN = column;
@@ -161,7 +95,7 @@ public class SearchClient {
 		}
 		walls = new boolean[SearchClient.MAX_ROW][SearchClient.MAX_COLUMN];
 
-		int colorLines = 0, levelLines = 0;
+		int levelLines = 0;
 
 		for (String str : messages) {
 			for (int i = 0; i < str.length(); i++) {
@@ -170,7 +104,7 @@ public class SearchClient {
 					SearchClient.walls[levelLines][i] = true;
 				} else if ('0' <= chr && chr <= '9') { // Agents
 					for (Agent agent : agents) {
-						if (agent.col == colors.get(chr)) {
+						if (agent.getCol() == Utils.determineColor(colors.get(chr))) {
 							agent.initialState.agentRow = levelLines;
 							agent.initialState.agentCol = i;
 						}
@@ -185,7 +119,7 @@ public class SearchClient {
 				char chr = str.charAt(i);
 				if ('A' <= chr && chr <= 'Z') { // Boxes
 					for (Agent agent : agents) {
-						if (agent.col == colors.get(chr)) {
+						if (agent.getCol() == Utils.determineColor(colors.get(chr))) {
 							agent.initialState.boxes[levelLines][i] = chr;
 						}
 					}
@@ -217,8 +151,7 @@ public class SearchClient {
 			for (int i = 1; i < MAX_ROW - 1; i++) {
 				for (int j = 1; j < MAX_COLUMN - 1; j++) {
 					if ('a' <= agent.initialState.goals[i][j] && agent.initialState.goals[i][j] <= 'z') {
-						precomputedGoalH.put(agent.initialState.goals[i][j],
-								calculateDistanceValues(i, j, agent.initialState.goals[i][j]));
+						precomputedGoalH.put(agent.initialState.goals[i][j], Utils.calculateDistanceValues(i, j, agent.initialState.goals[i][j], MAX_ROW, MAX_COLUMN));
 					}
 				}
 			}
@@ -308,7 +241,11 @@ public class SearchClient {
 			}
 			for (String tester : test) {
 				String newString = tester.replace("null", "[");
-				System.out.println(newString.substring(0, newString.length() - 1) + "]");
+				String s = newString.substring(0, newString.length() - 1) + "]";
+				System.out.println(s);
+				System.err.println(s);
+				// Find out if the joint action was succesful or not.
+//				String response = serverMessages.readLine();
 			}
 
 			/* 3. Use Update function to send solution */
@@ -319,5 +256,9 @@ public class SearchClient {
 		} catch (IOException e) {
 			// Got nowhere to write to probably
 		}
+	}
+	
+	public static void error(String msg) throws Exception {
+		throw new Exception("GSCError: " + msg);
 	}
 }
