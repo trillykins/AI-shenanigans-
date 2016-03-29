@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Random;
 
+import atoms.Agent;
+import atoms.Position;
 import searchclient.Command.dir;
 import searchclient.Command.type;
 
@@ -13,9 +15,9 @@ public class Node {
 
 	private static Random rnd = new Random(1);
 
-	public int agentRow;
-	public int agentCol;
-
+	// public Agent agent;
+	public int agentX;
+	public int agentY;
 	public char[][] boxes = new char[SearchClient.MAX_ROW][SearchClient.MAX_COLUMN];
 	public char[][] goals = new char[SearchClient.MAX_ROW][SearchClient.MAX_COLUMN];
 
@@ -49,10 +51,8 @@ public class Node {
 				if (g > 0 && b != g) {
 					return false;
 				}
-
 			}
 		}
-		System.err.println("printer true");
 		return true;
 	}
 
@@ -60,17 +60,22 @@ public class Node {
 		ArrayList<Node> expandedNodes = new ArrayList<Node>(Command.every.length);
 		for (Command c : Command.every) {
 			// Determine applicability of action
-			int newAgentRow = this.agentRow + dirToRowChange(c.dir1);
-			int newAgentCol = this.agentCol + dirToColChange(c.dir1);
+			// Position agentPosition = agent.getPosition();
+			// int newAgentRow = agentPosition.getX() + dirToRowChange(c.dir1);
+			// int newAgentCol = agentPosition.getY() + dirToColChange(c.dir1);
+			int newAgentRow = agentX + dirToRowChange(c.dir1);
+			int newAgentCol = agentY + dirToColChange(c.dir1);
 
 			if (c.actType == type.Move) {
 				// Check if there's a wall or box on the cell to which the agent
 				// is moving
 				if (cellIsFree(newAgentRow, newAgentCol)) {
-					Node n = this.ChildNode();
+					Node n = this.childNode();
 					n.action = c;
-					n.agentRow = newAgentRow;
-					n.agentCol = newAgentCol;
+					// agent.setPosition(new Position(newAgentRow,
+					// newAgentCol));
+					n.agentX = newAgentRow;
+					n.agentY = newAgentCol;
 					expandedNodes.add(n);
 				}
 			} else if (c.actType == type.Push) {
@@ -80,10 +85,12 @@ public class Node {
 					int newBoxCol = newAgentCol + dirToColChange(c.dir2);
 					// .. and that new cell of box is free
 					if (cellIsFree(newBoxRow, newBoxCol)) {
-						Node n = this.ChildNode();
+						Node n = this.childNode();
 						n.action = c;
-						n.agentRow = newAgentRow;
-						n.agentCol = newAgentCol;
+						// agent.setPosition(new Position(newAgentRow,
+						// newAgentCol));
+						n.agentX = newAgentRow;
+						n.agentY = newAgentCol;
 						n.boxes[newBoxRow][newBoxCol] = this.boxes[newAgentRow][newAgentCol];
 						n.boxes[newAgentRow][newAgentCol] = 0;
 						expandedNodes.add(n);
@@ -92,15 +99,22 @@ public class Node {
 			} else if (c.actType == type.Pull) {
 				// Cell is free where agent is going
 				if (cellIsFree(newAgentRow, newAgentCol)) {
-					int boxRow = this.agentRow + dirToRowChange(c.dir2);
-					int boxCol = this.agentCol + dirToColChange(c.dir2);
+					// int boxRow = agentPosition.getX() +
+					// dirToRowChange(c.dir2);
+					// int boxCol = agentPosition.getY() +
+					// dirToColChange(c.dir2);
+					int boxRow = agentX + dirToRowChange(c.dir2);
+					int boxCol = agentY + dirToColChange(c.dir2);
 					// .. and there's a box in "dir2" of the agent
 					if (boxAt(boxRow, boxCol)) {
-						Node n = this.ChildNode();
+						Node n = this.childNode();
 						n.action = c;
-						n.agentRow = newAgentRow;
-						n.agentCol = newAgentCol;
-						n.boxes[this.agentRow][this.agentCol] = this.boxes[boxRow][boxCol];
+						// Position oldAgentPos = agent.getPosition();
+						// agent.setPosition(new Position(newAgentRow,
+						// newAgentCol));
+						n.agentX = newAgentRow;
+						n.agentY = newAgentCol;
+						n.boxes[this.agentX][this.agentY] = this.boxes[boxRow][boxCol];
 						n.boxes[boxRow][boxCol] = 0;
 						expandedNodes.add(n);
 					}
@@ -132,7 +146,7 @@ public class Node {
 															// column (-1)
 	}
 
-	private Node ChildNode() {
+	private Node childNode() {
 		Node copy = new Node(this);
 		for (int row = 0; row < SearchClient.MAX_ROW; row++) {
 			// System.arraycopy( this.walls[row], 0, copy.walls[row], 0,
@@ -157,15 +171,13 @@ public class Node {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + agentCol;
-		result = prime * result + agentRow;
+		result = prime * result + ((action == null) ? 0 : action.hashCode());
+		result = prime * result + agentX;
+		result = prime * result + agentY;
+		result = prime * result + g;
 		result = prime * result + Arrays.deepHashCode(boxes);
 		result = prime * result + Arrays.deepHashCode(goals);
-
-		/*
-		 * result = prime * result + Arrays.deepHashCode( SearchClient.goals );
-		 * result = prime * result + Arrays.deepHashCode( SearchClient.walls );
-		 */
+		result = prime * result + ((parent == null) ? 0 : parent.hashCode());
 		return result;
 	}
 
@@ -175,24 +187,29 @@ public class Node {
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof Node))
 			return false;
 		Node other = (Node) obj;
-		if (agentCol != other.agentCol)
+		if (action == null) {
+			if (other.action != null)
+				return false;
+		} else if (!action.equals(other.action))
 			return false;
-		if (agentRow != other.agentRow)
+		if (agentX != other.agentX)
 			return false;
-		if (!Arrays.deepEquals(boxes, other.boxes)) {
+		if (agentY != other.agentY)
 			return false;
-		}
-		if (!Arrays.deepEquals(goals, goals))
+		if (!Arrays.deepEquals(boxes, other.boxes))
 			return false;
-
-		/*
-		 * if ( !Arrays.deepEquals( SearchClient.goals, SearchClient.goals ) )
-		 * return false; if ( !Arrays.deepEquals( SearchClient.walls,
-		 * SearchClient.walls ) ) return false;
-		 */
+		if (g != other.g)
+			return false;
+		if (!Arrays.deepEquals(goals, other.goals))
+			return false;
+		if (parent == null) {
+			if (other.parent != null)
+				return false;
+		} else if (!parent.equals(other.parent))
+			return false;
 		return true;
 	}
 
@@ -209,16 +226,14 @@ public class Node {
 					s.append(goals[row][col]);
 				} else if (SearchClient.walls[row][col]) {
 					s.append("+");
-				} else if (row == this.agentRow && col == this.agentCol) {
+				} else if (row == this.agentX && col == this.agentY) {
 					s.append("0");
 				} else {
 					s.append(" ");
 				}
 			}
-
 			s.append("\n");
 		}
 		return s.toString();
 	}
-
 }

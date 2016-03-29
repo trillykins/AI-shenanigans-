@@ -4,3 +4,5 @@
 /searchclient.bat
 /strategies/
 *.class
+/atoms/
+/heuristics/

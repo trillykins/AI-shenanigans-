@@ -9,7 +9,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import searchclient.Heuristic.AStar;
+import atoms.Agent;
+import atoms.Position;
+import heuristics.AStar;
 import strategies.Strategy;
 import strategies.StrategyBestFirst;
 
@@ -22,11 +24,13 @@ public class SearchClient {
 	private BufferedReader in;
 	private static List<Agent> agents;
 	private Map<Character, String> colors;
+	private Map<Agent, Node> agentState;
 
 	public SearchClient(BufferedReader serverMessages) throws IOException {
 		precomputedGoalH = new HashMap<Character, Byte[][]>();
 		in = new BufferedReader(new InputStreamReader(System.in));
 		agents = new ArrayList<Agent>();
+		agentState = new HashMap<Agent, Node>(0);
 		readMap();
 	}
 	
@@ -77,7 +81,7 @@ public class SearchClient {
 				char id = line.charAt(i);
 				if ('0' <= id && id <= '9') {
 					System.err.println(colors.get(id));
-					agents.add(new Agent(id, colors.get(id)));
+					agents.add(new Agent(id, colors.get(id)/*, new Position(row, i)*/));
 				}
 			}
 			if (line.length() > column) {
@@ -91,7 +95,8 @@ public class SearchClient {
 
 		for (Agent agent : agents) {
 			Node node = new Node(null);
-			agent.SetInitialState(node);
+			agent.setInitialState(node);
+//			agentState.put(agent, node);
 		}
 		walls = new boolean[SearchClient.MAX_ROW][SearchClient.MAX_COLUMN];
 
@@ -105,8 +110,8 @@ public class SearchClient {
 				} else if ('0' <= chr && chr <= '9') { // Agents
 					for (Agent agent : agents) {
 						if (agent.getCol() == Utils.determineColor(colors.get(chr))) {
-							agent.initialState.agentRow = levelLines;
-							agent.initialState.agentCol = i;
+							agent.initialState.agentX = levelLines;
+							agent.initialState.agentY = i;
 						}
 					}
 				}
@@ -120,6 +125,7 @@ public class SearchClient {
 				if ('A' <= chr && chr <= 'Z') { // Boxes
 					for (Agent agent : agents) {
 						if (agent.getCol() == Utils.determineColor(colors.get(chr))) {
+//							agentState.get(agent).boxes[levelLines][i] = chr;
 							agent.initialState.boxes[levelLines][i] = chr;
 						}
 					}
@@ -150,15 +156,16 @@ public class SearchClient {
 		for (Agent agent : agents) {
 			for (int i = 1; i < MAX_ROW - 1; i++) {
 				for (int j = 1; j < MAX_COLUMN - 1; j++) {
-					if ('a' <= agent.initialState.goals[i][j] && agent.initialState.goals[i][j] <= 'z') {
-						precomputedGoalH.put(agent.initialState.goals[i][j], Utils.calculateDistanceValues(i, j, agent.initialState.goals[i][j], MAX_ROW, MAX_COLUMN));
+					if('a' <= agent.initialState.goals[i][j] && agent.initialState.goals[i][j] <= 'z') {
+						precomputedGoalH.put(agent.initialState.goals[i][j], 
+								Utils.calculateDistanceValues(i, j, agent.initialState.goals[i][j], MAX_ROW, MAX_COLUMN));
 					}
 				}
 			}
 		}
 	}
 
-	public LinkedList<Node> Search(Strategy strategy, Node initialState) throws IOException {
+	public LinkedList<Node> search(Strategy strategy, Node initialState) throws IOException {
 		System.err.format("Search starting with strategy %s\n", strategy);
 		strategy.addToFrontier(initialState);
 		int iterations = 0;
@@ -186,10 +193,7 @@ public class SearchClient {
 			}
 
 			strategy.addToExplored(leafNode);
-			for (Node n : leafNode.getExpandedNodes()) { // The list of expanded
-				// nodes is shuffled
-				// randomly; see
-				// Node.java
+			for (Node n : leafNode.getExpandedNodes()) { 
 				if (!strategy.isExplored(n) && !strategy.inFrontier(n)) {
 					strategy.addToFrontier(n);
 				}
@@ -212,9 +216,10 @@ public class SearchClient {
 			Strategy strategy = null;
 			/* 1. Create solutions for each agent */
 			List<LinkedList<Node>> allSolutions = new ArrayList<LinkedList<Node>>();
-			for (Agent agent : agents) {
-				strategy = new StrategyBestFirst(new AStar(agent.initialState));
-				LinkedList<Node> solution = client.Search(strategy, agent.initialState);
+			
+			for(Agent a : agents) {
+				strategy = new StrategyBestFirst(new AStar(a.initialState));
+				LinkedList<Node> solution = client.search(strategy, a.initialState);
 				if (solution != null) {
 					System.err.println("\nSummary for " + strategy);
 					System.err.println("Found solution of length " + solution.size());
@@ -222,7 +227,6 @@ public class SearchClient {
 					allSolutions.add(solution);
 				}
 			}
-
 			/* 2. Merge simple solutions together */
 			int size = 0;
 			for (LinkedList<Node> list : allSolutions) {

@@ -1,5 +1,7 @@
 package searchclient;
 
+import atoms.Color;
+
 public class Utils {
 	
 	public static Byte[][] calculateDistanceValues(int x, int y, char id, int MAX_ROW, int MAX_COLUMN) {
@@ -15,6 +17,8 @@ public class Utils {
 	}
 	
 	public static Color determineColor(String color) {
+		if(color == null)
+			return Color.NONE;
 		color = color.toLowerCase();
 		switch (color) {
 		case "green":
