@@ -1,21 +1,20 @@
 package atoms;
 
-
-import sampleclients.Command;
+import searchclient.Command;
 import searchclient.Node;
 import searchclient.Utils;
 
 public class Agent {
 	private int id;
 	private Color col;
-//	private Position pos;
+	private Position pos;
 	private int priority;
 	public Node initialState = null;
 	
-	public Agent(int id, String color/*, Position pos*/) {
+	public Agent(int id, String color, Position pos) {
 		this.id = id;
 		this.col = Utils.determineColor(color);
-//		this.pos = pos;
+		this.pos = pos;
 	}
 
 	public String act() {
@@ -30,21 +29,21 @@ public class Agent {
 		this.id = id;
 	}
 
-	public Color getCol() {
+	public Color getColor() {
 		return col;
 	}
 
-	public void setCol(Color col) {
+	public void setColor(Color col) {
 		this.col = col;
 	}
 
-//	public Position getPosition() {
-//		return pos;
-//	}
-//
-//	public void setPosition(Position pos) {
-//		this.pos = pos;
-//	}
+	public Position getPosition() {
+		return pos;
+	}
+
+	public void setPosition(Position pos) {
+		this.pos = pos;
+	}
 
 	public int getPriority() {
 		return priority;
@@ -78,11 +77,11 @@ public class Agent {
 			return false;
 		if (id != other.id)
 			return false;
-//		if (pos == null) {
-//			if (other.pos != null)
-//				return false;
-//		} else if (!pos.equals(other.pos))
-//			return false;
+		if (pos == null) {
+			if (other.pos != null)
+				return false;
+		} else if (!pos.equals(other.pos))
+			return false;
 		if (priority != other.priority)
 			return false;
 		return true;

@@ -46,4 +46,11 @@ public class Position {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Position [x=").append(x).append(", y=").append(y).append("]");
+		return builder.toString();
+	}
 }
