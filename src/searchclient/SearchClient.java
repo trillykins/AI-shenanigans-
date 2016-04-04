@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,6 +13,8 @@ import java.util.Map;
 import searchclient.Heuristic.AStar;
 import strategies.Strategy;
 import strategies.StrategyBestFirst;
+import FIPA.Message;
+import FIPA.MessageNotify;
 
 public class SearchClient {
 	public static int MAX_ROW = 0;
@@ -22,7 +25,7 @@ public class SearchClient {
 	private BufferedReader in;
 	private static List<Agent> agents;
 	private Map<Character, String> colors;
-
+	
 	public SearchClient(BufferedReader serverMessages) throws IOException {
 		precomputedGoalH = new HashMap<Character, Byte[][]>();
 		in = new BufferedReader(new InputStreamReader(System.in));
@@ -71,7 +74,7 @@ public class SearchClient {
 		}
 
 		// Read lines specifying level layout
-		while (!line.equals("")) {
+		while (line != null && !line.equals("")) {
 			messages.add(line);
 			for (int i = 0; i < line.length(); i++) {
 				char id = line.charAt(i);
@@ -199,7 +202,8 @@ public class SearchClient {
 	}
 
 	public static void main(String[] args) throws Exception {
-		BufferedReader serverMessages = new BufferedReader(new InputStreamReader(System.in));
+		BufferedReader serverMessages = new BufferedReader(new InputStreamReader(System.in));		
+
 		System.err.println("SearchClient initializing. I am sending this using the error output stream.");
 
 		try {
@@ -222,40 +226,156 @@ public class SearchClient {
 					allSolutions.add(solution);
 				}
 			}
+			System.err.println("running solutions.....");
+			
+			runSolutions(serverMessages,allSolutions,0);
 
-			/* 2. Merge simple solutions together */
-			int size = 0;
-			for (LinkedList<Node> list : allSolutions) {
-				if (size < list.size())
-					size = list.size();
-			}
-			String[] test = new String[size];
-			for (int m = 0; m < size; m++) {
-				for (LinkedList<Node> list : allSolutions) {
-					if (m < list.size()) {
-						test[m] += list.get(m).action.toString() + ",";
-					} else {
-						test[m] += "NoOp,";
-					}
-				}
-			}
-			for (String tester : test) {
-				String newString = tester.replace("null", "[");
-				String s = newString.substring(0, newString.length() - 1) + "]";
-				System.out.println(s);
-				System.err.println(s);
-				// Find out if the joint action was succesful or not.
-//				String response = serverMessages.readLine();
-			}
-
-			/* 3. Use Update function to send solution */
-			// Use stderr to print to console
-			// while ( client.update() )
-			// ;
-			//
 		} catch (IOException e) {
 			// Got nowhere to write to probably
 		}
+	}
+	
+	public static void runSolutions(BufferedReader serverMessages,List<LinkedList<Node>> allSolutions,int index) throws IOException {
+		/* 2. Merge simple solutions together */
+		int size = 0;
+		for (LinkedList<Node> list : allSolutions) {
+			if (size < list.size())
+				size = list.size();
+		}
+		String[] test = new String[size];
+		for (int m = 0; m < size; m++) {
+			for (LinkedList<Node> list : allSolutions) {
+				if (m < list.size()) {
+					test[m] += list.get(m).action.toString() + ",";
+				} else {
+					test[m] += "NoOp,";
+				}
+			}
+		}
+
+		for (int i=index;i<test.length;i++) {
+			String newString = test[i].replace("null", "[");
+			String s = newString.substring(0, newString.length() - 1) + "]";
+			System.out.println(s);
+			System.err.println(s);
+
+			boolean isReplan = monitorServer(serverMessages,serverMessages.readLine(),allSolutions,s,i);
+			if(isReplan) {
+				break;
+			}
+			
+		}
+	}
+	
+	
+	public static boolean monitorServer(BufferedReader in,String serverMessage,List<LinkedList<Node>> allSolutions,String action, int index) throws IOException {
+		boolean isReplan = false;
+		String test = serverMessage.substring(1, serverMessage.length()-1);
+		List<String> list = Arrays.asList(test.split("\\s*,\\s*"));
+		
+		String act = action.substring(1, action.length()-1);
+		List<String> actionList = Arrays.asList(act.split("\\s*,\\s*"));
+		
+		for(int i=0;i<list.size();i++) {
+			//TODO
+			/**
+			 * Need to be changed to adapt the priority of Agents(how to decide the agent priority)
+			 * higher priority agent should be the sender
+			 */
+			if(list.get(i).equals("false")) {
+				
+				//agent next move position
+				Node node = allSolutions.get(i).get(index);
+				
+				/*create message*/
+				String agentAction = actionList.get(i);
+				Agent sender = agents.get(i);
+				
+				/**
+				 * Will reconstruct later
+				 */
+				//Node node = sender.
+				int row = node.agentRow;
+				int col = node.agentCol;
+				
+				sender.setCurrentCol(col);
+				sender.setCurrentRow(row);
+				
+				/**
+				 * Figure out the next position is box or agent
+				 */
+				/*
+				 * if it is box, then
+				 */
+				for (Agent agent : agents) {
+					if('A' <= agent.initialState.boxes[row][col] && agent.initialState.boxes[row][col] <= 'Z') {
+						System.err.println("Confilcts from box color " + Character.toLowerCase(agent.initialState.boxes[row][col]));
+						sender.createMessage(agent, Utils.determineMessage("inform"), "Move(E)");
+						isReplan = true;
+						break;
+					}
+				}
+				/*
+				 * if it its agent, then
+				 */
+				for(int j=0; j<allSolutions.size();j++) {
+					if(j != i) {
+						Node conNodes = allSolutions.get(j).get(index-1);
+						
+						int nodeRow = conNodes.agentRow;
+						int nodeCol = conNodes.agentCol;
+						
+						if(nodeRow == row && nodeCol == col) {
+							Agent conAgent = agents.get(j);
+							System.err.println("Confilcts from agent color " + sender.getCol() + "and agent color " + conAgent.getCol());
+							conAgent.setCurrentCol(nodeCol);
+							conAgent.setCurrentRow(nodeRow);
+							
+							Message mesg = sender.createMessage(conAgent, Utils.determineMessage("request"), "Move(E)");
+							
+							MessageNotify notify = new MessageNotify(mesg);
+							notify.run();
+							
+							System.err.println("had confilcts, replaned solutions.....");
+							Node newAct = notify.getNewAction();
+							//TODO
+							/**
+							 * How to update the new solutions
+							 * Problem now: cannot continue the previous solution??
+							 */
+							if(newAct != null) {
+								LinkedList<Node> solAgent2 = allSolutions.get(j);
+								solAgent2.set(index-1, newAct);
+								allSolutions.remove(j);
+								allSolutions.add(solAgent2);
+								
+								LinkedList<Node> solAgent1 = allSolutions.get(i);
+								
+								Node oldAction = solAgent1.get(index);
+								solAgent2.add(index-1, createNpNode());
+								solAgent2.set(index, oldAction);
+								allSolutions.remove(i);
+								allSolutions.add(solAgent1);
+								
+								runSolutions(in,allSolutions,index-1);
+							}
+							isReplan = true;
+							break;
+						}
+					}
+				}
+			}
+			if(isReplan) {
+				break;
+			}
+		}
+		return isReplan;
+	}
+	
+	private static Node createNpNode() {
+		Node noOp = new Node(null);
+		noOp.action = new Command();
+		return noOp;
 	}
 	
 	public static void error(String msg) throws Exception {

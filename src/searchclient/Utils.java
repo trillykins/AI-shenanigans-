@@ -1,5 +1,7 @@
 package searchclient;
 
+import FIPA.MessageType;
+
 public class Utils {
 	
 	public static Byte[][] calculateDistanceValues(int x, int y, char id, int MAX_ROW, int MAX_COLUMN) {
@@ -35,6 +37,20 @@ public class Utils {
 			return Color.YELLOW;
 		default:
 			return Color.NONE;
+		}
+	}
+	
+	public static MessageType determineMessage(String type) {
+		type = type.toLowerCase();
+		switch (type) {
+		case "request":
+			return MessageType.REQUEST;
+		case "agree":
+			return MessageType.AGREE;
+		case "inform":
+			return MessageType.INFORM;
+		default:
+			return MessageType.NONE;
 		}
 	}
 }
