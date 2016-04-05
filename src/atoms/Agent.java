@@ -1,10 +1,13 @@
 package atoms;
 
+import FIPA.IMessage;
+import FIPA.Message;
+import FIPA.MessageType;
 import searchclient.Command;
 import searchclient.Node;
 import searchclient.Utils;
 
-public class Agent {
+public class Agent implements IMessage{
 	private int id;
 	private Color col;
 	private Position pos;
@@ -94,4 +97,15 @@ public class Agent {
 	public void setInitialState(Node initialState) {
 		this.initialState = initialState;
 	}
+
+	@Override
+	public Message createMessage(Agent receiver, MessageType type, String content) {
+		return new Message(this, receiver, type, content);
+	}
+
+	@Override
+	public String receiveMessage(Message message) {
+		return message.getContent();
+	}
+
 }
