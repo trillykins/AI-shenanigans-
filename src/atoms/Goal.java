@@ -3,12 +3,12 @@ package atoms;
 public class Goal {
 	private Position position;
 	private char letter;
-	private Color color;
+	//private Color color;
 	
 	public Goal(Position position, char letter, Color color) {
 		this.position = position;
 		this.letter = letter;
-		this.color = color;
+		//this.color = color;
 	}
 	
 	public Goal(int x, int y, char letter, Color color) {
@@ -27,10 +27,12 @@ public class Goal {
 	public void setLetter(char letter) {
 		this.letter = letter;
 	}
+	/*
 	public Color getColor() {
 		return color;
 	}
 	public void setColor(Color color) {
 		this.color = color;
 	}
+	*/
 }

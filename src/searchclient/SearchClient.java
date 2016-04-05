@@ -21,7 +21,7 @@ public class SearchClient {
 	public static int MAX_ROW = 0;
 	public static int MAX_COLUMN = 0;
 	public static int TIME = 300;
-	private BufferedReader in;
+	public static BufferedReader in;
 	public static Set<Goal> goals;
 	public static Set<Box> boxes;
 	public static Set<Position> walls;
@@ -101,14 +101,13 @@ public class SearchClient {
 		MAX_COLUMN = column;
 
 		for (Agent agent : agents) {
-			Node node = new Node(null);
-			agent.setInitialState(node);
+			agent.setInitialState(new Node(null));
 			agent.initialState.agentRow = agent.getPosition().getX();
 			agent.initialState.agentCol = agent.getPosition().getY();
 			for (Box b : boxes) {
 				for (Goal g : goals) {
 					if (Character.toLowerCase(b.getLetter()) == g.getLetter()) {
-						if (agent.getColor().equals(g.getColor())) {
+						if (agent.getColor().equals(b.getColor())) {
 							agent.initialState.goals[g.getPosition().getX()][g.getPosition().getY()] = g.getLetter();
 							agent.initialState.boxes[b.getPosition().getX()][b.getPosition().getY()] = b.getLetter();
 						}
