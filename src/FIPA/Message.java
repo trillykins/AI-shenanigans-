@@ -9,6 +9,12 @@ public class Message {
 	private Agent receiver;
 	private String content;
 	
+	public Message(Agent sender, Agent receiver, MessageType type, String content) {
+		this.sender = sender;
+		this.receiver = receiver;
+		this.type = type;
+		this.content = content;
+	}
 	public Agent getSender() {
 		return sender;
 	}

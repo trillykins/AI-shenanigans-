@@ -69,19 +69,12 @@ public class Agent implements IMessage{
 	@Override
 	public Message createMessage(Agent receiver,
 			MessageType type, String content) {
-		Message mess = new Message();
-		mess.setSender(this);
-		mess.setReceiver(receiver);
-		mess.setType(type);
-		mess.setContent(content);
-		
-		return mess;
+		return new Message(this, receiver, type, content);		
 	}
 
 	@Override
 	public String receiveMessage(Message message) {
-		String act = message.getContent();
-		return act;
+		return message.getContent();
 	}
 
 }
