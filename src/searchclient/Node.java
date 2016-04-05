@@ -23,9 +23,11 @@ public class Node {
 	public Command action;
 
 	private int g;
-
-	public Node(Node parent) {
+	private int agentId;
+	
+	public Node(Node parent, int agentId) {
 		this.parent = parent;
+		this.agentId = agentId;
 		if (parent == null) {
 			g = 0;
 		} else {
@@ -133,7 +135,7 @@ public class Node {
 	}
 
 	private Node childNode() {
-		Node copy = new Node(this);
+		Node copy = new Node(this, agentId);
 		for (int row = 0; row < SearchClient.MAX_ROW; row++) {
 			// System.arraycopy( this.walls[row], 0, copy.walls[row], 0,
 			// SearchClient.MAX_COLUMN );
@@ -209,7 +211,7 @@ public class Node {
 //				} else if (SearchClient.walls[row][col]) {
 //					s.append("+");
 				} else if (row == this.agentRow && col == this.agentCol) {
-					s.append("0");
+					s.append(agentId);
 				} else {
 					s.append(" ");
 				}

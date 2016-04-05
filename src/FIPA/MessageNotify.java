@@ -35,7 +35,7 @@ public class MessageNotify implements Runnable {//
 			
 			//Test code
 			//Should decide the logical of the replanning (How to update the current solution)
-			newAction = new Node(null);
+			newAction = new Node(null, receiver.getId());
 			int col = message.getReceiver().getPosition().getY();
 			int row = message.getReceiver().getPosition().getY();
 			Command newCommand = new Command(Command.dir.E);

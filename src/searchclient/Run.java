@@ -189,7 +189,7 @@ public class Run {
 								LinkedList<Node> solAgent1 = allSolutions.get(i);
 								
 								Node oldAction = solAgent1.get(index);
-								Node noOp = new Node(null);
+								Node noOp = new Node(null, 0);
 								noOp.action = new Command();
 								solAgent2.add(index-1, noOp);
 								solAgent2.set(index, oldAction);
