@@ -55,7 +55,7 @@ public class Run {
 				String newString = tester.replace("null", "[");
 				String s = newString.substring(0, newString.length() - 1) + "]";
 				System.out.println(s);
-				System.err.println(s);
+				System.err.println("SPLAT: " + s);
 				// Find out if the joint action was succesful or not.
 				// String response = serverMessages.readLine();
 			}
