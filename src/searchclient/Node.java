@@ -190,6 +190,7 @@ public class Node {
 		return true;
 	}
 
+	@Override
 	public String toString() {
 		StringBuilder s = new StringBuilder();
 		for (int row = 0; row < SearchClient.MAX_ROW; row++) {

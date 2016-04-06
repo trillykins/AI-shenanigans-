@@ -16,6 +16,7 @@ public abstract class Heuristic implements Comparator<Node> {
 		this.initialState = initialState;
 	}
 
+	@Override
 	public int compare(Node n1, Node n2) {
 		return f(n1) - f(n2);
 	}

@@ -63,6 +63,7 @@ public class Command {
 		dir2 = d2;
 	}
 
+	@Override
 	public String toString() {
 		if (actType == type.Move)
 			return actType.toString() + "(" + dir1 + ")";
@@ -73,6 +74,21 @@ public class Command {
 
 	public String toActionString() {
 		return "[" + this.toString() + "]";
+	} 
+	
+	public static dir convertToDir(String direct) {
+		switch (direct) {
+		case "N":
+			return dir.N;
+		case "W":
+			return dir.W;
+		case "E":
+			return dir.E;
+		case "S":
+			return dir.S;
+		default:
+			return dir.E;
+		}
 	}
 
 }

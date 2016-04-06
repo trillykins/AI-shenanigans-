@@ -1,33 +1,33 @@
 package atoms;
 
 public class Position {
-	private int x;
-	private int y;
+	private int col;
+	private int row;
 
-	public Position(int x, int y) {
-		this.x = x;
-		this.y = y;
+	public Position(int row, int col) {
+		this.col = col;
+		this.row = row;
 	}
 	
-	public int getX() {
-		return x;
+	public int getCol() {
+		return col;
 	}
-	public void setX(int x) {
-		this.x = x;
+	public void setCol(int col) {
+		this.col = col;
 	}
-	public int getY() {
-		return y;
+	public int getRow() {
+		return row;
 	}
-	public void setY(int y) {
-		this.y = y;
+	public void setRow(int row) {
+		this.row = row;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + x;
-		result = prime * result + y;
+		result = prime * result + col;
+		result = prime * result + row;
 		return result;
 	}
 
@@ -40,9 +40,9 @@ public class Position {
 		if (!(obj instanceof Position))
 			return false;
 		Position other = (Position) obj;
-		if (x != other.x)
+		if (col != other.col)
 			return false;
-		if (y != other.y)
+		if (row != other.row)
 			return false;
 		return true;
 	}
@@ -50,7 +50,7 @@ public class Position {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Position [x=").append(x).append(", y=").append(y).append("]");
+		builder.append("Position [column=").append(col).append(", row=").append(row).append("]");
 		return builder.toString();
 	}
 }

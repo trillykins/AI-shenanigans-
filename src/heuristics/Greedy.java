@@ -8,10 +8,12 @@ public class Greedy extends Heuristic {
 		super(initialState);
 	}
 
+	@Override
 	public int f(Node n) {
 		return h(n);
 	}
 
+	@Override
 	public String toString() {
 		return "Greedy evaluation";
 	}

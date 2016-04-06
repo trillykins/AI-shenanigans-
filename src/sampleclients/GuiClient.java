@@ -22,6 +22,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
 @SuppressWarnings("serial")
@@ -44,6 +46,7 @@ public class GuiClient extends JFrame {
 			gui = g;
 		}
 
+		@Override
 		public void run() {
 			try {
 				BufferedReader reader = new BufferedReader( new InputStreamReader( System.in ) );
@@ -68,6 +71,7 @@ public class GuiClient extends JFrame {
 			gui = g;
 		}
 
+		@Override
 		public void run() {
 			try {
 				while ( true ) {
@@ -151,8 +155,8 @@ public class GuiClient extends JFrame {
 		information.setFont( new Font( "Monospaced", Font.PLAIN, 11 ) );
 
 		// Fixed Buttons panel
-		JSeparator sep1 = new JSeparator( JSeparator.HORIZONTAL );
-		JSeparator sep2 = new JSeparator( JSeparator.HORIZONTAL );
+		JSeparator sep1 = new JSeparator( SwingConstants.HORIZONTAL );
+		JSeparator sep2 = new JSeparator( SwingConstants.HORIZONTAL );
 		HashMap< String, GBC > buts = new HashMap< String, GBC >();
 		fixed.setLayout( new GridBagLayout() );
 
@@ -232,7 +236,7 @@ public class GuiClient extends JFrame {
 		c.weightx = 1;
 		c.weighty = 1;
 		c.fill = GridBagConstraints.BOTH;
-		comm.add( new JScrollPane( communication, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED ), c );
+		comm.add( new JScrollPane( communication, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED ), c );
 
 		// Information panel
 		info.setLayout( new GridBagLayout() );
@@ -244,7 +248,7 @@ public class GuiClient extends JFrame {
 		c.weightx = 1;
 		c.weighty = 1;
 		c.fill = GridBagConstraints.BOTH;
-		info.add( new JScrollPane( information, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED ), c );
+		info.add( new JScrollPane( information, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED ), c );
 
 		// Add components to main frame
 		setLayout( new GridBagLayout() );

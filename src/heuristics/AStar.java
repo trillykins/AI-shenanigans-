@@ -7,10 +7,12 @@ public class AStar extends Heuristic {
 		super(initialState);
 	}
 
+	@Override
 	public int f(Node n) {
 		return n.g() + h(n);
 	}
 
+	@Override
 	public String toString() {
 		return "A* evaluation";
 	}
