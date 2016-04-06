@@ -83,8 +83,8 @@ public class Run {
 						Node node = list.removeFirst();
 						agent.setPosition(new Position(node.agentRow,node.agentCol));
 						//remove the first node from the linked list and update the map
-						solutionMap.put(agent, list);
-						
+                        solutionMap.put(agent, list);
+                        
 						//Guess should update the boxes position
 						if(node.action.actType.equals(Command.type.Push)) {
 							Position posi = setBoxPosition(node,agent);

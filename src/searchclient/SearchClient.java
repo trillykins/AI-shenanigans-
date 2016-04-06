@@ -83,7 +83,7 @@ public class SearchClient {
 			for (int i = 0; i < line.length(); i++) {
 				char id = line.charAt(i);
 				if ('0' <= id && id <= '9') {
-					agents.add(new Agent(id, colors.get(id), new Position(row, i)));
+					agents.add(new Agent(Integer.parseInt("" + id), colors.get(id), new Position(row, i)));
 				} else if ('A' <= id && id <= 'Z') { // Boxes
 					boxes.add(new Box(new Position(row, i), id, Utils.determineColor(colors.get(id))));
 				} else if ('a' <= id && id <= 'z') { // Goals
@@ -102,9 +102,10 @@ public class SearchClient {
 		MAX_COLUMN = column;
 
 		for (Agent agent : agents) {
-			agent.setInitialState(new Node(null));
+			agent.setInitialState(new Node(null, agent.getId()));
 			agent.initialState.agentRow = agent.getPosition().getRow();
 			agent.initialState.agentCol = agent.getPosition().getCol();
+
 			for (Box b : boxes) {
 				for (Goal g : goals) {
 					if (Character.toLowerCase(b.getLetter()) == g.getLetter()) {
@@ -120,6 +121,7 @@ public class SearchClient {
 		}
 		/* Needs to be modified such that it calculates for each agent */
 		for (Agent agent : agents) {
+			System.err.println(agent.getInitialState().toString());
 			for (int i = 1; i < MAX_ROW - 1; i++) {
 				for (int j = 1; j < MAX_COLUMN - 1; j++) {
 					if ('a' <= agent.initialState.goals[i][j] && agent.initialState.goals[i][j] <= 'z') {
