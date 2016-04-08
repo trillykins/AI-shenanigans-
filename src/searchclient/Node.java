@@ -23,7 +23,7 @@ public class Node {
 	public Command action;
 
 	private int g;
-	private int agentId;
+	public int agentId;
 	
 	public Node(Node parent, int agentId) {
 		this.parent = parent;

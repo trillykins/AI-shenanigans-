@@ -175,7 +175,7 @@ public class Replan {
 	 * @return
 	 */
 	private Node createNewAction(Command c, int x, int y, Node oldN) {
-		Node node = new Node(null);
+		Node node = new Node(null,oldN.agentId);
 		node.action = c;
 		node.agentRow = x;
 		node.agentCol = y;
