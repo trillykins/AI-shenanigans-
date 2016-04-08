@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import strategies.Strategy;
 import atoms.Agent;
 import atoms.Box;
 import atoms.Goal;
 import atoms.Position;
-import strategies.Strategy;
 
 public class SearchClient {
 	public static int MAX_ROW = 0;
@@ -37,6 +37,7 @@ public class SearchClient {
 		agents = new ArrayList<Agent>(0);
 		colors = new HashMap<Character, String>(0);
 		in = new BufferedReader(new InputStreamReader(System.in));
+		//in = new BufferedReader(new FileReader("//Users//sunmengwei//Documents//AI-shenanigans-//src//levels//MAsimple2.lvl"));
 	}
 
 	public boolean update() throws IOException {
@@ -77,7 +78,7 @@ public class SearchClient {
 		}
 
 		// Read lines specifying level layout
-		while (!line.equals("")) {
+		while (line != null && !line.equals("")) {
 			messages.add(line);
 			for (int i = 0; i < line.length(); i++) {
 				char id = line.charAt(i);
@@ -102,14 +103,17 @@ public class SearchClient {
 
 		for (Agent agent : agents) {
 			agent.setInitialState(new Node(null, agent.getId()));
-			agent.initialState.agentRow = agent.getPosition().getX();
-			agent.initialState.agentCol = agent.getPosition().getY();
+			agent.initialState.agentRow = agent.getPosition().getRow();
+			agent.initialState.agentCol = agent.getPosition().getCol();
+
 			for (Box b : boxes) {
 				for (Goal g : goals) {
 					if (Character.toLowerCase(b.getLetter()) == g.getLetter()) {
 						if (agent.getColor().equals(b.getColor())) {
-							agent.initialState.goals[g.getPosition().getX()][g.getPosition().getY()] = g.getLetter();
-							agent.initialState.boxes[b.getPosition().getX()][b.getPosition().getY()] = b.getLetter();
+							agent.initialState.goals[g.getPosition().getRow()][g.getPosition().getCol()] = g.getLetter();
+							agent.initialState.boxes[b.getPosition().getRow()][b.getPosition().getCol()] = b.getLetter();
+							
+							agent.boxes[b.getPosition().getRow()][b.getPosition().getCol()] = b.getLetter();
 						}
 					}
 				}

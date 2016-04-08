@@ -1,21 +1,21 @@
 package searchclient;
 
-import java.io.BufferedReader;
+import heuristics.AStar;
+
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import FIPA.Message;
-import FIPA.MessageNotify;
-import atoms.Agent;
-import atoms.Position;
-import heuristics.AStar;
 import strategies.Strategy;
 import strategies.StrategyBestFirst;
+import atoms.Agent;
+import atoms.Position;
 
 public class Run {
+	
+	private static HashMap<Agent, LinkedList<Node>> solutionMap = new HashMap<Agent,LinkedList<Node>>();
 
 	public static void main(String[] args) throws Exception {
 		System.err.println("SearchClient initializing. I am sending this using the error output stream.");
@@ -35,180 +35,108 @@ public class Run {
 					System.err.println("\nSummary for " + strategy);
 					System.err.println("Found solution of length " + solution.size());
 					System.err.println(strategy.searchStatus());
+					solutionMap.put(a, solution);
 					allSolutions.add(solution);
 				}
 			}
-			/* 2. Merge simple solutions together */
-			int size = 0;
-			for (LinkedList<Node> list : allSolutions) {
-				if (size < list.size())
-					size = list.size();
-			}
+			int size = 25;
 			String[] test = new String[size];
-			for (int m = 0; m < size; m++) {
-				for (LinkedList<Node> list : allSolutions) {
-					if (m < list.size()) {
-						test[m] += list.get(m).action.toString() + ",";
-					} else {
+			runSolutions(allSolutions,0,test);
+		}catch (IOException e) {
+		}
+	}
+	
+	/**
+	 * Run the solution 
+	 * and if has replanned then call it again.
+	 * @param allSolutions
+	 * @param index
+	 * @param test
+	 */
+	private static void runSolutions(List<LinkedList<Node>> allSolutions, int index,String[] test) {
+		Replan replan = new Replan ();
+		/* 2. Merge simple solutions together */
+		List<LinkedList<Node>> solutionList = null;
+		for (int m = index; m < test.length; m++) {
+			boolean isReplan = false;
+			for (int i=0; i<allSolutions.size();i++) {
+				Agent agent = SearchClient.agents.get(i);
+				
+				boolean isValidAction = false;
+				
+				LinkedList<Node> list = allSolutions.get(i);
+				if(list.size() == 0) {
+					if(agent.isGoalState()) {
+						//is any of the agent has achieved the goal,then all the left steps are NoOp
+						test[m] += "NoOp,";
+						continue;
+					}
+				}
+				
+				//agent.setPosition(new Position(list.peek().agentCol,list.peek().agentRow));
+				boolean isCanMove = replan.canMove(list.peek(), agent);
+				if(isCanMove) {
+					isReplan = false;
+					//System.err.println("The next Step can move, next check the valid of action");
+					isValidAction  = replan.checkAction(list.peek(), solutionMap, SearchClient.agents,agent);
+					if(isValidAction) {
+						Node node = list.removeFirst();
+						agent.setPosition(new Position(node.agentRow,node.agentCol));
+						//remove the first node from the linked list and update the map
+                        solutionMap.put(agent, list);
+                        
+						//Guess should update the boxes position
+						if(node.action.actType.equals(Command.type.Push)) {
+							Position posi = setBoxPosition(node,agent);
+							char ch = agent.initialState.boxes[node.agentRow][node.agentCol];
+							agent.boxes[posi.getRow()][posi.getCol()] = ch;
+						}
+						test[m] += node.action.toString() + ",";
+					}else {
+						isReplan = true;
+						Agent confliAgent = replan.getAgent();
+						System.err.println("Confilcts from agent " + confliAgent.getPosition().getCol() + "and " + confliAgent.getPosition().getRow());
+						solutionList = replan.communicate(agent,confliAgent,solutionMap);
 						test[m] += "NoOp,";
 					}
-				}
-			}
-			for (String tester : test) {
-				String newString = tester.replace("null", "[");
-				String s = newString.substring(0, newString.length() - 1) + "]";
-				System.out.println(s);
-				System.err.println(s);
-				// Find out if the joint action was succesful or not.
-				// String response = serverMessages.readLine();
-			}
-			runSolutions(SearchClient.in, allSolutions, 0);
-			/* 3. Use Update function to send solution */
-			// Use stderr to print to console
-			// while ( client.update() )
-			// ;
-			//
-		} catch (IOException e) {
-		}
-	}
-	
-	public static void runSolutions(BufferedReader serverMessages, List<LinkedList<Node>> allSolutions,int index) throws IOException {
-		/* 2. Merge simple solutions together */
-		int size = 0;
-		for (LinkedList<Node> list : allSolutions) {
-			if (size < list.size())
-				size = list.size();
-		}
-		String[] test = new String[size];
-		for (int m = 0; m < size; m++) {
-			for (LinkedList<Node> list : allSolutions) {
-				if (m < list.size()) {
-					test[m] += list.get(m).action.toString() + ",";
-				} else {
+				}else {
+					//Will improve later
+					//Change to other method, otherwise the agent would have stop on GUI
 					test[m] += "NoOp,";
-				}
+				}	
 			}
-		}
-
-		for (int i=index;i<test.length;i++) {
-			String newString = test[i].replace("null", "[");
-			String s = newString.substring(0, newString.length() - 1) + "]";
-			System.out.println(s);
-			System.err.println(s);
-
-			boolean isReplan = monitorServer(serverMessages,serverMessages.readLine(),allSolutions,s,i);
+			run(test[m]);
 			if(isReplan) {
-				break;
+				runSolutions(solutionList,m,test);
 			}
 		}
 	}
-
 	
-	public static boolean monitorServer(BufferedReader in,String serverMessage,List<LinkedList<Node>> allSolutions,String action, int index) throws IOException {
-		boolean isReplan = false;
-		if(serverMessage.length() < 2){
-			return true;
-		}
-		String test = serverMessage.substring(1, serverMessage.length()-1);
-		List<String> list = Arrays.asList(test.split("\\s*,\\s*"));
+	/**
+	 * Guess we also should record the position for boxes??
+	 * Maybe useful for the online replanning(not sure)
+	 * @param node
+	 * @param agent
+	 * @return
+	 */
+	private static Position setBoxPosition(Node node,Agent agent) {
+		int col = node.agentCol;
+		int row = node.agentRow;
 		
-		String act = action.substring(1, action.length()-1);
-		List<String> actionList = Arrays.asList(act.split("\\s*,\\s*"));
-		
-		for(int i=0;i<list.size();i++) {
-			//TODO
-			/**
-			 * Need to be changed to adapt the priority of Agents(how to decide the agent priority)
-			 * higher priority agent should be the sender
-			 */
-			if(list.get(i).equals("false")) {
-				
-				//agent next move position
-				Node node = allSolutions.get(i).get(index);
-				
-				/*create message*/
-				String agentAction = actionList.get(i);
-				Agent sender = SearchClient.agents.get(i);
-				
-				/**
-				 * Will reconstruct later
-				 */
-				//Node node = sender.
-				int row = node.agentRow;
-				int col = node.agentCol;
-				
-				sender.setPosition(new Position(row, col));
-				
-				/**
-				 * Figure out the next position is box or agent
-				 */
-				/*
-				 * if it is box, then
-				 */
-				for (Agent agent : SearchClient.agents) {
-					if('A' <= agent.initialState.boxes[row][col] && agent.initialState.boxes[row][col] <= 'Z') {
-						System.err.println("Confilcts from box color " + Character.toLowerCase(agent.initialState.boxes[row][col]));
-						sender.createMessage(agent, Utils.determineMessage("inform"), "Move(E)");
-						isReplan = true;
-						break;
-					}
-				}
-				/*
-				 * if it its agent, then
-				 */
-				for(int j=0; j<allSolutions.size();j++) {
-					if(j != i) {
-						Node conNodes = allSolutions.get(j).get(index-1);
-						
-						int nodeRow = conNodes.agentRow;
-						int nodeCol = conNodes.agentCol;
-						
-						if(nodeRow == row && nodeCol == col) {
-							Agent conAgent = SearchClient.agents.get(j);
-							System.err.println("Confilcts from agent color " + sender.getPosition().getY() + "and agent color " + conAgent.getPosition().getY());
-							conAgent.setPosition(new Position(nodeRow, nodeCol));
-							
-							Message mesg = sender.createMessage(conAgent, Utils.determineMessage("request"), "Move(E)");
-							
-							MessageNotify notify = new MessageNotify(mesg);
-							notify.run();
-							
-							System.err.println("had confilcts, replaned solutions.....");
-							Node newAct = notify.getNewAction();
-							//TODO
-							/**
-							 * How to update the new solutions
-							 * Problem now: cannot continue the previous solution??
-							 */
-							if(newAct != null) {
-								LinkedList<Node> solAgent2 = allSolutions.get(j);
-								solAgent2.set(index-1, newAct);
-								allSolutions.remove(j);
-								allSolutions.add(solAgent2);
-								
-								LinkedList<Node> solAgent1 = allSolutions.get(i);
-								
-								Node oldAction = solAgent1.get(index);
-								Node noOp = new Node(null, 0);
-								noOp.action = new Command();
-								solAgent2.add(index-1, noOp);
-								solAgent2.set(index, oldAction);
-								allSolutions.remove(i);
-								allSolutions.add(solAgent1);
-								
-								runSolutions(in, allSolutions,index-1);
-							}
-							isReplan = true;
-							break;
-						}
-					}
-				}
-			}
-			if(isReplan) {
-				break;
+		Position posi = null;
+		if(node.action.actType.equals(Command.type.Push)) {
+			if(node.action.dir1.equals(Command.dir.N)) {
+				posi = new Position(row-1,col);
 			}
 		}
-		return isReplan;
+		return posi;
+	}
+	
+	public static void run(String output) {
+		String newString = output.replace("null", "[");
+		String s = newString.substring(0, newString.length() - 1) + "]";
+		System.out.println(s);
+		System.err.println(s);
 	}
 
 }

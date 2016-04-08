@@ -5,6 +5,7 @@ import FIPA.Message;
 import FIPA.MessageType;
 import searchclient.Command;
 import searchclient.Node;
+import searchclient.SearchClient;
 import searchclient.Utils;
 
 public class Agent implements IMessage{
@@ -13,6 +14,8 @@ public class Agent implements IMessage{
 	private Position pos;
 	private int priority;
 	public Node initialState = null;
+	
+	public char[][] boxes = null;
 	
 	public Agent(int id, String color, Position pos) {
 		this.id = id;
@@ -95,7 +98,22 @@ public class Agent implements IMessage{
 	}
 
 	public void setInitialState(Node initialState) {
+		boxes = new char[SearchClient.MAX_ROW][SearchClient.MAX_COLUMN];
 		this.initialState = initialState;
+	}
+	
+	public boolean isGoalState() {
+		for (int row = 1; row < SearchClient.MAX_ROW - 1; row++) {
+			for (int col = 1; col < SearchClient.MAX_COLUMN - 1; col++) {
+				char g = initialState.goals[row][col];
+				char b = Character.toLowerCase(boxes[row][col]);
+				if (g > 0 && b != g) {
+					return false;
+				}
+			}
+		}
+		System.err.println("found goal state");
+		return true;
 	}
 
 	@Override

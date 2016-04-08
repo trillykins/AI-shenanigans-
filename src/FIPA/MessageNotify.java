@@ -30,14 +30,15 @@ public class MessageNotify implements Runnable {//
 		Message message = messageQueue.poll();
 		if(message != null) {
 			Agent receiver = message.getReceiver();
-			System.err.println("Agent color " + receiver.getPosition().getY() + "has received the message");
-			System.err.println("Request agent color " + receiver.getPosition().getY() + " to " + message.getContent());
+			System.err.println("Agent color " + receiver.getPosition().getCol() + "has received the message");
+			System.err.println("Request agent color " + receiver.getPosition().getCol() + " to " + message.getContent());
 			
 			//Test code
 			//Should decide the logical of the replanning (How to update the current solution)
 			newAction = new Node(null, receiver.getId());
-			int col = message.getReceiver().getPosition().getY();
-			int row = message.getReceiver().getPosition().getY();
+			int col = message.getReceiver().getPosition().getCol();
+			int row = message.getReceiver().getPosition().getRow();
+
 			Command newCommand = new Command(Command.dir.E);
 			newAction.action = newCommand;
 			if(newCommand.dir1.equals(Command.dir.E)) {

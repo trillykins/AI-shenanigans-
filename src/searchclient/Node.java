@@ -23,7 +23,7 @@ public class Node {
 	public Command action;
 
 	private int g;
-	private int agentId;
+	public int agentId;
 	
 	public Node(Node parent, int agentId) {
 		this.parent = parent;
@@ -192,6 +192,7 @@ public class Node {
 		return true;
 	}
 
+	@Override
 	public String toString() {
 		StringBuilder s = new StringBuilder();
 		for (int row = 0; row < SearchClient.MAX_ROW; row++) {
