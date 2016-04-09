@@ -7,7 +7,7 @@ import searchclient.Command;
 import searchclient.Node;
 import searchclient.Utils;
 
-public class Agent implements IMessage{
+public class Agent implements IMessage {
 	private int id;
 	private Color col;
 	private Position pos;

@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
+import atoms.Box;
+import atoms.Goal;
 import atoms.Position;
 import searchclient.Command.dir;
 import searchclient.Command.type;
@@ -16,15 +19,19 @@ public class Node {
 
 	public int agentRow;
 	public int agentCol;
-	public char[][] boxes = new char[SearchClient.MAX_ROW][SearchClient.MAX_COLUMN];
-	public char[][] goals = new char[SearchClient.MAX_ROW][SearchClient.MAX_COLUMN];
+	// public char[][] boxes = new
+	// char[SearchClient.MAX_ROW][SearchClient.MAX_COLUMN];
+	public List<Box> boxes = new ArrayList<Box>(0);
+	public List<Goal> goals = new ArrayList<Goal>(0);
+	// public char[][] goals = new
+	// char[SearchClient.MAX_ROW][SearchClient.MAX_COLUMN];
 
 	public Node parent;
 	public Command action;
 
 	private int g;
-	private int agentId;
-	
+	public int agentId;
+
 	public Node(Node parent, int agentId) {
 		this.parent = parent;
 		this.agentId = agentId;
@@ -44,21 +51,37 @@ public class Node {
 	}
 
 	public boolean isGoalState() {
-		for (int row = 1; row < SearchClient.MAX_ROW - 1; row++) {
-			for (int col = 1; col < SearchClient.MAX_COLUMN - 1; col++) {
-				char g = goals[row][col];
-				char b = Character.toLowerCase(boxes[row][col]);
-				if (g > 0 && b != g) {
-					return false;
+		boolean result = false;
+		for (Goal goal : goals) {
+			for (Box box : boxes) {
+				if (goal.getLetter() == Character.toLowerCase(box.getLetter())) {
+					if (goal.getPosition().equals(box.getPosition())) {
+						result = true;
+						break;
+					} else
+						result = false;
 				}
 			}
+			if (!result)
+				return false;
 		}
-		System.err.println("found goal state");
-		return true;
+		return result;
+		// for (int row = 1; row < SearchClient.MAX_ROW - 1; row++) {
+		// for (int col = 1; col < SearchClient.MAX_COLUMN - 1; col++) {
+		// char g = goals[row][col];
+		// char b = Character.toLowerCase(boxes[row][col]);
+		// if (g > 0 && b != g) {
+		// return false;
+		// }
+		// }
+		// }
+		// System.err.println("found goal state");
+		// return true;
 	}
 
 	public ArrayList<Node> getExpandedNodes() {
 		ArrayList<Node> expandedNodes = new ArrayList<Node>(Command.every.length);
+		
 		for (Command c : Command.every) {
 			// Determine applicability of action
 			int newAgentRow = this.agentRow + dirToRowChange(c.dir1);
@@ -84,8 +107,18 @@ public class Node {
 						n.action = c;
 						n.agentRow = newAgentRow;
 						n.agentCol = newAgentCol;
-						n.boxes[newBoxRow][newBoxCol] = this.boxes[newAgentRow][newAgentCol];
-						n.boxes[newAgentRow][newAgentCol] = 0;
+						
+						Box tis = null;
+						for (Box b : boxes) {
+							if (b.getPosition().equals(new Position(newAgentRow, newAgentCol))) {
+								tis = b;
+							}
+						}
+//						System.err.println("Agent: ("+ newAgentRow +", "+ newAgentCol + ")");
+//						System.err.println("Box: ("+ newBoxRow +", "+ newBoxCol + ")");
+//						System.err.println("Action: "+n.action.toActionString());
+						boxes.remove(tis);
+						boxes.add(new Box(new Position(newBoxRow, newBoxCol), tis.getLetter(), tis.getColor()));
 						expandedNodes.add(n);
 					}
 				}
@@ -100,8 +133,10 @@ public class Node {
 						n.action = c;
 						n.agentRow = newAgentRow;
 						n.agentCol = newAgentCol;
-						n.boxes[this.agentRow][this.agentCol] = this.boxes[boxRow][boxCol];
-						n.boxes[boxRow][boxCol] = 0;
+						for (Box b : boxes) {
+							if (b.getPosition().equals(new Position(this.agentRow, this.agentCol)))
+								b.setPosition(new Position(boxRow, boxCol));
+						}
 						expandedNodes.add(n);
 					}
 				}
@@ -112,13 +147,19 @@ public class Node {
 	}
 
 	private boolean cellIsFree(int row, int col) {
-		return (!SearchClient.walls.contains(new Position(row, col))
-//				!SearchClient.walls[row][col] 
-				&& this.boxes[row][col] == 0);
+		for (Box b : boxes) {
+			if (b.getPosition().equals(new Position(row, col)))
+				return false;
+		}
+		return (!SearchClient.walls.contains(new Position(row, col)));
 	}
 
 	private boolean boxAt(int row, int col) {
-		return this.boxes[row][col] > 0;
+		for (Box b : boxes) {
+			if (b.getPosition().equals(new Position(row, col)))
+				return true;
+		}
+		return false;
 	}
 
 	private int dirToRowChange(dir d) {
@@ -135,13 +176,9 @@ public class Node {
 	}
 
 	private Node childNode() {
-		Node copy = new Node(this, agentId);
-		for (int row = 0; row < SearchClient.MAX_ROW; row++) {
-			// System.arraycopy( this.walls[row], 0, copy.walls[row], 0,
-			// SearchClient.MAX_COLUMN );
-			System.arraycopy(this.boxes[row], 0, copy.boxes[row], 0, SearchClient.MAX_COLUMN);
-			System.arraycopy(this.goals[row], 0, copy.goals[row], 0, SearchClient.MAX_COLUMN);
-		}
+		Node copy = new Node(this, this.agentId);
+		copy.boxes = new ArrayList<Box>(this.boxes);
+		copy.goals = this.goals;
 		return copy;
 	}
 
@@ -161,13 +198,7 @@ public class Node {
 		int result = 1;
 		result = prime * result + agentCol;
 		result = prime * result + agentRow;
-		result = prime * result + Arrays.deepHashCode(boxes);
-		result = prime * result + Arrays.deepHashCode(goals);
-
-		/*
-		 * result = prime * result + Arrays.deepHashCode( SearchClient2.goals );
-		 * result = prime * result + Arrays.deepHashCode( SearchClient2.walls );
-		 */
+		result = prime * result + boxes.hashCode();
 		return result;
 	}
 
@@ -184,32 +215,38 @@ public class Node {
 			return false;
 		if (agentRow != other.agentRow)
 			return false;
-		if (!Arrays.deepEquals(boxes, other.boxes)) {
+		if (!Arrays.deepEquals(boxes.toArray(), other.boxes.toArray())) {
 			return false;
 		}
-		if (!Arrays.deepEquals(goals, goals))
-			return false;
 		return true;
 	}
 
 	public String toString() {
 		StringBuilder s = new StringBuilder();
 		for (int row = 0; row < SearchClient.MAX_ROW; row++) {
-			if (
-					!SearchClient.walls.contains(new Position(row, 0))
-//					!SearchClient.walls[row][0]
-							) {
+			if (!SearchClient.walls.contains(new Position(row, 0))) {
 				break;
 			}
 			for (int col = 0; col < SearchClient.MAX_COLUMN; col++) {
-				if (this.boxes[row][col] > 0) {
-					s.append(this.boxes[row][col]);
-				} else if (goals[row][col] > 0) {
-					s.append(goals[row][col]);
-				} else if(SearchClient.walls.contains(new Position(row, col))) {
+				boolean breaker = false;
+				for (Box b : boxes) {
+					if (b.getPosition().equals(new Position(row, col))) {
+						s.append(b.getLetter());
+						breaker = true;
+					}
+				}
+				for (Goal g : goals) {
+					if (g.getPosition().equals(new Position(row, col))) {
+						s.append(g.getLetter());
+						breaker = true;
+					}
+				}
+				if (breaker)
+					continue;
+				if (SearchClient.walls.contains(new Position(row, col))) {
 					s.append("+");
-//				} else if (SearchClient.walls[row][col]) {
-//					s.append("+");
+					// } else if (SearchClient.walls[row][col]) {
+					// s.append("+");
 				} else if (row == this.agentRow && col == this.agentCol) {
 					s.append(agentId);
 				} else {
