@@ -46,7 +46,7 @@ public class Run {
 			}
 			for (int m = 0; m < size; m++) {
 				
-				//World.getInstance().update();
+//				World.getInstance().update();
 				
 				StringBuilder sb = new StringBuilder();
 				sb.append("[");

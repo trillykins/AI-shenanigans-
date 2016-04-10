@@ -62,8 +62,9 @@ public class Node {
 						result = false;
 				}
 			}
-			if (!result)
+			if (!result){
 				return false;
+			}
 		}
 		return result;
 		// for (int row = 1; row < SearchClient.MAX_ROW - 1; row++) {
@@ -81,7 +82,7 @@ public class Node {
 
 	public ArrayList<Node> getExpandedNodes() {
 		ArrayList<Node> expandedNodes = new ArrayList<Node>(Command.every.length);
-		
+
 		for (Command c : Command.every) {
 			// Determine applicability of action
 			int newAgentRow = this.agentRow + dirToRowChange(c.dir1);
@@ -107,18 +108,16 @@ public class Node {
 						n.action = c;
 						n.agentRow = newAgentRow;
 						n.agentCol = newAgentCol;
-						
+
 						Box tis = null;
 						for (Box b : boxes) {
 							if (b.getPosition().equals(new Position(newAgentRow, newAgentCol))) {
 								tis = b;
+								break;
 							}
 						}
-//						System.err.println("Agent: ("+ newAgentRow +", "+ newAgentCol + ")");
-//						System.err.println("Box: ("+ newBoxRow +", "+ newBoxCol + ")");
-//						System.err.println("Action: "+n.action.toActionString());
-						boxes.remove(tis);
-						boxes.add(new Box(new Position(newBoxRow, newBoxCol), tis.getLetter(), tis.getColor()));
+						n.boxes.remove(tis);
+						n.boxes.add(new Box(new Position(newBoxRow, newBoxCol), tis.getLetter(), tis.getColor()));
 						expandedNodes.add(n);
 					}
 				}
@@ -133,25 +132,34 @@ public class Node {
 						n.action = c;
 						n.agentRow = newAgentRow;
 						n.agentCol = newAgentCol;
+						Box tis = null;
 						for (Box b : boxes) {
-							if (b.getPosition().equals(new Position(this.agentRow, this.agentCol)))
+							if (b.getPosition().equals(new Position(boxRow, boxCol))) {
 								b.setPosition(new Position(boxRow, boxCol));
+								tis = b;
+								break;
+							}
+
 						}
+						n.boxes.remove(tis);
+						n.boxes.add(new Box(new Position(agentRow, agentCol), tis.getLetter(), tis.getColor()));
 						expandedNodes.add(n);
 					}
 				}
 			}
 		}
 		Collections.shuffle(expandedNodes, rnd);
+
 		return expandedNodes;
 	}
 
 	private boolean cellIsFree(int row, int col) {
+		Position pos = new Position(row, col);
 		for (Box b : boxes) {
-			if (b.getPosition().equals(new Position(row, col)))
+			if (b.getPosition().equals(pos))
 				return false;
 		}
-		return (!SearchClient.walls.contains(new Position(row, col)));
+		return (!SearchClient.walls.contains(pos));
 	}
 
 	private boolean boxAt(int row, int col) {
@@ -228,22 +236,27 @@ public class Node {
 				break;
 			}
 			for (int col = 0; col < SearchClient.MAX_COLUMN; col++) {
-				boolean breaker = false;
+				boolean skip = false;
+				Position pos = new Position(row, col);
 				for (Box b : boxes) {
-					if (b.getPosition().equals(new Position(row, col))) {
+					if (b.getPosition().equals(pos)) {
 						s.append(b.getLetter());
-						breaker = true;
+						skip = true;
+						break;
 					}
 				}
-				for (Goal g : goals) {
-					if (g.getPosition().equals(new Position(row, col))) {
-						s.append(g.getLetter());
-						breaker = true;
-					}
-				}
-				if (breaker)
+				if(skip)
 					continue;
-				if (SearchClient.walls.contains(new Position(row, col))) {
+				for (Goal g : goals) {
+					if (g.getPosition().equals(pos)) {
+						s.append(g.getLetter());
+						skip = true;
+						break;
+					}
+				}
+				if(skip)
+					continue;
+				if (SearchClient.walls.contains(pos)) {
 					s.append("+");
 					// } else if (SearchClient.walls[row][col]) {
 					// s.append("+");

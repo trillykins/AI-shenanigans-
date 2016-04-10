@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -158,9 +157,10 @@ public class SearchClient {
 				return null;
 			}
 			Node leafNode = strategy.getAndRemoveLeaf();
-			System.err.println(leafNode.toString());
+//			System.err.println(leafNode.toString());
 			if (leafNode.isGoalState()) {
 				System.err.println(leafNode.toString());
+				System.err.println(leafNode.extractPlan().size());
 				return leafNode.extractPlan();
 			}
 			strategy.addToExplored(leafNode);
