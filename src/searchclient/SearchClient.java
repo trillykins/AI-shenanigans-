@@ -22,21 +22,11 @@ public class SearchClient {
 	public static int MAX_COLUMN = 0;
 	public static int TIME = 300;
 	public static BufferedReader in;
-	public static Set<Goal> goals;
-	public static Set<Box> boxes;
-	public static Set<Position> walls;
-	public static Map<Integer, Agent> agents;
-	public static Map<Character, Byte[][]> precomputedGoalH;
+	public static Map<Goal, Byte[][]> precomputedGoalH;
 	private Map<Character, String> colors;
 
 	public SearchClient() throws IOException {
-		precomputedGoalH = new HashMap<Character, Byte[][]>(0);
-		goals = new HashSet<Goal>(0);
-		boxes = new HashSet<Box>(0);
-		walls = new HashSet<Position>(0);
-		agents = new HashMap<Integer, Agent>(0);
-//		agents = new HashSet<Agent>(0);
-//		agents = new ArrayList<Agent>(0);
+		precomputedGoalH = new HashMap<Goal, Byte[][]>(0);
 		colors = new HashMap<Character, String>(0);
 		in = new BufferedReader(new InputStreamReader(System.in));
 	}
@@ -60,11 +50,15 @@ public class SearchClient {
 		String percepts = in.readLine();
 		if (percepts == null)
 			return false;
-
 		return true;
 	}
 
 	public void init() throws IOException {
+		Set<Position> walls = new HashSet<Position>(0);
+		Map<Integer, Goal> goals = new HashMap<Integer, Goal>(0);
+		Map<Integer, Box> boxes = new HashMap<Integer, Box>(0);
+		Map<Integer, Agent> agents = new HashMap<Integer, Agent>(0);
+		
 		int row = 0, column = 0;
 		String line, color;
 		ArrayList<String> messages = new ArrayList<String>();
@@ -86,9 +80,9 @@ public class SearchClient {
 				if ('0' <= id && id <= '9') {
 					agents.put(Integer.parseInt("" + id), new Agent(Integer.parseInt("" + id), colors.get(id), new Position(row, i)));
 				} else if ('A' <= id && id <= 'Z') { // Boxes
-					boxes.add(new Box(new Position(row, i), id, Utils.determineColor(colors.get(id))));
+					boxes.put(boxes.size() + 1, new Box(boxes.size() + 1, new Position(row, i), id, Utils.determineColor(colors.get(id))));
 				} else if ('a' <= id && id <= 'z') { // Goals
-					goals.add(new Goal(new Position(row, i), id, Utils.determineColor(colors.get(id))));
+					goals.put(goals.size() + 1, new Goal(goals.size() + 1, new Position(row, i), id, Utils.determineColor(colors.get(id))));
 				} else if(id == '+') {
 					walls.add(new Position(row, i));
 				}
@@ -113,14 +107,16 @@ public class SearchClient {
 			agent.setInitialState(new Node(null, agent.getId()));
 			agent.initialState.agentRow = agent.getPosition().getX();
 			agent.initialState.agentCol = agent.getPosition().getY();
-			agent.initialState.boxes = new ArrayList<Box>(0);
-			agent.initialState.goals = new ArrayList<Goal>(0);
-			for (Box b : boxes) {
-				for (Goal g : goals) {
+			agent.initialState.boxes = new HashMap<Integer, Box>(0);
+			agent.initialState.goals = new HashMap<Integer, Goal>(0);
+			for (Integer boxId : boxes.keySet()) {
+				for (Integer goalId : goals.keySet()) {
+					Box b = boxes.get(boxId);
+					Goal g = goals.get(goalId);
 					if (Character.toLowerCase(b.getLetter()) == g.getLetter()) {
 						if (agent.getColor().equals(b.getColor())) {
-							agent.initialState.goals.add(g);
-							agent.initialState.boxes.add(b);
+							agent.initialState.goals.put(g.getId(), g);
+							agent.initialState.boxes.put(b.getId(), b);
 						}
 					}
 				}
@@ -129,10 +125,11 @@ public class SearchClient {
 		/* Needs to be modified such that it calculates for each agent */
 		for (Integer id : agents.keySet()) {
 			Agent agent = agents.get(id);
-			for(Goal goal : agent.initialState.goals) {
+			for(Integer goalId : agent.initialState.goals.keySet()) {
+				Goal goal = agent.initialState.goals.get(goalId);
 				Position gPos = goal.getPosition();
 				Byte[][] result = Utils.calculateDistanceValues(gPos.getX(), gPos.getY(), goal.getLetter(), MAX_ROW, MAX_COLUMN);
-				precomputedGoalH.put(goal.getLetter(), result);
+				precomputedGoalH.put(goal, result);
 			}
 		}
 	}
@@ -157,12 +154,8 @@ public class SearchClient {
 				return null;
 			}
 			Node leafNode = strategy.getAndRemoveLeaf();
-//			System.err.println(leafNode.toString());
-			if (leafNode.isGoalState()) {
-				System.err.println(leafNode.toString());
-				System.err.println(leafNode.extractPlan().size());
+			if (leafNode.isGoalState()) 
 				return leafNode.extractPlan();
-			}
 			strategy.addToExplored(leafNode);
 			for (Node n : leafNode.getExpandedNodes()) {
 				if (!strategy.isExplored(n) && !strategy.inFrontier(n)) {
@@ -172,5 +165,4 @@ public class SearchClient {
 			iterations++;
 		}
 	}
-	
 }

@@ -24,6 +24,14 @@ public class Agent implements IMessage {
 		return Command.every[1].toString();
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Agent [id=").append(id).append(", col=").append(col).append(", pos=").append(pos)
+				.append(", priority=").append(priority).append("]");
+		return builder.toString();
+	}
+
 	public int getId() {
 		return id;
 	}

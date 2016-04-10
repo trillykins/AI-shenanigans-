@@ -1,15 +1,16 @@
 package searchclient;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import atoms.Box;
 import atoms.Goal;
 import atoms.Position;
+import atoms.World;
 import searchclient.Command.dir;
 import searchclient.Command.type;
 
@@ -19,12 +20,8 @@ public class Node {
 
 	public int agentRow;
 	public int agentCol;
-	// public char[][] boxes = new
-	// char[SearchClient.MAX_ROW][SearchClient.MAX_COLUMN];
-	public List<Box> boxes = new ArrayList<Box>(0);
-	public List<Goal> goals = new ArrayList<Goal>(0);
-	// public char[][] goals = new
-	// char[SearchClient.MAX_ROW][SearchClient.MAX_COLUMN];
+	public Map<Integer, Box> boxes;
+	public Map<Integer, Goal> goals;
 
 	public Node parent;
 	public Command action;
@@ -52,8 +49,10 @@ public class Node {
 
 	public boolean isGoalState() {
 		boolean result = false;
-		for (Goal goal : goals) {
-			for (Box box : boxes) {
+		for (Integer goalId : goals.keySet()) {
+			for (Integer boxId : boxes.keySet()) {
+				Goal goal = goals.get(goalId);
+				Box box = boxes.get(boxId);
 				if (goal.getLetter() == Character.toLowerCase(box.getLetter())) {
 					if (goal.getPosition().equals(box.getPosition())) {
 						result = true;
@@ -62,27 +61,15 @@ public class Node {
 						result = false;
 				}
 			}
-			if (!result){
+			if (!result) {
 				return false;
 			}
 		}
 		return result;
-		// for (int row = 1; row < SearchClient.MAX_ROW - 1; row++) {
-		// for (int col = 1; col < SearchClient.MAX_COLUMN - 1; col++) {
-		// char g = goals[row][col];
-		// char b = Character.toLowerCase(boxes[row][col]);
-		// if (g > 0 && b != g) {
-		// return false;
-		// }
-		// }
-		// }
-		// System.err.println("found goal state");
-		// return true;
 	}
 
 	public ArrayList<Node> getExpandedNodes() {
 		ArrayList<Node> expandedNodes = new ArrayList<Node>(Command.every.length);
-
 		for (Command c : Command.every) {
 			// Determine applicability of action
 			int newAgentRow = this.agentRow + dirToRowChange(c.dir1);
@@ -108,16 +95,15 @@ public class Node {
 						n.action = c;
 						n.agentRow = newAgentRow;
 						n.agentCol = newAgentCol;
-
-						Box tis = null;
-						for (Box b : boxes) {
+						Box foundBox = null;
+						for (Integer bId : boxes.keySet()) {
+							Box b = boxes.get(bId);
 							if (b.getPosition().equals(new Position(newAgentRow, newAgentCol))) {
-								tis = b;
+								foundBox = b;
 								break;
 							}
 						}
-						n.boxes.remove(tis);
-						n.boxes.add(new Box(new Position(newBoxRow, newBoxCol), tis.getLetter(), tis.getColor()));
+						n.boxes.put(foundBox.getId(), new Box(foundBox.getId(), new Position(newBoxRow, newBoxCol), foundBox.getLetter(), foundBox.getColor()));
 						expandedNodes.add(n);
 					}
 				}
@@ -132,38 +118,38 @@ public class Node {
 						n.action = c;
 						n.agentRow = newAgentRow;
 						n.agentCol = newAgentCol;
-						Box tis = null;
-						for (Box b : boxes) {
+						Box foundBox = null;
+						for (Integer bId : boxes.keySet()) {
+							Box b = boxes.get(bId);
 							if (b.getPosition().equals(new Position(boxRow, boxCol))) {
 								b.setPosition(new Position(boxRow, boxCol));
-								tis = b;
+								foundBox = b;
 								break;
 							}
-
 						}
-						n.boxes.remove(tis);
-						n.boxes.add(new Box(new Position(agentRow, agentCol), tis.getLetter(), tis.getColor()));
+						n.boxes.put(foundBox.getId(), new Box(foundBox.getId(), new Position(agentRow, agentCol), foundBox.getLetter(), foundBox.getColor()));
 						expandedNodes.add(n);
 					}
 				}
 			}
 		}
 		Collections.shuffle(expandedNodes, rnd);
-
 		return expandedNodes;
 	}
 
 	private boolean cellIsFree(int row, int col) {
 		Position pos = new Position(row, col);
-		for (Box b : boxes) {
+		for (Integer bId : boxes.keySet()) {
+			Box b = boxes.get(bId);
 			if (b.getPosition().equals(pos))
 				return false;
 		}
-		return (!SearchClient.walls.contains(pos));
+		return (!World.getInstance().getWalls().contains(pos));
 	}
 
 	private boolean boxAt(int row, int col) {
-		for (Box b : boxes) {
+		for (Integer bId : boxes.keySet()) {
+			Box b = boxes.get(bId);
 			if (b.getPosition().equals(new Position(row, col)))
 				return true;
 		}
@@ -185,7 +171,7 @@ public class Node {
 
 	private Node childNode() {
 		Node copy = new Node(this, this.agentId);
-		copy.boxes = new ArrayList<Box>(this.boxes);
+		copy.boxes = new HashMap<Integer, Box>(this.boxes);
 		copy.goals = this.goals;
 		return copy;
 	}
@@ -223,43 +209,42 @@ public class Node {
 			return false;
 		if (agentRow != other.agentRow)
 			return false;
-		if (!Arrays.deepEquals(boxes.toArray(), other.boxes.toArray())) {
+		if(!boxes.equals(other.boxes))
 			return false;
-		}
 		return true;
 	}
 
 	public String toString() {
 		StringBuilder s = new StringBuilder();
 		for (int row = 0; row < SearchClient.MAX_ROW; row++) {
-			if (!SearchClient.walls.contains(new Position(row, 0))) {
+			if (!World.getInstance().getWalls().contains(new Position(row, 0))) {
 				break;
 			}
 			for (int col = 0; col < SearchClient.MAX_COLUMN; col++) {
 				boolean skip = false;
 				Position pos = new Position(row, col);
-				for (Box b : boxes) {
+				for (Integer bId : boxes.keySet()) {
+					Box b = boxes.get(bId);
 					if (b.getPosition().equals(pos)) {
 						s.append(b.getLetter());
 						skip = true;
 						break;
 					}
 				}
-				if(skip)
+				if (skip)
 					continue;
-				for (Goal g : goals) {
+				for (Integer gId : goals.keySet()) {
+					Goal g = goals.get(gId);
 					if (g.getPosition().equals(pos)) {
 						s.append(g.getLetter());
 						skip = true;
 						break;
 					}
 				}
-				if(skip)
+				if (skip)
 					continue;
-				if (SearchClient.walls.contains(pos)) {
+				if (World.getInstance().getWalls().contains(pos)) {
 					s.append("+");
-					// } else if (SearchClient.walls[row][col]) {
-					// s.append("+");
 				} else if (row == this.agentRow && col == this.agentCol) {
 					s.append(agentId);
 				} else {

@@ -9,6 +9,7 @@ import atoms.Agent;
 import atoms.Position;
 import atoms.World;
 import heuristics.AStar;
+import heuristics.Heuristic;
 import strategies.Strategy;
 import strategies.StrategyBestFirst;
 
@@ -40,14 +41,10 @@ public class Run {
 			}
 			/* 2. Merge simple solutions together */
 			int size = 0;
-			for (LinkedList<Node> solution : allSolutions) {
+			for (LinkedList<Node> solution : allSolutions)
 				if (size < solution.size())
 					size = solution.size();
-			}
 			for (int m = 0; m < size; m++) {
-				
-//				World.getInstance().update();
-				
 				StringBuilder sb = new StringBuilder();
 				sb.append("[");
 				int i = 0;
@@ -58,8 +55,9 @@ public class Run {
 						Node n = solution.get(m); 
 						Agent agent = world.getAgents().get(n.agentId);
 						agent.setPosition(new Position(n.agentRow, n.agentCol));
-						
-//						System.err.println(solution.get(m).toString());
+						for(Integer bId : n.boxes.keySet()) {
+							world.getBoxes().put(bId, n.boxes.get(bId));
+						}
 					}						
 					else
 						sb.append("NoOp");
@@ -69,9 +67,6 @@ public class Run {
 				}
 				sb.append("]");
 				System.out.println(sb.toString());
-				
-				// update world.
-				
 			}
 		} catch (IOException e) { 
 			System.err.println(e.getMessage());

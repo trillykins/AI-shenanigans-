@@ -1,11 +1,13 @@
 package atoms;
 
 public class Box {
+	private int id;
 	private Position position;
 	private char letter;
 	private Color color;
 	
-	public Box(Position p, char l, Color c) {
+	public Box(int id, Position p, char l, Color c) {
+		this.id = id;
 		this.position = p;
 		this.letter = l;
 		this.color = c;
@@ -33,6 +35,14 @@ public class Box {
 
 	public void setColor(Color color) {
 		this.color = color;
+	}
+
+	public int getId() {
+		return id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	@Override

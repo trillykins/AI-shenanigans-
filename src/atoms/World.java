@@ -5,8 +5,8 @@ import java.util.Set;
 
 public class World {
 	private Map<Integer, Agent> agents;
-	private Set<Box> boxes;
-	private Set<Goal> goals;
+	private Map<Integer, Box> boxes;
+	private Map<Integer, Goal> goals;
 	private Set<Position> walls;
 	private static World instance = null;
 	
@@ -27,19 +27,19 @@ public class World {
 		this.agents = agents;
 	}
 
-	public Set<Box> getBoxes() {
+	public Map<Integer, Box> getBoxes() {
 		return boxes;
 	}
 
-	public void setBoxes(Set<Box> boxes) {
+	public void setBoxes(Map<Integer, Box> boxes) {
 		this.boxes = boxes;
 	}
 
-	public Set<Goal> getGoals() {
+	public Map<Integer, Goal> getGoals() {
 		return goals;
 	}
 
-	public void setGoals(Set<Goal> goals) {
+	public void setGoals(Map<Integer, Goal> goals) {
 		this.goals = goals;
 	}
 
@@ -49,10 +49,5 @@ public class World {
 
 	public void setWalls(Set<Position> walls) {
 		this.walls = walls;
-	}
-	
-	public void update(Map<Integer, Agent> agents, Set<Box> boxes) {
-		setAgents(agents);
-		setBoxes(boxes);
 	}
 } 
