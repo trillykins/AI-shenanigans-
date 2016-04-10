@@ -9,7 +9,6 @@ import atoms.Agent;
 import atoms.Position;
 import atoms.World;
 import heuristics.AStar;
-import heuristics.Heuristic;
 import strategies.Strategy;
 import strategies.StrategyBestFirst;
 

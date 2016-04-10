@@ -24,14 +24,6 @@ public class Agent implements IMessage {
 		return Command.every[1].toString();
 	}
 
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Agent [id=").append(id).append(", col=").append(col).append(", pos=").append(pos)
-				.append(", priority=").append(priority).append("]");
-		return builder.toString();
-	}
-
 	public int getId() {
 		return id;
 	}
@@ -63,14 +55,24 @@ public class Agent implements IMessage {
 	public void setPriority(int priority) {
 		this.priority = priority;
 	}
+	
+	@Override
+	public Message createMessage(Agent receiver, MessageType type, String content) {
+		return new Message(this, receiver, type, content);
+	}
 
+	@Override
+	public String receiveMessage(Message message) {
+		return message.getContent();
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((col == null) ? 0 : col.hashCode());
 		result = prime * result + id;
-//		result = prime * result + ((pos == null) ? 0 : pos.hashCode());
+		result = prime * result + ((pos == null) ? 0 : pos.hashCode());
 		result = prime * result + priority;
 		return result;
 	}
@@ -97,23 +99,12 @@ public class Agent implements IMessage {
 			return false;
 		return true;
 	}
-
-	public Node getInitialState() {
-		return initialState;
-	}
-
-	public void setInitialState(Node initialState) {
-		this.initialState = initialState;
-	}
-
+	
 	@Override
-	public Message createMessage(Agent receiver, MessageType type, String content) {
-		return new Message(this, receiver, type, content);
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Agent [id=").append(id).append(", col=").append(col).append(", pos=").append(pos)
+				.append(", priority=").append(priority).append("]");
+		return builder.toString();
 	}
-
-	@Override
-	public String receiveMessage(Message message) {
-		return message.getContent();
-	}
-
 }

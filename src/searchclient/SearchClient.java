@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -58,10 +59,10 @@ public class SearchClient {
 		Map<Integer, Goal> goals = new HashMap<Integer, Goal>(0);
 		Map<Integer, Box> boxes = new HashMap<Integer, Box>(0);
 		Map<Integer, Agent> agents = new HashMap<Integer, Agent>(0);
+		List<String> messages = new ArrayList<String>();
 		
 		int row = 0, column = 0;
 		String line, color;
-		ArrayList<String> messages = new ArrayList<String>();
 
 		// Read lines specifying colors
 		while ((line = in.readLine()).matches("^[a-z]+:\\s*[0-9A-Z](,\\s*[0-9A-Z])*\\s*$")) {
@@ -104,7 +105,7 @@ public class SearchClient {
 
 		for (Integer id : agents.keySet()) {
 			Agent agent = agents.get(id);
-			agent.setInitialState(new Node(null, agent.getId()));
+			agent.initialState = new Node(null, agent.getId());
 			agent.initialState.agentRow = agent.getPosition().getX();
 			agent.initialState.agentCol = agent.getPosition().getY();
 			agent.initialState.boxes = new HashMap<Integer, Box>(0);
