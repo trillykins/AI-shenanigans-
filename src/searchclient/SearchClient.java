@@ -10,9 +10,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import atoms.Agent;
 import atoms.Box;
+import atoms.Color;
 import atoms.Goal;
 import atoms.Position;
 import atoms.World;
@@ -60,6 +62,7 @@ public class SearchClient {
 		Map<Integer, Box> boxes = new HashMap<Integer, Box>(0);
 		Map<Integer, Agent> agents = new HashMap<Integer, Agent>(0);
 		List<String> messages = new ArrayList<String>();
+		Set<Color> colorSet = new HashSet<Color>();
 		
 		int row = 0, column = 0;
 		String line, color;
@@ -70,6 +73,7 @@ public class SearchClient {
 			color = line.split(":")[0];
 			for (String id : line.split(":")[1].split(",")) {
 				colors.put(id.charAt(0), color);
+				colorSet.add(Utils.determineColor(color));
 			}
 		}
 
@@ -99,6 +103,7 @@ public class SearchClient {
 		world.setBoxes(boxes);
 		world.setGoals(goals);
 		world.setWalls(walls);
+		world.setColors(colorSet);
 		
 		MAX_ROW = row;
 		MAX_COLUMN = column;
@@ -123,6 +128,10 @@ public class SearchClient {
 				}
 			}
 		}
+		
+		/*This method removes duplicate goals for agents that have the same color*/
+		removeDuplicateGoals(world,colors);
+
 		/* Needs to be modified such that it calculates for each agent */
 		for (Integer id : agents.keySet()) {
 			Agent agent = agents.get(id);
@@ -134,7 +143,48 @@ public class SearchClient {
 			}
 		}
 	}
-
+	
+	public void removeDuplicateGoals(World world, Map<Character, String> colors){
+		Map<Goal,Agent> regen = new HashMap<Goal,Agent>();
+		
+		for(Color color : world.getColors()){
+			/*We find the agents of the same color*/
+			Set<Agent> sameColorAgents = new HashSet<Agent>(); 
+			Map<Integer, Goal> sameColorGoals = new HashMap<Integer,Goal>();
+			for(Agent agent : world.getAgents().values()){
+				if (color == agent.getColor()){
+					sameColorAgents.add(agent);
+					/*Two agents of same color will have the same goals, the goals are only added ones*/
+					if (sameColorGoals.isEmpty())
+						sameColorGoals = agent.initialState.goals;
+				}
+			}
+			if(sameColorAgents.size() > 1){ /*No reason to do this if there is only one agent of one color*/
+				for(Goal g : sameColorGoals.values()){	
+					int distance = sameColorAgents.size();
+					/*for each agent calc manhattan distance*/
+					TreeMap<Integer,Agent> priorityMap = new TreeMap<Integer,Agent>();
+					for(Agent agent : sameColorAgents){
+						distance = Utils.manhattenDistance(agent.getPosition(),g.getPosition());
+						priorityMap.put(distance, agent);	
+					}
+					/*We add the goal and agent to regen, for which the distance is shortest*/
+					Agent agent = priorityMap.firstEntry().getValue();
+					System.err.println("Agent " + agent.getId() + ", mål " + g.getLetter());
+					regen.put(g, agent);
+				}
+			}
+		}
+		for(Goal g : regen.keySet()){
+			for(int aId : world.getAgents().keySet()){
+				Agent agent = world.getAgents().get(aId);
+				if (agent.getId() != regen.get(g).getId()){
+					world.getAgents().get(agent.getId()).initialState.goals.remove(g.getId());
+				}
+			}
+		}
+	}
+	
 	public LinkedList<Node> search(Strategy strategy, Node initialState) {
 		System.err.format("Search starting with strategy %s\n", strategy);
 		strategy.addToFrontier(initialState);

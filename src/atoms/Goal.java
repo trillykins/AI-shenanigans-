@@ -11,6 +11,11 @@ public class Goal {
 		this.letter = letter;
 	}
 	
+	@Override
+	public String toString() {
+		return "Goal ID: " + id + ", char: " + letter + ", position: " + position.toString();
+	}
+
 	public Goal(int id, int x, int y, char letter, Color color) {
 		this(id, new Position(x, y), letter, color);
 	}

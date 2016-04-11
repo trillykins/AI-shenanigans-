@@ -2,6 +2,7 @@ package searchclient;
 
 import FIPA.MessageType;
 import atoms.Color;
+import atoms.Position;
 
 public class Utils {
 	
@@ -14,6 +15,12 @@ public class Utils {
 			}
 		}
 		return result;
+	}
+	
+	public static int manhattenDistance(Position aPos, Position gPos){
+		int ax = Math.abs(aPos.getX() - gPos.getX());
+		int ay = Math.abs(aPos.getY() - gPos.getY());
+		return ax+ay;
 	}
 	
 	public static Color determineColor(String color) {

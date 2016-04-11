@@ -9,7 +9,16 @@ public class World {
 	private Map<Integer, Goal> goals;
 	private Set<Position> walls;
 	private static World instance = null;
+	private Set<Color> colors;
 	
+	public Set<Color> getColors() {
+		return colors;
+	}
+
+	public void setColors(Set<Color> colors) {
+		this.colors = colors;
+	}
+
 	public static World getInstance() {
 	      if(instance == null) {
 	         instance = new World();
