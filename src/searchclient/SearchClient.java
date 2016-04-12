@@ -37,6 +37,7 @@ public class SearchClient {
 		colorSet = new HashSet<Color>(0);
 		in = new BufferedReader(new InputStreamReader(System.in));
 		world = World.getInstance();
+		init();
 	}
 
 	public boolean update() throws IOException {
@@ -96,7 +97,7 @@ public class SearchClient {
 							new Box(boxes.size() + 1, new Position(row, i), id, Utils.determineColor(colors.get(id))));
 				} else if ('a' <= id && id <= 'z') { // Goals
 					goals.put(goals.size() + 1, new Goal(goals.size() + 1, new Position(row, i), id,
-							Utils.determineColor(colors.get(id)), 0));
+							Utils.determineColor(colors.get(id)), 0));	// TODO implement goal priority 
 				} else if (id == '+') {
 					walls.add(new Position(row, i));
 				}

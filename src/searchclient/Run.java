@@ -23,9 +23,8 @@ public class Run {
 		System.err.println("SearchClient initializing. I am sending this using the error output stream.");
 		try {
 			SearchClient client = new SearchClient();
-			client.init();
-			if (args.length > 1)
-				SearchClient.TIME = Integer.parseInt(args[1]);
+			SearchClient.TIME = args.length > 1 ? Integer.parseInt(args[1]) : 300; 
+			
 			World world = World.getInstance();
 			do {
 				for (Integer id : world.getAgents().keySet()) {
@@ -48,12 +47,12 @@ public class Run {
 						}
 					}
 				}
-				Strategy strategy = null;
+				
 				/* 1. Create solutions for each agent */
 				List<LinkedList<Node>> allSolutions = new ArrayList<LinkedList<Node>>();
 				for (Integer id : world.getAgents().keySet()) {
 					Agent a = world.getAgents().get(id);
-					strategy = new StrategyBestFirst(new AStar(a.initialState));
+					Strategy strategy = new StrategyBestFirst(new AStar(a.initialState));
 					LinkedList<Node> solution = client.search(strategy, a.initialState);
 					if (solution != null) {
 						System.err.println("\nSummary for " + strategy);
@@ -64,6 +63,7 @@ public class Run {
 						System.err.println("!!!!!!");
 					}
 				}
+				
 				/* 2. Merge simple solutions together */
 				int size = 0;
 				for (LinkedList<Node> solution : allSolutions) {
@@ -101,6 +101,7 @@ public class Run {
 						System.out.println(sb.toString());
 						System.err.println(sb.toString());
 					} else {
+						System.err.println("bræk!");
 						break;
 					}
 				}

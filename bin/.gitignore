@@ -1,6 +1,7 @@
-/searchclient/
+/bdi/
 /FIPA/
-/levels/
 /atoms/
 /heuristics/
-/bdi/
+/sampleclients/
+/searchclient/
+/strategies/
