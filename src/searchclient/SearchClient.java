@@ -230,10 +230,10 @@ public class SearchClient {
 		for (Agent a1 : World.getInstance().getAgents().values()) {
 			for (Agent a2 : World.getInstance().getAgents().values()) {
 				if (a2.getId() != a1.getId()) {
-					if (allSolutions.get(a2.getId()).size() > index + 1) {
+					if (allSolutions.get(a2.getId()).size() > index) {
 						if (allSolutions.get(a1.getId()).size() > index) {
 							Node currAgentSol = allSolutions.get(a1.getId()).get(index);
-							Node agentSol = allSolutions.get(a2.getId()).get(index + 1);
+							Node agentSol = allSolutions.get(a2.getId()).get(index);
 							if (currAgentSol.agentRow == agentSol.agentRow
 									&& currAgentSol.agentCol == agentSol.agentCol) {
 								return false;
@@ -243,6 +243,10 @@ public class SearchClient {
 								 * in the future Currently this doesnt seem to
 								 * work, did i do something wrong?
 								 */
+							} else if(a1.getPosition().getX() == agentSol.agentRow && a1.getPosition().getY() == agentSol.agentCol){
+								System.err.println(a1.getId() + ": " + a1.getPosition().getX() + ", " + a1.getPosition().getY());
+								System.err.println(agentSol.agentId + ": " + agentSol.agentRow + ", " + agentSol.agentCol);
+								return false;
 							}
 						}
 					}
