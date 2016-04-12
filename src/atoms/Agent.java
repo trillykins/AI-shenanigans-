@@ -1,8 +1,14 @@
 package atoms;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import FIPA.IMessage;
 import FIPA.Message;
 import FIPA.MessageType;
+import bdi.Belief;
+import bdi.Desire;
+import bdi.Intention;
 import searchclient.Command;
 import searchclient.Node;
 import searchclient.Utils;
@@ -12,8 +18,10 @@ public class Agent implements IMessage {
 	private Color col;
 	private Position pos;
 	private int priority;
+	private Set<Desire> desires;
+	private Intention intention;
 	public Node initialState = null;
-	
+
 	public Agent(int id, String color, Position pos) {
 		this(id, Utils.determineColor(color), pos);
 	}
@@ -22,6 +30,7 @@ public class Agent implements IMessage {
 		this.id = id;
 		this.col = color;
 		this.pos = pos;
+		this.desires = new HashSet<Desire>(0);
 	}
 
 	public String act() {
@@ -59,7 +68,42 @@ public class Agent implements IMessage {
 	public void setPriority(int priority) {
 		this.priority = priority;
 	}
-	
+
+	public Set<Desire> getDesires() {
+		return desires;
+	}
+
+	public void setDesires(Set<Desire> desires) {
+		this.desires = desires;
+	}
+
+	public Intention getIntention() {
+		return intention;
+	}
+
+	public void setIntention(Intention intention) {
+		this.intention = intention;
+	}
+
+	public void generateDesires() {
+		for (Belief belief : World.getInstance().getBeliefs()) {
+			Goal g = belief.getGoal();
+			for (Integer boxId : World.getInstance().getBoxes().keySet()) {
+				Box b = World.getInstance().getBoxes().get(boxId);
+				if (Character.toLowerCase(b.getLetter()) == g.getLetter()) {
+					if (col.equals(b.getColor())) {
+						desires.add(new Desire(belief, this));
+					}
+				}
+			}
+		}
+	}
+
+	// TODO: THEA
+	public void generateIntention() {
+		intention = new Intention(desires.iterator().next());
+	}
+
 	@Override
 	public Message createMessage(Agent receiver, MessageType type, String content) {
 		return new Message(this, receiver, type, content);
@@ -69,7 +113,7 @@ public class Agent implements IMessage {
 	public String receiveMessage(Message message) {
 		return message.getContent();
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -103,7 +147,7 @@ public class Agent implements IMessage {
 			return false;
 		return true;
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();

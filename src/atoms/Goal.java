@@ -4,22 +4,27 @@ public class Goal {
 	private int id;
 	private Position position;
 	private char letter;
+	private int priority;
 	
-	public Goal(int id, Position position, char letter, Color color) {
+	public Goal(int id, Position position, char letter, Color color, int priority) {
 		this.id = id;
 		this.position = position;
 		this.letter = letter;
+		this.priority = priority;
 	}
 	
-	@Override
-	public String toString() {
-		return "Goal ID: " + id + ", char: " + letter + ", position: " + position.toString();
+	public Goal(int id, int x, int y, char letter, Color color, int priority) {
+		this(id, new Position(x, y), letter, color, priority);
+	}
+	
+	public int getPriority() {
+		return priority;
 	}
 
-	public Goal(int id, int x, int y, char letter, Color color) {
-		this(id, new Position(x, y), letter, color);
+	public void setPriority(int priority) {
+		this.priority = priority;
 	}
-	
+
 	public Position getPosition() {
 		return position;
 	}

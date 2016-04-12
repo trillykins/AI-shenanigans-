@@ -1,7 +1,11 @@
 package atoms;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import bdi.Belief;
+import searchclient.SearchClient;
 
 public class World {
 	private Map<Integer, Agent> agents;
@@ -9,6 +13,7 @@ public class World {
 	private Map<Integer, Goal> goals;
 	private Set<Position> walls;
 	private Set<Color> colors;
+	private List<Belief> beliefs;
 	private static World instance = null;
 
 	public static World getInstance() {
@@ -19,6 +24,14 @@ public class World {
 	}
 
 	protected World() {
+	}
+
+	public List<Belief> getBeliefs() {
+		return beliefs;
+	}
+
+	public void setBeliefs(List<Belief> beliefs) {
+		this.beliefs = beliefs;
 	}
 
 	public Set<Color> getColors() {
@@ -80,5 +93,50 @@ public class World {
 			}
 		}
 		return result;
+	}
+	
+	public String toString() {
+		StringBuilder s = new StringBuilder();
+		for (int row = 0; row < SearchClient.MAX_ROW; row++) {
+			if (!World.getInstance().getWalls().contains(new Position(row, 0))) {
+				break;
+			}
+			for (int col = 0; col < SearchClient.MAX_COLUMN; col++) {
+				boolean skip = false;
+				Position pos = new Position(row, col);
+				for (Box b : boxes.values()) {
+					if (b.getPosition().equals(pos)) {
+						s.append(b.getLetter());
+						skip = true;
+						break;
+					}
+				}
+				if (skip)
+					continue;
+				for (Goal g : goals.values()) {
+					if (g.getPosition().equals(pos)) {
+						s.append(g.getLetter());
+						skip = true;
+						break;
+					}
+				}
+				for(Agent a : agents.values()) {
+					if(row == a.getPosition().getX() && col == a.getPosition().getY()) {
+						s.append(a.getId());
+						skip = true;
+						break;
+					}
+				}
+				if (skip)
+					continue;
+				if (World.getInstance().getWalls().contains(pos)) {
+					s.append("+");
+				}  else {
+					s.append(" ");
+				}
+			}
+			s.append("\n");
+		}
+		return s.toString();
 	}
 }
