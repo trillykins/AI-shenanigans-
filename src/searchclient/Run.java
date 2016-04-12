@@ -2,10 +2,13 @@ package searchclient;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import atoms.Agent;
+import atoms.Box;
 import atoms.Position;
 import atoms.World;
 import heuristics.AStar;
@@ -40,34 +43,45 @@ public class Run {
 			}
 			/* 2. Merge simple solutions together */
 			int size = 0;
-			for (LinkedList<Node> solution : allSolutions)
-				if (size < solution.size())
+			for (LinkedList<Node> solution : allSolutions) {
+				if (size < solution.size()) {
 					size = solution.size();
+				}
+			}
+			Map<Integer, Agent> updatedAgents = new HashMap<Integer, Agent>(0);
+			Map<Integer, Box> updatedBoxes = new HashMap<Integer, Box>(0);
 			for (int m = 0; m < size; m++) {
 				StringBuilder sb = new StringBuilder();
 				sb.append("[");
 				int i = 0;
 				for (LinkedList<Node> solution : allSolutions) {
 					// set agent position
-					if (m < solution.size()){
+					if (m < solution.size()) {
 						sb.append(solution.get(m).action.toString());
-						Node n = solution.get(m); 
+						Node n = solution.get(m);
 						Agent agent = world.getAgents().get(n.agentId);
-						agent.setPosition(new Position(n.agentRow, n.agentCol));
-						for(Integer bId : n.boxes.keySet()) {
-							world.getBoxes().put(bId, n.boxes.get(bId));
+						Agent newAgent = new Agent(agent.getId(), agent.getColor(), new Position(n.agentRow, n.agentCol));
+						updatedAgents.put(newAgent.getId(), newAgent);
+						for (Integer bId : n.boxes.keySet()) {
+							updatedBoxes.put(bId, n.boxes.get(bId));
 						}
-					}						
-					else
+					} else
 						sb.append("NoOp");
 					if (i < allSolutions.size() - 1)
 						sb.append(", ");
 					i++;
 				}
 				sb.append("]");
-				System.out.println(sb.toString());
+				if (SearchClient.canMakeNextMove(m, allSolutions)) {
+					Utils.performUpdates(updatedAgents, updatedBoxes);
+					System.out.println(sb.toString());
+					System.err.println(sb.toString());
+				} else {
+					break;
+				}
 			}
-		} catch (IOException e) { 
+			System.err.println("Global goal state found = " + world.isGlobalGoalState());
+		} catch (IOException e) {
 			System.err.println(e.getMessage());
 		}
 	}

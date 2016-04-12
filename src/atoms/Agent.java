@@ -15,8 +15,12 @@ public class Agent implements IMessage {
 	public Node initialState = null;
 	
 	public Agent(int id, String color, Position pos) {
+		this(id, Utils.determineColor(color), pos);
+	}
+
+	public Agent(int id, Color color, Position pos) {
 		this.id = id;
-		this.col = Utils.determineColor(color);
+		this.col = color;
 		this.pos = pos;
 	}
 

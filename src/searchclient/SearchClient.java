@@ -3,7 +3,6 @@ package searchclient;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -27,20 +26,24 @@ public class SearchClient {
 	public static BufferedReader in;
 	public static Map<Goal, Byte[][]> precomputedGoalH;
 	private Map<Character, String> colors;
+	Set<Color> colorSet;
+	World world;
 
 	public SearchClient() throws IOException {
 		precomputedGoalH = new HashMap<Goal, Byte[][]>(0);
 		colors = new HashMap<Character, String>(0);
+		colorSet = new HashSet<Color>(0);
 		in = new BufferedReader(new InputStreamReader(System.in));
+		world = World.getInstance();
 	}
 
 	public boolean update() throws IOException {
 		String jointAction = "[";
-//
-//		for (int i = 0; i < agents.size() - 1; i++)
-//			jointAction += agents.get(i).act() + ",";
-//
-//		jointAction += agents.get(agents.size() - 1).act() + "]";
+		//
+		// for (int i = 0; i < agents.size() - 1; i++)
+		// jointAction += agents.get(i).act() + ",";
+		//
+		// jointAction += agents.get(agents.size() - 1).act() + "]";
 
 		// Place message in buffer
 		System.out.println(jointAction);
@@ -56,69 +59,77 @@ public class SearchClient {
 		return true;
 	}
 
-	public void init() throws IOException {
+	public String readLines() {
+		String line = null, color;
+		try {
+			while ((line = in.readLine()).matches("^[a-z]+:\\s*[0-9A-Z](,\\s*[0-9A-Z])*\\s*$")) {
+				line = line.replaceAll("\\s", "");
+				color = line.split(":")[0];
+				for (String id : line.split(":")[1].split(",")) {
+					colors.put(id.charAt(0), color);
+					colorSet.add(Utils.determineColor(color));
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return line;
+	}
+	
+	public void initWorld(String line) {
 		Set<Position> walls = new HashSet<Position>(0);
 		Map<Integer, Goal> goals = new HashMap<Integer, Goal>(0);
 		Map<Integer, Box> boxes = new HashMap<Integer, Box>(0);
 		Map<Integer, Agent> agents = new HashMap<Integer, Agent>(0);
-		List<String> messages = new ArrayList<String>();
-		Set<Color> colorSet = new HashSet<Color>();
-		
 		int row = 0, column = 0;
-		String line, color;
-
-		// Read lines specifying colors
-		while ((line = in.readLine()).matches("^[a-z]+:\\s*[0-9A-Z](,\\s*[0-9A-Z])*\\s*$")) {
-			line = line.replaceAll("\\s", "");
-			color = line.split(":")[0];
-			for (String id : line.split(":")[1].split(",")) {
-				colors.put(id.charAt(0), color);
-				colorSet.add(Utils.determineColor(color));
-			}
-		}
-
-		// Read lines specifying level layout
 		while (!line.equals("")) {
-			messages.add(line);
 			for (int i = 0; i < line.length(); i++) {
 				char id = line.charAt(i);
 				if ('0' <= id && id <= '9') {
-					agents.put(Integer.parseInt("" + id), new Agent(Integer.parseInt("" + id), colors.get(id), new Position(row, i)));
+					agents.put(Integer.parseInt("" + id),
+							new Agent(Integer.parseInt("" + id), colors.get(id), new Position(row, i)));
 				} else if ('A' <= id && id <= 'Z') { // Boxes
-					boxes.put(boxes.size() + 1, new Box(boxes.size() + 1, new Position(row, i), id, Utils.determineColor(colors.get(id))));
+					boxes.put(boxes.size() + 1,
+							new Box(boxes.size() + 1, new Position(row, i), id, Utils.determineColor(colors.get(id))));
 				} else if ('a' <= id && id <= 'z') { // Goals
-					goals.put(goals.size() + 1, new Goal(goals.size() + 1, new Position(row, i), id, Utils.determineColor(colors.get(id))));
-				} else if(id == '+') {
+					goals.put(goals.size() + 1,
+							new Goal(goals.size() + 1, new Position(row, i), id, Utils.determineColor(colors.get(id))));
+				} else if (id == '+') {
 					walls.add(new Position(row, i));
 				}
 			}
-			if (line.length() > column) {
-				column = line.length();
-			}
+			column = line.length() > column ? line.length() : column;
 			row++;
-			line = in.readLine();
+			try {
+				line = in.readLine();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
-		World world = World.getInstance();
+		MAX_ROW = row;
+		MAX_COLUMN = column;
 		world.setAgents(agents);
 		world.setBoxes(boxes);
 		world.setGoals(goals);
 		world.setWalls(walls);
 		world.setColors(colorSet);
-		
-		MAX_ROW = row;
-		MAX_COLUMN = column;
-
-		for (Integer id : agents.keySet()) {
-			Agent agent = agents.get(id);
+	}
+	
+	public void init() throws IOException {
+		String line = null;
+		line = readLines();
+		initWorld(line);
+		for (Integer id : world.getAgents().keySet()) {
+			Agent agent = world.getAgents().get(id);
 			agent.initialState = new Node(null, agent.getId());
 			agent.initialState.agentRow = agent.getPosition().getX();
 			agent.initialState.agentCol = agent.getPosition().getY();
 			agent.initialState.boxes = new HashMap<Integer, Box>(0);
 			agent.initialState.goals = new HashMap<Integer, Goal>(0);
-			for (Integer boxId : boxes.keySet()) {
-				for (Integer goalId : goals.keySet()) {
-					Box b = boxes.get(boxId);
-					Goal g = goals.get(goalId);
+			for (Integer boxId : world.getBoxes().keySet()) {
+				for (Integer goalId : world.getGoals().keySet()) {
+					Box b = world.getBoxes().get(boxId);
+					Goal g = world.getGoals().get(goalId);
 					if (Character.toLowerCase(b.getLetter()) == g.getLetter()) {
 						if (agent.getColor().equals(b.getColor())) {
 							agent.initialState.goals.put(g.getId(), g);
@@ -128,63 +139,77 @@ public class SearchClient {
 				}
 			}
 		}
-		
-		/*This method removes duplicate goals for agents that have the same color*/
-		removeDuplicateGoals(world,colors);
+
+		/*
+		 * This method removes duplicate goals for agents that have the same
+		 * color
+		 */
+		// removeDuplicateGoals(world, colors);
 
 		/* Needs to be modified such that it calculates for each agent */
-		for (Integer id : agents.keySet()) {
-			Agent agent = agents.get(id);
-			for(Integer goalId : agent.initialState.goals.keySet()) {
+		for (Integer id : world.getAgents().keySet()) {
+			Agent agent = world.getAgents().get(id);
+			for (Integer goalId : agent.initialState.goals.keySet()) {
 				Goal goal = agent.initialState.goals.get(goalId);
 				Position gPos = goal.getPosition();
-				Byte[][] result = Utils.calculateDistanceValues(gPos.getX(), gPos.getY(), goal.getLetter(), MAX_ROW, MAX_COLUMN);
+				Byte[][] result = Utils.calculateDistanceValues(gPos.getX(), gPos.getY(), goal.getLetter(), MAX_ROW,
+						MAX_COLUMN);
 				precomputedGoalH.put(goal, result);
 			}
 		}
 	}
-	
-	public void removeDuplicateGoals(World world, Map<Character, String> colors){
-		Map<Goal,Agent> regen = new HashMap<Goal,Agent>();
-		
-		for(Color color : world.getColors()){
-			/*We find the agents of the same color*/
-			Set<Agent> sameColorAgents = new HashSet<Agent>(); 
-			Map<Integer, Goal> sameColorGoals = new HashMap<Integer,Goal>();
-			for(Agent agent : world.getAgents().values()){
-				if (color == agent.getColor()){
+
+	public void removeDuplicateGoals(World world, Map<Character, String> colors) {
+		Map<Goal, Agent> regen = new HashMap<Goal, Agent>();
+
+		for (Color color : world.getColors()) {
+			/* We find the agents of the same color */
+			Set<Agent> sameColorAgents = new HashSet<Agent>();
+			Map<Integer, Goal> sameColorGoals = new HashMap<Integer, Goal>();
+			for (Agent agent : world.getAgents().values()) {
+				if (color == agent.getColor()) {
 					sameColorAgents.add(agent);
-					/*Two agents of same color will have the same goals, the goals are only added ones*/
+					/*
+					 * Two agents of same color will have the same goals, the
+					 * goals are only added ones
+					 */
 					if (sameColorGoals.isEmpty())
 						sameColorGoals = agent.initialState.goals;
 				}
 			}
-			if(sameColorAgents.size() > 1){ /*No reason to do this if there is only one agent of one color*/
-				for(Goal g : sameColorGoals.values()){	
+			if (sameColorAgents
+					.size() > 1) { /*
+									 * No reason to do this if there is only one
+									 * agent of one color
+									 */
+				for (Goal g : sameColorGoals.values()) {
 					int distance = sameColorAgents.size();
-					/*for each agent calc manhattan distance*/
-					TreeMap<Integer,Agent> priorityMap = new TreeMap<Integer,Agent>();
-					for(Agent agent : sameColorAgents){
-						distance = Utils.manhattenDistance(agent.getPosition(),g.getPosition());
-						priorityMap.put(distance, agent);	
+					/* for each agent calc manhattan distance */
+					TreeMap<Integer, Agent> priorityMap = new TreeMap<Integer, Agent>();
+					for (Agent agent : sameColorAgents) {
+						distance = Utils.manhattenDistance(agent.getPosition(), g.getPosition());
+						priorityMap.put(distance, agent);
 					}
-					/*We add the goal and agent to regen, for which the distance is shortest*/
+					/*
+					 * We add the goal and agent to regen, for which the
+					 * distance is shortest
+					 */
 					Agent agent = priorityMap.firstEntry().getValue();
 					System.err.println("Agent " + agent.getId() + ", mål " + g.getLetter());
 					regen.put(g, agent);
 				}
 			}
 		}
-		for(Goal g : regen.keySet()){
-			for(int aId : world.getAgents().keySet()){
+		for (Goal g : regen.keySet()) {
+			for (int aId : world.getAgents().keySet()) {
 				Agent agent = world.getAgents().get(aId);
-				if (agent.getId() != regen.get(g).getId()){
+				if (agent.getId() != regen.get(g).getId()) {
 					world.getAgents().get(agent.getId()).initialState.goals.remove(g.getId());
 				}
 			}
 		}
 	}
-	
+
 	public LinkedList<Node> search(Strategy strategy, Node initialState) {
 		System.err.format("Search starting with strategy %s\n", strategy);
 		strategy.addToFrontier(initialState);
@@ -205,7 +230,7 @@ public class SearchClient {
 				return null;
 			}
 			Node leafNode = strategy.getAndRemoveLeaf();
-			if (leafNode.isGoalState()) 
+			if (leafNode.isGoalState())
 				return leafNode.extractPlan();
 			strategy.addToExplored(leafNode);
 			for (Node n : leafNode.getExpandedNodes()) {
@@ -215,5 +240,31 @@ public class SearchClient {
 			}
 			iterations++;
 		}
+	}
+
+	public static boolean canMakeNextMove(int index, List<LinkedList<Node>> allSolutions) {
+		for (Agent a1 : World.getInstance().getAgents().values()) {
+			for (Agent a2 : World.getInstance().getAgents().values()) {
+				if (a2.getId() != a1.getId()) {
+					if (allSolutions.get(a2.getId()).size() > index) {
+						if (allSolutions.get(a1.getId()).size() > index) {
+							Node currAgentSol = allSolutions.get(a1.getId()).get(index);
+							Node agentSol = allSolutions.get(a2.getId()).get(index);
+							if (currAgentSol.agentRow == agentSol.agentRow
+									&& currAgentSol.agentCol == agentSol.agentCol) {
+								return false;
+								/*
+								 * HERE the FIFO should work : send a message
+								 * that currAgent and agent will be conflicting
+								 * in the future Currently this doesnt seem to
+								 * work, did i do something wrong?
+								 */
+							}
+						}
+					}
+				}
+			}
+		}
+		return true;
 	}
 }

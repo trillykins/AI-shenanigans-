@@ -1,11 +1,16 @@
 package searchclient;
 
+import java.util.Map;
+
 import FIPA.MessageType;
+import atoms.Agent;
+import atoms.Box;
 import atoms.Color;
 import atoms.Position;
+import atoms.World;
 
 public class Utils {
-	
+
 	public static Byte[][] calculateDistanceValues(int x, int y, char id, int MAX_ROW, int MAX_COLUMN) {
 		Byte[][] result = new Byte[MAX_ROW][MAX_COLUMN];
 		result[x][y] = 0;
@@ -16,15 +21,15 @@ public class Utils {
 		}
 		return result;
 	}
-	
-	public static int manhattenDistance(Position aPos, Position gPos){
+
+	public static int manhattenDistance(Position aPos, Position gPos) {
 		int ax = Math.abs(aPos.getX() - gPos.getX());
 		int ay = Math.abs(aPos.getY() - gPos.getY());
-		return ax+ay;
+		return ax + ay;
 	}
-	
+
 	public static Color determineColor(String color) {
-		if(color == null)
+		if (color == null)
 			return Color.NONE;
 		color = color.toLowerCase();
 		switch (color) {
@@ -48,7 +53,7 @@ public class Utils {
 			return Color.NONE;
 		}
 	}
-	
+
 	public static MessageType determineMessage(String type) {
 		type = type.toLowerCase();
 		switch (type) {
@@ -60,6 +65,15 @@ public class Utils {
 			return MessageType.INFORM;
 		default:
 			return MessageType.NONE;
+		}
+	}
+	
+	public static void performUpdates(Map<Integer, Agent> agents, Map<Integer, Box> boxes) {
+		for(Integer agentId : agents.keySet()) {
+			World.getInstance().getAgents().put(agentId, agents.get(agentId));
+		}
+		for(Integer boxId : boxes.keySet()) {
+			World.getInstance().getBoxes().put(boxId, boxes.get(boxId));
 		}
 	}
 }
