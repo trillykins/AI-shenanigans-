@@ -1,5 +1,6 @@
 package atoms;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,8 +32,17 @@ public class Agent implements IMessage {
 		this.col = color;
 		this.pos = pos;
 		this.desires = new HashSet<Desire>(0);
+		generateInitialState();
 	}
 
+	public void generateInitialState(){
+		this.initialState = new Node(null, id);
+		this.initialState.agentRow = pos.getX();
+		this.initialState.agentCol = pos.getY();
+		this.initialState.boxes = new HashMap<Integer, Box>(0);
+		this.initialState.goals = new HashMap<Integer, Goal>(0);
+	}
+	
 	public String act() {
 		return Command.every[1].toString();
 	}

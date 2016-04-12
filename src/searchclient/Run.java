@@ -29,11 +29,11 @@ public class Run {
 			do {
 				for (Integer id : world.getAgents().keySet()) {
 					Agent agent = world.getAgents().get(id);
-					agent.initialState = new Node(null, agent.getId());
-					agent.initialState.agentRow = agent.getPosition().getX();
-					agent.initialState.agentCol = agent.getPosition().getY();
-					agent.initialState.boxes = new HashMap<Integer, Box>(0);
-					agent.initialState.goals = new HashMap<Integer, Goal>(0);
+//					agent.initialState = new Node(null, agent.getId());
+//					agent.initialState.agentRow = agent.getPosition().getX();
+//					agent.initialState.agentCol = agent.getPosition().getY();
+//					agent.initialState.boxes = new HashMap<Integer, Box>(0);
+//					agent.initialState.goals = new HashMap<Integer, Goal>(0);
 					agent.generateDesires();
 					agent.generateIntention();
 					Intention i = agent.getIntention();
