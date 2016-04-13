@@ -32,7 +32,6 @@ public class Agent implements IMessage {
 		this.col = color;
 		this.pos = pos;
 		this.desires = new HashSet<Desire>(0);
-		generateInitialState();
 	}
 
 	public void generateInitialState(){
@@ -41,6 +40,7 @@ public class Agent implements IMessage {
 		this.initialState.agentCol = pos.getY();
 		this.initialState.boxes = new HashMap<Integer, Box>(0);
 		this.initialState.goals = new HashMap<Integer, Goal>(0);
+		this.initialState.walls = World.getInstance().getWalls();
 	}
 	
 	public String act() {
@@ -114,6 +114,13 @@ public class Agent implements IMessage {
 		intention = new Intention(desires.iterator().next());
 	}
 
+	public Agent clone() {
+		Agent newAgent = new Agent(this.getId(), this.getColor(), this.getPosition());
+		newAgent.setDesires(this.getDesires());
+		newAgent.setIntention(this.getIntention());
+		return newAgent;
+	}
+	
 	@Override
 	public Message createMessage(Agent receiver, MessageType type, String content) {
 		return new Message(this, receiver, type, content);

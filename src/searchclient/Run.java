@@ -23,17 +23,12 @@ public class Run {
 		System.err.println("SearchClient initializing. I am sending this using the error output stream.");
 		try {
 			SearchClient client = new SearchClient();
-			SearchClient.TIME = args.length > 1 ? Integer.parseInt(args[1]) : 300; 
-			
+			SearchClient.TIME = args.length > 1 ? Integer.parseInt(args[1]) : 300;
+
 			World world = World.getInstance();
 			do {
-				for (Integer id : world.getAgents().keySet()) {
-					Agent agent = world.getAgents().get(id);
-//					agent.initialState = new Node(null, agent.getId());
-//					agent.initialState.agentRow = agent.getPosition().getX();
-//					agent.initialState.agentCol = agent.getPosition().getY();
-//					agent.initialState.boxes = new HashMap<Integer, Box>(0);
-//					agent.initialState.goals = new HashMap<Integer, Goal>(0);
+				for (Agent agent : world.getAgents().values()) {
+					agent.generateInitialState();
 					agent.generateDesires();
 					agent.generateIntention();
 					Intention i = agent.getIntention();
@@ -46,24 +41,31 @@ public class Run {
 							agent.initialState.boxes.put(b.getId(), b);
 						}
 					}
+					for (Goal goal : world.getSolvedGoals().values()) {
+						agent.initialState.walls.add(goal.getPosition());
+					}
 				}
-				
+
 				/* 1. Create solutions for each agent */
 				List<LinkedList<Node>> allSolutions = new ArrayList<LinkedList<Node>>();
-				for (Integer id : world.getAgents().keySet()) {
-					Agent a = world.getAgents().get(id);
+				for (Agent a : world.getAgents().values()) {
 					Strategy strategy = new StrategyBestFirst(new AStar(a.initialState));
 					LinkedList<Node> solution = client.search(strategy, a.initialState);
 					if (solution != null) {
-						System.err.println("\nSummary for " + strategy);
-						System.err.println("Found solution of length " + solution.size());
-						System.err.println(strategy.searchStatus());
+//						 if(solution.size() == 0) {
+//						 System.err.println("Solution of length 0....");
+//						 System.err.println(a.initialState);
+//						 }
+						// System.err.println("\nSummary for " + strategy);
+						// System.err.println("Found solution of length " +
+						// solution.size());
+						// System.err.println(strategy.searchStatus());
 						allSolutions.add(solution);
 					} else {
-						System.err.println("!!!!!!");
+						// System.err.println("!!!!!!");
 					}
 				}
-				
+
 				/* 2. Merge simple solutions together */
 				int size = 0;
 				for (LinkedList<Node> solution : allSolutions) {
@@ -71,7 +73,7 @@ public class Run {
 						size = solution.size();
 					}
 				}
-				Map<Integer, Agent> updatedAgents = new HashMap<Integer, Agent>(0);
+				Map<Integer, Position> updatedAgentPositions = new HashMap<Integer, Position>(0);
 				Map<Integer, Box> updatedBoxes = new HashMap<Integer, Box>(0);
 				for (int m = 0; m < size; m++) {
 					StringBuilder sb = new StringBuilder();
@@ -82,10 +84,12 @@ public class Run {
 						if (m < solution.size()) {
 							sb.append(solution.get(m).action.toString());
 							Node n = solution.get(m);
+//							 System.err.println(n.toString());
 							Agent agent = world.getAgents().get(n.agentId);
-							Agent newAgent = new Agent(agent.getId(), agent.getColor(),
-									new Position(n.agentRow, n.agentCol));
-							updatedAgents.put(newAgent.getId(), newAgent);
+							// Agent newAgent = new Agent(agent.getId(),
+							// agent.getColor(), new Position(n.agentRow,
+							// n.agentCol));
+							updatedAgentPositions.put(agent.getId(), new Position(n.agentRow, n.agentCol));
 							for (Integer bId : n.boxes.keySet()) {
 								updatedBoxes.put(bId, n.boxes.get(bId));
 							}
@@ -97,7 +101,8 @@ public class Run {
 					}
 					sb.append("]");
 					if (SearchClient.canMakeNextMove(m, allSolutions)) {
-						Utils.performUpdates(updatedAgents, updatedBoxes);
+						 System.err.println(world.toString());
+						Utils.performUpdates(updatedAgentPositions, updatedBoxes);
 						System.out.println(sb.toString());
 						System.err.println(sb.toString());
 					} else {
@@ -105,8 +110,12 @@ public class Run {
 						break;
 					}
 				}
+				for (Agent a : world.getAgents().values()) {
+					Goal goal = a.getIntention().getDesire().getBelief().getGoal();
+					world.getSolvedGoals().put(goal.getId(), goal);
+				}
 				System.err.println("Global goal state found = " + world.isGlobalGoalState());
-				System.err.println(world.toString());
+				// System.err.println(world.toString());
 			} while (!world.isGlobalGoalState());
 		} catch (IOException e) {
 			System.err.println(e.getMessage());

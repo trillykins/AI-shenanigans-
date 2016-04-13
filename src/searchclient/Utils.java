@@ -68,9 +68,9 @@ public class Utils {
 		}
 	}
 	
-	public static void performUpdates(Map<Integer, Agent> agents, Map<Integer, Box> boxes) {
-		for(Integer agentId : agents.keySet()) {
-			World.getInstance().getAgents().put(agentId, agents.get(agentId));
+	public static void performUpdates(Map<Integer, Position> agentPositions, Map<Integer, Box> boxes) {
+		for(Integer agentId : agentPositions.keySet()) {
+			World.getInstance().getAgents().get(agentId).setPosition(agentPositions.get(agentId));
 		}
 		for(Integer boxId : boxes.keySet()) {
 			World.getInstance().getBoxes().put(boxId, boxes.get(boxId));

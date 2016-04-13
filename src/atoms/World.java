@@ -11,9 +11,12 @@ public class World {
 	private Map<Integer, Agent> agents;
 	private Map<Integer, Box> boxes;
 	private Map<Integer, Goal> goals;
+	private Map<Integer, Box> boxesInGoals;
+	private Map<Integer, Goal> solvedGoals;
 	private Set<Position> walls;
 	private Set<Color> colors;
 	private List<Belief> beliefs;
+
 	private static World instance = null;
 
 	public static World getInstance() {
@@ -23,7 +26,22 @@ public class World {
 		return instance;
 	}
 
-	protected World() {
+	protected World() {}
+
+	public Map<Integer, Box> getBoxesInGoals() {
+		return boxesInGoals;
+	}
+	
+	public void setBoxesInGoals(Map<Integer, Box> boxesInGoals) {
+		this.boxesInGoals = boxesInGoals;
+	}
+
+	public Map<Integer, Goal> getSolvedGoals() {
+		return solvedGoals;
+	}
+
+	public void setSolvedGoals(Map<Integer, Goal> solvedGoals) {
+		this.solvedGoals = solvedGoals;
 	}
 
 	public List<Belief> getBeliefs() {

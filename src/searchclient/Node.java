@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import atoms.Box;
 import atoms.Goal;
@@ -22,6 +23,7 @@ public class Node {
 	public int agentCol;
 	public Map<Integer, Box> boxes;
 	public Map<Integer, Goal> goals;
+	public Set<Position> walls;
 
 	public Node parent;
 	public Command action;

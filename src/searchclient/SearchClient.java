@@ -10,7 +10,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
 import atoms.Agent;
 import atoms.Box;
@@ -97,7 +96,10 @@ public class SearchClient {
 							new Box(boxes.size() + 1, new Position(row, i), id, Utils.determineColor(colors.get(id))));
 				} else if ('a' <= id && id <= 'z') { // Goals
 					goals.put(goals.size() + 1, new Goal(goals.size() + 1, new Position(row, i), id,
-							Utils.determineColor(colors.get(id)), 0));	// TODO implement goal priority 
+							Utils.determineColor(colors.get(id)), 0)); // TODO
+																		// implement
+																		// goal
+																		// priority
 				} else if (id == '+') {
 					walls.add(new Position(row, i));
 				}
@@ -121,6 +123,8 @@ public class SearchClient {
 			beliefs.add(new Belief(goal));
 		}
 		world.setBeliefs(beliefs);
+		world.setBoxesInGoals(new HashMap<Integer, Box>(0));
+		world.setSolvedGoals(new HashMap<Integer, Goal>(0));
 	}
 
 	public void init() throws IOException {
@@ -140,57 +144,6 @@ public class SearchClient {
 			Byte[][] result = Utils.calculateDistanceValues(gPos.getX(), gPos.getY(), goal.getLetter(), MAX_ROW,
 					MAX_COLUMN);
 			precomputedGoalH.put(goal, result);
-		}
-	}
-
-	public void removeDuplicateGoals(World world, Map<Character, String> colors) {
-		Map<Goal, Agent> regen = new HashMap<Goal, Agent>();
-
-		for (Color color : world.getColors()) {
-			/* We find the agents of the same color */
-			Set<Agent> sameColorAgents = new HashSet<Agent>();
-			Map<Integer, Goal> sameColorGoals = new HashMap<Integer, Goal>();
-			for (Agent agent : world.getAgents().values()) {
-				if (color == agent.getColor()) {
-					sameColorAgents.add(agent);
-					/*
-					 * Two agents of same color will have the same goals, the
-					 * goals are only added ones
-					 */
-					if (sameColorGoals.isEmpty())
-						sameColorGoals = agent.initialState.goals;
-				}
-			}
-			if (sameColorAgents
-					.size() > 1) { /*
-									 * No reason to do this if there is only one
-									 * agent of one color
-									 */
-				for (Goal g : sameColorGoals.values()) {
-					int distance = sameColorAgents.size();
-					/* for each agent calc manhattan distance */
-					TreeMap<Integer, Agent> priorityMap = new TreeMap<Integer, Agent>();
-					for (Agent agent : sameColorAgents) {
-						distance = Utils.manhattenDistance(agent.getPosition(), g.getPosition());
-						priorityMap.put(distance, agent);
-					}
-					/*
-					 * We add the goal and agent to regen, for which the
-					 * distance is shortest
-					 */
-					Agent agent = priorityMap.firstEntry().getValue();
-					System.err.println("Agent " + agent.getId() + ", mål " + g.getLetter());
-					regen.put(g, agent);
-				}
-			}
-		}
-		for (Goal g : regen.keySet()) {
-			for (int aId : world.getAgents().keySet()) {
-				Agent agent = world.getAgents().get(aId);
-				if (agent.getId() != regen.get(g).getId()) {
-					world.getAgents().get(agent.getId()).initialState.goals.remove(g.getId());
-				}
-			}
 		}
 	}
 
@@ -234,18 +187,9 @@ public class SearchClient {
 						if (allSolutions.get(a1.getId()).size() > index) {
 							Node currAgentSol = allSolutions.get(a1.getId()).get(index);
 							Node agentSol = allSolutions.get(a2.getId()).get(index);
-							if (currAgentSol.agentRow == agentSol.agentRow
-									&& currAgentSol.agentCol == agentSol.agentCol) {
-								return false;
-								/*
-								 * HERE the FIFO should work : send a message
-								 * that currAgent and agent will be conflicting
-								 * in the future Currently this doesnt seem to
-								 * work, did i do something wrong?
-								 */
-							} else if(a1.getPosition().getX() == agentSol.agentRow && a1.getPosition().getY() == agentSol.agentCol){
-								System.err.println(a1.getId() + ": " + a1.getPosition().getX() + ", " + a1.getPosition().getY());
-								System.err.println(agentSol.agentId + ": " + agentSol.agentRow + ", " + agentSol.agentCol);
+							if (currAgentSol.agentRow == agentSol.agentRow && currAgentSol.agentCol == agentSol.agentCol
+									|| a1.getPosition().getX() == agentSol.agentRow
+											&& a1.getPosition().getY() == agentSol.agentCol) {
 								return false;
 							}
 						}
