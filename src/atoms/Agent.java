@@ -96,6 +96,7 @@ public class Agent implements IMessage {
 	}
 
 	public void generateDesires() {
+		desires.clear();
 		for (Belief belief : World.getInstance().getBeliefs()) {
 			Goal g = belief.getGoal();
 			for (Integer boxId : World.getInstance().getBoxes().keySet()) {
