@@ -45,4 +45,9 @@ public class Goal {
 	public void setId(int id) {
 		this.id = id;
 	}
+	
+	@Override
+	public String toString() {
+		return "Goal [id=" + id + ", position=" + position + ", letter=" + letter + ", priority=" + priority + "]";
+	}
 }

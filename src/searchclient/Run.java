@@ -14,6 +14,7 @@ import atoms.Position;
 import atoms.World;
 import bdi.Intention;
 import heuristics.AStar;
+import searchclient.SearchClient.SearchType;
 import strategies.Strategy;
 import strategies.StrategyBestFirst;
 
@@ -54,7 +55,7 @@ public class Run {
 				List<LinkedList<Node>> allSolutions = new ArrayList<LinkedList<Node>>();
 				for (Agent a : world.getAgents().values()) {
 					Strategy strategy = new StrategyBestFirst(new AStar(a.initialState));
-					LinkedList<Node> solution = client.search(strategy, a.initialState);
+					LinkedList<Node> solution = client.search(strategy, a.initialState,SearchType.PATH);
 					if (solution != null) {
 						// if(solution.size() == 0) {
 						// System.err.println("Solution of length 0....");

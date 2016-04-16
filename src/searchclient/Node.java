@@ -21,6 +21,8 @@ public class Node {
 
 	public int agentRow;
 	public int agentCol;
+	public int moveToPositionRow;
+	public int moveToPositionCol;
 	public Map<Integer, Box> boxes;
 	public Map<Integer, Goal> goals;
 	public Set<Position> walls;
@@ -70,6 +72,12 @@ public class Node {
 		return result;
 	}
 
+	public boolean agentAtMovePosition(){
+		if (agentRow == moveToPositionRow && agentCol == moveToPositionCol)
+			return true;
+		return false;
+	}
+	
 	public ArrayList<Node> getExpandedNodes() {
 		ArrayList<Node> expandedNodes = new ArrayList<Node>(Command.every.length);
 		for (Command c : Command.every) {
@@ -175,6 +183,10 @@ public class Node {
 		Node copy = new Node(this, this.agentId);
 		copy.boxes = new HashMap<Integer, Box>(this.boxes);
 		copy.goals = this.goals;
+		copy.moveToPositionRow = this.moveToPositionRow;
+		copy.moveToPositionCol = this.moveToPositionCol;
+		copy.agentRow = this.agentRow;
+		copy.agentCol = this.agentCol;
 		return copy;
 	}
 

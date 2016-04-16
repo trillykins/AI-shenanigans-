@@ -111,18 +111,39 @@ public class Agent implements IMessage {
 		return desires.size() == 0 ? false : true;
 	}
 
-	// TODO: THEA
+	/*Generate intention finds intentions based on cost and goal priority
+	 * goal priority reflects how many occupied surrounding spaces a goal have
+	 * maybe this method should also look at the closest box ??? */
 	public boolean generateIntention() {
-		for (Desire des : desires) {
-			System.err.println(des.toString());
-		}
-		if (!desires.isEmpty()){
-			intention = new Intention(desires.iterator().next());
-			return true;
-		}
-		else 
+		if (desires.isEmpty())
 			return false;
+		Desire bestDesire = null;
+		int bestTotal = Integer.MAX_VALUE;
+		int bestGoalPriority = 0;
+		for(Desire des : desires){
+			Goal goal = des.getBelief().getGoal();
+			int goalPriority = goal.getPriority();
+			int cost = Utils.manhattenDistance(des.getAgent().getPosition(), goal.getPosition());
+			int currTotal = goalPriority + cost;
+			/*we are looking for the smallest value possible, the optimal would be a very close goal,
+			 * which have 0 occupied neighbours.*/
+			if(bestTotal > currTotal){
+				bestGoalPriority = goalPriority;
+				bestTotal = currTotal;
+				bestDesire = des;
+			} else if(bestTotal == currTotal){
+				/*if two goal totals are equal, we look at how many occupied neighbors they have*/
+				if(bestGoalPriority > goalPriority){
+					bestGoalPriority = goalPriority;
+					bestTotal = currTotal;
+					bestDesire = des;
+				}
+			}
+		}
+		intention = new Intention(bestDesire);
+		return true;
 	}
+
 
 	public Agent clone() {
 		Agent newAgent = new Agent(this.getId(), this.getColor(), this.getPosition());

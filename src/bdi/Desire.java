@@ -29,7 +29,6 @@ public class Desire {
 	
 	@Override
 	public String toString(){
-		
 		return agent.getId() + ": " + belief.toString();
 	}
 }

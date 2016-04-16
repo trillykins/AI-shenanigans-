@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import analysis.LevelAnalysis;
 import atoms.Agent;
 import atoms.Box;
 import atoms.Color;
@@ -29,7 +30,8 @@ public class SearchClient {
 	private Map<Character, String> colors;
 	Set<Color> colorSet;
 	World world;
-
+	LevelAnalysis levelAnalysis;
+	
 	public SearchClient() throws IOException {
 		precomputedGoalH = new HashMap<Goal, Byte[][]>(0);
 		colors = new HashMap<Character, String>(0);
@@ -131,23 +133,26 @@ public class SearchClient {
 		String line = null;
 		line = readLines();
 		initWorld(line);
-		/*
-		 * This method removes duplicate goals for agents that have the same
-		 * color
-		 */
-		// removeDuplicateGoals(world, colors);
-
-		/* Needs to be modified such that it calculates for each agent */
+		levelAnalysis = new LevelAnalysis();
+		/* calculates distances for each goal */
 		for (Integer id : world.getGoals().keySet()) {
 			Goal goal = world.getGoals().get(id);
 			Position gPos = goal.getPosition();
 			Byte[][] result = Utils.calculateDistanceValues(gPos.getX(), gPos.getY(), goal.getLetter(), MAX_ROW,
 					MAX_COLUMN);
 			precomputedGoalH.put(goal, result);
+			
+			/*calculate goalPriority : based on world elements*/
+			goal.setPriority(levelAnalysis.calculateGoalPriority(goal));
 		}
 	}
 
-	public LinkedList<Node> search(Strategy strategy, Node initialState) {
+	public enum SearchType{
+		PATH,
+		MoveToPosition
+	}
+	
+	public LinkedList<Node> search(Strategy strategy, Node initialState, SearchType searchType) {
 		System.err.format("Search starting with strategy %s\n", strategy);
 		strategy.addToFrontier(initialState);
 		int iterations = 0;
@@ -167,8 +172,16 @@ public class SearchClient {
 				return null;
 			}
 			Node leafNode = strategy.getAndRemoveLeaf();
-			if (leafNode.isGoalState())
-				return leafNode.extractPlan();
+			
+			switch(searchType){
+			case PATH:
+				if (leafNode.isGoalState())
+					return leafNode.extractPlan();
+			case MoveToPosition:
+				if (leafNode.agentAtMovePosition())
+					return leafNode.extractPlan();
+			}
+			
 			strategy.addToExplored(leafNode);
 			for (Node n : leafNode.getExpandedNodes()) {
 				if (!strategy.isExplored(n) && !strategy.inFrontier(n)) {
