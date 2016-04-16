@@ -34,7 +34,7 @@ public class Agent implements IMessage {
 		this.desires = new HashSet<Desire>(0);
 	}
 
-	public void generateInitialState(){
+	public void generateInitialState() {
 		this.initialState = new Node(null, id);
 		this.initialState.agentRow = pos.getX();
 		this.initialState.agentCol = pos.getY();
@@ -42,7 +42,7 @@ public class Agent implements IMessage {
 		this.initialState.goals = new HashMap<Integer, Goal>(0);
 		this.initialState.walls = World.getInstance().getWalls();
 	}
-	
+
 	public String act() {
 		return Command.every[1].toString();
 	}
@@ -95,7 +95,7 @@ public class Agent implements IMessage {
 		this.intention = intention;
 	}
 
-	public void generateDesires() {
+	public boolean generateDesires() {
 		desires.clear();
 		for (Belief belief : World.getInstance().getBeliefs()) {
 			Goal g = belief.getGoal();
@@ -108,11 +108,20 @@ public class Agent implements IMessage {
 				}
 			}
 		}
+		return desires.size() == 0 ? false : true;
 	}
 
 	// TODO: THEA
-	public void generateIntention() {
-		intention = new Intention(desires.iterator().next());
+	public boolean generateIntention() {
+		for (Desire des : desires) {
+			System.err.println(des.toString());
+		}
+		if (!desires.isEmpty()){
+			intention = new Intention(desires.iterator().next());
+			return true;
+		}
+		else 
+			return false;
 	}
 
 	public Agent clone() {
@@ -121,7 +130,7 @@ public class Agent implements IMessage {
 		newAgent.setIntention(this.getIntention());
 		return newAgent;
 	}
-	
+
 	@Override
 	public Message createMessage(Agent receiver, MessageType type, String content) {
 		return new Message(this, receiver, type, content);

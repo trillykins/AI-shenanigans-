@@ -29,8 +29,12 @@ public class Run {
 			do {
 				for (Agent agent : world.getAgents().values()) {
 					agent.generateInitialState();
-					agent.generateDesires();
-					agent.generateIntention();
+					if (!agent.generateDesires()) {
+						continue;
+					}
+					if (!agent.generateIntention()) {
+						continue;
+					}
 					Intention i = agent.getIntention();
 					Goal g = i.getDesire().getBelief().getGoal();
 					world.getBeliefs().remove(i.getDesire().getBelief());
@@ -52,10 +56,10 @@ public class Run {
 					Strategy strategy = new StrategyBestFirst(new AStar(a.initialState));
 					LinkedList<Node> solution = client.search(strategy, a.initialState);
 					if (solution != null) {
-//						 if(solution.size() == 0) {
-//						 System.err.println("Solution of length 0....");
-//						 System.err.println(a.initialState);
-//						 }
+						// if(solution.size() == 0) {
+						// System.err.println("Solution of length 0....");
+						// System.err.println(a.initialState);
+						// }
 						// System.err.println("\nSummary for " + strategy);
 						// System.err.println("Found solution of length " +
 						// solution.size());
@@ -84,7 +88,7 @@ public class Run {
 						if (m < solution.size()) {
 							sb.append(solution.get(m).action.toString());
 							Node n = solution.get(m);
-//							 System.err.println(n.toString());
+							// System.err.println(n.toString());
 							Agent agent = world.getAgents().get(n.agentId);
 							// Agent newAgent = new Agent(agent.getId(),
 							// agent.getColor(), new Position(n.agentRow,
@@ -101,7 +105,7 @@ public class Run {
 					}
 					sb.append("]");
 					if (SearchClient.canMakeNextMove(m, allSolutions)) {
-						 System.err.println(world.toString());
+						System.err.println(world.toString());
 						Utils.performUpdates(updatedAgentPositions, updatedBoxes);
 						System.out.println(sb.toString());
 						System.err.println(sb.toString());
@@ -111,8 +115,10 @@ public class Run {
 					}
 				}
 				for (Agent a : world.getAgents().values()) {
-					Goal goal = a.getIntention().getDesire().getBelief().getGoal();
-					world.getSolvedGoals().put(goal.getId(), goal);
+					if (a.getIntention() != null) {
+						Goal goal = a.getIntention().getDesire().getBelief().getGoal();
+						world.getSolvedGoals().put(goal.getId(), goal);
+					}
 				}
 				System.err.println("Global goal state found = " + world.isGlobalGoalState());
 				// System.err.println(world.toString());

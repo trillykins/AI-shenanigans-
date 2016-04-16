@@ -183,8 +183,8 @@ public class SearchClient {
 		for (Agent a1 : World.getInstance().getAgents().values()) {
 			for (Agent a2 : World.getInstance().getAgents().values()) {
 				if (a2.getId() != a1.getId()) {
-					if (allSolutions.get(a2.getId()).size() > index) {
-						if (allSolutions.get(a1.getId()).size() > index) {
+					if (allSolutions.size() > a2.getId() && allSolutions.get(a2.getId()).size() > index) {
+						if (allSolutions.size() > a1.getId() && allSolutions.get(a1.getId()).size() > index) {
 							Node currAgentSol = allSolutions.get(a1.getId()).get(index);
 							Node agentSol = allSolutions.get(a2.getId()).get(index);
 							if (currAgentSol.agentRow == agentSol.agentRow && currAgentSol.agentCol == agentSol.agentCol

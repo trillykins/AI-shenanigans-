@@ -16,4 +16,9 @@ public class Belief {
 	public void setGoal(Goal goal) {
 		this.goal = goal;
 	}
+	
+	@Override
+	public String toString(){
+		return "(" + goal.getId() + ", " + goal.getLetter() + ", " + goal.getPriority() + ")";
+	}
 }

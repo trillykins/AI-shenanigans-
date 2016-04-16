@@ -26,4 +26,10 @@ public class Desire {
 	public void setAgent(Agent agent) {
 		this.agent = agent;
 	}
+	
+	@Override
+	public String toString(){
+		
+		return agent.getId() + ": " + belief.toString();
+	}
 }
