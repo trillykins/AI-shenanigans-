@@ -1,11 +1,13 @@
 package atoms;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import bdi.Belief;
+import searchclient.Node;
 import searchclient.SearchClient;
+import bdi.Belief;
 
 public class World {
 	private Map<Integer, Agent> agents;
@@ -16,6 +18,8 @@ public class World {
 	private Set<Position> walls;
 	private Set<Color> colors;
 	private List<Belief> beliefs;
+	
+	private Map<Integer,LinkedList<Node>> solutionMap;
 
 	private static World instance = null;
 
@@ -92,6 +96,14 @@ public class World {
 		this.walls = walls;
 	}
 	
+	public Map<Integer, LinkedList<Node>> getSolutionMap() {
+		return solutionMap;
+	}
+
+	public void setSolutionMap(Map<Integer, LinkedList<Node>> solutionMap) {
+		this.solutionMap = solutionMap;
+	}
+
 	public boolean isGlobalGoalState() {
 		boolean result = false;
 		for (Integer goalId : this.goals.keySet()) {

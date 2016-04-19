@@ -1,5 +1,7 @@
 package searchclient;
 
+import heuristics.AStar;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,16 +9,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import searchclient.SearchClient.SearchType;
+import strategies.Strategy;
+import strategies.StrategyBestFirst;
 import atoms.Agent;
 import atoms.Box;
 import atoms.Goal;
 import atoms.Position;
 import atoms.World;
 import bdi.Intention;
-import heuristics.AStar;
-import searchclient.SearchClient.SearchType;
-import strategies.Strategy;
-import strategies.StrategyBestFirst;
 
 public class Run {
 
@@ -27,6 +28,7 @@ public class Run {
 			SearchClient.TIME = args.length > 1 ? Integer.parseInt(args[1]) : 300;
 
 			World world = World.getInstance();
+			HashMap<Integer,LinkedList<Node>> soluMap = new HashMap<Integer,LinkedList<Node>>();
 			do {
 				for (Agent agent : world.getAgents().values()) {
 					agent.generateInitialState();
@@ -65,11 +67,14 @@ public class Run {
 						// System.err.println("Found solution of length " +
 						// solution.size());
 						// System.err.println(strategy.searchStatus());
+						soluMap.put(a.getId(), solution);
 						allSolutions.add(solution);
 					} else {
 						// System.err.println("!!!!!!");
 					}
 				}
+				
+				World.getInstance().setSolutionMap(soluMap);
 
 				/* 2. Merge simple solutions together */
 				int size = 0;
@@ -94,6 +99,7 @@ public class Run {
 							// Agent newAgent = new Agent(agent.getId(),
 							// agent.getColor(), new Position(n.agentRow,
 							// n.agentCol));
+
 							updatedAgentPositions.put(agent.getId(), new Position(n.agentRow, n.agentCol));
 							for (Integer bId : n.boxes.keySet()) {
 								updatedBoxes.put(bId, n.boxes.get(bId));
@@ -111,7 +117,7 @@ public class Run {
 						System.out.println(sb.toString());
 						System.err.println(sb.toString());
 					} else {
-						System.err.println("bræk!");
+						System.err.println("break!");
 						break;
 					}
 				}
@@ -127,5 +133,9 @@ public class Run {
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
 		}
+	}
+	
+	private static void runSolution() {
+		
 	}
 }
