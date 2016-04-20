@@ -31,7 +31,7 @@ public class SearchClient {
 	Set<Color> colorSet;
 	World world;
 	LevelAnalysis levelAnalysis;
-	
+
 	public SearchClient() throws IOException {
 		precomputedGoalH = new HashMap<Goal, Byte[][]>(0);
 		colors = new HashMap<Character, String>(0);
@@ -70,6 +70,7 @@ public class SearchClient {
 				line = line.replaceAll("\\s", "");
 				color = line.split(":")[0];
 				for (String id : line.split(":")[1].split(",")) {
+					System.err.println(id + ", " + color);
 					colors.put(id.charAt(0), color);
 					colorSet.add(Utils.determineColor(color));
 				}
@@ -91,6 +92,7 @@ public class SearchClient {
 			for (int i = 0; i < line.length(); i++) {
 				char id = line.charAt(i);
 				if ('0' <= id && id <= '9') {
+					System.err.println("Agent " + id + " color: " + colors.get(id));
 					agents.put(Integer.parseInt("" + id),
 							new Agent(Integer.parseInt("" + id), colors.get(id), new Position(row, i)));
 				} else if ('A' <= id && id <= 'Z') { // Boxes
@@ -98,10 +100,7 @@ public class SearchClient {
 							new Box(boxes.size() + 1, new Position(row, i), id, Utils.determineColor(colors.get(id))));
 				} else if ('a' <= id && id <= 'z') { // Goals
 					goals.put(goals.size() + 1, new Goal(goals.size() + 1, new Position(row, i), id,
-							Utils.determineColor(colors.get(id)), 0)); // TODO
-																		// implement
-																		// goal
-																		// priority
+							Utils.determineColor(colors.get(id)), 0));
 				} else if (id == '+') {
 					walls.add(new Position(row, i));
 				}
@@ -141,24 +140,23 @@ public class SearchClient {
 			Byte[][] result = Utils.calculateDistanceValues(gPos.getX(), gPos.getY(), goal.getLetter(), MAX_ROW,
 					MAX_COLUMN);
 			precomputedGoalH.put(goal, result);
-			
-			/*calculate goalPriority : based on world elements*/
+
+			/* calculate goalPriority : based on world elements */
 			goal.setPriority(levelAnalysis.calculateGoalPriority(goal));
 		}
 	}
 
-	public enum SearchType{
-		PATH,
-		MoveToPosition
+	public enum SearchType {
+		PATH, MoveToPosition
 	}
-	
+
 	public LinkedList<Node> search(Strategy strategy, Node initialState, SearchType searchType) {
-		System.err.format("Search starting with strategy %s\n", strategy);
+		// System.err.format("Search starting with strategy %s\n", strategy);
 		strategy.addToFrontier(initialState);
 		int iterations = 0;
 		while (true) {
 			if (iterations % 200 == 0) {
-				System.err.println(strategy.searchStatus());
+				// System.err.println(strategy.searchStatus());
 			}
 			if (Memory.shouldEnd()) {
 				System.err.format("Memory limit almost reached, terminating search %s\n", Memory.stringRep());
@@ -172,8 +170,8 @@ public class SearchClient {
 				return null;
 			}
 			Node leafNode = strategy.getAndRemoveLeaf();
-			
-			switch(searchType){
+
+			switch (searchType) {
 			case PATH:
 				if (leafNode.isGoalState())
 					return leafNode.extractPlan();
@@ -181,7 +179,7 @@ public class SearchClient {
 				if (leafNode.agentAtMovePosition())
 					return leafNode.extractPlan();
 			}
-			
+
 			strategy.addToExplored(leafNode);
 			for (Node n : leafNode.getExpandedNodes()) {
 				if (!strategy.isExplored(n) && !strategy.inFrontier(n)) {

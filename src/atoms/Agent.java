@@ -31,7 +31,6 @@ public class Agent implements IMessage {
 		this.id = id;
 		this.col = color;
 		this.pos = pos;
-		this.desires = new HashSet<Desire>(0);
 	}
 
 	public void generateInitialState() {
@@ -96,12 +95,17 @@ public class Agent implements IMessage {
 	}
 
 	public boolean generateDesires() {
-		desires.clear();
+		desires = new HashSet<Desire>(0);
+		if (this.id == 4)
+			System.err.println(
+					"number of beliefs that agent 4 can choose from: " + World.getInstance().getBeliefs().size());
 		for (Belief belief : World.getInstance().getBeliefs()) {
 			Goal g = belief.getGoal();
-			for (Integer boxId : World.getInstance().getBoxes().keySet()) {
-				Box b = World.getInstance().getBoxes().get(boxId);
+			for (Box b : World.getInstance().getBoxes().values()) {
 				if (Character.toLowerCase(b.getLetter()) == g.getLetter()) {
+					if (this.id == 4) {
+						System.err.println(col + ".equals(" + b.getColor() + ") =" + col.equals(b.getColor()));
+					}
 					if (col.equals(b.getColor())) {
 						desires.add(new Desire(belief, this));
 					}
@@ -111,29 +115,36 @@ public class Agent implements IMessage {
 		return desires.size() == 0 ? false : true;
 	}
 
-	/*Generate intention finds intentions based on cost and goal priority
-	 * goal priority reflects how many occupied surrounding spaces a goal have
-	 * maybe this method should also look at the closest box ??? */
+	/*
+	 * Generate intention finds intentions based on cost and goal priority goal
+	 * priority reflects how many occupied surrounding spaces a goal have maybe
+	 * this method should also look at the closest box ???
+	 */
 	public boolean generateIntention() {
 		if (desires.isEmpty())
 			return false;
 		Desire bestDesire = null;
 		int bestTotal = Integer.MAX_VALUE;
 		int bestGoalPriority = 0;
-		for(Desire des : desires){
+		for (Desire des : desires) {
 			Goal goal = des.getBelief().getGoal();
 			int goalPriority = goal.getPriority();
 			int cost = Utils.manhattenDistance(des.getAgent().getPosition(), goal.getPosition());
 			int currTotal = goalPriority + cost;
-			/*we are looking for the smallest value possible, the optimal would be a very close goal,
-			 * which have 0 occupied neighbours.*/
-			if(bestTotal > currTotal){
+			/*
+			 * we are looking for the smallest value possible, the optimal would
+			 * be a very close goal, which have 0 occupied neighbours.
+			 */
+			if (bestTotal > currTotal) {
 				bestGoalPriority = goalPriority;
 				bestTotal = currTotal;
 				bestDesire = des;
-			} else if(bestTotal == currTotal){
-				/*if two goal totals are equal, we look at how many occupied neighbors they have*/
-				if(bestGoalPriority > goalPriority){
+			} else if (bestTotal == currTotal) {
+				/*
+				 * if two goal totals are equal, we look at how many occupied
+				 * neighbors they have
+				 */
+				if (bestGoalPriority > goalPriority) {
 					bestGoalPriority = goalPriority;
 					bestTotal = currTotal;
 					bestDesire = des;
@@ -143,7 +154,6 @@ public class Agent implements IMessage {
 		intention = new Intention(bestDesire);
 		return true;
 	}
-
 
 	public Agent clone() {
 		Agent newAgent = new Agent(this.getId(), this.getColor(), this.getPosition());

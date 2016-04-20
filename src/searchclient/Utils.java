@@ -3,7 +3,6 @@ package searchclient;
 import java.util.Map;
 
 import FIPA.MessageType;
-import atoms.Agent;
 import atoms.Box;
 import atoms.Color;
 import atoms.Position;
@@ -67,12 +66,12 @@ public class Utils {
 			return MessageType.NONE;
 		}
 	}
-	
+
 	public static void performUpdates(Map<Integer, Position> agentPositions, Map<Integer, Box> boxes) {
-		for(Integer agentId : agentPositions.keySet()) {
+		for (Integer agentId : agentPositions.keySet()) {
 			World.getInstance().getAgents().get(agentId).setPosition(agentPositions.get(agentId));
 		}
-		for(Integer boxId : boxes.keySet()) {
+		for (Integer boxId : boxes.keySet()) {
 			World.getInstance().getBoxes().put(boxId, boxes.get(boxId));
 		}
 	}

@@ -106,8 +106,7 @@ public class Node {
 						n.agentRow = newAgentRow;
 						n.agentCol = newAgentCol;
 						Box foundBox = null;
-						for (Integer bId : boxes.keySet()) {
-							Box b = boxes.get(bId);
+						for (Box b : boxes.values()) {
 							if (b.getPosition().equals(new Position(newAgentRow, newAgentCol))) {
 								foundBox = b;
 								break;
@@ -149,8 +148,7 @@ public class Node {
 
 	private boolean cellIsFree(int row, int col) {
 		Position pos = new Position(row, col);
-		for (Integer bId : boxes.keySet()) {
-			Box b = boxes.get(bId);
+		for (Box b : boxes.values()) {
 			if (b.getPosition().equals(pos))
 				return false;
 		}
@@ -158,8 +156,7 @@ public class Node {
 	}
 
 	private boolean boxAt(int row, int col) {
-		for (Integer bId : boxes.keySet()) {
-			Box b = boxes.get(bId);
+		for (Box b : boxes.values()) {
 			if (b.getPosition().equals(new Position(row, col)))
 				return true;
 		}
