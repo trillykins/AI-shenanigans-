@@ -12,6 +12,7 @@ import atoms.Box;
 import atoms.Goal;
 import atoms.Position;
 import atoms.World;
+import bdi.Belief;
 import bdi.Intention;
 import conflicts.Conflict;
 import conflicts.DetectConflict;
@@ -30,29 +31,41 @@ public class Run {
 
 			World world = World.getInstance();
 			HashMap<Integer, LinkedList<Node>> agentSolutions = new HashMap<Integer, LinkedList<Node>>();
+			boolean[] pikhoved = new boolean[world.getAgents().size()];
 			do {
 				for (Agent agent : world.getAgents().values()) {
+					pikhoved[agent.getId()] = true;
 					agent.generateInitialState();
 					if (!agent.generateDesires()) {
+						pikhoved[agent.getId()] = false;
 						continue;
 					}
 					if (!agent.generateIntention()) {
+						pikhoved[agent.getId()] = false;
 						continue;
 					}
 					Intention i = agent.getIntention();
 					Goal g = i.getDesire().getBelief().getGoal();
 					world.getBeliefs().remove(i.getDesire().getBelief());
+					Belief b = i.getDesire().getBelief();
+					b.setReserved(true);
+					world.getBeliefs().add(b);
 					agent.initialState.goals.put(g.getId(), g);
 					agent.initialState.boxes.put(i.getBox().getId(), i.getBox());
 
-//					for (Goal goal : world.getSolvedGoals().values()) {
-//						agent.initialState.walls.add(goal.getPosition());
-//					}
+					 for (Goal goal : world.getSolvedGoals().values()) {
+					 agent.initialState.walls.add(goal.getPosition());
+					 }
 					System.err.println(agent.getIntention());
 					System.err.println(agent.initialState);
 				}
 				System.err.println("number of agents: " + world.getAgents().size());
 
+				if(!kusse(pikhoved)){
+					System.err.println("LOOOOOOOOOOOOOOORT!!!");
+					System.exit(0);
+				}
+				
 				/* 1. Create solutions for each agent */
 				List<LinkedList<Node>> allSolutions = new ArrayList<LinkedList<Node>>();
 				for (Agent a : world.getAgents().values()) {
@@ -78,6 +91,7 @@ public class Run {
 				System.err.println(size);
 				Map<Integer, Position> updatedAgentPositions = new HashMap<Integer, Position>(0);
 				Map<Integer, Box> updatedBoxes = new HashMap<Integer, Box>(0);
+				boolean replan = false;
 				for (int stepInPlan = 0; stepInPlan < size; stepInPlan++) {
 					StringBuilder sb = new StringBuilder();
 					sb.append("[");
@@ -112,23 +126,28 @@ public class Run {
 							System.err.println("BRÆK!" + "\n" + n);
 
 							n.moveToPositionRow = 1;
-							n.moveToPositionCol = 2;
-							
+							n.moveToPositionCol = 8;
+
 							executePlan(client, n, world, agentId);
 							pik02.put(agentId, new Position(n.moveToPositionRow, n.moveToPositionCol));
+							
 							Utils.performUpdates(pik02, null);
-//							 System.exit(0);
+
+//							System.exit(0);
+							replan = true;
 							break;
 						} else if (c.getConflictType().equals(Conflict.ConflictType.Box)) {
-							
+
 						}
 					} else {
 						System.out.println(sb.toString());
 						Utils.performUpdates(updatedAgentPositions, updatedBoxes);
 					}
+					if (replan)
+						break;
 				}
 				for (Agent a : world.getAgents().values()) {
-					if (a.getIntention() != null) {
+					if (a.getIntention() != null && !replan) {
 						Goal goal = a.getIntention().getDesire().getBelief().getGoal();
 						world.getSolvedGoals().put(goal.getId(), goal);
 					} else {
@@ -137,6 +156,7 @@ public class Run {
 				}
 				System.err.println("Global goal state found = " + world.isGlobalGoalState());
 				System.err.println(world.toString());
+
 			} while (!world.isGlobalGoalState());
 		} catch (
 
@@ -147,12 +167,21 @@ public class Run {
 		}
 
 	}
+	
+	private static boolean kusse(boolean...fuckface){
+		for(boolean fuck : fuckface){
+			if(!fuck)
+				return false;
+		}
+		return true;
+	}
 
 	private static void executePlan(SearchClient client, Node n, World world, int agentId) {
 		Map<Integer, Position> updatedAgentPositions = new HashMap<Integer, Position>(0);
 		System.err.println("EXECUTING PLAN!");
 		Strategy strategy = new StrategyBestFirst(new AStar(n));
 		LinkedList<Node> solution = client.search(strategy, n, SearchType.MoveToPosition);
+		
 		if (solution != null) {
 			System.err.println(solution.size());
 			for (Node s : solution) {

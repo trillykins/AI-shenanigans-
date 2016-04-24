@@ -46,6 +46,7 @@ public class DetectConflict {
 		} else {
 
 			for (Agent agent : World.getInstance().getAgents().values()) {
+				System.err.println(index + " " + World.getInstance().getSolutionMap().get(agent.getId()).size());
 				Node node = World.getInstance().getSolutionMap().get(agent.getId()).get(index);
 				int nodeCol = node.agentCol;
 				int nodeRow = node.agentRow;
