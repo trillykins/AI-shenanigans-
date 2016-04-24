@@ -49,12 +49,11 @@ public class DetectConflict {
 				Node node = World.getInstance().getSolutionMap().get(agent.getId()).get(index);
 				int nodeCol = node.agentCol;
 				int nodeRow = node.agentRow;
-				for (Integer aid : World.getInstance().getAgents().keySet()) {
-					Agent a = World.getInstance().getAgents().get(aid);
+				for (Agent a : World.getInstance().getAgents().values()) {
 					Agent sender = null;
 					Agent receiver = null;
-					if (a.getId() != agent.getId()) {
-						LinkedList<Node> solutionForAgentX = World.getInstance().getSolutionMap().get(a.getId());
+					if (!agent.equals(a)) {
+						LinkedList<Node> solutionForAgentX = new LinkedList<Node>(World.getInstance().getSolutionMap().get(a.getId()));
 						// solution list is not empty
 						if (solutionForAgentX.size() > 0) {
 							Node next = solutionForAgentX.peek();
@@ -119,7 +118,7 @@ public class DetectConflict {
 			Agent agen = World.getInstance().getAgents().get(aid);
 			if (agen.getId() != agent.getId()) {
 				// check current postion is the next postion of other agent
-				LinkedList<Node> solu = World.getInstance().getSolutionMap().get(agen.getId());
+				LinkedList<Node> solu = new LinkedList<Node>(World.getInstance().getSolutionMap().get(agen.getId()));
 				if (solu.size() > 0) {
 					Node next = solu.peek();
 					int nextcol = next.agentCol;
@@ -178,7 +177,7 @@ public class DetectConflict {
 	public boolean checkBoxes(int row, int col, Agent agen) {
 		for (Integer bId : agen.initialState.boxes.keySet()) {
 			Box b = World.getInstance().getBoxes().get(bId);
-			if (b.getPosition().equals(new Position(row, col))) {
+			if(!agen.getIntention().getBox().equals(b) && b.getPosition().equals(new Position(row, col))) {
 				return true;
 			} else {
 				return false;

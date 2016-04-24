@@ -1,13 +1,12 @@
 package atoms;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import bdi.Belief;
 import searchclient.Node;
 import searchclient.SearchClient;
-import bdi.Belief;
 
 public class World {
 	private Map<Integer, Agent> agents;
@@ -18,8 +17,7 @@ public class World {
 	private Set<Position> walls;
 	private Set<Color> colors;
 	private List<Belief> beliefs;
-	
-	private Map<Integer,LinkedList<Node>> solutionMap;
+	private Map<Integer, List<Node>> solutionMap;
 
 	private static World instance = null;
 
@@ -30,12 +28,13 @@ public class World {
 		return instance;
 	}
 
-	protected World() {}
+	protected World() {
+	}
 
 	public Map<Integer, Box> getBoxesInGoals() {
 		return boxesInGoals;
 	}
-	
+
 	public void setBoxesInGoals(Map<Integer, Box> boxesInGoals) {
 		this.boxesInGoals = boxesInGoals;
 	}
@@ -95,12 +94,12 @@ public class World {
 	public void setWalls(Set<Position> walls) {
 		this.walls = walls;
 	}
-	
-	public Map<Integer, LinkedList<Node>> getSolutionMap() {
+
+	public Map<Integer, List<Node>> getSolutionMap() {
 		return solutionMap;
 	}
 
-	public void setSolutionMap(Map<Integer, LinkedList<Node>> solutionMap) {
+	public void setSolutionMap(Map<Integer, List<Node>> solutionMap) {
 		this.solutionMap = solutionMap;
 	}
 
@@ -124,7 +123,7 @@ public class World {
 		}
 		return result;
 	}
-	
+
 	public String toString() {
 		StringBuilder s = new StringBuilder();
 		for (int row = 0; row < SearchClient.MAX_ROW; row++) {
@@ -147,8 +146,8 @@ public class World {
 						break;
 					}
 				}
-				for(Agent a : agents.values()) {
-					if(row == a.getPosition().getX() && col == a.getPosition().getY()) {
+				for (Agent a : agents.values()) {
+					if (row == a.getPosition().getX() && col == a.getPosition().getY()) {
 						s.append(a.getId());
 						skip = true;
 						break;
@@ -158,7 +157,7 @@ public class World {
 					continue;
 				if (World.getInstance().getWalls().contains(pos)) {
 					s.append("+");
-				}  else {
+				} else {
 					s.append(" ");
 				}
 			}

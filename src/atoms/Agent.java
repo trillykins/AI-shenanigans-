@@ -1,7 +1,9 @@
 package atoms;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import FIPA.IMessage;
@@ -23,18 +25,20 @@ public class Agent implements IMessage {
 	private Intention intention;
 	public Node initialState = null;
 
-	public Agent(int id, String color, Position pos) {
-		this(id, Utils.determineColor(color), pos);
+	public Agent(int id, String color, Position pos, int priority) {
+		this(id, Utils.determineColor(color), pos, priority);
 	}
 
-	public Agent(int id, Color color, Position pos) {
+	public Agent(int id, Color color, Position pos, int priority) {
 		this.id = id;
 		this.col = color;
 		this.pos = pos;
+		this.priority = priority;
 	}
 
 	public void generateInitialState() {
 		this.initialState = new Node(null, id);
+		this.initialState.agentColor = col;
 		this.initialState.agentRow = pos.getX();
 		this.initialState.agentCol = pos.getY();
 		this.initialState.boxes = new HashMap<Integer, Box>(0);
@@ -128,9 +132,9 @@ public class Agent implements IMessage {
 			int cost = Utils.manhattenDistance(des.getAgent().getPosition(), goal.getPosition());
 
 			// compute distance from agent to the closest box.
-
-			int costOfClosestBox = findCostOfClosestBox(goal);
-			box = findClosestBox(goal);
+			List<Object> result = findClosestBox(goal);
+			int costOfClosestBox = (Integer) result.get(0);
+			box = (Box) result.get(1);
 			int currTotal = goalPriority + cost + costOfClosestBox;
 			/*
 			 * we are looking for the smallest value possible, the optimal would
@@ -154,30 +158,15 @@ public class Agent implements IMessage {
 				}
 			}
 		}
-		System.err.println("Best intention = "  +bestDesire + ", " + bestBox);
 		intention = new Intention(bestDesire, bestBox);
 		return true;
 	}
 
-	public int findCostOfClosestBox(Goal goal) {
-		World world = World.getInstance();
-		int smallestDistance = Integer.MAX_VALUE;
-		for (Box box : world.getBoxes().values()) {
-			if (Character.toLowerCase(box.getLetter()) == goal.getLetter()
-					&& (world.getBoxesInGoals().get(box.getId()) == null)) {
-				int currDistance = Utils.manhattenDistance(box.getPosition(), pos);
-				if (smallestDistance > currDistance) {
-					smallestDistance = currDistance;
-				}
-			}
-		}
-		return smallestDistance;
-	}
-
-	public Box findClosestBox(Goal goal) {
+	public List<Object> findClosestBox(Goal goal) {
+		List<Object> result = new ArrayList<Object>(0);
 		Box b = null;
 		World world = World.getInstance();
-		int smallestDistance = Integer.MAX_VALUE;
+		Integer smallestDistance = Integer.MAX_VALUE;
 		for (Box box : world.getBoxes().values()) {
 			if (Character.toLowerCase(box.getLetter()) == goal.getLetter()
 					&& (world.getBoxesInGoals().get(box.getId()) == null)) {
@@ -188,7 +177,9 @@ public class Agent implements IMessage {
 				}
 			}
 		}
-		return b;
+		result.add(smallestDistance);
+		result.add(b);
+		return result;
 	}
 	
 	@Override

@@ -38,7 +38,6 @@ public class SearchClient {
 		colorSet = new HashSet<Color>(0);
 		in = new BufferedReader(new InputStreamReader(System.in));
 		world = World.getInstance();
-		init();
 	}
 
 	public boolean update() throws IOException {
@@ -94,7 +93,7 @@ public class SearchClient {
 				if ('0' <= id && id <= '9') {
 					System.err.println("Agent " + id + " color: " + colors.get(id));
 					agents.put(Integer.parseInt("" + id),
-							new Agent(Integer.parseInt("" + id), colors.get(id), new Position(row, i)));
+							new Agent(Integer.parseInt("" + id), colors.get(id), new Position(row, i), Integer.parseInt("" + id)));
 				} else if ('A' <= id && id <= 'Z') { // Boxes
 					boxes.put(boxes.size() + 1,
 							new Box(boxes.size() + 1, new Position(row, i), id, Utils.determineColor(colors.get(id))));
@@ -144,82 +143,5 @@ public class SearchClient {
 			/* calculate goalPriority : based on world elements */
 			goal.setPriority(levelAnalysis.calculateGoalPriority(goal));
 		}
-	}
-
-	public enum SearchType {
-		PATH, MoveToPosition
-	}
-
-	public LinkedList<Node> search(Strategy strategy, Node initialState, SearchType searchType) {
-		// System.err.format("Search starting with strategy %s\n", strategy);
-		strategy.addToFrontier(initialState);
-		int iterations = 0;
-		while (true) {
-			if (iterations % 200 == 0) {
-				// System.err.println(strategy.searchStatus());
-			}
-			if (Memory.shouldEnd()) {
-				System.err.format("Memory limit almost reached, terminating search %s\n", Memory.stringRep());
-				return null;
-			}
-			if (strategy.timeSpent() > TIME) { // Minutes timeout
-				System.err.format("Time limit reached, terminating search %s\n", Memory.stringRep());
-				return null;
-			}
-			if (strategy.frontierIsEmpty()) {
-				return null;
-			}
-			Node leafNode = strategy.getAndRemoveLeaf();
-
-			switch (searchType) {
-			case PATH:
-				if (leafNode.isGoalState())
-					return leafNode.extractPlan();
-			case MoveToPosition:
-				if (leafNode.agentAtMovePosition())
-					return leafNode.extractPlan();
-			}
-
-			strategy.addToExplored(leafNode);
-			for (Node n : leafNode.getExpandedNodes()) {
-				if (!strategy.isExplored(n) && !strategy.inFrontier(n)) {
-					strategy.addToFrontier(n);
-				}
-			}
-			iterations++;
-		}
-	}
-
-	public static boolean canMakeNextMove(int index, List<LinkedList<Node>> allSolutions) {
-		if (World.getInstance().getAgents().size() == 1) {
-			/* This for loop only contains one agent */
-			Agent a1 = World.getInstance().getAgents().get(0);
-			/*
-			 * as there is no other agents that can be in a1's way, the only
-			 * obsticle a1 can bump into is a box
-			 */
-			for (Box box : World.getInstance().getBoxes().values()) {
-				if (box.getPosition().equals(a1.getPosition()))
-					return false;
-			}
-		}
-		for (Agent a1 : World.getInstance().getAgents().values()) {
-			for (Agent a2 : World.getInstance().getAgents().values()) {
-				if (a2.getId() != a1.getId()) {
-					if (allSolutions.size() > a2.getId() && allSolutions.get(a2.getId()).size() > index) {
-						if (allSolutions.size() > a1.getId() && allSolutions.get(a1.getId()).size() > index) {
-							Node currAgentSol = allSolutions.get(a1.getId()).get(index);
-							Node agentSol = allSolutions.get(a2.getId()).get(index);
-							if (currAgentSol.agentRow == agentSol.agentRow && currAgentSol.agentCol == agentSol.agentCol
-									|| a1.getPosition().getX() == agentSol.agentRow
-											&& a1.getPosition().getY() == agentSol.agentCol) {
-								return false;
-							}
-						}
-					}
-				}
-			}
-		}
-		return true;
 	}
 }
