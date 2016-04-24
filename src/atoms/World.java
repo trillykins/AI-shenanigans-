@@ -7,6 +7,7 @@ import java.util.Set;
 
 import searchclient.Node;
 import searchclient.SearchClient;
+import analysis.FreeSpace;
 import bdi.Belief;
 
 public class World {
@@ -20,6 +21,8 @@ public class World {
 	private List<Belief> beliefs;
 	
 	private Map<Integer,LinkedList<Node>> solutionMap;
+	
+	private Map<Integer,List<FreeSpace>> freeSpace;
 
 	private static World instance = null;
 
@@ -102,6 +105,14 @@ public class World {
 
 	public void setSolutionMap(Map<Integer, LinkedList<Node>> solutionMap) {
 		this.solutionMap = solutionMap;
+	}	
+
+	public Map<Integer, List<FreeSpace>> getFreeSpace() {
+		return freeSpace;
+	}
+
+	public void setFreeSpace(Map<Integer, List<FreeSpace>> freeSpace) {
+		this.freeSpace = freeSpace;
 	}
 
 	public boolean isGlobalGoalState() {
