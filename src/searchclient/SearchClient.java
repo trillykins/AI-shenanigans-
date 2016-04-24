@@ -196,7 +196,7 @@ public class SearchClient {
 			Agent a1 = World.getInstance().getAgents().get(0);
 			/*
 			 * as there is no other agents that can be in a1's way, the only
-			 * obsticle a1 can bump into is a box
+			 * obstacle a1 can bump into is a box
 			 */
 			for (Box box : World.getInstance().getBoxes().values()) {
 				if (box.getPosition().equals(a1.getPosition()))

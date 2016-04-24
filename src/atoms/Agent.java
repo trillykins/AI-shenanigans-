@@ -112,7 +112,7 @@ public class Agent implements IMessage {
 	/*
 	 * Generate intention finds intentions based on cost and goal priority goal
 	 * priority reflects how many occupied surrounding spaces a goal have maybe
-	 * This method also considder the closest box that can fullfill the goal
+	 * This method also consider the closest box that can fulfill the goal
 	 */
 	public boolean generateIntention() {
 		if (desires.isEmpty())
@@ -134,7 +134,7 @@ public class Agent implements IMessage {
 			int currTotal = goalPriority + cost + costOfClosestBox;
 			/*
 			 * we are looking for the smallest value possible, the optimal would
-			 * be a very close goal, which have 0 occupied neighbours.
+			 * be a very close goal, which have 0 occupied neighbors.
 			 */
 			if (bestTotal > currTotal) {
 				bestGoalPriority = goalPriority;
@@ -154,7 +154,7 @@ public class Agent implements IMessage {
 				}
 			}
 		}
-		System.err.println("Best intention = "  +bestDesire + ", " + bestBox);
+		System.err.println("Best intention = " + bestDesire + ", " + bestBox);
 		intention = new Intention(bestDesire, bestBox);
 		return true;
 	}
@@ -190,7 +190,7 @@ public class Agent implements IMessage {
 		}
 		return b;
 	}
-	
+
 	@Override
 	public Message createMessage(Agent receiver, MessageType type, String content) {
 		return new Message(this, receiver, type, content);
@@ -238,8 +238,8 @@ public class Agent implements IMessage {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Agent [id=").append(id).append(", col=").append(col).append(", pos=").append(pos)
-				.append(", priority=").append(priority).append("]");
+		builder.append("Agent [id=").append(id).append(", colour=").append(col).append(", ").append(pos).append(", priority=")
+				.append(priority).append("]");
 		return builder.toString();
 	}
 }

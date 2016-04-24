@@ -58,7 +58,7 @@ public class DetectConflict {
 						// solution list is not empty
 						if (solutionForAgentX.size() > 0) {
 							Node next = solutionForAgentX.peek();
-							if (next.agentCol == nodeCol && next.agentRow == nodeRow) {
+							if (next.agentCol == nodeCol && next.agentRow == nodeRow || agent.getPosition() == a.getPosition()) {
 								conflict = new Conflict();
 								conflict.setConflictType(ConflictType.Agent);
 								if (a.getPriority() > agent.getPriority()) {
@@ -101,7 +101,7 @@ public class DetectConflict {
 	}
 
 	/**
-	 * Check whether the agent can move to the positon(row,col) based on the
+	 * Check whether the agent can move to the position(row,col) based on the
 	 * logic that : check is it a wall on this position or a movable box of this
 	 * agent OR is there a box for any other agent, otherwise this cell if free
 	 * for the agent to move to

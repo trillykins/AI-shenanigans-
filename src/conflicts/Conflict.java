@@ -50,7 +50,7 @@ public class Conflict {
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Conflict [conflictType=").append(conflictType).append(", sender=").append(sender)
-		.append(", receiver=").append(receiver).append(", node=").append(node).append("]");
+		.append(", receiver=").append(receiver).append(", node=").append("\n").append(node).append("]");
 		return builder.toString();
 	}
 }

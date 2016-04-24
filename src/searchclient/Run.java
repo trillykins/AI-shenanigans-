@@ -44,22 +44,20 @@ public class Run {
 					world.getBeliefs().remove(i.getDesire().getBelief());
 					agent.initialState.goals.put(g.getId(), g);
 					agent.initialState.boxes.put(i.getBox().getId(), i.getBox());
-//					for (Box b : world.getBoxes().values()) {
-//						if (Character.toLowerCase(b.getLetter()) == g.getLetter()) {
-//							agent.initialState.boxes.put(b.getId(), b);
-//						}
+
+//					for (Goal goal : world.getSolvedGoals().values()) {
+//						agent.initialState.walls.add(goal.getPosition());
 //					}
-					for (Goal goal : world.getSolvedGoals().values()) {
-						agent.initialState.walls.add(goal.getPosition());
-					}
 					System.err.println(agent.getIntention());
 					System.err.println(agent.initialState);
 				}
 				System.err.println("number of agents: " + world.getAgents().size());
+
 				/* 1. Create solutions for each agent */
 				List<LinkedList<Node>> allSolutions = new ArrayList<LinkedList<Node>>();
 				for (Agent a : world.getAgents().values()) {
 					Strategy strategy = new StrategyBestFirst(new AStar(a.initialState));
+					System.err.println(a.initialState);
 					LinkedList<Node> solution = client.search(strategy, a.initialState, SearchType.PATH);
 					if (solution != null && solution.size() > 0) {
 						System.err.println("Agent " + a.getId() + " initial state = \n" + a.initialState);
@@ -67,6 +65,7 @@ public class Run {
 						allSolutions.add(solution);
 					}
 				}
+
 				World.getInstance().setSolutionMap(agentSolutions);
 
 				/* 2. Merge simple solutions together */
@@ -76,6 +75,7 @@ public class Run {
 						size = solution.size();
 					}
 				}
+				System.err.println(size);
 				Map<Integer, Position> updatedAgentPositions = new HashMap<Integer, Position>(0);
 				Map<Integer, Box> updatedBoxes = new HashMap<Integer, Box>(0);
 				for (int stepInPlan = 0; stepInPlan < size; stepInPlan++) {
@@ -87,7 +87,7 @@ public class Run {
 						if (stepInPlan < solution.size()) {
 							sb.append(solution.get(stepInPlan).action.toString());
 							Node n = solution.get(stepInPlan);
-							System.err.println(n);
+							// System.err.println(n);
 							Agent agent = world.getAgents().get(n.agentId);
 							updatedAgentPositions.put(agent.getId(), new Position(n.agentRow, n.agentCol));
 							for (Integer bId : n.boxes.keySet()) {
@@ -103,8 +103,25 @@ public class Run {
 					DetectConflict d = new DetectConflict();
 					Conflict c = d.checkConflict(stepInPlan);
 					if (c != null) {
-						System.err.println("break: " + c);
-						break;
+
+						if (c.getConflictType().equals(Conflict.ConflictType.Agent)) {
+							Map<Integer, Position> pik02 = new HashMap<Integer, Position>(0);
+							int agentId = c.getNode().agentId;
+							Node n = allSolutions.get(agentId).get(stepInPlan - 1);
+							n.parent = null;
+							System.err.println("BRÆK!" + "\n" + n);
+
+							n.moveToPositionRow = 1;
+							n.moveToPositionCol = 2;
+							
+							executePlan(client, n, world, agentId);
+							pik02.put(agentId, new Position(n.moveToPositionRow, n.moveToPositionCol));
+							Utils.performUpdates(pik02, null);
+//							 System.exit(0);
+							break;
+						} else if (c.getConflictType().equals(Conflict.ConflictType.Box)) {
+							
+						}
 					} else {
 						System.out.println(sb.toString());
 						Utils.performUpdates(updatedAgentPositions, updatedBoxes);
@@ -114,6 +131,8 @@ public class Run {
 					if (a.getIntention() != null) {
 						Goal goal = a.getIntention().getDesire().getBelief().getGoal();
 						world.getSolvedGoals().put(goal.getId(), goal);
+					} else {
+						System.err.println("lort");
 					}
 				}
 				System.err.println("Global goal state found = " + world.isGlobalGoalState());
@@ -129,7 +148,34 @@ public class Run {
 
 	}
 
-	private static void runSolution() {
+	private static void executePlan(SearchClient client, Node n, World world, int agentId) {
+		Map<Integer, Position> updatedAgentPositions = new HashMap<Integer, Position>(0);
+		System.err.println("EXECUTING PLAN!");
+		Strategy strategy = new StrategyBestFirst(new AStar(n));
+		LinkedList<Node> solution = client.search(strategy, n, SearchType.MoveToPosition);
+		if (solution != null) {
+			System.err.println(solution.size());
+			for (Node s : solution) {
+				updatedAgentPositions.put(agentId, new Position(s.agentRow, s.agentCol));
+				StringBuilder pik = new StringBuilder();
+				pik.append("[");
 
+				for (Agent a : world.getAgents().values()) {
+					if (a.getId() == world.getAgents().size() - 1 && world.getAgents().size() > 1)
+						pik.append(", ");
+
+					if (a.getId() != agentId) {
+						pik.append("NoOp");
+					} else {
+						pik.append(s.action.toString());
+					}
+				}
+				pik.append("]");
+				System.out.println(pik.toString());
+				Utils.performUpdates(updatedAgentPositions, null);
+				System.err.println(s);
+			}
+		}
+		System.err.println("PLAN EXECUTED!");
 	}
 }
