@@ -96,16 +96,16 @@ public class Agent implements IMessage {
 
 	public boolean generateDesires() {
 		desires = new HashSet<Desire>(0);
-		if (this.id == 4)
-			System.err.println(
-					"number of beliefs that agent 4 can choose from: " + World.getInstance().getBeliefs().size());
+//		if (this.id == 4)
+//			System.err.println(
+//					"number of beliefs that agent 4 can choose from: " + World.getInstance().getBeliefs().size());
 		for (Belief belief : World.getInstance().getBeliefs()) {
 			Goal g = belief.getGoal();
 			for (Box b : World.getInstance().getBoxes().values()) {
 				if (Character.toLowerCase(b.getLetter()) == g.getLetter()) {
-					if (this.id == 4) {
-						System.err.println(col + ".equals(" + b.getColor() + ") =" + col.equals(b.getColor()));
-					}
+//					if (this.id == 4) {
+//						System.err.println(col + ".equals(" + b.getColor() + ") =" + col.equals(b.getColor()));
+//					}
 					if (col.equals(b.getColor())) {
 						desires.add(new Desire(belief, this));
 					}
@@ -118,7 +118,7 @@ public class Agent implements IMessage {
 	/*
 	 * Generate intention finds intentions based on cost and goal priority goal
 	 * priority reflects how many occupied surrounding spaces a goal have maybe
-	 * this method should also look at the closest box ???
+	 * This method also considder the closest box that can fullfill the goal
 	 */
 	public boolean generateIntention() {
 		if (desires.isEmpty())
@@ -126,11 +126,14 @@ public class Agent implements IMessage {
 		Desire bestDesire = null;
 		int bestTotal = Integer.MAX_VALUE;
 		int bestGoalPriority = 0;
+		
 		for (Desire des : desires) {
 			Goal goal = des.getBelief().getGoal();
 			int goalPriority = goal.getPriority();
 			int cost = Utils.manhattenDistance(des.getAgent().getPosition(), goal.getPosition());
-			int currTotal = goalPriority + cost;
+			int closestBox = findClosestBox(goal,des.getAgent());
+			int currTotal = goalPriority + cost + closestBox;
+			
 			/*
 			 * we are looking for the smallest value possible, the optimal would
 			 * be a very close goal, which have 0 occupied neighbours.
@@ -155,6 +158,20 @@ public class Agent implements IMessage {
 		return true;
 	}
 
+	public int findClosestBox(Goal g, Agent a){
+		World world = World.getInstance();
+		int smallestDistance = Integer.MAX_VALUE;
+		for(Box box : world.getBoxes().values()){
+			if(Character.toLowerCase(box.getLetter()) == g.getLetter() && 
+					(world.getBoxesInGoals().get(box.getId()) == null)){
+				int currDistance = Utils.manhattenDistance(box.getPosition(), a.getPosition());
+				if (smallestDistance > currDistance)
+					smallestDistance = currDistance;
+			}			
+		}
+		return smallestDistance;
+	}
+	
 	public Agent clone() {
 		Agent newAgent = new Agent(this.getId(), this.getColor(), this.getPosition());
 		newAgent.setDesires(this.getDesires());
