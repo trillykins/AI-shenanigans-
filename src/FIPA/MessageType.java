@@ -1,9 +1,5 @@
 package FIPA;
 
 public enum MessageType {
-	
-	REQUEST,
-	AGREE,
-	INFORM,
-	NONE
+	REQUEST, AGREE, INFORM, NONE
 }

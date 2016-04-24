@@ -13,6 +13,8 @@ import atoms.Goal;
 import atoms.Position;
 import atoms.World;
 import bdi.Intention;
+import conflicts.Conflict;
+import conflicts.DetectConflict;
 import heuristics.AStar;
 import searchclient.SearchClient.SearchType;
 import strategies.Strategy;
@@ -41,14 +43,17 @@ public class Run {
 					Goal g = i.getDesire().getBelief().getGoal();
 					world.getBeliefs().remove(i.getDesire().getBelief());
 					agent.initialState.goals.put(g.getId(), g);
-					for (Box b : world.getBoxes().values()) {
-						if (Character.toLowerCase(b.getLetter()) == g.getLetter()) {
-							agent.initialState.boxes.put(b.getId(), b);
-						}
-					}
+					agent.initialState.boxes.put(i.getBox().getId(), i.getBox());
+//					for (Box b : world.getBoxes().values()) {
+//						if (Character.toLowerCase(b.getLetter()) == g.getLetter()) {
+//							agent.initialState.boxes.put(b.getId(), b);
+//						}
+//					}
 					for (Goal goal : world.getSolvedGoals().values()) {
 						agent.initialState.walls.add(goal.getPosition());
 					}
+					System.err.println(agent.getIntention());
+					System.err.println(agent.initialState);
 				}
 				System.err.println("number of agents: " + world.getAgents().size());
 				/* 1. Create solutions for each agent */
@@ -73,15 +78,16 @@ public class Run {
 				}
 				Map<Integer, Position> updatedAgentPositions = new HashMap<Integer, Position>(0);
 				Map<Integer, Box> updatedBoxes = new HashMap<Integer, Box>(0);
-				for (int m = 0; m < size; m++) {
+				for (int stepInPlan = 0; stepInPlan < size; stepInPlan++) {
 					StringBuilder sb = new StringBuilder();
 					sb.append("[");
 					int i = 0;
 					for (LinkedList<Node> solution : allSolutions) {
 						// set agent position
-						if (m < solution.size()) {
-							sb.append(solution.get(m).action.toString());
-							Node n = solution.get(m);
+						if (stepInPlan < solution.size()) {
+							sb.append(solution.get(stepInPlan).action.toString());
+							Node n = solution.get(stepInPlan);
+							System.err.println(n);
 							Agent agent = world.getAgents().get(n.agentId);
 							updatedAgentPositions.put(agent.getId(), new Position(n.agentRow, n.agentCol));
 							for (Integer bId : n.boxes.keySet()) {
@@ -94,14 +100,14 @@ public class Run {
 						i++;
 					}
 					sb.append("]");
-					if (SearchClient.canMakeNextMove(m, allSolutions)) {
-						// System.err.println(world.toString());
-						Utils.performUpdates(updatedAgentPositions, updatedBoxes);
-						System.out.println(sb.toString());
-						System.err.println(sb.toString());
-					} else {
-						System.err.println("break!");
+					DetectConflict d = new DetectConflict();
+					Conflict c = d.checkConflict(stepInPlan);
+					if (c != null) {
+						System.err.println("break: " + c);
 						break;
+					} else {
+						System.out.println(sb.toString());
+						Utils.performUpdates(updatedAgentPositions, updatedBoxes);
 					}
 				}
 				for (Agent a : world.getAgents().values()) {
@@ -111,11 +117,16 @@ public class Run {
 					}
 				}
 				System.err.println("Global goal state found = " + world.isGlobalGoalState());
-				// System.err.println(world.toString());
+				System.err.println(world.toString());
 			} while (!world.isGlobalGoalState());
-		} catch (IOException e) {
+		} catch (
+
+		IOException e)
+
+		{
 			System.err.println(e.getMessage());
 		}
+
 	}
 
 	private static void runSolution() {

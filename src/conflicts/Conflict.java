@@ -4,16 +4,13 @@ import searchclient.Node;
 import atoms.Agent;
 
 public class Conflict {
-	
 	private ConflictType conflictType;
-	
 	private Agent sender;
-	
 	private Agent receiver;
-	
 	private Node node;
 	
-	public static enum ConflictType {
+
+	public enum ConflictType {
 		Agent, Box,
 	}
 
@@ -48,5 +45,12 @@ public class Conflict {
 	public void setNode(Node node) {
 		this.node = node;
 	}
-	
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Conflict [conflictType=").append(conflictType).append(", sender=").append(sender)
+		.append(", receiver=").append(receiver).append(", node=").append(node).append("]");
+		return builder.toString();
+	}
 }

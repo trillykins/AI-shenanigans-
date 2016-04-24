@@ -128,9 +128,6 @@ public class World {
 	public String toString() {
 		StringBuilder s = new StringBuilder();
 		for (int row = 0; row < SearchClient.MAX_ROW; row++) {
-			if (!World.getInstance().getWalls().contains(new Position(row, 0))) {
-				break;
-			}
 			for (int col = 0; col < SearchClient.MAX_COLUMN; col++) {
 				boolean skip = false;
 				Position pos = new Position(row, col);

@@ -191,14 +191,16 @@ public class SearchClient {
 	}
 
 	public static boolean canMakeNextMove(int index, List<LinkedList<Node>> allSolutions) {
-		if(World.getInstance().getAgents().size() == 1){
-			/*This for loop only contains one agent*/
-			for(Agent a1 : World.getInstance().getAgents().values()){
-				/*as there is no other agents that can be in a1's way, the only obsticle a1 can bump into is a box*/
-				for(Box box : World.getInstance().getBoxes().values()){
-					if(box.getPosition().getX() == a1.getPosition().getX() && box.getPosition().getY() == a1.getPosition().getY())
-						return false;
-				}
+		if (World.getInstance().getAgents().size() == 1) {
+			/* This for loop only contains one agent */
+			Agent a1 = World.getInstance().getAgents().get(0);
+			/*
+			 * as there is no other agents that can be in a1's way, the only
+			 * obsticle a1 can bump into is a box
+			 */
+			for (Box box : World.getInstance().getBoxes().values()) {
+				if (box.getPosition().equals(a1.getPosition()))
+					return false;
 			}
 		}
 		for (Agent a1 : World.getInstance().getAgents().values()) {
