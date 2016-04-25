@@ -74,11 +74,13 @@ public class Utils {
 		for (Integer agentId : agentPositions.keySet()) {
 			World.getInstance().getAgents().get(agentId).setPosition(agentPositions.get(agentId));
 		}
-		for (Integer boxId : boxes.keySet()) {
-			World.getInstance().getBoxes().put(boxId, boxes.get(boxId));
+		if (boxes != null) {
+			for (Integer boxId : boxes.keySet()) {
+				World.getInstance().getBoxes().put(boxId, boxes.get(boxId));
+			}
 		}
 	}
-	
+
 	public static boolean canMakeNextMove(int index, List<LinkedList<Node>> allSolutions) {
 		if (World.getInstance().getAgents().size() == 1) {
 			/* This for loop only contains one agent */

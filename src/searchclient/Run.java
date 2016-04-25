@@ -53,7 +53,7 @@ public class Run {
 			int longestPlan = findLongestPlan(allSolutions);
 			Map<Integer, Position> updatedAgentPositions = new HashMap<Integer, Position>(0);
 			Map<Integer, Box> updatedBoxes = new HashMap<Integer, Box>(0);
-			for (int stepInPlan = 0; stepInPlan < longestPlan; stepInPlan++) {
+			plan: for (int stepInPlan = 0; stepInPlan < longestPlan; stepInPlan++) {
 				StringBuilder sb = new StringBuilder();
 				sb.append("[");
 				int i = 0;
@@ -79,17 +79,18 @@ public class Run {
 				if (c != null) {
 					if (c.getConflictType().equals(ConflictType.Agent)) {
 						List<List<Node>> newPlans = solveAgentOnAgent(c.getNode(), c.getSender(), c.getReceiver(),
-								stepInPlan);
+								stepInPlan, allSolutions);
 						List<Node> newPlanForAgentToMove = newPlans.get(0);
 						List<Node> newPlanForAgentToStay = newPlans.get(1);
 
 						System.err.println("SolutionMap.size() = " + world.getSolutionMap().size());
 						world.getSolutionMap().put(newPlanForAgentToMove.get(0).agentId, newPlanForAgentToMove);
-						world.getSolutionMap().put(newPlanForAgentToStay.get(0).agentId, newPlanForAgentToStay);
+						world.getSolutionMap().put(newPlanForAgentToStay.get(1).agentId, newPlanForAgentToStay);
 						world.getBeliefs().add(c.getSender().getIntention().getDesire().getBelief());
 						world.getBeliefs().add(c.getReceiver().getIntention().getDesire().getBelief());
 					}
-					break;
+					System.err.println("replan done");
+					break plan;
 				} else {
 					System.out.println(sb.toString());
 					System.err.println(sb.toString());
@@ -99,7 +100,12 @@ public class Run {
 			for (Agent a : world.getAgents().values()) {
 				if (a.getIntention() != null) {
 					Goal goal = a.getIntention().getDesire().getBelief().getGoal();
-					world.getSolvedGoals().put(goal.getId(), goal);
+					for (Box box : World.getInstance().getBoxes().values()) {
+						if (goal.getPosition().equals(box.getPosition())) {
+							world.getSolvedGoals().put(goal.getId(), goal);
+							System.err.println("solved goal");
+						}
+					}
 				}
 			}
 			System.err.println("Global goal state found = " + world.isGlobalGoalState());
@@ -136,33 +142,98 @@ public class Run {
 		return size;
 	}
 
-	public List<List<Node>> solveAgentOnAgent(Node node, Agent a1, Agent a2, int index) {
+	public List<List<Node>> solveAgentOnAgent(Node node, Agent a1, Agent a2, int index, List<List<Node>> allSolutions) {
+
+		System.err.println("a1: " + a1.getId() + ", " + a1.getPriority());
+		System.err.println("a2: " + a2.getId() + ", " + a2.getPriority());
+
 		Agent agentToMove = a1.getPriority() > a2.getPriority() ? a1 : a2;
 		Agent agentToStay = a1.getPriority() > a2.getPriority() ? a2 : a1;
+
+		System.err.println("STAY: " + agentToStay.getId());
+		System.err.println("MOVE: " + agentToMove.getId());
+
 		agentToMove.generateInitialState();
 		agentToMove.initialState.walls.add(new Position(agentToMove.getPosition()));
 		agentToMove.initialState.agentRow = agentToStay.getPosition().getX();
 		agentToMove.initialState.agentCol = agentToStay.getPosition().getY();
+
 		for (Box box : agentToMove.initialState.boxes.values()) {
 			agentToMove.initialState.walls.add(new Position(box.getPosition()));
 		}
+
 		Strategy strategy = new StrategyBFS();
 		Search s = new Search();
 		s.setOtherPlan(updatePlan(agentToMove.getId(), index));
+
 		List<Node> newPlanAgentToMove = s.search(strategy, agentToMove.initialState, SearchType.MoveAway);
-		List<Node> newPlanAgentToStay = createNewPlanForStayingAgent(newPlanAgentToMove, agentToStay, agentToMove);
-		for(int i = 0; i < newPlanAgentToMove.size(); i++) {
+		System.err.println(newPlanAgentToMove.get(newPlanAgentToMove.size() - 1).agentRow + ", "
+				+ newPlanAgentToMove.get(newPlanAgentToMove.size() - 1).agentCol);
+
+		// Ghetto solution
+		node.moveToPositionRow = newPlanAgentToMove.get(newPlanAgentToMove.size() - 1).agentRow;
+		node.moveToPositionCol = newPlanAgentToMove.get(newPlanAgentToMove.size() - 1).agentCol;
+
+		strategy = new StrategyBestFirst(new AStar(node));
+		LinkedList<Node> solution = s.search(strategy, node, SearchType.MoveToPosition);
+		LinkedList<Node> newSol = new LinkedList<Node>();
+
+		// hopefully just temporary - to get the nodes from the agent's current
+		// position
+		for (int i = 0; i < solution.size(); i++) {
+			Position pos = new Position(solution.get(i).agentRow, solution.get(i).agentCol);
+			if (pos.equals(a1.getPosition())) {
+				for (int j = 0; j < solution.size(); j++) {
+					if (j >= i + 1) {
+						newSol.add(solution.get(j));
+					}
+				}
+			}
+		}
+
+		// List<Node> newPlanAgentToStay =
+		// createNewPlanForStayingAgent(newPlanAgentToMove, agentToStay,
+		// agentToMove);
+		List<Node> newPlanAgentToStay = allSolutions.get(agentToStay.getId());
+
+		boolean hasWaited = false; // a one-move lead to account for the agent
+									// having to move out of the way
+		int size_old = (newPlanAgentToStay.size() - index + 1);
+		int size = newSol.size() >= size_old ? newSol.size() : size_old;
+
+		System.err.println(solution);
+		// System.exit(0);
+
+		for (int i = 0; i < size; i++) {
 			StringBuilder sb = new StringBuilder();
 			sb.append("[");
-			sb.append(newPlanAgentToMove.get(i).action.toString());
+			if (i >= newSol.size()) {
+				sb.append("NoOp");
+			} else {
+				sb.append(newSol.get(i).action.toString());
+			}
+
 			sb.append(", ");
-			sb.append(newPlanAgentToStay.get(i).action.toString());
+			if (!hasWaited) {
+				sb.append("NoOp");
+				hasWaited = true;
+			} else if (a2.getId() < allSolutions.get(a2.getId()).size()
+					&& index < allSolutions.get(a2.getId()).size()) {
+				sb.append(allSolutions.get(a2.getId()).get(index).action.toString());
+				index++;
+			} else {
+				sb.append("NoOp");
+			}
+			// sb.append(newPlanAgentToStay.get(i).action.toString());
 			sb.append("]");
+			// System.err.println(allSolutions.get(agentToMove.getId()));
 			System.out.println(sb.toString());
+			System.err.println(sb.toString());
 		}
+//		System.exit(0);
 		List<List<Node>> result = new ArrayList<List<Node>>();
-		result.add(newPlanAgentToMove);
-		result.add(newPlanAgentToStay);
+		result.add(solution);
+		result.add(allSolutions.get(a2.getId()));
 		return result;
 	}
 
