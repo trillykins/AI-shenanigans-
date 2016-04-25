@@ -16,7 +16,7 @@ public class Search {
 		PATH, MoveToPosition, MoveAway
 	}
 
-	public void setOtherPlan(List<Node> otherPlan) {
+	public void setPlanForAgentToStay(List<Node> otherPlan) {
 		this.otherPlan = otherPlan;
 	}
 

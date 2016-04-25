@@ -229,7 +229,7 @@ public class Agent implements IMessage {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Agent [id=").append(id).append(", col=").append(col).append(", pos=").append(pos)
+		builder.append("Agent [id=").append(id).append(", color=").append(col).append(", pos=").append(pos)
 				.append(", priority=").append(priority).append("]");
 		return builder.toString();
 	}
