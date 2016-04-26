@@ -74,7 +74,14 @@ public class LevelAnalysis {
 		positionList.add(pos3);
 		Position pos4 = new Position(xCord,yCord+1);
 		positionList.add(pos4);
-		
+		Position pos5 = new Position(xCord+1,yCord+1);
+		positionList.add(pos5);
+		Position pos6 = new Position(xCord+1,yCord-1);
+		positionList.add(pos6);
+		Position pos7 = new Position(xCord-1,yCord+1);
+		positionList.add(pos7);
+		Position pos8 = new Position(xCord-1,yCord-1);
+		positionList.add(pos8);
 		return positionList;
 	}
 }

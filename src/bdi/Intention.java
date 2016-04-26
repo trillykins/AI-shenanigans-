@@ -1,23 +1,23 @@
 package bdi;
 
+import atoms.Box;
+
 public class Intention {
 	private Desire desire;
-//	private LinkedList<Node> plan;
-//	private Box box;
+	private Box box;
 
-	public Intention(Desire desire/*, Box box*, LinkedList<Node> plan*/) {
+	public Intention(Desire desire, Box box) {
 		this.desire = desire;
-//		this.box = box;
-//		this.plan = plan;
+		this.box = box;
 	}
 	
-//	public Box getBox() {
-//		return box;
-//	}
-//
-//	public void setBox(Box box) {
-//		this.box = box;
-//	}
+	public Box getBox() {
+		return box;
+	}
+
+	public void setBox(Box box) {
+		this.box = box;
+	}
 
 	public Desire getDesire() {
 		return desire;
@@ -25,10 +25,11 @@ public class Intention {
 	public void setDesire(Desire desire) {
 		this.desire = desire;
 	}
-//	public LinkedList<Node> getPlan() {
-//		return plan;
-//	}
-//	public void setPlan(LinkedList<Node> plan) {
-//		this.plan = plan;
-//	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Intention [desire=").append(desire).append(", box=").append(box).append("]");
+		return builder.toString();
+	}
 }
