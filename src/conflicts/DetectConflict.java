@@ -32,11 +32,10 @@ public class DetectConflict {
 			 */
 			Intention intention = a1.getIntention();
 			Node node = World.getInstance().getSolutionMap().get(a1.getId()).get(index);
-			Box intentionBox = node.boxes.get(intention.getBox().getId());
+			Box intentionBox = intention.getBox();
 			for (Box box : World.getInstance().getBoxes().values()) {
 				if (!box.equals(intentionBox)) {
-					if (box.getPosition().equals(a1.getPosition())
-							|| intentionBox.getPosition().equals(box.getPosition())) {
+					if (box.getPosition().equals(a1.getPosition()) || intentionBox.getPosition().equals(box.getPosition())) {
 						conflict = new Conflict();
 						conflict.setConflictType(ConflictType.Box);
 						conflict.setNode(node);

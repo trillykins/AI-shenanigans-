@@ -121,8 +121,8 @@ public class SearchClient {
 			beliefs.add(new Belief(goal));
 		}
 		world.setBeliefs(beliefs);
-		world.setBoxesInGoals(new HashMap<Integer, Box>(0));
-		world.setSolvedGoals(new HashMap<Integer, Goal>(0));
+//		world.setBoxesInGoals(new HashMap<Integer, Box>(0));
+//		world.setSolvedGoals(new HashMap<Integer, Goal>(0));
 	}
 
 	public void init() throws IOException {

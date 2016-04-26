@@ -12,8 +12,8 @@ public class World {
 	private Map<Integer, Agent> agents;
 	private Map<Integer, Box> boxes;
 	private Map<Integer, Goal> goals;
-	private Map<Integer, Box> boxesInGoals;
-	private Map<Integer, Goal> solvedGoals;
+//	private Map<Integer, Box> boxesInGoals;
+//	private Map<Integer, Goal> solvedGoals;
 	private Set<Position> walls;
 	private Set<Color> colors;
 	private List<Belief> beliefs;
@@ -31,21 +31,21 @@ public class World {
 	protected World() {
 	}
 
-	public Map<Integer, Box> getBoxesInGoals() {
-		return boxesInGoals;
-	}
-
-	public void setBoxesInGoals(Map<Integer, Box> boxesInGoals) {
-		this.boxesInGoals = boxesInGoals;
-	}
-
-	public Map<Integer, Goal> getSolvedGoals() {
-		return solvedGoals;
-	}
-
-	public void setSolvedGoals(Map<Integer, Goal> solvedGoals) {
-		this.solvedGoals = solvedGoals;
-	}
+//	public Map<Integer, Box> getBoxesInGoals() {
+//		return boxesInGoals;
+//	}
+//
+//	public void setBoxesInGoals(Map<Integer, Box> boxesInGoals) {
+//		this.boxesInGoals = boxesInGoals;
+//	}
+//
+//	public Map<Integer, Goal> getSolvedGoals() {
+//		return solvedGoals;
+//	}
+//
+//	public void setSolvedGoals(Map<Integer, Goal> solvedGoals) {
+//		this.solvedGoals = solvedGoals;
+//	}
 
 	public List<Belief> getBeliefs() {
 		return beliefs;
@@ -104,24 +104,29 @@ public class World {
 	}
 
 	public boolean isGlobalGoalState() {
-		boolean result = false;
-		for (Integer goalId : this.goals.keySet()) {
-			for (Integer boxId : this.boxes.keySet()) {
-				Goal goal = this.goals.get(goalId);
-				Box box = this.boxes.get(boxId);
-				if (goal.getLetter() == Character.toLowerCase(box.getLetter())) {
-					if (goal.getPosition().equals(box.getPosition())) {
-						result = true;
-						break;
-					} else
-						result = false;
-				}
-			}
-			if (!result) {
+//		boolean result = false;
+		for(Goal goal : goals.values()) {
+			if(!goal.isSolved())
 				return false;
-			}
 		}
-		return result;
+		return false;
+//		for (Integer goalId : this.goals.keySet()) {
+//			for (Integer boxId : this.boxes.keySet()) {
+//				Goal goal = this.goals.get(goalId);
+//				Box box = this.boxes.get(boxId);
+//				if (goal.getLetter() == Character.toLowerCase(box.getLetter())) {
+//					if (goal.getPosition().equals(box.getPosition())) {
+//						result = true;
+//						break;
+//					} else
+//						result = false;
+//				}
+//			}
+//			if (!result) {
+//				return false;
+//			}
+//		}
+//		return result;
 	}
 
 	public int findLongestPlan() {

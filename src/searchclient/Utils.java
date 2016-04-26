@@ -32,7 +32,7 @@ public class Utils {
 
 	public static Color determineColor(String color) {
 		if (color == null)
-			return Color.NONE;
+			return Color.BLUE;
 		color = color.toLowerCase();
 		switch (color) {
 		case "green":

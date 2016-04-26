@@ -133,7 +133,11 @@ public class Agent implements IMessage {
 			List<Object> result = findClosestBox(goal);
 			int costOfClosestBoxToGoal = (int) result.get(0);
 			closestBox = (Box) result.get(1);
-			int costOfAgentToClosestBox = Utils.manhattenDistance(pos, closestBox.getPosition());
+			int costOfAgentToClosestBox = Integer.MAX_VALUE;
+			if(closestBox != null) {
+				 costOfAgentToClosestBox = Utils.manhattenDistance(pos, closestBox.getPosition());
+				 costOfClosestBoxToGoal = Integer.MAX_VALUE;
+			}
 			int currTotal = goalPriority + costOfClosestBoxToGoal + costOfAgentToClosestBox;
 			/*
 			 * we are looking for the smallest value possible, the optimal would
@@ -168,7 +172,8 @@ public class Agent implements IMessage {
 		Integer smallestDistance = Integer.MAX_VALUE;
 		for (Box box : world.getBoxes().values()) {
 			if (!box.isOnGoal() && Character.toLowerCase(box.getLetter()) == goal.getLetter()
-					&& (world.getBoxesInGoals().get(box.getId()) == null)) {
+//					&& (world.getBoxesInGoals().get(box.getId()) == null)
+					) {
 				int currDistance = Utils.manhattenDistance(box.getPosition(), goal.getPosition());
 				if (smallestDistance > currDistance) {
 					smallestDistance = currDistance;

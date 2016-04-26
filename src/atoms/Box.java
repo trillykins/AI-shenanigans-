@@ -48,12 +48,17 @@ public class Box {
 	}
 
 	public boolean isOnGoal() {
-		return isOnGoal;
+		for(Goal goal : World.getInstance().getGoals().values()) {
+			if(goal.getPosition().equals(position) && goal.getLetter() == Character.toLowerCase(letter)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
-	public void setOnGoal(boolean isOnGoal) {
-		this.isOnGoal = isOnGoal;
-	}
+//	public void setOnGoal(boolean isOnGoal) {
+//		this.isOnGoal = isOnGoal;
+//	}
 
 	@Override
 	public int hashCode() {

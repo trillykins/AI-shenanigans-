@@ -30,7 +30,7 @@ public class Search {
 		int iterations = 0;
 		while (true) {
 			if (iterations % 200 == 0) {
-				// System.err.println(strategy.searchStatus());
+//				 System.err.println(strategy.searchStatus());
 			}
 			if (Memory.shouldEnd()) {
 				System.err.format("Memory limit almost reached, terminating search %s\n", Memory.stringRep());
@@ -56,7 +56,6 @@ public class Search {
 				break;
 			case MoveAway:
 				if (leafNode.movedAway(otherPlan)) {
-					System.err.println("GOALSTATE MOVEDAWAY: \n" + leafNode);
 					return leafNode.extractPlan();
 				}
 				break;
