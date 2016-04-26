@@ -50,7 +50,9 @@ public class DetectConflict {
 				// World.getInstance().getSolutionMap().get(agent.getId()).size());
 				// System.err.println("HAT");
 				// System.err.println(World.getInstance().getSolutionMap());
-				if (index >= World.getInstance().getSolutionMap().get(agent.getId()).size()) {
+				if (agent.getId() > World.getInstance().getSolutionMap().size()
+						|| World.getInstance().getSolutionMap().get(agent.getId()) == null
+						|| index >= World.getInstance().getSolutionMap().get(agent.getId()).size()) {
 					continue;
 				}
 				Node node = World.getInstance().getSolutionMap().get(agent.getId()).get(index);
@@ -63,7 +65,7 @@ public class DetectConflict {
 						LinkedList<Node> solutionForAgentX = (LinkedList<Node>) World.getInstance().getSolutionMap()
 								.get(a.getId());
 						// solution list is not empty
-						if (solutionForAgentX.size() > 0) {
+						if (solutionForAgentX != null && solutionForAgentX.size() > 0) {
 							Node next = solutionForAgentX.peekLast();
 							// System.err.println(next);
 							if (next.agentCol == nodeCol && next.agentRow == nodeRow

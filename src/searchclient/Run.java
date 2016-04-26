@@ -48,6 +48,13 @@ public class Run {
 					if (solution != null && solution.size() > 0) {
 						agentSolutions.put(a.getId(), solution);
 						allSolutions.add(solution);
+					} else {
+						List<Node> empty = new LinkedList<Node>();
+						Node noOp = a.initialState;
+						noOp.action = new Command();
+						empty.add(noOp);
+						agentSolutions.put(a.getId(), empty);
+						allSolutions.add(empty);
 					}
 				}
 				world.setSolutionMap(agentSolutions);
@@ -56,7 +63,8 @@ public class Run {
 					allSolutions.add(solution);
 				}
 			}
-			System.err.println(allSolutions.size());
+			
+			System.err.println(world.getSolutionMap().size());
 			/* 2. Merge simple solutions together */
 			int longestPlan = findLongestPlan();
 			System.err.println("longestPlan: " + longestPlan);
@@ -67,6 +75,8 @@ public class Run {
 				sb.append("[");
 				int i = 0;
 				for (List<Node> solution : world.getSolutionMap().values()) {
+					if(world.getSolutionMap().size() != world.getAgents().size())
+						System.err.println("AGENT AND PLAN MISMATCH!");
 					if (stepInPlan < solution.size()) {
 						sb.append(solution.get(stepInPlan).action.toString());
 						Node n = solution.get(stepInPlan);
@@ -174,9 +184,13 @@ public class Run {
 		for (int i = 0; i < index - 1; i++) {
 			newPlanAgentToStay.remove(0);
 		}
+		agentToMove.initialState.walls.remove(new Position(agentToStay.getPosition()));
 		Node noOp = agentToStay.initialState;
 		noOp.action = new Command();
 		newPlanAgentToStay.add(0, noOp);
+		
+		
+		
 		// World.getInstance().getSolutionMap().put(agentToMove.getId(),
 		// newPlanAgentToMove);
 		// World.getInstance().getSolutionMap().put(agentToStay.getId(),
