@@ -8,6 +8,7 @@ import atoms.Position;
 import atoms.World;
 import bdi.Intention;
 import conflicts.Conflict.ConflictType;
+import searchclient.Command;
 import searchclient.Node;
 
 public class DetectConflict {
@@ -16,6 +17,8 @@ public class DetectConflict {
 	 * Check the next step of current moving agent whether has conflict with
 	 * other agent or not
 	 * 
+	 * Update with new conflict type: if current node of agent equals Move, then it would be Agent-box conflicts
+	 * otherwise if it is push or pull, then it would be box-box conflict
 	 * @param node
 	 * @param agent
 	 * @return
@@ -37,14 +40,17 @@ public class DetectConflict {
 					if (box.getPosition().equals(a1.getPosition())
 							|| intentionBox.getPosition().equals(box.getPosition())) {
 						conflict = new Conflict();
-						conflict.setConflictType(ConflictType.Box);
+						if(node.action.actType.equals(Command.type.Move)) {
+							conflict.setConflictType(ConflictType.Agent_Box);
+						}else {
+							conflict.setConflictType(ConflictType.Box_Box);
+						}
 						conflict.setNode(node);
 						return conflict;
 					}
 				}
 			}
 		} else {
-
 			for (Agent agent : World.getInstance().getAgents().values()) {
 				Node node = World.getInstance().getSolutionMap().get(agent.getId()).get(index);
 				int nodeCol = node.agentCol;
@@ -88,7 +94,11 @@ public class DetectConflict {
 					boolean isOtherAgentBox = checkBoxes(nodeRow, nodeCol, a);
 					if (isOtherAgentBox) {
 						conflict = new Conflict();
-						conflict.setConflictType(ConflictType.Box);
+						if(node.action.actType.equals(Command.type.Move)) {
+							conflict.setConflictType(ConflictType.Agent_Box);
+						}else {
+							conflict.setConflictType(ConflictType.Box_Box);
+						}
 						conflict.setSender(agent);
 						conflict.setReceiver(a);
 						conflict.setNode(node);

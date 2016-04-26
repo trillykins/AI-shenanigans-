@@ -11,7 +11,7 @@ public class Conflict {
 	
 
 	public enum ConflictType {
-		Agent, Box,
+		Agent, Box_Box, Agent_Box,
 	}
 
 	public ConflictType getConflictType() {
