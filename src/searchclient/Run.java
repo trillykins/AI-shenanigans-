@@ -1,5 +1,8 @@
 package searchclient;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -43,6 +46,11 @@ public class Run {
 					Strategy strategy = new StrategyBestFirst(new AStar(a.initialState));
 					Search s = new Search();
 					List<Node> solution = s.search(strategy, a.initialState, SearchType.PATH);
+					for(Box box : World.getInstance().getBoxes().values()) {
+						if(!box.equals(a.getIntention().getBox())) {
+							a.initialState.walls.remove(box.getPosition());
+						}
+					}
 					if (solution != null && solution.size() > 0) {
 						agentSolutions.put(a.getId(), solution);
 						allSolutions.add(solution);
@@ -93,8 +101,9 @@ public class Run {
 					System.err.println("CONFLICT: " +c.getConflictType());
 					if (c.getConflictType().equals(ConflictType.Agent)) {
 						c.solveAgentOnAgent(c.getNode(), c.getSender(), c.getReceiver(), stepInPlan, allSolutions);
-					} else  {
-						// if(c.getConflictType().equals(ConflictType.Box))
+					} else if(c.getConflictType().equals(ConflictType.Box)) {
+						System.err.println(c.getNode());
+						System.exit(1);
 					}
 					replanned = true;
 					break plan;
@@ -102,6 +111,14 @@ public class Run {
 					replanned = false;
 					System.out.println(sb.toString());
 					System.err.println(sb.toString());
+					try {
+						BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+						in.readLine();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
 					Utils.performUpdates(updatedAgentPositions, updatedBoxes);
 				}
 			}
@@ -111,7 +128,8 @@ public class Run {
 					for (Box box : World.getInstance().getBoxes().values()) {
 						if (goal.getPosition().equals(box.getPosition())) {
 							world.getSolvedGoals().put(goal.getId(), goal);
-							System.err.println("solved goal");
+							box.setOnGoal(true);
+							System.err.println("solved goal " + goal.getLetter());
 						}
 					}
 				}
@@ -139,6 +157,11 @@ public class Run {
 
 			for (Goal goal : World.getInstance().getSolvedGoals().values()) {
 				agent.initialState.walls.add(goal.getPosition());
+			}
+			for(Box box : World.getInstance().getBoxes().values()) {
+				if(!box.equals(b)) {
+					agent.initialState.walls.add(box.getPosition());
+				}
 			}
 		}
 	}

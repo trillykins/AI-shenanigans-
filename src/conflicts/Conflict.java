@@ -82,8 +82,8 @@ public class Conflict {
 		Node noOp = agentToStay.initialState;
 		noOp.action = new Command();
 		newPlanAgentToStay.add(0, noOp);
-		World.getInstance().getSolutionMap().put(newPlanAgentToMove.get(0).agentId, newPlanAgentToMove);
-		World.getInstance().getSolutionMap().put(newPlanAgentToStay.get(1).agentId, newPlanAgentToStay);
+		World.getInstance().getSolutionMap().put(agentToMove.getId(), newPlanAgentToMove);
+		World.getInstance().getSolutionMap().put(agentToStay.getId(), newPlanAgentToStay);
 		Agent agentToMoveAway = World.getInstance().getAgents().get(newPlanAgentToMove.get(0).agentId);
 		World.getInstance().getBeliefs().add(agentToMoveAway.getIntention().getDesire().getBelief());
 	}

@@ -125,17 +125,16 @@ public class Agent implements IMessage {
 		Box bestBox = null;
 		int bestTotal = Integer.MAX_VALUE;
 		int bestGoalPriority = 0;
-		Box box = null;
+		Box closestBox = null;
 		for (Desire des : desires) {
 			Goal goal = des.getBelief().getGoal();
 			int goalPriority = goal.getPriority();
-			int cost = Utils.manhattenDistance(des.getAgent().getPosition(), goal.getPosition());
-
 			// compute distance from agent to the closest box.
 			List<Object> result = findClosestBox(goal);
-			int costOfClosestBox = (Integer) result.get(0);
-			box = (Box) result.get(1);
-			int currTotal = goalPriority + cost + costOfClosestBox;
+			int costOfClosestBoxToGoal = (int) result.get(0);
+			closestBox = (Box) result.get(1);
+			int costOfAgentToClosestBox = Utils.manhattenDistance(pos, closestBox.getPosition());
+			int currTotal = goalPriority + costOfClosestBoxToGoal + costOfAgentToClosestBox;
 			/*
 			 * we are looking for the smallest value possible, the optimal would
 			 * be a very close goal, which have 0 occupied neighbours.
@@ -144,7 +143,7 @@ public class Agent implements IMessage {
 				bestGoalPriority = goalPriority;
 				bestTotal = currTotal;
 				bestDesire = des;
-				bestBox = box;
+				bestBox = closestBox;
 			} else if (bestTotal == currTotal) {
 				/*
 				 * if two goal totals are equal, we look at how many occupied
@@ -154,7 +153,7 @@ public class Agent implements IMessage {
 					bestGoalPriority = goalPriority;
 					bestTotal = currTotal;
 					bestDesire = des;
-					bestBox = box;
+					bestBox = closestBox;
 				}
 			}
 		}
@@ -168,9 +167,9 @@ public class Agent implements IMessage {
 		World world = World.getInstance();
 		Integer smallestDistance = Integer.MAX_VALUE;
 		for (Box box : world.getBoxes().values()) {
-			if (Character.toLowerCase(box.getLetter()) == goal.getLetter()
+			if (!box.isOnGoal() && Character.toLowerCase(box.getLetter()) == goal.getLetter()
 					&& (world.getBoxesInGoals().get(box.getId()) == null)) {
-				int currDistance = Utils.manhattenDistance(box.getPosition(), pos);
+				int currDistance = Utils.manhattenDistance(box.getPosition(), goal.getPosition());
 				if (smallestDistance > currDistance) {
 					smallestDistance = currDistance;
 					b = box;
