@@ -18,11 +18,9 @@ import conflicts.DetectConflict;
 import heuristics.AStar;
 import searchclient.Search.SearchType;
 import strategies.Strategy;
-import strategies.StrategyBFS;
 import strategies.StrategyBestFirst;
 
 public class Run {
-
 	public static void main(String[] args) throws Exception {
 		System.err.println("SearchClient initializing. I am sending this using the error output stream.");
 		SearchClient client = new SearchClient();
@@ -63,10 +61,9 @@ public class Run {
 					allSolutions.add(solution);
 				}
 			}
-			
-			System.err.println(world.getSolutionMap().size());
+
 			/* 2. Merge simple solutions together */
-			int longestPlan = findLongestPlan();
+			int longestPlan = world.findLongestPlan();
 			System.err.println("longestPlan: " + longestPlan);
 			Map<Integer, Position> updatedAgentPositions = new HashMap<Integer, Position>(0);
 			Map<Integer, Box> updatedBoxes = new HashMap<Integer, Box>(0);
@@ -75,12 +72,9 @@ public class Run {
 				sb.append("[");
 				int i = 0;
 				for (List<Node> solution : world.getSolutionMap().values()) {
-					if(world.getSolutionMap().size() != world.getAgents().size())
-						System.err.println("AGENT AND PLAN MISMATCH!");
 					if (stepInPlan < solution.size()) {
 						sb.append(solution.get(stepInPlan).action.toString());
 						Node n = solution.get(stepInPlan);
-
 						Agent agent = world.getAgents().get(n.agentId);
 						updatedAgentPositions.put(agent.getId(), new Position(n.agentRow, n.agentCol));
 						for (Integer bId : n.boxes.keySet()) {
@@ -96,21 +90,13 @@ public class Run {
 				DetectConflict d = new DetectConflict();
 				Conflict c = d.checkConflict(stepInPlan);
 				if (c != null) {
+					System.err.println("CONFLICT: " +c.getConflictType());
 					if (c.getConflictType().equals(ConflictType.Agent)) {
-						List<List<Node>> newPlans = solveAgentOnAgent(c.getNode(), c.getSender(), c.getReceiver(),
-								stepInPlan, allSolutions);
-						List<Node> newPlanForAgentToMoveAway = newPlans.get(0);
-						List<Node> newPlanForAgentToMoveToGoal = newPlans.get(1);
-						world.getSolutionMap().put(newPlanForAgentToMoveAway.get(0).agentId, newPlanForAgentToMoveAway);
-						world.getSolutionMap().put(newPlanForAgentToMoveToGoal.get(1).agentId,
-								newPlanForAgentToMoveToGoal);
-						Agent agentToMoveAway = World.getInstance().getAgents()
-								.get(newPlanForAgentToMoveAway.get(0).agentId);
-						world.getBeliefs().add(agentToMoveAway.getIntention().getDesire().getBelief());
-						// world.getBeliefs().add(c.getReceiver().getIntention().getDesire().getBelief());
+						c.solveAgentOnAgent(c.getNode(), c.getSender(), c.getReceiver(), stepInPlan, allSolutions);
+					} else  {
+						// if(c.getConflictType().equals(ConflictType.Box))
 					}
 					replanned = true;
-					System.err.println("replan done");
 					break plan;
 				} else {
 					replanned = false;
@@ -155,95 +141,5 @@ public class Run {
 				agent.initialState.walls.add(goal.getPosition());
 			}
 		}
-	}
-
-	public int findLongestPlan() {
-		int size = 0;
-		for (List<Node> solution : World.getInstance().getSolutionMap().values())
-			size = (size < solution.size() ? solution.size() : size);
-		return size;
-	}
-
-	public List<List<Node>> solveAgentOnAgent(Node node, Agent a1, Agent a2, int index, List<List<Node>> allSolutions) {
-		Agent agentToMove = a1.getPriority() > a2.getPriority() ? a2 : a1;
-		Agent agentToStay = a1.getPriority() > a2.getPriority() ? a1 : a2;
-
-		agentToMove.generateInitialState();
-		agentToMove.initialState.walls.add(new Position(agentToStay.getPosition()));
-		agentToMove.initialState.agentRow = agentToMove.getPosition().getX();
-		agentToMove.initialState.agentCol = agentToMove.getPosition().getY();
-
-		for (Box box : agentToMove.initialState.boxes.values()) {
-			agentToMove.initialState.walls.add(new Position(box.getPosition()));
-		}
-		Strategy strategy = new StrategyBFS();
-		Search s = new Search();
-		s.setPlanForAgentToStay(updatePlan(agentToStay.getId(), index));
-		List<Node> newPlanAgentToMove = s.search(strategy, agentToMove.initialState, SearchType.MoveAway);
-		List<Node> newPlanAgentToStay = allSolutions.get(agentToStay.getId());
-		for (int i = 0; i < index - 1; i++) {
-			newPlanAgentToStay.remove(0);
-		}
-		agentToMove.initialState.walls.remove(new Position(agentToStay.getPosition()));
-		Node noOp = agentToStay.initialState;
-		noOp.action = new Command();
-		newPlanAgentToStay.add(0, noOp);
-		
-		
-		
-		// World.getInstance().getSolutionMap().put(agentToMove.getId(),
-		// newPlanAgentToMove);
-		// World.getInstance().getSolutionMap().put(agentToStay.getId(),
-		// newPlanAgentToStay);
-		// int size = Math.max(newPlanAgentToMove.size(),
-		// newPlanAgentToStay.size());
-		// for (int i = 0; i < size; i++) {
-		// StringBuilder sb = new StringBuilder();
-		// sb.append("[");
-		// if(agentToMove.getId() < agentToStay.getId()) {
-		// if(i >= newPlanAgentToMove.size()) {
-		// sb.append("NoOp");
-		// } else {
-		// sb.append(newPlanAgentToMove.get(i).action.toString());
-		// }
-		// sb.append(", ");
-		// if(i >= newPlanAgentToStay.size()) {
-		// sb.append("NoOp");
-		// } else {
-		// sb.append(newPlanAgentToStay.get(i).action.toString());
-		// }
-		// } else {
-		// if(i >= newPlanAgentToStay.size()) {
-		// sb.append("NoOp");
-		// } else {
-		// sb.append(newPlanAgentToStay.get(i).action.toString());
-		// }
-		// sb.append(", ");
-		// if(i >= newPlanAgentToMove.size()) {
-		// sb.append("NoOp");
-		// } else {
-		// sb.append(newPlanAgentToMove.get(i).action.toString());
-		// }
-		// }
-		//
-		// sb.append("]");
-		// System.out.println(sb.toString());
-		// System.err.println(sb.toString());
-		// }
-		List<List<Node>> result = new ArrayList<List<Node>>();
-		result.add(newPlanAgentToMove);
-		result.add(newPlanAgentToStay);
-		return result;
-	}
-
-	private List<Node> updatePlan(int agentId, int index) {
-		List<Node> updPlan = new LinkedList<Node>();
-		List<Node> oldPlan = World.getInstance().getSolutionMap().get(agentId);
-		for (int i = 0; i < oldPlan.size(); i++) {
-			if (i >= index - 1) {
-				updPlan.add(oldPlan.get(i));
-			}
-		}
-		return updPlan;
 	}
 }

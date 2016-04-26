@@ -124,6 +124,13 @@ public class World {
 		return result;
 	}
 
+	public int findLongestPlan() {
+		int size = 0;
+		for (List<Node> solution : World.getInstance().getSolutionMap().values())
+			size = (size < solution.size() ? solution.size() : size);
+		return size;
+	}
+	
 	public String toString() {
 		StringBuilder s = new StringBuilder();
 		for (int row = 0; row < SearchClient.MAX_ROW; row++) {

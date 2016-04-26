@@ -24,7 +24,7 @@ public class DetectConflict {
 		Conflict conflict = null;
 
 		if (World.getInstance().getAgents().size() == 1) {
-			System.exit(0); // TODO MA debug purpose
+//			System.exit(0); // TODO MA debug purpose
 			Agent a1 = World.getInstance().getAgents().get(0);
 			/*
 			 * as there is no other agents that can be in a1's way, the only
@@ -91,7 +91,8 @@ public class DetectConflict {
 							conflict.setConflictType(ConflictType.Agent);
 							conflict.setSender(agent);
 							conflict.setReceiver(a);
-							Node previousNode = World.getInstance().getSolutionMap().get(agent.getId()).get(index - 1);
+							Node previousNode = node.parent;
+//							Node previousNode = World.getInstance().getSolutionMap().get(agent.getId()).get(index - 1);
 							conflict.setNode(previousNode); // Need to get the
 															// previous node, as
 															// the current one
