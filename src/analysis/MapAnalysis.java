@@ -21,6 +21,7 @@ public class MapAnalysis {
 	private Map<Integer, Goal> goals;
 	private Set<Position> walls;
 	
+	private Map<Position, FreeSpace> freeSpaces = new HashMap<Position,FreeSpace>();
 	public MapAnalysis(){
 		 world = World.getInstance();
 		 agents = world.getAgents();
@@ -34,36 +35,15 @@ public class MapAnalysis {
 	 * @param position
 	 * @return
 	 */
-	public Map<Integer,List<FreeSpace>> analysisFreeSpace(List<Position> position) {
-		Map<Integer,List<FreeSpace>> freeSpaceMap = new HashMap<Integer,List<FreeSpace>>();
-		
-		for(Integer aig:agents.keySet()) {
-			Agent a = agents.get(aig);
-			
-			List<FreeSpace> spaces = analysisPosition(a,position);
-			
-			freeSpaceMap.put(aig, spaces);
-		}
-		//generatePriorityQueue(freeSpaceMap);
-		return freeSpaceMap;
-	}
-	
-	/**
-	 * Analysis the free spaces for each agent
-	 * @param a
-	 * @param position
-	 * @return
-	 */
-	private List<FreeSpace> analysisPosition(Agent a, List<Position> position) {
-		List<FreeSpace> freeSpaces = new ArrayList<FreeSpace>();
+	public Map<Position,FreeSpace> analysisFreeSpace(List<Position> position) {
 		for(int i=0;i<position.size();i++) {
 			Position posi = position.get(i);
-			if(isSpaceFree(a,posi)) {
+			if(isSpaceFree(posi)) {
 				FreeSpace free = new FreeSpace();
 				free.setPosition(posi);
 				free.setPriority(calculateCellPriority(posi));
 				free.setNarrowCorValue(calulateNarrowCorPriority(posi));
-				freeSpaces.add(free);
+				freeSpaces.put(posi, free);
 			}
 		}
 		return freeSpaces;
@@ -125,10 +105,16 @@ public class MapAnalysis {
 		boolean isNextNarr = false;
 		List<Position> direct = surroundingDirectCells(posi);
 		for(Position position:direct) {
-			int narrowValue = calulateNarrowCorPriority(position);
-			if(narrowValue == 4) {
-				isNextNarr = true;
-				break;
+			if(!freeSpaces.isEmpty()) {
+				FreeSpace free = freeSpaces.get(position);
+				if(free != null) {
+					int narrowValue = free.getNarrowCorValue();
+					if(narrowValue == 4) {
+						isNextNarr = true;
+						break;
+					}
+				}
+				
 			}
 		}
 		return isNextNarr;
@@ -163,20 +149,16 @@ public class MapAnalysis {
 	 * @param position
 	 * @return
 	 */
-	public boolean isSpaceFree(Agent a,Position position){
+	public boolean isSpaceFree(Position position){
 		/*is there an agent*/
 		for(Agent agent : agents.values()){
-			if(agent.getId() != a.getId()) {
-				if(agent.getPosition().getX() == position.getX() && agent.getPosition().getY() == position.getY())
-					return false;
-			}
+			if(agent.getPosition().getX() == position.getX() && agent.getPosition().getY() == position.getY())
+				return false;
 		}
 		/*is there a box*/
 		for(Box box : boxes.values()){
 			if(box.getPosition().getX() == position.getX() && box.getPosition().getY() == position.getY()) {
-				if(!box.getColor().equals(a.getColor())) {
-					return false;
-				}
+				return false;
 			}
 		}
 		/*is there a wall*/
