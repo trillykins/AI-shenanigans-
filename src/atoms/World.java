@@ -22,7 +22,7 @@ public class World {
 	
 	private Map<Integer,LinkedList<Node>> solutionMap;
 	
-	private Map<Integer,List<FreeSpace>> freeSpace;
+	private Map<Position,FreeSpace> freeSpace;
 
 	private static World instance = null;
 
@@ -107,11 +107,11 @@ public class World {
 		this.solutionMap = solutionMap;
 	}	
 
-	public Map<Integer, List<FreeSpace>> getFreeSpace() {
+	public Map<Position, FreeSpace> getFreeSpace() {
 		return freeSpace;
 	}
 
-	public void setFreeSpace(Map<Integer, List<FreeSpace>> freeSpace) {
+	public void setFreeSpace(Map<Position, FreeSpace> freeSpace) {
 		this.freeSpace = freeSpace;
 	}
 
