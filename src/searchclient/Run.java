@@ -1,5 +1,7 @@
 package searchclient;
 
+import heuristics.AStar;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,6 +9,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import searchclient.SearchClient.SearchType;
+import strategies.Strategy;
+import strategies.StrategyBestFirst;
 import atoms.Agent;
 import atoms.Box;
 import atoms.Goal;
@@ -15,10 +20,6 @@ import atoms.World;
 import bdi.Intention;
 import conflicts.Conflict;
 import conflicts.DetectConflict;
-import heuristics.AStar;
-import searchclient.SearchClient.SearchType;
-import strategies.Strategy;
-import strategies.StrategyBestFirst;
 
 public class Run {
 
@@ -103,6 +104,10 @@ public class Run {
 					DetectConflict d = new DetectConflict();
 					Conflict c = d.checkConflict(stepInPlan);
 					if (c != null) {
+//						if(c.getConflictType().equals(Conflict.ConflictType.Box_Box)) {
+//							SolveBoxWithBoxConflict solve = new SolveBoxWithBoxConflict();
+//							solve.solveConflicts();
+//						}
 						System.err.println("break: " + c);
 						break;
 					} else {

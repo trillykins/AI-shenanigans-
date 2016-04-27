@@ -2,14 +2,15 @@ package conflicts;
 
 import searchclient.Node;
 import atoms.Agent;
+import atoms.Box;
 
 public class Conflict {
 	private ConflictType conflictType;
 	private Agent sender;
 	private Agent receiver;
 	private Node node;
+	private Box box;
 	
-
 	public enum ConflictType {
 		Agent, Box_Box, Agent_Box,
 	}
@@ -44,6 +45,14 @@ public class Conflict {
 
 	public void setNode(Node node) {
 		this.node = node;
+	}
+
+	public Box getBox() {
+		return box;
+	}
+
+	public void setBox(Box box) {
+		this.box = box;
 	}
 
 	@Override

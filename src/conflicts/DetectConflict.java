@@ -12,6 +12,8 @@ import searchclient.Command;
 import searchclient.Node;
 
 public class DetectConflict {
+	
+	private Box conflictBox=null;
 
 	/**
 	 * Check the next step of current moving agent whether has conflict with
@@ -45,6 +47,7 @@ public class DetectConflict {
 						}else {
 							conflict.setConflictType(ConflictType.Box_Box);
 						}
+						conflict.setBox(box);
 						conflict.setNode(node);
 						return conflict;
 					}
@@ -99,6 +102,7 @@ public class DetectConflict {
 						}else {
 							conflict.setConflictType(ConflictType.Box_Box);
 						}
+						conflict.setBox(conflictBox);
 						conflict.setSender(agent);
 						conflict.setReceiver(a);
 						conflict.setNode(node);
@@ -189,6 +193,7 @@ public class DetectConflict {
 		for (Integer bId : agen.initialState.boxes.keySet()) {
 			Box b = World.getInstance().getBoxes().get(bId);
 			if (b.getPosition().equals(new Position(row, col))) {
+				conflictBox = b;
 				return true;
 			} else {
 				return false;
