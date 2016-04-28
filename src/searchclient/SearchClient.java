@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 import analysis.LevelAnalysis;
+import analysis.MapAnalysis;
 import atoms.Agent;
 import atoms.Box;
 import atoms.Color;
@@ -85,8 +86,11 @@ public class SearchClient {
 		Map<Integer, Agent> agents = new HashMap<Integer, Agent>(0);
 		List<Belief> beliefs = new ArrayList<Belief>(0);
 		int row = 0, column = 0;
+		
+		List<Position> freeSpaces = new ArrayList<Position>();
 		while (!line.equals("")) {
 			for (int i = 0; i < line.length(); i++) {
+				boolean isWall = false;
 				char id = line.charAt(i);
 				if ('0' <= id && id <= '9') {
 					System.err.println("Agent " + id + " color: " + colors.get(id));
@@ -100,6 +104,10 @@ public class SearchClient {
 							Utils.determineColor(colors.get(id)), 0));
 				} else if (id == '+') {
 					walls.add(new Position(row, i));
+					isWall = true;
+				} 
+				if(!isWall) {
+					freeSpaces.add(new Position(row, i));
 				}
 			}
 			column = line.length() > column ? line.length() : column;
@@ -121,8 +129,10 @@ public class SearchClient {
 			beliefs.add(new Belief(goal));
 		}
 		world.setBeliefs(beliefs);
-//		world.setBoxesInGoals(new HashMap<Integer, Box>(0));
-//		world.setSolvedGoals(new HashMap<Integer, Goal>(0));
+		world.setBoxesInGoals(new HashMap<Integer, Box>(0));
+		world.setSolvedGoals(new HashMap<Integer, Goal>(0));
+		MapAnalysis mapAn = new MapAnalysis();
+		world.setFreeSpace(mapAn.analysisFreeSpace(freeSpaces));
 	}
 
 	public void init() throws IOException {

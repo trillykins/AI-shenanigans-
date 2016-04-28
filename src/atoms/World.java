@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import analysis.FreeSpace;
 import bdi.Belief;
 import searchclient.Node;
 import searchclient.SearchClient;
@@ -12,12 +13,13 @@ public class World {
 	private Map<Integer, Agent> agents;
 	private Map<Integer, Box> boxes;
 	private Map<Integer, Goal> goals;
-//	private Map<Integer, Box> boxesInGoals;
-//	private Map<Integer, Goal> solvedGoals;
+	private Map<Integer, Box> boxesInGoals;
+	private Map<Integer, Goal> solvedGoals;
 	private Set<Position> walls;
 	private Set<Color> colors;
 	private List<Belief> beliefs;
 	private Map<Integer, List<Node>> solutionMap;
+	private Map<Integer,List<FreeSpace>> freeSpace;
 
 	private static World instance = null;
 
@@ -31,21 +33,21 @@ public class World {
 	protected World() {
 	}
 
-//	public Map<Integer, Box> getBoxesInGoals() {
-//		return boxesInGoals;
-//	}
-//
-//	public void setBoxesInGoals(Map<Integer, Box> boxesInGoals) {
-//		this.boxesInGoals = boxesInGoals;
-//	}
-//
-//	public Map<Integer, Goal> getSolvedGoals() {
-//		return solvedGoals;
-//	}
-//
-//	public void setSolvedGoals(Map<Integer, Goal> solvedGoals) {
-//		this.solvedGoals = solvedGoals;
-//	}
+	public Map<Integer, Box> getBoxesInGoals() {
+		return boxesInGoals;
+	}
+
+	public void setBoxesInGoals(Map<Integer, Box> boxesInGoals) {
+		this.boxesInGoals = boxesInGoals;
+	}
+
+	public Map<Integer, Goal> getSolvedGoals() {
+		return solvedGoals;
+	}
+
+	public void setSolvedGoals(Map<Integer, Goal> solvedGoals) {
+		this.solvedGoals = solvedGoals;
+	}
 
 	public List<Belief> getBeliefs() {
 		return beliefs;
@@ -101,6 +103,14 @@ public class World {
 
 	public void setSolutionMap(Map<Integer, List<Node>> solutionMap) {
 		this.solutionMap = solutionMap;
+	}	
+
+	public Map<Integer, List<FreeSpace>> getFreeSpace() {
+		return freeSpace;
+	}
+
+	public void setFreeSpace(Map<Integer, List<FreeSpace>> freeSpace) {
+		this.freeSpace = freeSpace;
 	}
 
 	public boolean isGlobalGoalState() {
