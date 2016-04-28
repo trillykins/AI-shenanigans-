@@ -1,4 +1,13 @@
-/conflicts/
-/searchclient/
+/FIPA/
+/analysis/
 /atoms/
+/bdi/
+/conflicts/
+/heuristics/
 /levels/
+/readme-server.txt
+/sampleclients/
+/searchclient/
+/searchclient.bat
+/server.jar
+/strategies/
