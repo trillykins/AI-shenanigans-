@@ -38,30 +38,29 @@ public class DetectConflict {
 			 * obstacle a1 can bump into is a box
 			 */
 			Intention intention = a1.getIntention();
-			Node node = World.getInstance().getSolutionMap().get(a1.getId()).get(index);
-			Box intentionBox = intention.getBox();
-			for (Box box : World.getInstance().getBoxes().values()) {
-				if (!box.equals(intentionBox)) {
-					if (box.getPosition().equals(a1.getPosition())
-							|| intentionBox.getPosition().equals(box.getPosition())) {
-						conflict = new Conflict();
-						if (node.action.actType.equals(Command.type.Move)) {
-							conflict.setConflictType(ConflictType.Agent_Box);
-						} else {
-							conflict.setConflictType(ConflictType.Box_Box);
+			if (intention != null) {
+
+				Node node = World.getInstance().getSolutionMap().get(a1.getId()).get(index);
+				Box intentionBox = intention.getBox();
+				for (Box box : World.getInstance().getBoxes().values()) {
+					if (!box.equals(intentionBox)) {
+						if (box.getPosition().equals(a1.getPosition())
+								|| intentionBox.getPosition().equals(box.getPosition())) {
+							conflict = new Conflict();
+							if (node.action.actType.equals(Command.type.Move)) {
+								conflict.setConflictType(ConflictType.Agent_Box);
+							} else {
+								conflict.setConflictType(ConflictType.Box_Box);
+							}
+							conflict.setBox(box);
+							conflict.setNode(node);
+							return conflict;
 						}
-						conflict.setBox(box);
-						conflict.setNode(node);
-						return conflict;
 					}
 				}
 			}
 		} else {
 			for (Agent agent : World.getInstance().getAgents().values()) {
-				// System.err.println(index + " " +
-				// World.getInstance().getSolutionMap().get(agent.getId()).size());
-				// System.err.println("HAT");
-				// System.err.println(World.getInstance().getSolutionMap());
 				if (agent.getId() > World.getInstance().getSolutionMap().size()
 						|| World.getInstance().getSolutionMap().get(agent.getId()) == null
 						|| index >= World.getInstance().getSolutionMap().get(agent.getId()).size()) {
@@ -79,7 +78,6 @@ public class DetectConflict {
 						// solution list is not empty
 						if (solutionForAgentX != null && solutionForAgentX.size() > 0) {
 							Node next = solutionForAgentX.peekLast();
-							// System.err.println(next);
 							if (next.agentCol == nodeCol && next.agentRow == nodeRow
 									|| agent.getPosition() == a.getPosition()) {
 								conflict = new Conflict();

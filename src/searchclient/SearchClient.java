@@ -25,14 +25,14 @@ public class SearchClient {
 	public static int MAX_COLUMN = 0;
 	public static int TIME = 300;
 	public static BufferedReader in;
-	public static Map<Goal, Byte[][]> precomputedGoalH;
+	public static Map<Integer, Byte[][]> precomputedGoalH;
 	private Map<Character, String> colors;
 	Set<Color> colorSet;
 	World world;
 	LevelAnalysis levelAnalysis;
 
 	public SearchClient() throws IOException {
-		precomputedGoalH = new HashMap<Goal, Byte[][]>(0);
+		precomputedGoalH = new HashMap<>(0);
 		colors = new HashMap<Character, String>(0);
 		colorSet = new HashSet<Color>(0);
 		in = new BufferedReader(new InputStreamReader(System.in));
@@ -68,7 +68,6 @@ public class SearchClient {
 				line = line.replaceAll("\\s", "");
 				color = line.split(":")[0];
 				for (String id : line.split(":")[1].split(",")) {
-					System.err.println(id + ", " + color);
 					colors.put(id.charAt(0), color);
 					colorSet.add(Utils.determineColor(color));
 				}
@@ -80,11 +79,11 @@ public class SearchClient {
 	}
 
 	public void initWorld(String line) {
-		Set<Position> walls = new HashSet<Position>(0);
-		Map<Integer, Goal> goals = new HashMap<Integer, Goal>(0);
-		Map<Integer, Box> boxes = new HashMap<Integer, Box>(0);
-		Map<Integer, Agent> agents = new HashMap<Integer, Agent>(0);
-		List<Belief> beliefs = new ArrayList<Belief>(0);
+		Set<Position> walls = new HashSet<>(0);
+		Map<Integer, Goal> goals = new HashMap<>(0);
+		Map<Integer, Box> boxes = new HashMap<>(0);
+		Map<Integer, Agent> agents = new HashMap<>(0);
+		Set<Belief> beliefs = new HashSet<>(0);
 		int row = 0, column = 0;
 		
 		List<Position> freeSpaces = new ArrayList<Position>();
@@ -93,7 +92,6 @@ public class SearchClient {
 				boolean isWall = false;
 				char id = line.charAt(i);
 				if ('0' <= id && id <= '9') {
-					System.err.println("Agent " + id + " color: " + colors.get(id));
 					agents.put(Integer.parseInt("" + id),
 							new Agent(Integer.parseInt("" + id), colors.get(id), new Position(row, i), Integer.parseInt("" + id)));
 				} else if ('A' <= id && id <= 'Z') { // Boxes
@@ -144,10 +142,9 @@ public class SearchClient {
 		for (Integer id : world.getGoals().keySet()) {
 			Goal goal = world.getGoals().get(id);
 			Position gPos = goal.getPosition();
-			Byte[][] result = Utils.calculateDistanceValues(gPos.getX(), gPos.getY(), goal.getLetter(), MAX_ROW,
-					MAX_COLUMN);
-			precomputedGoalH.put(goal, result);
-
+			Byte[][] result = Utils.calculateDistanceValues(gPos.getX(), gPos.getY(), goal.getLetter(), MAX_ROW, MAX_COLUMN);
+			precomputedGoalH.put(goal.getId(), result);
+			
 			/* calculate goalPriority : based on world elements */
 			goal.setPriority(levelAnalysis.calculateGoalPriority(goal));
 		}

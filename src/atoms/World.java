@@ -17,7 +17,7 @@ public class World {
 	private Map<Integer, Goal> solvedGoals;
 	private Set<Position> walls;
 	private Set<Color> colors;
-	private List<Belief> beliefs;
+	private Set<Belief> beliefs;
 	private Map<Integer, List<Node>> solutionMap;
 	private Map<Position,FreeSpace> freeSpace;
 //	private Map<Integer, List<FreeSpace>> freeSpace;
@@ -50,11 +50,11 @@ public class World {
 		this.solvedGoals = solvedGoals;
 	}
 
-	public List<Belief> getBeliefs() {
+	public Set<Belief> getBeliefs() {
 		return beliefs;
 	}
 
-	public void setBeliefs(List<Belief> beliefs) {
+	public void setBeliefs(Set<Belief> beliefs) {
 		this.beliefs = beliefs;
 	}
 
@@ -115,12 +115,11 @@ public class World {
 	}
 	
 	public boolean isGlobalGoalState() {
-		// boolean result = false;
 		for (Goal goal : goals.values()) {
 			if (!goal.isSolved())
 				return false;
 		}
-		return false;
+		return true;
 	}
 
 	public int findLongestPlan() {

@@ -44,6 +44,7 @@ public class Agent implements IMessage {
 		this.initialState.boxes = new HashMap<Integer, Box>(0);
 		this.initialState.goals = new HashMap<Integer, Goal>(0);
 		this.initialState.walls = World.getInstance().getWalls();
+		this.desires = new HashSet<>(0);
 	}
 
 	public String act() {
@@ -161,8 +162,8 @@ public class Agent implements IMessage {
 				}
 			}
 		}
-		intention = new Intention(bestDesire, bestBox);
-		return true;
+		intention = (bestDesire != null && bestBox != null ? new Intention(bestDesire, bestBox) : null);
+		return intention != null;
 	}
 
 	public List<Object> findClosestBox(Goal goal) {
