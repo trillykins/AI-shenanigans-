@@ -5,12 +5,14 @@ public class Box {
 	private Position position;
 	private char letter;
 	private Color color;
+	private boolean isOnGoal;
 	
 	public Box(int id, Position p, char l, Color c) {
 		this.id = id;
 		this.position = p;
 		this.letter = l;
 		this.color = c;
+		this.isOnGoal = false;
 	}
 
 	public Position getPosition() {
@@ -44,6 +46,19 @@ public class Box {
 	public void setId(int id) {
 		this.id = id;
 	}
+
+	public boolean isOnGoal() {
+		for(Goal goal : World.getInstance().getGoals().values()) {
+			if(goal.getPosition().equals(position) && goal.getLetter() == Character.toLowerCase(letter)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+//	public void setOnGoal(boolean isOnGoal) {
+//		this.isOnGoal = isOnGoal;
+//	}
 
 	@Override
 	public int hashCode() {
@@ -83,4 +98,5 @@ public class Box {
 				.append(color).append("]");
 		return builder.toString();
 	}
+
 }

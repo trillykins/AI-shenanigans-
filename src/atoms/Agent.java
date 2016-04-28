@@ -1,7 +1,9 @@
 package atoms;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import FIPA.IMessage;
@@ -23,18 +25,20 @@ public class Agent implements IMessage {
 	private Intention intention;
 	public Node initialState = null;
 
-	public Agent(int id, String color, Position pos) {
-		this(id, Utils.determineColor(color), pos);
+	public Agent(int id, String color, Position pos, int priority) {
+		this(id, Utils.determineColor(color), pos, priority);
 	}
 
-	public Agent(int id, Color color, Position pos) {
+	public Agent(int id, Color color, Position pos, int priority) {
 		this.id = id;
 		this.col = color;
 		this.pos = pos;
+		this.priority = priority;
 	}
 
 	public void generateInitialState() {
 		this.initialState = new Node(null, id);
+		this.initialState.agentColor = col;
 		this.initialState.agentRow = pos.getX();
 		this.initialState.agentCol = pos.getY();
 		this.initialState.boxes = new HashMap<Integer, Box>(0);
@@ -121,17 +125,20 @@ public class Agent implements IMessage {
 		Box bestBox = null;
 		int bestTotal = Integer.MAX_VALUE;
 		int bestGoalPriority = 0;
-		Box box = null;
+		Box closestBox = null;
 		for (Desire des : desires) {
 			Goal goal = des.getBelief().getGoal();
 			int goalPriority = goal.getPriority();
-			int cost = Utils.manhattenDistance(des.getAgent().getPosition(), goal.getPosition());
-
 			// compute distance from agent to the closest box.
-
-			int costOfClosestBox = findCostOfClosestBox(goal);
-			box = findClosestBox(goal);
-			int currTotal = goalPriority + cost + costOfClosestBox;
+			List<Object> result = findClosestBox(goal);
+			int costOfClosestBoxToGoal = (int) result.get(0);
+			closestBox = (Box) result.get(1);
+			int costOfAgentToClosestBox = Integer.MAX_VALUE;
+			if(closestBox != null) {
+				 costOfAgentToClosestBox = Utils.manhattenDistance(pos, closestBox.getPosition());
+				 costOfClosestBoxToGoal = Integer.MAX_VALUE;
+			}
+			int currTotal = goalPriority + costOfClosestBoxToGoal + costOfAgentToClosestBox;
 			/*
 			 * we are looking for the smallest value possible, the optimal would
 			 * be a very close goal, which have 0 occupied neighbours.
@@ -140,7 +147,7 @@ public class Agent implements IMessage {
 				bestGoalPriority = goalPriority;
 				bestTotal = currTotal;
 				bestDesire = des;
-				bestBox = box;
+				bestBox = closestBox;
 			} else if (bestTotal == currTotal) {
 				/*
 				 * if two goal totals are equal, we look at how many occupied
@@ -150,45 +157,33 @@ public class Agent implements IMessage {
 					bestGoalPriority = goalPriority;
 					bestTotal = currTotal;
 					bestDesire = des;
-					bestBox = box;
+					bestBox = closestBox;
 				}
 			}
 		}
-		System.err.println("Best intention = "  +bestDesire + ", " + bestBox);
 		intention = new Intention(bestDesire, bestBox);
 		return true;
 	}
 
-	public int findCostOfClosestBox(Goal goal) {
-		World world = World.getInstance();
-		int smallestDistance = Integer.MAX_VALUE;
-		for (Box box : world.getBoxes().values()) {
-			if (Character.toLowerCase(box.getLetter()) == goal.getLetter()
-					&& (world.getBoxesInGoals().get(box.getId()) == null)) {
-				int currDistance = Utils.manhattenDistance(box.getPosition(), pos);
-				if (smallestDistance > currDistance) {
-					smallestDistance = currDistance;
-				}
-			}
-		}
-		return smallestDistance;
-	}
-
-	public Box findClosestBox(Goal goal) {
+	public List<Object> findClosestBox(Goal goal) {
+		List<Object> result = new ArrayList<Object>(0);
 		Box b = null;
 		World world = World.getInstance();
-		int smallestDistance = Integer.MAX_VALUE;
+		Integer smallestDistance = Integer.MAX_VALUE;
 		for (Box box : world.getBoxes().values()) {
-			if (Character.toLowerCase(box.getLetter()) == goal.getLetter()
-					&& (world.getBoxesInGoals().get(box.getId()) == null)) {
-				int currDistance = Utils.manhattenDistance(box.getPosition(), pos);
+			if (!box.isOnGoal() && Character.toLowerCase(box.getLetter()) == goal.getLetter()
+//					&& (world.getBoxesInGoals().get(box.getId()) == null)
+					) {
+				int currDistance = Utils.manhattenDistance(box.getPosition(), goal.getPosition());
 				if (smallestDistance > currDistance) {
 					smallestDistance = currDistance;
 					b = box;
 				}
 			}
 		}
-		return b;
+		result.add(smallestDistance);
+		result.add(b);
+		return result;
 	}
 	
 	@Override
@@ -238,7 +233,7 @@ public class Agent implements IMessage {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Agent [id=").append(id).append(", col=").append(col).append(", pos=").append(pos)
+		builder.append("Agent [id=").append(id).append(", color=").append(col).append(", pos=").append(pos)
 				.append(", priority=").append(priority).append("]");
 		return builder.toString();
 	}

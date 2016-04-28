@@ -1,8 +1,18 @@
 package conflicts;
 
-import searchclient.Node;
+import java.util.LinkedList;
+import java.util.List;
+
 import atoms.Agent;
 import atoms.Box;
+import atoms.Position;
+import atoms.World;
+import searchclient.Command;
+import searchclient.Node;
+import searchclient.Search;
+import searchclient.Search.SearchType;
+import strategies.Strategy;
+import strategies.StrategyBFS;
 
 public class Conflict {
 	private ConflictType conflictType;
@@ -55,6 +65,47 @@ public class Conflict {
 		this.box = box;
 	}
 
+	public void solveAgentOnAgent(Node node, Agent a1, Agent a2, int index, List<List<Node>> allSolutions) {
+		Agent agentToMove = a1.getPriority() > a2.getPriority() ? a2 : a1;
+		Agent agentToStay = a1.getPriority() > a2.getPriority() ? a1 : a2;
+
+		agentToMove.generateInitialState();
+		agentToMove.initialState.walls.add(new Position(agentToStay.getPosition()));
+		agentToMove.initialState.agentRow = agentToMove.getPosition().getX();
+		agentToMove.initialState.agentCol = agentToMove.getPosition().getY();
+
+		for (Box box : agentToMove.initialState.boxes.values()) {
+			agentToMove.initialState.walls.add(new Position(box.getPosition()));
+		}
+		Strategy strategy = new StrategyBFS();
+		Search s = new Search();
+		s.setPlanForAgentToStay(updatePlan(agentToStay.getId(), index));
+		List<Node> newPlanAgentToMove = s.search(strategy, agentToMove.initialState, SearchType.MoveAway);
+		List<Node> newPlanAgentToStay = allSolutions.get(agentToStay.getId());
+		for (int i = 0; i < index - 1; i++) {
+			newPlanAgentToStay.remove(0);
+		}
+		agentToMove.initialState.walls.remove(new Position(agentToStay.getPosition()));
+		Node noOp = agentToStay.initialState;
+		noOp.action = new Command();
+		newPlanAgentToStay.add(0, noOp);
+		World.getInstance().getSolutionMap().put(agentToMove.getId(), newPlanAgentToMove);
+		World.getInstance().getSolutionMap().put(agentToStay.getId(), newPlanAgentToStay);
+		Agent agentToMoveAway = World.getInstance().getAgents().get(newPlanAgentToMove.get(0).agentId);
+		World.getInstance().getBeliefs().add(agentToMoveAway.getIntention().getDesire().getBelief());
+	}
+
+	private List<Node> updatePlan(int agentId, int index) {
+		List<Node> updPlan = new LinkedList<Node>();
+		List<Node> oldPlan = World.getInstance().getSolutionMap().get(agentId);
+		for (int i = 0; i < oldPlan.size(); i++) {
+			if (i >= index - 1) {
+				updPlan.add(oldPlan.get(i));
+			}
+		}
+		return updPlan;
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
