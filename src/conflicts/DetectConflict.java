@@ -32,19 +32,18 @@ public class DetectConflict {
 
 		if (World.getInstance().getAgents().size() == 1) {
 			// System.exit(0); // TODO MA debug purpose
-			Agent a1 = World.getInstance().getAgents().get(0);
+			Agent agent = World.getInstance().getAgents().get(0);
 			/*
 			 * as there is no other agents that can be in a1's way, the only
 			 * obstacle a1 can bump into is a box
 			 */
-			Intention intention = a1.getIntention();
+			Intention intention = agent.getIntention();
 			if (intention != null) {
-
-				Node node = World.getInstance().getSolutionMap().get(a1.getId()).get(index);
+				Node node = agent.plan.get(index);
 				Box intentionBox = intention.getBox();
 				for (Box box : World.getInstance().getBoxes().values()) {
 					if (!box.equals(intentionBox)) {
-						if (box.getPosition().equals(a1.getPosition())
+						if (box.getPosition().equals(agent.getPosition())
 								|| intentionBox.getPosition().equals(box.getPosition())) {
 							conflict = new Conflict();
 							if (node.action.actType.equals(Command.type.Move)) {
