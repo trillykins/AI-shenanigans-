@@ -9,6 +9,7 @@ import java.util.Set;
 import FIPA.IMessage;
 import FIPA.Message;
 import FIPA.MessageType;
+import analysis.LevelAnalysis;
 import bdi.Belief;
 import bdi.Desire;
 import bdi.Intention;
@@ -117,7 +118,7 @@ public class Agent implements IMessage {
 	/*
 	 * Generate intention finds intentions based on cost and goal priority goal
 	 * priority reflects how many occupied surrounding spaces a goal have maybe
-	 * This method also considder the closest box that can fullfill the goal
+	 * This method also consider the closest box that can full-fill the goal
 	 */
 	public boolean generateIntention() {
 		if (desires.isEmpty())
@@ -129,17 +130,29 @@ public class Agent implements IMessage {
 		Box closestBox = null;
 		for (Desire des : desires) {
 			Goal goal = des.getBelief().getGoal();
+			
+			/*if a goal has been solved we do not want to consider it in our calculations*/
+			if(goal.isSolved())
+				continue;
+			
 			int goalPriority = goal.getPriority();
-			// compute distance from agent to the closest box.
+			
+			/* compute distance from agent to the closest box.*/
 			List<Object> result = findClosestBox(goal);
 			int costOfClosestBoxToGoal = (int) result.get(0);
 			closestBox = (Box) result.get(1);
-			int costOfAgentToClosestBox = Integer.MAX_VALUE;
-			if(closestBox != null) {
-				 costOfAgentToClosestBox = Utils.manhattenDistance(pos, closestBox.getPosition());
-				 costOfClosestBoxToGoal = Integer.MAX_VALUE;
-			}
-			int currTotal = goalPriority + costOfClosestBoxToGoal + costOfAgentToClosestBox;
+			
+			int costOfAgentToClosestBox = Utils.manhattenDistance(pos, closestBox.getPosition());
+			
+			/*calculate current number of free spaces surrounding the goal*/
+			LevelAnalysis levelAnalysis = new LevelAnalysis();
+			int numberOfFreeSpacesForGoal = levelAnalysis.calculateGoalPriority(goal);
+			
+			int currTotal = goalPriority + costOfClosestBoxToGoal + costOfAgentToClosestBox + numberOfFreeSpacesForGoal;
+			
+//			System.err.println("Goal " +goal.getLetter()+" currTotal " +currTotal+ "\tgoalP: "+ goalPriority + " costOfClosestBoxToG: " +costOfClosestBoxToGoal + 
+//					" costOfAgentToClosestB: "+costOfAgentToClosestBox + " numberOfFreeSpacesForGoal: "+numberOfFreeSpacesForGoal);
+//			
 			/*
 			 * we are looking for the smallest value possible, the optimal would
 			 * be a very close goal, which have 0 occupied neighbours.

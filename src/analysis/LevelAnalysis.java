@@ -16,6 +16,7 @@ public class LevelAnalysis {
 	private Map<Integer, Box> boxes;
 	private Map<Integer, Goal> goals;
 	private Set<Position> walls;
+	private Map<Position,FreeSpace> freespace;
 	
 	public LevelAnalysis(){
 		 world = World.getInstance();
@@ -23,17 +24,21 @@ public class LevelAnalysis {
 		 boxes = world.getBoxes();
 		 goals = world.getGoals();
 		 walls = world.getWalls();
+		 freespace = world.getFreeSpace();
 	}
 	
-	/*Goal priority is based on the number of occupied spaces surrounding a goal*/
+	/*Goal priority is based on the number of occupied spaces surrounding a goal
+	 *it is enhanced by the a "narrow corridor" value*/
 	public int calculateGoalPriority(Goal goal){
 		List<Position> fields = surroundingFields(goal.getPosition());
 		int numberOfOccupiedSpaces = 0;
 		for(Position pos : fields){
-			if(!isSpaceFree(goal,pos))
+			if(isSpaceFree(goal,pos))
 				numberOfOccupiedSpaces++;
 		}
-		return numberOfOccupiedSpaces;
+		numberOfOccupiedSpaces += 10*freespace.get(goal.getPosition()).getNarrowCorValue();
+//		System.err.println(goal.toString() + ", occ : " + numberOfOccupiedSpaces + " narrow : "+freespace.get(goal.getPosition()).getNarrowCorValue());
+		return 2*numberOfOccupiedSpaces;
 	}
 	
 	public boolean isSpaceFree(Goal g,Position position){
