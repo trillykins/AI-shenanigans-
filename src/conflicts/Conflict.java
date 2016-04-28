@@ -1,12 +1,5 @@
 package conflicts;
 
-import searchclient.Command;
-import searchclient.Node;
-import searchclient.Search;
-import searchclient.Search.SearchType;
-import strategies.Strategy;
-import strategies.StrategyBFS;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,16 +7,22 @@ import atoms.Agent;
 import atoms.Box;
 import atoms.Position;
 import atoms.World;
+import searchclient.Command;
+import searchclient.Node;
+import searchclient.Search;
+import searchclient.Search.SearchType;
+import strategies.Strategy;
+import strategies.StrategyBFS;
 
 public class Conflict {
 	private ConflictType conflictType;
 	private Agent sender;
 	private Agent receiver;
 	private Node node;
+	private Box box;
 	
-
 	public enum ConflictType {
-		Agent, Box,
+		Agent, Box_Box, Agent_Box,
 	}
 
 	public ConflictType getConflictType() {
@@ -56,6 +55,14 @@ public class Conflict {
 
 	public void setNode(Node node) {
 		this.node = node;
+	}
+
+	public Box getBox() {
+		return box;
+	}
+
+	public void setBox(Box box) {
+		this.box = box;
 	}
 
 	public void solveAgentOnAgent(Node node, Agent a1, Agent a2, int index, List<List<Node>> allSolutions) {

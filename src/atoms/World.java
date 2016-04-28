@@ -17,9 +17,10 @@ public class World {
 	private Map<Integer, Goal> solvedGoals;
 	private Set<Position> walls;
 	private Set<Color> colors;
-	private List<Belief> beliefs;
+	private Set<Belief> beliefs;
 	private Map<Integer, List<Node>> solutionMap;
-	private Map<Integer,List<FreeSpace>> freeSpace;
+	private Map<Position,FreeSpace> freeSpace;
+//	private Map<Integer, List<FreeSpace>> freeSpace;
 
 	private static World instance = null;
 
@@ -49,11 +50,11 @@ public class World {
 		this.solvedGoals = solvedGoals;
 	}
 
-	public List<Belief> getBeliefs() {
+	public Set<Belief> getBeliefs() {
 		return beliefs;
 	}
 
-	public void setBeliefs(List<Belief> beliefs) {
+	public void setBeliefs(Set<Belief> beliefs) {
 		this.beliefs = beliefs;
 	}
 
@@ -103,40 +104,22 @@ public class World {
 
 	public void setSolutionMap(Map<Integer, List<Node>> solutionMap) {
 		this.solutionMap = solutionMap;
-	}	
+	}
 
-	public Map<Integer, List<FreeSpace>> getFreeSpace() {
+	public Map<Position, FreeSpace> getFreeSpace() {
 		return freeSpace;
 	}
 
-	public void setFreeSpace(Map<Integer, List<FreeSpace>> freeSpace) {
+	public void setFreeSpace(Map<Position, FreeSpace> freeSpace) {
 		this.freeSpace = freeSpace;
 	}
-
+	
 	public boolean isGlobalGoalState() {
-//		boolean result = false;
-		for(Goal goal : goals.values()) {
-			if(!goal.isSolved())
+		for (Goal goal : goals.values()) {
+			if (!goal.isSolved())
 				return false;
 		}
-		return false;
-//		for (Integer goalId : this.goals.keySet()) {
-//			for (Integer boxId : this.boxes.keySet()) {
-//				Goal goal = this.goals.get(goalId);
-//				Box box = this.boxes.get(boxId);
-//				if (goal.getLetter() == Character.toLowerCase(box.getLetter())) {
-//					if (goal.getPosition().equals(box.getPosition())) {
-//						result = true;
-//						break;
-//					} else
-//						result = false;
-//				}
-//			}
-//			if (!result) {
-//				return false;
-//			}
-//		}
-//		return result;
+		return true;
 	}
 
 	public int findLongestPlan() {
@@ -145,7 +128,7 @@ public class World {
 			size = (size < solution.size() ? solution.size() : size);
 		return size;
 	}
-	
+
 	public String toString() {
 		StringBuilder s = new StringBuilder();
 		for (int row = 0; row < SearchClient.MAX_ROW; row++) {
