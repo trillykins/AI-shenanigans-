@@ -77,11 +77,15 @@ public class DetectConflict {
 								.get(a.getId());
 						// solution list is not empty
 						if (solutionForAgentX != null && solutionForAgentX.size() > 0) {
-							Node next = solutionForAgentX.peekLast();
+							//Node next = solutionForAgentX.peekLast(); -- this peekLast does not make sense to me (THEA)
+							if(solutionForAgentX.size() > index){
+							Node next = solutionForAgentX.get(index);
 							if (next.agentCol == nodeCol && next.agentRow == nodeRow
 									|| agent.getPosition() == a.getPosition()) {
 								conflict = new Conflict();
 								conflict.setConflictType(ConflictType.Agent);
+								System.err.println("her?");
+								
 								if (a.getPriority() > agent.getPriority()) {
 									sender = a;
 									receiver = agent;
@@ -93,6 +97,7 @@ public class DetectConflict {
 								conflict.setReceiver(receiver);
 								conflict.setNode(node);
 								return conflict;
+							}
 							}
 						}
 
@@ -110,12 +115,13 @@ public class DetectConflict {
 							return conflict;
 						}
 						
-						Node nextNode = null;
+						Node nextNodeCurrAgent = null;
 						if(World.getInstance().getSolutionMap().get(agent.getId()).size() > index + 1)
-							nextNode = World.getInstance().getSolutionMap().get(agent.getId()).get(index+1);
+							nextNodeCurrAgent = World.getInstance().getSolutionMap().get(agent.getId()).get(index+1);
 						
-						boolean isOtherAgentBox = checkBoxes(nodeRow, nodeCol, a,nextNode);
+						boolean isOtherAgentBox = checkBoxes(nodeRow, nodeCol,a,nextNodeCurrAgent);
 						if (isOtherAgentBox) {
+							System.err.println("her 3");
 							conflict = new Conflict();
 							if (node.action.actType.equals(Command.type.Move)) {
 								conflict.setConflictType(ConflictType.Agent_Box);
@@ -206,22 +212,27 @@ public class DetectConflict {
 	 * @param agen
 	 * @return
 	 */
-	public boolean checkBoxes(int row, int col, Agent agen,Node nextNode) {
+	public boolean checkBoxes(int row, int col, Agent agen,Node nextNodeCurrAgent) {
 		/*agent on box*/
 		for (Integer bId : agen.initialState.boxes.keySet()) {
 			Box b = World.getInstance().getBoxes().get(bId);
 			if (b.getPosition().equals(new Position(row, col))) {
-				System.err.println("Agent on Box conflict detected");
 				conflictBox = b;
 				return true;
-			} else if(nextNode != null){
+			} else if(nextNodeCurrAgent != null){
 				/*box on box conflict detected*/
-				if(nextNode.agentRow == b.getPosition().getX() && nextNode.agentCol == b.getPosition().getY()){
-				conflictBox = b;
-				return true;
+				if(nextNodeCurrAgent.agentRow == b.getPosition().getX() && nextNodeCurrAgent.agentCol == b.getPosition().getY()){
+					conflictBox = b;
+					return true;
+				}else if (nextNodeCurrAgent.boxes.values().size() > 0){
+					for(Box box : nextNodeCurrAgent.boxes.values()){
+						if(box.getPosition().equals(b.getPosition())){
+							conflictBox = b;
+							return true;
+						}
+					}
 				}
-			}
-			else {
+			}else {
 				return false;
 			}
 		}
