@@ -52,6 +52,7 @@ public class DetectConflict {
 							} else {
 								conflict.setConflictType(ConflictType.BOX_BOX);
 							}
+							conflict.setSender(World.getInstance().getAgents().get(0));
 							conflict.setBox(box);
 							conflict.setNode(node);
 							return conflict;

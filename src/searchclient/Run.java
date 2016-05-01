@@ -103,9 +103,10 @@ public class Run {
 								allSolutions);
 						break;
 					case AGENT_BOX:
+						System.err.println("BOX CONFLICT");
 						System.err.println(con.getBox());
 						con.solveAgentOnBox(con.getNode(), con.getSender(), con.getBox(), stepInPlan, allSolutions);
-						System.exit(0);
+						// System.exit(0);
 						break;
 					case BOX_BOX:
 						// SolveBoxWithBoxConflict solve = new
@@ -129,7 +130,7 @@ public class Run {
 					}
 					Utils.performUpdates(updatedAgentPositions, updatedBoxes);
 				}
-				if(world.isGlobalGoalState()) {
+				if (world.isGlobalGoalState()) {
 					System.err.println("DONE");
 					return;
 				}
@@ -149,7 +150,7 @@ public class Run {
 					if (goal.equals(b.getGoal()))
 						contained = true;
 				}
-				if(!contained)
+				if (!contained)
 					World.getInstance().getBeliefs().add(new Belief(goal));
 			}
 		}
@@ -170,14 +171,13 @@ public class Run {
 			World.getInstance().getBeliefs().remove(intention.getDesire().getBelief());
 			agent.initialState.goals.put(goal.getId(), goal);
 			agent.initialState.boxes.put(intentionBox.getId(), intentionBox);
-			System.err.println("splat" + agent.initialState);
 
 			// Add boxes of same color to the initialstate.
-//			for (Box box : World.getInstance().getBoxes().values()) {
-//				if (box.getColor().equals(agent.getColor())) {
-//					agent.initialState.boxes.put(box.getId(), box);
-//				}
-//			}
+			// for (Box box : World.getInstance().getBoxes().values()) {
+			// if (box.getColor().equals(agent.getColor())) {
+			// agent.initialState.boxes.put(box.getId(), box);
+			// }
+			// }
 		}
 	}
 }

@@ -2,6 +2,7 @@ package conflicts;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import atoms.Agent;
 import atoms.Box;
@@ -98,12 +99,19 @@ public class Conflict {
 	public void solveAgentOnBox(Node node, Agent agent, Box box, int index, List<List<Node>> allSolutions) {
 		Strategy strategy = new StrategyBFS();
 		Search s = new Search();
-		s.setPlanForAgentToStay(updatePlan(agent.getId(), index));
+		List<Node> old = World.getInstance().getSolutionMap().get(agent.getId());
+		List<Node> tmpPlan = old.subList(index, old.size());
+
+		s.setBoxRemovalPlan(tmpPlan, box);
+
+		agent.initialState.boxes.put(box.getId(), box);
 		List<Node> plan = s.search(strategy, agent.initialState, SearchType.MOVE_OWN_BOX);
+		agent.initialState.boxes.remove(box.getId(), box);
 		
 		World.getInstance().getSolutionMap().put(agent.getId(), plan);
-		Agent agentToMoveAway = World.getInstance().getAgents().get(plan.get(0).agentId);
+		Agent agentToMoveAway = World.getInstance().getAgents().get(agent.getId());
 		World.getInstance().getBeliefs().add(agentToMoveAway.getIntention().getDesire().getBelief());
+		
 	}
 
 	private List<Node> updatePlan(int agentId, int index) {

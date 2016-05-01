@@ -285,7 +285,12 @@ public class Node {
 		return true;
 	}
 	
-	public boolean moveBoxAway(){
+	public boolean moveBoxAway(List<Node> boxRemovalPlan, Box box){
+		System.err.println("HAT");
+		for(Node node : boxRemovalPlan) {
+			System.err.println(node);
+		}
+		System.err.println("TAH");
 		return true;
 	}
 	
