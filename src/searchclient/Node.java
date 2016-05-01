@@ -284,4 +284,9 @@ public class Node {
 		}
 		return true;
 	}
+	
+	public boolean moveBoxAway(){
+		return true;
+	}
+	
 }

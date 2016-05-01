@@ -48,9 +48,9 @@ public class DetectConflict {
 								|| intentionBox.getPosition().equals(box.getPosition())) {
 							conflict = new Conflict();
 							if (node.action.actType.equals(Command.type.Move)) {
-								conflict.setConflictType(ConflictType.Agent_Box);
+								conflict.setConflictType(ConflictType.AGENT_BOX);
 							} else {
-								conflict.setConflictType(ConflictType.Box_Box);
+								conflict.setConflictType(ConflictType.BOX_BOX);
 							}
 							conflict.setBox(box);
 							conflict.setNode(node);
@@ -81,7 +81,7 @@ public class DetectConflict {
 							if (next.agentCol == nodeCol && next.agentRow == nodeRow
 									|| agent.getPosition() == a.getPosition()) {
 								conflict = new Conflict();
-								conflict.setConflictType(ConflictType.Agent);
+								conflict.setConflictType(ConflictType.AGENT);
 								if (a.getPriority() > agent.getPriority()) {
 									sender = a;
 									receiver = agent;
@@ -98,7 +98,7 @@ public class DetectConflict {
 
 						if (nodeCol == a.getPosition().getY() && nodeRow == a.getPosition().getX()) {
 							conflict = new Conflict();
-							conflict.setConflictType(ConflictType.Agent);
+							conflict.setConflictType(ConflictType.AGENT);
 							conflict.setSender(agent);
 							conflict.setReceiver(a);
 							Node previousNode = node.parent;
@@ -113,9 +113,9 @@ public class DetectConflict {
 						if (isOtherAgentBox) {
 							conflict = new Conflict();
 							if (node.action.actType.equals(Command.type.Move)) {
-								conflict.setConflictType(ConflictType.Agent_Box);
+								conflict.setConflictType(ConflictType.AGENT_BOX);
 							} else {
-								conflict.setConflictType(ConflictType.Box_Box);
+								conflict.setConflictType(ConflictType.BOX_BOX);
 							}
 							conflict.setBox(conflictBox);
 							conflict.setSender(agent);

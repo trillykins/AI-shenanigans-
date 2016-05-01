@@ -22,7 +22,7 @@ public class Conflict {
 	private Box box;
 	
 	public enum ConflictType {
-		Agent, Box_Box, Agent_Box,
+		AGENT, BOX_BOX, AGENT_BOX,
 	}
 
 	public ConflictType getConflictType() {
@@ -80,7 +80,7 @@ public class Conflict {
 		Strategy strategy = new StrategyBFS();
 		Search s = new Search();
 		s.setPlanForAgentToStay(updatePlan(agentToStay.getId(), index));
-		List<Node> newPlanAgentToMove = s.search(strategy, agentToMove.initialState, SearchType.MoveAway);
+		List<Node> newPlanAgentToMove = s.search(strategy, agentToMove.initialState, SearchType.MOVE_AWAY);
 		List<Node> newPlanAgentToStay = allSolutions.get(agentToStay.getId());
 		for (int i = 0; i < index - 1; i++) {
 			newPlanAgentToStay.remove(0);
@@ -92,6 +92,17 @@ public class Conflict {
 		World.getInstance().getSolutionMap().put(agentToMove.getId(), newPlanAgentToMove);
 		World.getInstance().getSolutionMap().put(agentToStay.getId(), newPlanAgentToStay);
 		Agent agentToMoveAway = World.getInstance().getAgents().get(newPlanAgentToMove.get(0).agentId);
+		World.getInstance().getBeliefs().add(agentToMoveAway.getIntention().getDesire().getBelief());
+	}
+
+	public void solveAgentOnBox(Node node, Agent agent, Box box, int index, List<List<Node>> allSolutions) {
+		Strategy strategy = new StrategyBFS();
+		Search s = new Search();
+		s.setPlanForAgentToStay(updatePlan(agent.getId(), index));
+		List<Node> plan = s.search(strategy, agent.initialState, SearchType.MOVE_OWN_BOX);
+		
+		World.getInstance().getSolutionMap().put(agent.getId(), plan);
+		Agent agentToMoveAway = World.getInstance().getAgents().get(plan.get(0).agentId);
 		World.getInstance().getBeliefs().add(agentToMoveAway.getIntention().getDesire().getBelief());
 	}
 

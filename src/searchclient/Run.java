@@ -98,13 +98,16 @@ public class Run {
 				Conflict con = detectCon.checkConflict(stepInPlan);
 				if (con != null) {
 					switch (con.getConflictType()) {
-					case Agent:
+					case AGENT:
 						con.solveAgentOnAgent(con.getNode(), con.getSender(), con.getReceiver(), stepInPlan,
 								allSolutions);
 						break;
-					case Agent_Box:
+					case AGENT_BOX:
+						System.err.println(con.getBox());
+						con.solveAgentOnBox(con.getNode(), con.getSender(), con.getBox(), stepInPlan, allSolutions);
+						System.exit(0);
 						break;
-					case Box_Box:
+					case BOX_BOX:
 						// SolveBoxWithBoxConflict solve = new
 						// SolveBoxWithBoxConflict();
 						// solve.solveConflicts();
@@ -167,6 +170,7 @@ public class Run {
 			World.getInstance().getBeliefs().remove(intention.getDesire().getBelief());
 			agent.initialState.goals.put(goal.getId(), goal);
 			agent.initialState.boxes.put(intentionBox.getId(), intentionBox);
+			System.err.println("splat" + agent.initialState);
 
 			// Add boxes of same color to the initialstate.
 //			for (Box box : World.getInstance().getBoxes().values()) {
