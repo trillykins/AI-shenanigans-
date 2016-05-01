@@ -103,7 +103,7 @@ public class Run {
 						con.solveAgentOnAgent(con.getNode(), con.getSender(), con.getReceiver(), stepInPlan,
 								allSolutions);
 						break;
-					case AGENT_BOX:
+					case SINGLE_AGENT_BOX:
 						System.err.println("BOX CONFLICT");
 						System.err.println(con.getBox());
 						con.solveAgentOnBox(con.getNode(), World.getInstance().getAgents().get(0), con.getBox(), stepInPlan, allSolutions);
@@ -135,7 +135,7 @@ public class Run {
 				}
 
 				updateBeliefs();
-				System.err.println("World:\n" + world.toString());
+//				System.err.println("World:\n" + world.toString());
 				System.err.println("Global goal state found = " + world.isGlobalGoalState());
 			}
 		}

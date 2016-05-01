@@ -48,11 +48,11 @@ public class DetectConflict {
 								|| intentionBox.getPosition().equals(box.getPosition())) {
 							conflict = new Conflict();
 							if (node.action.actType.equals(Command.type.Move)) {
-								conflict.setConflictType(ConflictType.AGENT_BOX);
+								conflict.setConflictType(ConflictType.SINGLE_AGENT_BOX);
 							} else {
 								conflict.setConflictType(ConflictType.BOX_BOX);
 							}
-							LinkedList<Node> solutionForAgentX = (LinkedList<Node>) World.getInstance().getSolutionMap().get(World.getInstance().getAgents().get(0));
+//							LinkedList<Node> solutionForAgentX = (LinkedList<Node>) World.getInstance().getSolutionMap().get(World.getInstance().getAgents().get(0));
 							conflict.setSender(World.getInstance().getAgents().get(0));
 							conflict.setBox(box);
 							conflict.setNode(node);
@@ -115,7 +115,7 @@ public class DetectConflict {
 						if (isOtherAgentBox) {
 							conflict = new Conflict();
 							if (node.action.actType.equals(Command.type.Move)) {
-								conflict.setConflictType(ConflictType.AGENT_BOX);
+								conflict.setConflictType(ConflictType.SINGLE_AGENT_BOX);
 							} else {
 								conflict.setConflictType(ConflictType.BOX_BOX);
 							}

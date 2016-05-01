@@ -25,7 +25,7 @@ public class Conflict {
 	private Box box;
 	
 	public enum ConflictType {
-		AGENT, BOX_BOX, AGENT_BOX,
+		AGENT, BOX_BOX, SINGLE_AGENT_BOX,
 	}
 
 	public ConflictType getConflictType() {
@@ -113,7 +113,7 @@ public class Conflict {
 		Search s = new Search();
 		
 		List<Node> plan = s.search(strategy, agentToMove.initialState, SearchType.PATH);
-		System.err.println(plan);
+		
 		World.getInstance().getSolutionMap().put(agentToMove.getId(), plan);
 		Agent agentToMoveAway = World.getInstance().getAgents().get(agentToMove.getId());
 		World.getInstance().getBeliefs().add(agentToMoveAway.getIntention().getDesire().getBelief());
