@@ -5,7 +5,6 @@ import java.util.List;
 
 import atoms.Agent;
 import atoms.Box;
-import atoms.Color;
 import atoms.Goal;
 import atoms.Position;
 import atoms.World;
@@ -21,8 +20,21 @@ public class Conflict {
 	private Agent sender;
 	private Agent receiver;
 	private Node node;
-	private Box box;
+	private Box receiverBox;
+	private Box senderBox;
 	
+	public Box getSenderBox() {
+		return senderBox;
+	}
+
+	public void setSenderBox(Box senderBox) {
+		this.senderBox = senderBox;
+	}
+
+	public Box getReceiverBox() {
+		return receiverBox;
+	}
+
 	public enum ConflictType {
 		Agent, Box_Box, Agent_Box,
 	}
@@ -59,12 +71,8 @@ public class Conflict {
 		this.node = node;
 	}
 
-	public Box getBox() {
-		return box;
-	}
-
-	public void setBox(Box box) {
-		this.box = box;
+	public void setReceiverBox(Box box) {
+		this.receiverBox = box;
 	}
 
 	public void solveAgentOnBox(){
@@ -74,9 +82,21 @@ public class Conflict {
 	public void solveBoxOnBox(Conflict conflict, int index, List<List<Node>> allSolutions){
 		System.err.println("Theres is a box on box conflict!");
 		/*Here we look at the agent who's box we marked as a conflict box (in conflict type)*/
-		Agent agentToMove = conflict.getReceiver();
-		Agent agentToStay = conflict.getSender();
+		/*In general it is a problem selecting the agent based on priority. Here we need to consider
+		 * narrow corridors or free fields or something. See MAsimple9 where the wrong agent is selected to move (lowest priority)*/
 		
+		/*testing*/
+		Agent agentToMove = null, agentToStay = null;
+		Box agentToMoveBox = null;
+		if(conflict.senderBox != null){
+			agentToMove = conflict.getSender();
+			agentToMoveBox = conflict.getSenderBox();
+			agentToStay = conflict.getReceiver();
+		}else{
+			agentToMove = conflict.getReceiver();
+			agentToMoveBox = conflict.getReceiverBox();
+			agentToStay = conflict.getSender();
+		}
 		/*First we find the coordinate of where to put a new goal*/
 		agentToMove.generateInitialState();
 		agentToMove.initialState.walls.add(new Position(agentToStay.getPosition()));
@@ -93,7 +113,7 @@ public class Conflict {
 		Goal newGoal = new Goal(World.getInstance().getGoals().size()+1, 
 				new Position(	newPlanAgentToMove.get(newPlanAgentToMove.size()-1).agentRow,
 								newPlanAgentToMove.get(newPlanAgentToMove.size()-1).agentCol), 
-				Character.toLowerCase(conflict.getBox().getLetter()),agentToMove.getColor(),World.getInstance().getGoals().size()+1);
+				Character.toLowerCase(agentToMoveBox.getLetter()),agentToMove.getColor(),World.getInstance().getGoals().size()+1);
 		
 		List<Node> newPlanAgentToStay = allSolutions.get(agentToStay.getId());
 		for (int i = 0; i < index - 1; i++) {
@@ -106,7 +126,7 @@ public class Conflict {
 		agentToMove.initialState.agentRow = agentToMove.getPosition().getX();
 		agentToMove.initialState.agentCol = agentToMove.getPosition().getY();
 		agentToMove.initialState.goals.put(newGoal.getId(), newGoal);
-		agentToMove.initialState.boxes.put(conflict.getBox().getId(), conflict.getBox());
+		agentToMove.initialState.boxes.put(agentToMoveBox.getId(), agentToMoveBox);
 		strategy = new StrategyBFS();
 		s = new Search();
 		s.setPlanForAgentToStay(updatePlan(agentToStay.getId(), index));

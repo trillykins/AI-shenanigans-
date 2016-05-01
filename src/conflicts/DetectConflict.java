@@ -13,7 +13,8 @@ import searchclient.Node;
 
 public class DetectConflict {
 
-	private Box conflictBox = null;
+	private Box receiverBox = null;
+	private Box senderBox = null;
 
 	/**
 	 * Check the next step of current moving agent whether has conflict with
@@ -52,7 +53,7 @@ public class DetectConflict {
 							} else {
 								conflict.setConflictType(ConflictType.Box_Box);
 							}
-							conflict.setBox(box);
+							conflict.setReceiverBox(box);
 							conflict.setNode(node);
 							return conflict;
 						}
@@ -84,7 +85,6 @@ public class DetectConflict {
 									|| agent.getPosition() == a.getPosition()) {
 								conflict = new Conflict();
 								conflict.setConflictType(ConflictType.Agent);
-								System.err.println("her?");
 								
 								if (a.getPriority() > agent.getPriority()) {
 									sender = a;
@@ -121,14 +121,14 @@ public class DetectConflict {
 						
 						boolean isOtherAgentBox = checkBoxes(nodeRow, nodeCol,a,nextNodeCurrAgent);
 						if (isOtherAgentBox) {
-							System.err.println("her 3");
 							conflict = new Conflict();
 							if (node.action.actType.equals(Command.type.Move)) {
 								conflict.setConflictType(ConflictType.Agent_Box);
 							} else if (node.action.actType.equals(Command.type.Pull) || node.action.actType.equals(Command.type.Push)){
 								conflict.setConflictType(ConflictType.Box_Box);
 							}
-							conflict.setBox(conflictBox);
+							conflict.setReceiverBox(receiverBox);
+							conflict.setSenderBox(senderBox);
 							conflict.setSender(agent);
 							conflict.setReceiver(a);
 							conflict.setNode(node);
@@ -217,17 +217,18 @@ public class DetectConflict {
 		for (Integer bId : agen.initialState.boxes.keySet()) {
 			Box b = World.getInstance().getBoxes().get(bId);
 			if (b.getPosition().equals(new Position(row, col))) {
-				conflictBox = b;
+				receiverBox = b;
 				return true;
 			} else if(nextNodeCurrAgent != null){
 				/*box on box conflict detected*/
 				if(nextNodeCurrAgent.agentRow == b.getPosition().getX() && nextNodeCurrAgent.agentCol == b.getPosition().getY()){
-					conflictBox = b;
+					receiverBox = b;
 					return true;
 				}else if (nextNodeCurrAgent.boxes.values().size() > 0){
 					for(Box box : nextNodeCurrAgent.boxes.values()){
 						if(box.getPosition().equals(b.getPosition())){
-							conflictBox = b;
+							receiverBox = b;
+							senderBox = box;
 							return true;
 						}
 					}
