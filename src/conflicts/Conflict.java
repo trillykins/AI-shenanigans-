@@ -65,6 +65,13 @@ public class Conflict {
 		this.box = box;
 	}
 
+	public void solveAgentOnBox(){
+		System.err.println("Theres is a agent on box conflict!");
+		
+	}
+	public void solveBoxOnBox(){
+		System.err.println("Theres is a box on box conflict!");
+	}
 	public void solveAgentOnAgent(Node node, Agent a1, Agent a2, int index, List<List<Node>> allSolutions) {
 		Agent agentToMove = a1.getPriority() > a2.getPriority() ? a2 : a1;
 		Agent agentToStay = a1.getPriority() > a2.getPriority() ? a1 : a2;

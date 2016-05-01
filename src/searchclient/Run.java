@@ -103,11 +103,10 @@ public class Run {
 								allSolutions);
 						break;
 					case Agent_Box:
+						con.solveAgentOnBox();
 						break;
 					case Box_Box:
-						// SolveBoxWithBoxConflict solve = new
-						// SolveBoxWithBoxConflict();
-						// solve.solveConflicts();
+						con.solveBoxOnBox();
 						break;
 					}
 					replanned = true;

@@ -204,7 +204,8 @@ public class DetectConflict {
 	 * @return
 	 */
 	public boolean checkBoxes(int row, int col, Agent agen) {
-		for (Integer bId : agen.initialState.boxes.keySet()) {
+		/*we have to check for all other boxes*/
+		for(Integer bId : World.getInstance().getBoxes().keySet()){
 			Box b = World.getInstance().getBoxes().get(bId);
 			if (b.getPosition().equals(new Position(row, col))) {
 				conflictBox = b;
