@@ -74,6 +74,7 @@ public class Run {
 			int size = world.findLongestPlan();
 			Map<Integer, Position> updatedAgentPositions = new HashMap<Integer, Position>(0);
 			Map<Integer, Box> updatedBoxes = new HashMap<Integer, Box>(0);
+
 			for (int stepInPlan = 0; stepInPlan < size; stepInPlan++) {
 				StringBuilder sb = new StringBuilder();
 				sb.append("[");
@@ -96,7 +97,7 @@ public class Run {
 				sb.append("]");
 				DetectConflict detectCon = new DetectConflict();
 				Conflict con = detectCon.checkConflict(stepInPlan);
-				if (con != null) {
+				if (con != null && !replanned) {
 					switch (con.getConflictType()) {
 					case AGENT:
 						con.solveAgentOnAgent(con.getNode(), con.getSender(), con.getReceiver(), stepInPlan,
@@ -105,8 +106,7 @@ public class Run {
 					case AGENT_BOX:
 						System.err.println("BOX CONFLICT");
 						System.err.println(con.getBox());
-						con.solveAgentOnBox(con.getNode(), con.getSender(), con.getBox(), stepInPlan, allSolutions);
-						// System.exit(0);
+						con.solveAgentOnBox(con.getNode(), World.getInstance().getAgents().get(0), con.getBox(), stepInPlan, allSolutions);
 						break;
 					case BOX_BOX:
 						// SolveBoxWithBoxConflict solve = new
@@ -126,7 +126,6 @@ public class Run {
 							in.readLine();
 					} catch (IOException e) {
 						System.err.println(e.getMessage());
-						// System.exit(0);
 					}
 					Utils.performUpdates(updatedAgentPositions, updatedBoxes);
 				}

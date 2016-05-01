@@ -52,6 +52,7 @@ public class DetectConflict {
 							} else {
 								conflict.setConflictType(ConflictType.BOX_BOX);
 							}
+							LinkedList<Node> solutionForAgentX = (LinkedList<Node>) World.getInstance().getSolutionMap().get(World.getInstance().getAgents().get(0));
 							conflict.setSender(World.getInstance().getAgents().get(0));
 							conflict.setBox(box);
 							conflict.setNode(node);

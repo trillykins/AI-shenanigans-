@@ -1,6 +1,5 @@
 package searchclient;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,8 +11,6 @@ import strategies.Strategy;
 public class Search {
 	public static int TIME = 300;
 	private List<Node> otherPlan;
-	private List<Node> boxRemovalPlan;
-	private Box boxToBeMoved;
 
 	public static enum SearchType {
 		PATH, MOVE_TO_POSITION, MOVE_AWAY, MOVE_OWN_BOX
@@ -27,22 +24,6 @@ public class Search {
 		return this.otherPlan;
 	}
 
-	public List<Node> getBoxRemovalPlan() {
-		return boxRemovalPlan;
-	}
-
-	public void setBoxRemovalPlan(List<Node> boxRemovalPlan, Box box) {
-		this.boxRemovalPlan = boxRemovalPlan;
-	}
-
-	public Box getBoxToBeMoved(){
-		return boxToBeMoved;
-	}
-	
-	public void setBoxToBeMoved(Box boxToBeMoved) {
-		this.boxToBeMoved = boxToBeMoved;
-	}
-	
 	public LinkedList<Node> search(Strategy strategy, Node initialState, SearchType searchType) {
 		// System.err.format("Search starting with strategy %s\n", strategy);
 		strategy.addToFrontier(initialState);
@@ -75,11 +56,6 @@ public class Search {
 				break;
 			case MOVE_AWAY:
 				if (leafNode.movedAway(otherPlan)) {
-					return leafNode.extractPlan();
-				}
-				break;
-			case MOVE_OWN_BOX:
-				if(leafNode.moveBoxAway(boxRemovalPlan, boxToBeMoved)){
 					return leafNode.extractPlan();
 				}
 				break;

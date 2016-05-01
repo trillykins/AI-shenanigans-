@@ -8,12 +8,14 @@ import atoms.Agent;
 import atoms.Box;
 import atoms.Position;
 import atoms.World;
+import heuristics.AStar;
 import searchclient.Command;
 import searchclient.Node;
 import searchclient.Search;
 import searchclient.Search.SearchType;
 import strategies.Strategy;
 import strategies.StrategyBFS;
+import strategies.StrategyBestFirst;
 
 public class Conflict {
 	private ConflictType conflictType;
@@ -97,19 +99,23 @@ public class Conflict {
 	}
 
 	public void solveAgentOnBox(Node node, Agent agent, Box box, int index, List<List<Node>> allSolutions) {
-		Strategy strategy = new StrategyBFS();
-		Search s = new Search();
-		List<Node> old = World.getInstance().getSolutionMap().get(agent.getId());
-		List<Node> tmpPlan = old.subList(index, old.size());
+		Agent agentToMove = agent;
 
-		s.setBoxRemovalPlan(tmpPlan, box);
-
-		agent.initialState.boxes.put(box.getId(), box);
-		List<Node> plan = s.search(strategy, agent.initialState, SearchType.MOVE_OWN_BOX);
-		agent.initialState.boxes.remove(box.getId(), box);
+		agentToMove.generateInitialState();
+		agentToMove.initialState.agentRow = allSolutions.get(agent.getId()).get(index-2).agentRow;
+		agentToMove.initialState.agentCol = allSolutions.get(agent.getId()).get(index-2).agentCol;
+		agentToMove.initialState.boxes.put(agent.getIntention().getBox().getId(), agent.getIntention().getBox());
+		agentToMove.initialState.goals.put(agent.getIntention().getDesire().getBelief().getGoal().getId(), agent.getIntention().getDesire().getBelief().getGoal());
+		agentToMove.initialState.boxes.put(box.getId(), box);
 		
-		World.getInstance().getSolutionMap().put(agent.getId(), plan);
-		Agent agentToMoveAway = World.getInstance().getAgents().get(agent.getId());
+		Strategy strategy = new StrategyBestFirst(new AStar(agentToMove.initialState));
+//		Strategy strategy = new StrategyBFS();
+		Search s = new Search();
+		
+		List<Node> plan = s.search(strategy, agentToMove.initialState, SearchType.PATH);
+		System.err.println(plan);
+		World.getInstance().getSolutionMap().put(agentToMove.getId(), plan);
+		Agent agentToMoveAway = World.getInstance().getAgents().get(agentToMove.getId());
 		World.getInstance().getBeliefs().add(agentToMoveAway.getIntention().getDesire().getBelief());
 		
 	}
