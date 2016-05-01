@@ -106,7 +106,8 @@ public class Run {
 						con.solveAgentOnBox();
 						break;
 					case Box_Box:
-						con.solveBoxOnBox();
+						con.solveBoxOnBox(con, stepInPlan,
+								allSolutions);
 						break;
 					}
 					replanned = true;

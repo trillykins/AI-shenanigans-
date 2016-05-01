@@ -109,12 +109,17 @@ public class DetectConflict {
 															// conflict.
 							return conflict;
 						}
-						boolean isOtherAgentBox = checkBoxes(nodeRow, nodeCol, a);
+						
+						Node nextNode = null;
+						if(World.getInstance().getSolutionMap().get(agent.getId()).size() > index + 1)
+							nextNode = World.getInstance().getSolutionMap().get(agent.getId()).get(index+1);
+						
+						boolean isOtherAgentBox = checkBoxes(nodeRow, nodeCol, a,nextNode);
 						if (isOtherAgentBox) {
 							conflict = new Conflict();
 							if (node.action.actType.equals(Command.type.Move)) {
 								conflict.setConflictType(ConflictType.Agent_Box);
-							} else {
+							} else if (node.action.actType.equals(Command.type.Pull) || node.action.actType.equals(Command.type.Push)){
 								conflict.setConflictType(ConflictType.Box_Box);
 							}
 							conflict.setBox(conflictBox);
@@ -142,9 +147,7 @@ public class DetectConflict {
 	 * @return
 	 */
 	public boolean isCellFree(int row, int col, Agent agent) {
-
 		boolean isBoxPosi = isBoxPosi(row, col);
-
 		for (Agent agen : World.getInstance().getAgents().values()) {
 			if (agen.getId() != agent.getId()) {
 				// check current postion is the next postion of other agent
@@ -163,7 +166,7 @@ public class DetectConflict {
 				} else if (isBoxPosi) {
 					// If current position is the box of other agent, then could
 					// not move
-					if (checkBoxes(row, col, agen)) {
+					if (checkBoxes(row, col, agen,null)) {
 						return false;
 					}
 
@@ -173,7 +176,7 @@ public class DetectConflict {
 		}
 		boolean isOwnBox = true;
 		if (isBoxPosi) {
-			isOwnBox = checkBoxes(row, col, agent);
+			isOwnBox = checkBoxes(row, col, agent,null);
 		}
 		return isOwnBox && !World.getInstance().getWalls().contains(new Position(row, col));
 	}
@@ -203,14 +206,22 @@ public class DetectConflict {
 	 * @param agen
 	 * @return
 	 */
-	public boolean checkBoxes(int row, int col, Agent agen) {
-		/*we have to check for all other boxes*/
-		for(Integer bId : World.getInstance().getBoxes().keySet()){
+	public boolean checkBoxes(int row, int col, Agent agen,Node nextNode) {
+		/*agent on box*/
+		for (Integer bId : agen.initialState.boxes.keySet()) {
 			Box b = World.getInstance().getBoxes().get(bId);
 			if (b.getPosition().equals(new Position(row, col))) {
+				System.err.println("Agent on Box conflict detected");
 				conflictBox = b;
 				return true;
-			} else {
+			} else if(nextNode != null){
+				/*box on box conflict detected*/
+				if(nextNode.agentRow == b.getPosition().getX() && nextNode.agentCol == b.getPosition().getY()){
+				conflictBox = b;
+				return true;
+				}
+			}
+			else {
 				return false;
 			}
 		}
