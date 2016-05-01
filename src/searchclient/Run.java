@@ -1,5 +1,7 @@
 package searchclient;
 
+import heuristics.AStar;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -9,6 +11,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import searchclient.Search.SearchType;
+import strategies.Strategy;
+import strategies.StrategyBestFirst;
 import atoms.Agent;
 import atoms.Box;
 import atoms.Goal;
@@ -18,10 +23,7 @@ import bdi.Belief;
 import bdi.Intention;
 import conflicts.Conflict;
 import conflicts.DetectConflict;
-import heuristics.AStar;
-import searchclient.Search.SearchType;
-import strategies.Strategy;
-import strategies.StrategyBestFirst;
+import conflicts.MABoxConflicts;
 
 public class Run {
 
@@ -103,6 +105,8 @@ public class Run {
 								allSolutions);
 						break;
 					case Agent_Box:
+						MABoxConflicts solve = new MABoxConflicts();
+						solve.solveMAgentBoxConflict(con.getBox(),con.getNode(),con.getSender(),stepInPlan,allSolutions);
 						break;
 					case Box_Box:
 						// SolveBoxWithBoxConflict solve = new
