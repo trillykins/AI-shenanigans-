@@ -134,14 +134,12 @@ public class Agent implements IMessage {
 			/*if a goal has been solved we do not want to consider it in our calculations*/
 			if(goal.isSolved())
 				continue;
-			
 			int goalPriority = goal.getPriority();
 			
 			/* compute distance from agent to the closest box.*/
 			List<Object> result = findClosestBox(goal);
 			int costOfClosestBoxToGoal = (int) result.get(0);
 			closestBox = (Box) result.get(1);
-			
 			int costOfAgentToClosestBox = Utils.manhattenDistance(pos, closestBox.getPosition());
 			
 			/*calculate current number of free spaces surrounding the goal*/
@@ -176,8 +174,8 @@ public class Agent implements IMessage {
 			}
 		}
 		System.err.println("Best intention = " + bestDesire + ", " + bestBox);
-		intention = new Intention(bestDesire, bestBox);
-		return true;
+		intention = (bestDesire != null && bestBox != null ? new Intention(bestDesire, bestBox) : null);
+		return intention != null;
 	}
 
 	public List<Object> findClosestBox(Goal goal) {

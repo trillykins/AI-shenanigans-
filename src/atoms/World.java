@@ -130,6 +130,20 @@ public class World {
 		return size;
 	}
 
+	public void updateBeliefs() {
+		for (Goal goal : World.getInstance().getGoals().values()) {
+			if (!goal.isSolved()) {
+				boolean contained = true;
+				for (Belief b : World.getInstance().getBeliefs()) {
+					if (goal.equals(b.getGoal()))
+						contained = true;
+				}
+				if (!contained)
+					World.getInstance().getBeliefs().add(new Belief(goal));
+			}
+		}
+	}
+	
 	public Agent generatePlan(Agent agent) {
 		agent.generateInitialState();
 		if (!agent.generateDesires()) {
@@ -139,6 +153,7 @@ public class World {
 			return agent;
 		}
 		Intention intention = agent.getIntention();
+		System.err.println(intention.getDesire() == null);
 		Goal goal = intention.getDesire().getBelief().getGoal();
 		Box intentionBox = intention.getBox();
 		World.getInstance().getBeliefs().remove(intention.getDesire().getBelief());
