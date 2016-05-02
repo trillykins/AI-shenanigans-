@@ -32,25 +32,27 @@ public class DetectConflict {
 
 		if (World.getInstance().getAgents().size() == 1) {
 			// System.exit(0); // TODO MA debug purpose
-			Agent agent = World.getInstance().getAgents().get(0);
+			Agent a1 = World.getInstance().getAgents().get(0);
 			/*
 			 * as there is no other agents that can be in a1's way, the only
-			 * obstacle a1 can bump into is a box
+			 * obsticle a1 can bump into is a box
 			 */
-			Intention intention = agent.getIntention();
+			Intention intention = a1.getIntention();
 			if (intention != null) {
-				Node node = agent.plan.get(index);
+
+				Node node = World.getInstance().getSolutionMap().get(a1.getId()).get(index);
 				Box intentionBox = intention.getBox();
 				for (Box box : World.getInstance().getBoxes().values()) {
 					if (!box.equals(intentionBox)) {
-						if (box.getPosition().equals(agent.getPosition())
+						if (box.getPosition().equals(a1.getPosition())
 								|| intentionBox.getPosition().equals(box.getPosition())) {
 							conflict = new Conflict();
 							if (node.action.actType.equals(Command.type.Move)) {
-								conflict.setConflictType(ConflictType.Agent_Box);
+								conflict.setConflictType(ConflictType.SINGLE_AGENT_BOX);
 							} else {
-								conflict.setConflictType(ConflictType.Box_Box);
+								conflict.setConflictType(ConflictType.BOX_BOX);
 							}
+							conflict.setSender(World.getInstance().getAgents().get(0));
 							conflict.setBox(box);
 							conflict.setNode(node);
 							return conflict;
@@ -72,15 +74,14 @@ public class DetectConflict {
 					Agent sender = null;
 					Agent receiver = null;
 					if (a.getId() != agent.getId()) {
-						LinkedList<Node> solutionForAgentX = (LinkedList<Node>) World.getInstance().getSolutionMap()
-								.get(a.getId());
+						LinkedList<Node> solutionForAgentX = (LinkedList<Node>) World.getInstance().getSolutionMap().get(a.getId());
 						// solution list is not empty
 						if (solutionForAgentX != null && solutionForAgentX.size() > 0) {
 							Node next = solutionForAgentX.peekLast();
 							if (next.agentCol == nodeCol && next.agentRow == nodeRow
 									|| agent.getPosition() == a.getPosition()) {
 								conflict = new Conflict();
-								conflict.setConflictType(ConflictType.Agent);
+								conflict.setConflictType(ConflictType.AGENT);
 								if (a.getPriority() > agent.getPriority()) {
 									sender = a;
 									receiver = agent;
@@ -94,27 +95,23 @@ public class DetectConflict {
 								return conflict;
 							}
 						}
-
 						if (nodeCol == a.getPosition().getY() && nodeRow == a.getPosition().getX()) {
 							conflict = new Conflict();
-							conflict.setConflictType(ConflictType.Agent);
+							conflict.setConflictType(ConflictType.AGENT);
 							conflict.setSender(agent);
 							conflict.setReceiver(a);
 							Node previousNode = node.parent;
-							conflict.setNode(previousNode); // Need to get the
-															// previous node, as
-															// the current one
-															// already has a
-															// conflict.
+							// Need to get the previous node, as the current one already has a conflict.
+							conflict.setNode(previousNode);
 							return conflict;
 						}
 						boolean isOtherAgentBox = checkBoxes(nodeRow, nodeCol, a);
 						if (isOtherAgentBox) {
 							conflict = new Conflict();
 							if (node.action.actType.equals(Command.type.Move)) {
-								conflict.setConflictType(ConflictType.Agent_Box);
+								conflict.setConflictType(ConflictType.SINGLE_AGENT_BOX);
 							} else {
-								conflict.setConflictType(ConflictType.Box_Box);
+								conflict.setConflictType(ConflictType.BOX_BOX);
 							}
 							conflict.setBox(conflictBox);
 							conflict.setSender(agent);
@@ -147,9 +144,9 @@ public class DetectConflict {
 		for (Agent agen : World.getInstance().getAgents().values()) {
 			if (agen.getId() != agent.getId()) {
 				// check current postion is the next postion of other agent
-				LinkedList<Node> solu = (LinkedList<Node>) World.getInstance().getSolutionMap().get(agen.getId());
-				if (solu.size() > 0) {
-					Node next = solu.peek();
+				LinkedList<Node> plan = (LinkedList<Node>) World.getInstance().getSolutionMap().get(agen.getId());
+				if (plan.size() > 0) {
+					Node next = plan.peek();
 					int nextcol = next.agentCol;
 					int nextrow = next.agentRow;
 					if (nextcol == col && nextrow == row) {
@@ -214,5 +211,4 @@ public class DetectConflict {
 		}
 		return false;
 	}
-
 }

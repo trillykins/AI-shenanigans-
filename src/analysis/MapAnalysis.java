@@ -87,15 +87,15 @@ public class MapAnalysis {
 		List<Position> fields = getAllSurroungdings(posi);
 		int numberOfOccupiedSpaces = 0;
 		for(Position pos : fields){
-			if(isWallPosi(pos)) {
+			if(!isWallPosi(pos)) {
 				numberOfOccupiedSpaces++;
 			}	
 		}
-		if(numberOfOccupiedSpaces >= 4) {
+		if(numberOfOccupiedSpaces <= 4) {
 			narrowCells.add(posi);	
 		}
 		
-		if(numberOfOccupiedSpaces < 3) {
+		if(numberOfOccupiedSpaces > 3) {
 			for(Position position:narrowCells) {
 				if(isNeighbourCell(posi, position)) {
 					numberOfOccupiedSpaces++;
