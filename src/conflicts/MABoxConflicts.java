@@ -160,33 +160,6 @@ public class MABoxConflicts {
 		agent.initialState.boxes.put(moveBox.getId(),moveBox);
 		
 		List<Node> newPlan = sear.search(strategy, agent.initialState, Search.SearchType.PATH);
-		if(newPlan != null && newPlan.size() > 0) {
-			System.out.println("New Plan");
-		}
-		
-		int priority = World.getInstance().getFreeSpace().get(oriAgent.getPosition()).getNarrowCorValue();
-		if(priority >= 10) {
-			int size = compareReplanSize(oriAgent,newPlan);
-		}
-	
-//		//replan the previous plan
-//		Node lastNo = newPlan.get(newPlan.size()-1);
-//		agent.initialState.agentCol = lastNo.agentCol;
-//		agent.initialState.agentRow = lastNo.agentRow;
-//		Intention inten = agent.getIntention();
-//		
-//		Goal goal = inten.getDesire().getBelief().getGoal();
-//		agent.initialState.goals.put(goal.getId(),goal);
-//		agent.initialState.boxes = lastNo.boxes;
-//		
-//		Strategy strategy1 = new StrategyBFS();
-//		Search sear1 = new Search();
-//		List<Node> replanPrePlan = sear1.search(strategy1, agent.initialState, Search.SearchType.PATH);
-//		if(replanPrePlan != null && replanPrePlan.size() > 0) {
-//			System.out.println("New Plan");
-//		}
-//		
-//		newPlan.addAll(replanPrePlan);
 		return newPlan;
 	}
 	
