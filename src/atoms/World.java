@@ -1,13 +1,14 @@
 package atoms;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import analysis.FreeSpace;
+import bdi.Belief;
+import bdi.Intention;
 import searchclient.Node;
 import searchclient.SearchClient;
-import bdi.Belief;
 
 public class World {
 	private Map<Integer, Agent> agents;
@@ -17,9 +18,10 @@ public class World {
 	private Map<Integer, Goal> solvedGoals;
 	private Set<Position> walls;
 	private Set<Color> colors;
-	private List<Belief> beliefs;
-	
-	private Map<Integer,LinkedList<Node>> solutionMap;
+	private Set<Belief> beliefs;
+	private Map<Integer, List<Node>> solutionMap;
+	private Map<Position, FreeSpace> freeSpace;
+	// private Map<Integer, List<FreeSpace>> freeSpace;
 
 	private static World instance = null;
 
@@ -30,12 +32,13 @@ public class World {
 		return instance;
 	}
 
-	protected World() {}
+	protected World() {
+	}
 
 	public Map<Integer, Box> getBoxesInGoals() {
 		return boxesInGoals;
 	}
-	
+
 	public void setBoxesInGoals(Map<Integer, Box> boxesInGoals) {
 		this.boxesInGoals = boxesInGoals;
 	}
@@ -48,11 +51,11 @@ public class World {
 		this.solvedGoals = solvedGoals;
 	}
 
-	public List<Belief> getBeliefs() {
+	public Set<Belief> getBeliefs() {
 		return beliefs;
 	}
 
-	public void setBeliefs(List<Belief> beliefs) {
+	public void setBeliefs(Set<Belief> beliefs) {
 		this.beliefs = beliefs;
 	}
 
@@ -95,36 +98,61 @@ public class World {
 	public void setWalls(Set<Position> walls) {
 		this.walls = walls;
 	}
-	
-	public Map<Integer, LinkedList<Node>> getSolutionMap() {
+
+	public Map<Integer, List<Node>> getSolutionMap() {
 		return solutionMap;
 	}
 
-	public void setSolutionMap(Map<Integer, LinkedList<Node>> solutionMap) {
+	public void setSolutionMap(Map<Integer, List<Node>> solutionMap) {
 		this.solutionMap = solutionMap;
 	}
 
-	public boolean isGlobalGoalState() {
-		boolean result = false;
-		for (Integer goalId : this.goals.keySet()) {
-			for (Integer boxId : this.boxes.keySet()) {
-				Goal goal = this.goals.get(goalId);
-				Box box = this.boxes.get(boxId);
-				if (goal.getLetter() == Character.toLowerCase(box.getLetter())) {
-					if (goal.getPosition().equals(box.getPosition())) {
-						result = true;
-						break;
-					} else
-						result = false;
-				}
-			}
-			if (!result) {
-				return false;
-			}
-		}
-		return result;
+	public Map<Position, FreeSpace> getFreeSpace() {
+		return freeSpace;
 	}
-	
+
+	public void setFreeSpace(Map<Position, FreeSpace> freeSpace) {
+		this.freeSpace = freeSpace;
+	}
+
+	public boolean isGlobalGoalState() {
+		for (Goal goal : goals.values()) {
+			if (!goal.isSolved())
+				return false;
+		}
+		return true;
+	}
+
+	public int findLongestPlan() {
+		int size = 0;
+		for (List<Node> solution : World.getInstance().getSolutionMap().values())
+			size = (size < solution.size() ? solution.size() : size);
+		return size;
+	}
+
+	public Agent generatePlan(Agent agent) {
+		agent.generateInitialState();
+		if (!agent.generateDesires()) {
+			return agent;
+		}
+		if (!agent.generateIntention()) {
+			return agent;
+		}
+		Intention intention = agent.getIntention();
+		Goal goal = intention.getDesire().getBelief().getGoal();
+		Box intentionBox = intention.getBox();
+		World.getInstance().getBeliefs().remove(intention.getDesire().getBelief());
+		agent.initialState.goals.put(goal.getId(), goal);
+		agent.initialState.boxes.put(intentionBox.getId(), intentionBox);
+		return agent;
+	}
+
+	public void generatePlans() {
+		for (Agent agent : World.getInstance().getAgents().values()) {
+			generatePlan(agent);
+		}
+	}
+
 	public String toString() {
 		StringBuilder s = new StringBuilder();
 		for (int row = 0; row < SearchClient.MAX_ROW; row++) {
@@ -147,8 +175,8 @@ public class World {
 						break;
 					}
 				}
-				for(Agent a : agents.values()) {
-					if(row == a.getPosition().getX() && col == a.getPosition().getY()) {
+				for (Agent a : agents.values()) {
+					if (row == a.getPosition().getX() && col == a.getPosition().getY()) {
 						s.append(a.getId());
 						skip = true;
 						break;
@@ -158,7 +186,7 @@ public class World {
 					continue;
 				if (World.getInstance().getWalls().contains(pos)) {
 					s.append("+");
-				}  else {
+				} else {
 					s.append(" ");
 				}
 			}

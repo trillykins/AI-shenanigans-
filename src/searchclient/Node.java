@@ -3,12 +3,15 @@ package searchclient;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
 import atoms.Box;
+import atoms.Color;
 import atoms.Goal;
 import atoms.Position;
 import atoms.World;
@@ -18,6 +21,7 @@ import searchclient.Command.type;
 public class Node {
 	private static Random rnd = new Random(1);
 
+	public Color agentColor;
 	public int agentRow;
 	public int agentCol;
 	public int moveToPositionRow;
@@ -71,12 +75,12 @@ public class Node {
 		return result;
 	}
 
-	public boolean agentAtMovePosition(){
+	public boolean agentAtMovePosition() {
 		if (agentRow == moveToPositionRow && agentCol == moveToPositionCol)
 			return true;
 		return false;
 	}
-	
+
 	public ArrayList<Node> getExpandedNodes() {
 		ArrayList<Node> expandedNodes = new ArrayList<Node>(Command.every.length);
 		for (Command c : Command.every) {
@@ -111,8 +115,11 @@ public class Node {
 								break;
 							}
 						}
-						n.boxes.put(foundBox.getId(), new Box(foundBox.getId(), new Position(newBoxRow, newBoxCol), foundBox.getLetter(), foundBox.getColor()));
-						expandedNodes.add(n);
+						if (foundBox.getColor().equals(agentColor)) {
+							n.boxes.put(foundBox.getId(), new Box(foundBox.getId(), new Position(newBoxRow, newBoxCol),
+									foundBox.getLetter(), foundBox.getColor()));
+							expandedNodes.add(n);
+						}
 					}
 				}
 			} else if (c.actType == type.Pull) {
@@ -135,7 +142,8 @@ public class Node {
 								break;
 							}
 						}
-						n.boxes.put(foundBox.getId(), new Box(foundBox.getId(), new Position(agentRow, agentCol), foundBox.getLetter(), foundBox.getColor()));
+						n.boxes.put(foundBox.getId(), new Box(foundBox.getId(), new Position(agentRow, agentCol),
+								foundBox.getLetter(), foundBox.getColor()));
 						expandedNodes.add(n);
 					}
 				}
@@ -175,9 +183,11 @@ public class Node {
 															// column (-1)
 	}
 
-	private Node childNode() {
+	public Node childNode() {
 		Node copy = new Node(this, this.agentId);
+		copy.agentColor = this.agentColor;
 		copy.boxes = new HashMap<Integer, Box>(this.boxes);
+		copy.walls = new HashSet<Position>(this.walls);
 		copy.goals = this.goals;
 		copy.moveToPositionRow = this.moveToPositionRow;
 		copy.moveToPositionCol = this.moveToPositionCol;
@@ -219,7 +229,7 @@ public class Node {
 			return false;
 		if (agentRow != other.agentRow)
 			return false;
-		if(!boxes.equals(other.boxes))
+		if (!boxes.equals(other.boxes))
 			return false;
 		return true;
 	}
@@ -250,7 +260,7 @@ public class Node {
 				}
 				if (skip)
 					continue;
-				if (World.getInstance().getWalls().contains(pos)) {
+				if (walls.contains(pos)) {
 					s.append("+");
 				} else if (row == this.agentRow && col == this.agentCol) {
 					s.append(agentId);
@@ -262,4 +272,17 @@ public class Node {
 		}
 		return s.toString();
 	}
+
+	public boolean movedAway(List<Node> otherPlan) {
+		Position aPos = new Position(agentRow, agentCol);
+		for (Node otherNode : otherPlan) {
+			if (otherNode.agentRow == agentRow && otherNode.agentCol == agentCol)
+				return false;
+			for (Box b : otherNode.boxes.values())
+				if (b.getPosition().equals(aPos))
+					return false;
+		}
+		return true;
+	}
+	
 }
