@@ -35,7 +35,7 @@ public class DetectConflict {
 			Agent a1 = World.getInstance().getAgents().get(0);
 			/*
 			 * as there is no other agents that can be in a1's way, the only
-			 * obstacle a1 can bump into is a box
+			 * obsticle a1 can bump into is a box
 			 */
 			Intention intention = a1.getIntention();
 			if (intention != null) {
@@ -74,8 +74,7 @@ public class DetectConflict {
 					Agent sender = null;
 					Agent receiver = null;
 					if (a.getId() != agent.getId()) {
-						LinkedList<Node> solutionForAgentX = (LinkedList<Node>) World.getInstance().getSolutionMap()
-								.get(a.getId());
+						LinkedList<Node> solutionForAgentX = (LinkedList<Node>) World.getInstance().getSolutionMap().get(a.getId());
 						// solution list is not empty
 						if (solutionForAgentX != null && solutionForAgentX.size() > 0) {
 							Node next = solutionForAgentX.peekLast();
@@ -154,8 +153,7 @@ public class DetectConflict {
 						return false;
 					}
 				}
-				if (agen.getPosition().getY() == col
-						&& agen.getPosition().getX() == row) {
+				if (agen.getPosition().getY() == col && agen.getPosition().getX() == row) {
 					// if current position is the position of other agent
 					return false;
 				} else if (isBoxPosi) {
@@ -173,9 +171,7 @@ public class DetectConflict {
 		if (isBoxPosi) {
 			isOwnBox = checkBoxes(row, col, agent);
 		}
-		return isOwnBox
-				&& !World.getInstance().getWalls()
-						.contains(new Position(row, col));
+		return isOwnBox && !World.getInstance().getWalls().contains(new Position(row, col));
 	}
 
 	/**

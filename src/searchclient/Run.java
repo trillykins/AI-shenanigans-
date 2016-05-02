@@ -138,8 +138,9 @@ public class Run {
 				System.err.println("Global goal state found = " + world.isGlobalGoalState());
 			}
 		}
-	}
 
+	}
+	
 	public void updateBeliefs() {
 		for (Goal goal : World.getInstance().getGoals().values()) {
 			if (!goal.isSolved()) {
@@ -153,61 +154,4 @@ public class Run {
 			}
 		}
 	}
-
-//	private LinkedList<Node> executePlan(SearchClient client, Node n,
-//			Agent sender, Agent receiver, HashMap<Integer, LinkedList<Node>> agentSolutions, int index) {
-//		
-//		Map<Integer, Position> updatedAgentPositions = new HashMap<Integer, Position>(
-//				0);
-//		n.moveToPositionRow = 1;
-//		n.moveToPositionCol = 2;
-//		
-////		System.err.println("Receiver plan length: " + receiver.size());
-////		System.err.println(index);
-//		
-//		Strategy strategy = new StrategyBestFirst(new AStar(n));
-//		LinkedList<Node> solution = client.search(strategy, n, SearchType.MOVE_TO_POSITION);
-//		boolean hasWaited = false;
-//		if (solution != null) {
-//			for (Node s : solution) {
-//				
-//				updatedAgentPositions.put(sender.getId(), new Position(
-//						s.agentRow, s.agentCol));
-//				StringBuilder action = new StringBuilder();
-//				action.append("[");
-//
-//				for (Agent a : World.getInstance().getAgents().values()) {
-//					if (a.getId() == World.getInstance().getAgents().size() - 1
-//							&& World.getInstance().getAgents().size() > 1)
-//						action.append(", ");
-//					
-//					// Continue receiver-agent's plan, but 
-//					if (a.getId() != sender.getId()) {
-//						if (!hasWaited) {
-//							hasWaited = true;
-//							action.append("NoOp");
-//							System.err.println(a.getId() + ": NoOp");
-//						} else if (receiver.getId() < agentSolutions.size()) {
-//							action.append(agentSolutions.get(receiver.getId()).get(index).action.toString());
-//							System.err.print(a.getId() + ": " + agentSolutions.get(receiver.getId()).get(index).action
-//									.toString());
-//							index++;
-//						} else {
-//							action.append("NoOp");
-//							System.err.println(a.getId() + ": NoOp");
-//						}
-//					} else {
-//						action.append(s.action.toString());
-//						System.err.println(a.getId() + ": " + s.action.toString());
-//					}
-//				}
-//				action.append("]");
-//				System.out.println(action.toString());
-//				Utils.performUpdates(updatedAgentPositions, null);
-//				// System.err.println(s);
-//			}
-//		}
-//		System.err.println("replanning done");
-//		return solution;
-//	}
 }
