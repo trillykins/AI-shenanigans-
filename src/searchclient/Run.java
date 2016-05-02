@@ -112,6 +112,7 @@ public class Run {
 				}
 				if (world.isGlobalGoalState()) {
 					System.err.println("DONE");
+					System.err.println("World:\n"+world);
 					return;
 				}
 
@@ -208,13 +209,13 @@ public class Run {
 						if (in.ready())
 							in.readLine();
 					} catch (IOException e) {
-						System.err.println(e.getMessage());
-						// System.exit(0);
+						e.printStackTrace();
 					}
 					Utils.performUpdates(updatedAgentPositions, updatedBoxes);
 				}
 				if (world.isGlobalGoalState()) {
 					System.err.println("DONE");
+					System.err.println(world);
 					return;
 				}
 
