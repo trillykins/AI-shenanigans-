@@ -3,6 +3,7 @@ package atoms;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -25,7 +26,8 @@ public class Agent implements IMessage {
 	private Set<Desire> desires;
 	private Intention intention;
 	public Node initialState = null;
-
+	public List<Node> plan;
+	
 	public Agent(int id, String color, Position pos, int priority) {
 		this(id, Utils.determineColor(color), pos, priority);
 	}
@@ -42,8 +44,8 @@ public class Agent implements IMessage {
 		this.initialState.agentColor = col;
 		this.initialState.agentRow = pos.getX();
 		this.initialState.agentCol = pos.getY();
-		this.initialState.boxes = new HashMap<Integer, Box>(0);
-		this.initialState.goals = new HashMap<Integer, Goal>(0);
+		this.initialState.boxes = new HashMap<>(0);
+		this.initialState.goals = new HashMap<>(0);
 		this.initialState.walls = World.getInstance().getWalls();
 		this.desires = new HashSet<>(0);
 	}
