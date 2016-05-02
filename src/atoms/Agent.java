@@ -3,7 +3,6 @@ package atoms;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -26,8 +25,7 @@ public class Agent implements IMessage {
 	private Set<Desire> desires;
 	private Intention intention;
 	public Node initialState = null;
-	public List<Node> plan;
-	
+
 	public Agent(int id, String color, Position pos, int priority) {
 		this(id, Utils.determineColor(color), pos, priority);
 	}
@@ -44,8 +42,8 @@ public class Agent implements IMessage {
 		this.initialState.agentColor = col;
 		this.initialState.agentRow = pos.getX();
 		this.initialState.agentCol = pos.getY();
-		this.initialState.boxes = new HashMap<>(0);
-		this.initialState.goals = new HashMap<>(0);
+		this.initialState.boxes = new HashMap<Integer, Box>(0);
+		this.initialState.goals = new HashMap<Integer, Goal>(0);
 		this.initialState.walls = World.getInstance().getWalls();
 		this.desires = new HashSet<>(0);
 	}
@@ -120,7 +118,7 @@ public class Agent implements IMessage {
 	/*
 	 * Generate intention finds intentions based on cost and goal priority goal
 	 * priority reflects how many occupied surrounding spaces a goal have maybe
-	 * This method also consider the closest box that can full-fill the goal
+	 * This method also consider the closest box that can fulfill the goal
 	 */
 	public boolean generateIntention() {
 		if (desires.isEmpty())
@@ -157,7 +155,7 @@ public class Agent implements IMessage {
 //			
 			/*
 			 * we are looking for the smallest value possible, the optimal would
-			 * be a very close goal, which have 0 occupied neighbours.
+			 * be a very close goal, which have 0 occupied neighbors.
 			 */
 			if (bestTotal > currTotal) {
 				bestGoalPriority = goalPriority;
@@ -177,8 +175,9 @@ public class Agent implements IMessage {
 				}
 			}
 		}
-		intention = (bestDesire != null && bestBox != null ? new Intention(bestDesire, bestBox) : null);
-		return intention != null;
+		System.err.println("Best intention = " + bestDesire + ", " + bestBox);
+		intention = new Intention(bestDesire, bestBox);
+		return true;
 	}
 
 	public List<Object> findClosestBox(Goal goal) {
@@ -201,7 +200,7 @@ public class Agent implements IMessage {
 		result.add(b);
 		return result;
 	}
-	
+
 	@Override
 	public Message createMessage(Agent receiver, MessageType type, String content) {
 		return new Message(this, receiver, type, content);
@@ -249,8 +248,8 @@ public class Agent implements IMessage {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Agent [id=").append(id).append(", color=").append(col).append(", pos=").append(pos)
-				.append(", priority=").append(priority).append("]");
+		builder.append("Agent [id=").append(id).append(", colour=").append(col).append(", ").append(pos).append(", priority=")
+				.append(priority).append("]");
 		return builder.toString();
 	}
 }

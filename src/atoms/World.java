@@ -123,6 +123,13 @@ public class World {
 		return true;
 	}
 
+	public int findLongestPlan() {
+		int size = 0;
+		for (List<Node> solution : World.getInstance().getSolutionMap().values())
+			size = (size < solution.size() ? solution.size() : size);
+		return size;
+	}
+
 	public Agent generatePlan(Agent agent) {
 		agent.generateInitialState();
 		if (!agent.generateDesires()) {
@@ -143,47 +150,6 @@ public class World {
 	public void generatePlans() {
 		for (Agent agent : World.getInstance().getAgents().values()) {
 			generatePlan(agent);
-//			agent.generateInitialState();
-//			if (!agent.generateDesires()) {
-//				continue;
-//			}
-//			if (!agent.generateIntention()) {
-//				continue;
-//			}
-//			Intention intention = agent.getIntention();
-//			Goal goal = intention.getDesire().getBelief().getGoal();
-//			Box intentionBox = intention.getBox();
-//			World.getInstance().getBeliefs().remove(intention.getDesire().getBelief());
-//			agent.initialState.goals.put(goal.getId(), goal);
-//			agent.initialState.boxes.put(intentionBox.getId(), intentionBox);
-
-			// Add boxes of same color to the initialstate.
-			// for (Box box : World.getInstance().getBoxes().values()) {
-			// if (box.getColor().equals(agent.getColor())) {
-			// agent.initialState.boxes.put(box.getId(), box);
-			// }
-			// }
-		}
-	}
-
-	public int findLongestPlan() {
-		int size = 0;
-		for (List<Node> solution : World.getInstance().getSolutionMap().values())
-			size = (size < solution.size() ? solution.size() : size);
-		return size;
-	}
-
-	public void updateBeliefs() {
-		for (Goal goal : World.getInstance().getGoals().values()) {
-			if (!goal.isSolved()) {
-				boolean contained = true;
-				for (Belief b : World.getInstance().getBeliefs()) {
-					if (goal.equals(b.getGoal()))
-						contained = true;
-				}
-				if (!contained)
-					World.getInstance().getBeliefs().add(new Belief(goal));
-			}
 		}
 	}
 
@@ -202,18 +168,16 @@ public class World {
 				}
 				if (skip)
 					continue;
-				for (Agent a : agents.values()) {
-					if (row == a.getPosition().getX() && col == a.getPosition().getY()) {
-						s.append(a.getId());
+				for (Goal g : goals.values()) {
+					if (g.getPosition().equals(pos)) {
+						s.append(g.getLetter());
 						skip = true;
 						break;
 					}
 				}
-				if (skip)
-					continue;
-				for (Goal g : goals.values()) {
-					if (g.getPosition().equals(pos)) {
-						s.append(g.getLetter());
+				for (Agent a : agents.values()) {
+					if (row == a.getPosition().getX() && col == a.getPosition().getY()) {
+						s.append(a.getId());
 						skip = true;
 						break;
 					}
