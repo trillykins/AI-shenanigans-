@@ -101,16 +101,15 @@ public class DetectConflict {
 									conflict.setConflictType(ConflictType.SINGLE_AGENT_BOX);
 								} else if (curAgentNode.action.actType.equals(Command.type.Pull)
 										|| curAgentNode.action.actType.equals(Command.type.Push)) {
-									{
-										conflict.setConflictType(ConflictType.BOX_BOX);
-									}
-									conflict.setReceiverBox(receiverBox);
-									conflict.setSenderBox(senderBox);
-									conflict.setSender(curAgent);
-									conflict.setReceiver(otherAgent);
-									conflict.setNode(curAgentNode);
-									return conflict;
+									conflict.setConflictType(ConflictType.BOX_BOX);
+					
 								}
+								conflict.setReceiverBox(receiverBox);
+								conflict.setSenderBox(senderBox);
+								conflict.setSender(curAgent);
+								conflict.setReceiver(otherAgent);
+								conflict.setNode(curAgentNode);
+								return conflict;
 							}
 						}
 					}

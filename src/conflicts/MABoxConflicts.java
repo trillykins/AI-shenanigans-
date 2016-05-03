@@ -19,43 +19,76 @@ import bdi.Intention;
 
 public class MABoxConflicts {
 	
-	public void solveMAgentBoxConflict(Box box,Node node,Agent agent, int index, List<List<Node>> allSolutions) {
-		/**
-		 * First, set the conflict position to wall, and search solution again,
-		 * if there is new solutions, then return new solution, and set box back,
-		 * else find a agent to move this box away.
-		 */
-		List<Node> newPlan = findNewSolution(agent,box.getPosition());
-		if(newPlan != null && newPlan.size() >0) {
-			World.getInstance().getSolutionMap().put(agent.getId(), newPlan);
-			agent.initialState.walls.remove(box.getPosition());
+	public void solveMAgentBoxConflict(Conflict conflict, int index, List<List<Node>> allSolutions) {
+		
+		Box conflictBox = conflict.getReceiverBox();
+		Agent sender = conflict.getSender();
+		Agent receiver = conflict.getReceiver();
+		Node node = conflict.getNode();
+		if(node.action.actType.equals(Command.type.Move)) {
+			List<Node> newPlan = findNewSolution(sender,conflictBox.getPosition());
+			if(newPlan != null && newPlan.size() >0) {
+				World.getInstance().getSolutionMap().put(sender.getId(), newPlan);
+				sender.initialState.walls.remove(conflictBox.getPosition());
+			}else {
+				sender.initialState.walls.remove(conflictBox.getPosition());
+				Agent removeBoxAg = findAgentToMoveBox(sender,conflictBox,index);
+			
+				Intention intention = removeBoxAg.getIntention();
+				if(intention != null) {
+					Box intBox = intention.getBox();
+					if(conflictBox.equals(intBox)) {//The intention is the same box
+						moveIntentionBox(conflictBox,sender,removeBoxAg,index);
+						return;
+					}else {
+						//Re generate the intention
+						if(conflictBox.isOnGoal()) {//If the current box isOnGoal, then remove it and generate the new solution later
+							solveBoxOnGoalConflict(node,sender,removeBoxAg,conflictBox,index);
+							return;
+						}else {
+						//generateThenewIntention
+						}
+					}
+				}
+			}
 		}else {
+			
+		}
+		if(receiver != null) {
+			/**
+			 * First, set the conflict position to wall, and search solution again,
+			 * if there is new solutions, then return new solution, and set box back,
+			 * else find a agent to move this box away.
+			 */
+			List<Node> newPlan = findNewSolution(receiver,conflictBox.getPosition());
+			if(newPlan != null && newPlan.size() >0) {
+				World.getInstance().getSolutionMap().put(receiver.getId(), newPlan);
+				receiver.initialState.walls.remove(conflictBox.getPosition());
+				
+				for(Agent agen: World.getInstance().getAgents().values()) {
+					if(agen.getId() != receiver.getId()) {
+						List<Node> otherSolution = World.getInstance().getSolutionMap().get(agen.getId());
+						if(otherSolution != null && otherSolution.size() > index) {
+							for (int i=0;i<index-1; i++) {
+								otherSolution.remove(0);
+							}
+							World.getInstance().getSolutionMap().put(agen.getId(), otherSolution);
+						}else if(otherSolution == null) {
+							World.getInstance().getSolutionMap().put(agen.getId(), null);
+						}
+					}
+				}
+				return;
+			}else {
 			//find a agent to move the box away
 			/**
 			 * After found the agent
 			 * 1. if the conflict box is the intention of that agent, then let it move the box directly, and the original agent stay
 			 * 2. if it is not the intention, then try to regenerate the intention(would study this later)
 			 */
-			agent.initialState.walls.remove(box.getPosition());
-			Agent removeBoxAg = findAgentToMoveBox(agent,box,index);
-			
-			Intention intention = removeBoxAg.getIntention();
-			if(intention != null) {
-				Box intBox = intention.getBox();
-				if(box.equals(intBox)) {//The intention is the same box
-					moveIntentionBox(box,agent,removeBoxAg,index);
-					return;
-				}else {
-					//Re generate the intention
-					if(box.isOnGoal()) {//If the current box isOnGoal, then remove it and generate the new solution later
-						solveBoxOnGoalConflict(node,agent,removeBoxAg,box,index);
-						return;
-					}else {
-						//generateThenewIntention
-					}
-				}
-			}
 
+			}
+		
 		}
 	}
 	

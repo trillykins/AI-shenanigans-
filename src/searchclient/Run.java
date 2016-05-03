@@ -1,5 +1,7 @@
 package searchclient;
 
+import heuristics.AStar;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -9,18 +11,18 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import searchclient.Search.SearchType;
+import strategies.Strategy;
+import strategies.StrategyBestFirst;
+import utils.FileUtils;
+import utils.Utils;
 import atoms.Agent;
 import atoms.Box;
 import atoms.Position;
 import atoms.World;
 import conflicts.Conflict;
 import conflicts.DetectConflict;
-import heuristics.AStar;
-import searchclient.Search.SearchType;
-import strategies.Strategy;
-import strategies.StrategyBestFirst;
-import utils.FileUtils;
-import utils.Utils;
+import conflicts.MABoxConflicts;
 
 public class Run {
 	private World world = World.getInstance();
@@ -204,10 +206,10 @@ public class Run {
 								allSolutions);
 						break;
 					case SINGLE_AGENT_BOX:
-						System.err.println("BOX CONFLICT");
+						System.err.println("AGENT-BOX CONFLICT");
 						System.err.println(con.getReceiverBox());
-						con.solveAgentOnBox(con.getNode(), World.getInstance().getAgents().get(0), con.getReceiverBox(),
-								stepInPlan, allSolutions);
+						MABoxConflicts solve = new MABoxConflicts();
+						solve.solveMAgentBoxConflict(con,stepInPlan,allSolutions);
 						break;
 					case BOX_BOX:
 						con.solveBoxOnBox(con, stepInPlan, allSolutions);
