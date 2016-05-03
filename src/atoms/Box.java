@@ -5,14 +5,12 @@ public class Box {
 	private Position position;
 	private char letter;
 	private Color color;
-	private boolean isOnGoal;
 	
 	public Box(int id, Position p, char l, Color c) {
 		this.id = id;
 		this.position = p;
 		this.letter = l;
 		this.color = c;
-		this.isOnGoal = false;
 	}
 
 	public Position getPosition() {

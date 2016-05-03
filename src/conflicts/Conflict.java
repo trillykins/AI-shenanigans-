@@ -9,14 +9,12 @@ import atoms.Color;
 import atoms.Goal;
 import atoms.Position;
 import atoms.World;
-import heuristics.AStar;
 import searchclient.Command;
 import searchclient.Node;
 import searchclient.Search;
 import searchclient.Search.SearchType;
 import strategies.Strategy;
 import strategies.StrategyBFS;
-import strategies.StrategyBestFirst;
 
 public class Conflict {
 	private ConflictType conflictType;
@@ -163,7 +161,6 @@ public class Conflict {
 	}
 
 	public void solveAgentOnAgent(Node node, Agent a1, Agent a2, int index, List<List<Node>> allSolutions) {
-		// System.err.println("Theres is a agent on agent conflict!");
 		Agent agentToMove = a1.getPriority() > a2.getPriority() ? a2 : a1;
 		Agent agentToStay = a1.getPriority() > a2.getPriority() ? a1 : a2;
 
@@ -192,8 +189,6 @@ public class Conflict {
 		newPlanAgentToStay.add(0, noOp);
 		World.getInstance().getSolutionMap().put(agentToMove.getId(), newPlanAgentToMove);
 		World.getInstance().getSolutionMap().put(agentToStay.getId(), newPlanAgentToStay);
-		// Agent agentToMoveAway =
-		// World.getInstance().getAgents().get(newPlanAgentToMove.get(0).agentId);
 		World.getInstance().getBeliefs().add(agentToMove.getIntention().getDesire().getBelief());
 	}
 
@@ -201,20 +196,15 @@ public class Conflict {
 		Agent agentToMove = agent;
 		agentToMove.generateInitialState();
 		agentToMove.initialState.setPosition(World.getInstance().getAgents().get(0).getPosition());
-		agentToMove.initialState.boxes.put(agent.getIntention().getBox().getId(), agent.getIntention().getBox());
+		agentToMove.initialState.boxes.put(agent.getIntention().getBox().getId(),
+				World.getInstance().getBoxes().get(agent.getIntention().getBox().getId()));
 		agentToMove.initialState.goals.put(agent.getIntention().getDesire().getBelief().getGoal().getId(),
 				agent.getIntention().getDesire().getBelief().getGoal());
 		agentToMove.initialState.boxes.put(box.getId(), box);
-
-		Strategy strategy = new StrategyBestFirst(new AStar(agentToMove.initialState));
-		// Strategy strategy = new StrategyBFS();
+		Strategy strategy = new StrategyBFS();
 		Search s = new Search();
-
 		List<Node> plan = s.search(strategy, agentToMove.initialState, SearchType.PATH);
-		World.getInstance().write("agent conflict resolution plan: \n" + plan);
 		World.getInstance().getSolutionMap().put(agentToMove.getId(), plan);
-//		Agent agentToMoveAway = World.getInstance().getAgents().get(agentToMove.getId());
-//		World.getInstance().getBeliefs().add(agentToMoveAway.getIntention().getDesire().getBelief());
 	}
 
 	private List<Node> updatePlan(int agentId, int index) {

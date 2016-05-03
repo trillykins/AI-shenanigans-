@@ -16,6 +16,10 @@ public class Message {
 		this.content = content;
 	}
 
+	public Agent getSender() {
+		return this.sender;
+	}
+	
 	public void setSender(Agent sender) {
 		this.sender = sender;
 	}

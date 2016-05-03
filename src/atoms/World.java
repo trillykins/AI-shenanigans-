@@ -210,15 +210,6 @@ public class World {
 						break;
 					}
 				}
-				if (skip)
-					continue;
-				for (Goal g : goals.values()) {
-					if (g.getPosition().equals(pos)) {
-						s.append(g.getLetter());
-						skip = true;
-						break;
-					}
-				}
 				if(skip)
 					continue;
 				for (Agent a : agents.values()) {
@@ -229,6 +220,15 @@ public class World {
 					}
 				}
 				if (skip)
+					continue;
+				for (Goal g : goals.values()) {
+					if (g.getPosition().equals(pos)) {
+						s.append(g.getLetter());
+						skip = true;
+						break;
+					}
+				}
+				if(skip)
 					continue;
 				if (World.getInstance().getWalls().contains(pos)) {
 					s.append("+");

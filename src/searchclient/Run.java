@@ -19,14 +19,13 @@ import heuristics.AStar;
 import searchclient.Search.SearchType;
 import strategies.Strategy;
 import strategies.StrategyBestFirst;
-import utils.FileUtils;
 import utils.Utils;
 
 public class Run {
 	private World world = World.getInstance();
 	
 	public static void main(String[] args) throws Exception {
-//		System.err.println("SearchClient initializing. I am sending this using the error output stream.");
+		World.getInstance().write("SearchClient initializing. I am sending this using the error output stream.");
 		SearchClient client = new SearchClient();
 		client.init();
 		SearchClient.TIME = args.length > 1 ? Integer.parseInt(args[1]) : 300;
