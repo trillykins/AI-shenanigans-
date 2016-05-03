@@ -13,13 +13,13 @@ public class Search {
 	private List<Node> otherPlan;
 
 	public static enum SearchType {
-		PATH, MoveToPosition, MoveAway
+		PATH, MOVE_TO_POSITION, MOVE_AWAY, MOVE_OWN_BOX
 	}
 
 	public void setPlanForAgentToStay(List<Node> otherPlan) {
 		this.otherPlan = otherPlan;
 	}
-
+	
 	public List<Node> getOtherPlan() {
 		return this.otherPlan;
 	}
@@ -50,11 +50,11 @@ public class Search {
 				if (leafNode.isGoalState())
 					return leafNode.extractPlan();
 				break;
-			case MoveToPosition:
+			case MOVE_TO_POSITION:
 				if (leafNode.agentAtMovePosition())
 					return leafNode.extractPlan();
 				break;
-			case MoveAway:
+			case MOVE_AWAY:
 				if (leafNode.movedAway(otherPlan)) {
 					return leafNode.extractPlan();
 				}
