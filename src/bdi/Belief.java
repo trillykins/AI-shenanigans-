@@ -4,7 +4,8 @@ import atoms.Goal;
 
 public class Belief {
 	private Goal goal;
-
+	private boolean reserved;
+	
 	public Belief(Goal goal) {
 		this.goal = goal;
 	}
@@ -15,6 +16,14 @@ public class Belief {
 
 	public void setGoal(Goal goal) {
 		this.goal = goal;
+	}
+	
+	public boolean isReserved(){
+		return reserved;
+	}
+	
+	public void setReserved(boolean shit){
+		this.reserved = shit;
 	}
 	
 	@Override

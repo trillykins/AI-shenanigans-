@@ -1,4 +1,4 @@
-package searchclient;
+package utils;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -10,6 +10,7 @@ import atoms.Box;
 import atoms.Color;
 import atoms.Position;
 import atoms.World;
+import searchclient.Node;
 
 public class Utils {
 
@@ -71,8 +72,10 @@ public class Utils {
 	}
 
 	public static void performUpdates(Map<Integer, Position> agentPositions, Map<Integer, Box> boxes) {
-		for (Integer agentId : agentPositions.keySet()) {
-			World.getInstance().getAgents().get(agentId).setPosition(agentPositions.get(agentId));
+		if (agentPositions != null) {
+			for (Integer agentId : agentPositions.keySet()) {
+				World.getInstance().getAgents().get(agentId).setPosition(agentPositions.get(agentId));
+			}
 		}
 		if (boxes != null) {
 			for (Integer boxId : boxes.keySet()) {

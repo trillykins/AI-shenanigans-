@@ -19,6 +19,9 @@ import atoms.Goal;
 import atoms.Position;
 import atoms.World;
 import bdi.Belief;
+import strategies.Strategy;
+import utils.FileUtils;
+import utils.Utils;
 
 public class SearchClient {
 	public static int MAX_ROW = 0;
