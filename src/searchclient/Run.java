@@ -24,10 +24,9 @@ import utils.Utils;
 
 public class Run {
 	private World world = World.getInstance();
-	private FileUtils files = new FileUtils();
 	
 	public static void main(String[] args) throws Exception {
-		System.err.println("SearchClient initializing. I am sending this using the error output stream.");
+//		System.err.println("SearchClient initializing. I am sending this using the error output stream.");
 		SearchClient client = new SearchClient();
 		client.init();
 		SearchClient.TIME = args.length > 1 ? Integer.parseInt(args[1]) : 300;
@@ -36,7 +35,7 @@ public class Run {
 	}
 
 	private void runSolution(SearchClient client) {
-		files.write("Initial state:\n" + world.toString());
+		world.write("Initial state:\n" + world.toString());
 		if (world.getAgents().size() == 1) {
 			SAPlanner();
 		} else {
@@ -46,7 +45,7 @@ public class Run {
 
 	private void SAPlanner() {
 		boolean replanned = false;
-		while (!world.isGlobalGoalState()) {
+		test: while (!world.isGlobalGoalState()) {
 			List<List<Node>> allSolutions = new ArrayList<>(0);
 			if (!replanned) {
 				Map<Integer, List<Node>> agentSolutions = new HashMap<>(0);
@@ -56,7 +55,7 @@ public class Run {
 				Strategy strategy = new StrategyBestFirst(new AStar(a.initialState));
 				Search s = new Search();
 				List<Node> solution = s.search(strategy, a.initialState, SearchType.PATH);
-				for (Box box : World.getInstance().getBoxes().values()) {
+				 for (Box box : World.getInstance().getBoxes().values()) {
 					if (a.getIntention() != null && !box.equals(a.getIntention().getBox())) {
 						a.initialState.boxes.remove(box.getId());
 					}
@@ -98,39 +97,38 @@ public class Run {
 				if (con != null && !replanned) {
 					switch (con.getConflictType()) {
 					case AGENT:
-						files.write("AGENT-ON-AGENT CONFLICT");
-//						System.err.println("AGENT-ON-AGENT CONFLICT");
+						world.write("AGENT-ON-AGENT CONFLICT");
 						con.solveAgentOnAgent(con.getNode(), con.getSender(), con.getReceiver(), stepInPlan, allSolutions);
 						break;
 					case SINGLE_AGENT_BOX:
-						files.write("BOX CONFLICT");
+						world.write("BOX CONFLICT");
 						con.solveAgentOnBox(con.getNode(), World.getInstance().getAgents().get(0), con.getReceiverBox(), stepInPlan, allSolutions);
 						break;
 					case BOX_BOX:
-						files.write("BOX_BOX CONFLICT");
+						world.write("BOX_BOX CONFLICT");
 						break;
 					default:
-						files.write("UNDEFINED CONFLICT");
+						world.write("UNDEFINED CONFLICT");
 						break;
 					}
 					replanned = true;
-					break;
+					continue test;
 				} else {
 					replanned = false;
 					System.out.println(sb.toString());
-					files.write(sb.toString());
+					world.write(sb.toString());
 					try {
 						BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 						if (in.ready())
 							in.readLine();
 					} catch (IOException e) {
-						files.write(e.getMessage());
+						world.write(e.getMessage());
 					}
 					Utils.performUpdates(updatedAgentPositions, updatedBoxes);
 				}
 				world.updateBeliefs();
-				files.write("World:\n" + world.toString());
-				files.write("Global goal state found = " + world.isGlobalGoalState());
+				world.write("World:\n" + world.toString());
+				world.write("Global goal state found = " + world.isGlobalGoalState());
 			}
 		}
 	}
@@ -200,16 +198,18 @@ public class Run {
 				if (con != null && !replanned) {
 					switch (con.getConflictType()) {
 					case AGENT:
+						world.write("AGENT CONFLICT");
 						con.solveAgentOnAgent(con.getNode(), con.getSender(), con.getReceiver(), stepInPlan,
 								allSolutions);
 						break;
 					case SINGLE_AGENT_BOX:
-						System.err.println("BOX CONFLICT");
-						System.err.println(con.getReceiverBox());
+						world.write("BOX CONFLICT");
+//						System.err.println(con.getReceiverBox());
 						con.solveAgentOnBox(con.getNode(), World.getInstance().getAgents().get(0), con.getReceiverBox(),
 								stepInPlan, allSolutions);
 						break;
 					case BOX_BOX:
+						world.write("BOX_BOX CONFLICT");
 						con.solveBoxOnBox(con, stepInPlan, allSolutions);
 						break;
 					default:
@@ -220,25 +220,25 @@ public class Run {
 				} else {
 					replanned = false;
 					System.out.println(sb.toString());
-					System.err.println(sb.toString());
+					world.write(sb.toString());
 					try {
 						BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 						if (in.ready())
 							in.readLine();
 					} catch (IOException e) {
-						System.err.println(e.getMessage());
+//						System.err.println(e.getMessage());
 					}
 					Utils.performUpdates(updatedAgentPositions, updatedBoxes);
 				}
 				if (world.isGlobalGoalState()) {
-					System.err.println("DONE");
-					System.err.println("World:\n" + world.toString());
+//					System.err.println("DONE");
+//					System.err.println("World:\n" + world.toString());
 					return;
 				}
 
 				world.updateBeliefs();
-				System.err.println("World:\n" + world.toString());
-				System.err.println("Global goal state found = " + world.isGlobalGoalState());
+//				System.err.println("World:\n" + world.toString());
+//				System.err.println("Global goal state found = " + world.isGlobalGoalState());
 			}
 		}
 

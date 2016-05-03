@@ -262,6 +262,11 @@ public class Node {
 	public Position getPosition() {
 		return new Position(agentRow, agentCol);
 	}
+	
+	public void setPosition(Position pos) {
+		this.agentRow = pos.getX();
+		this.agentCol = pos.getY();
+	}
 
 	public String toString() {
 		StringBuilder s = new StringBuilder();

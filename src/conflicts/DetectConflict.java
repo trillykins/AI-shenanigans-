@@ -37,27 +37,31 @@ public class DetectConflict {
 			Agent a1 = World.getInstance().getAgents().get(0);
 			/*
 			 * as there is no other agents that can be in a1's way, the only
-			 * obsticle a1 can bump into is a box
+			 * obstacle a1 can bump into is a box
 			 */
 			Intention intention = a1.getIntention();
 			if (intention != null) {
 
-				Node node = World.getInstance().getSolutionMap().get(a1.getId()).get(index);
+				Node next = World.getInstance().getSolutionMap().get(a1.getId()).get(index);
 				Box intentionBox = intention.getBox();
 				for (Box box : World.getInstance().getBoxes().values()) {
 					if (!box.equals(intentionBox)) {
-						if (box.getPosition().equals(a1.getPosition())
-								|| intentionBox.getPosition().equals(box.getPosition())) {
+						if (box.getPosition().equals(next.getPosition())) {
 							conflict = new Conflict();
-							if (node.action.actType.equals(Command.type.Move)) {
+							if (next.action.actType.equals(Command.type.Move) || next.action.actType.equals(Command.type.Pull)) {
 								conflict.setConflictType(ConflictType.SINGLE_AGENT_BOX);
-							} else {
+								conflict.setReceiverBox(box);
+								conflict.setSender(World.getInstance().getAgents().get(0));
+								conflict.setNode(next);
+								World.getInstance().write("next:\n"+next);
+								return conflict;
+							} /*else {
 								conflict.setConflictType(ConflictType.BOX_BOX);
-							}
-							conflict.setReceiverBox(box);
-							conflict.setSender(World.getInstance().getAgents().get(0));
-							conflict.setNode(node);
-							return conflict;
+								conflict.setReceiverBox(box);
+								conflict.setSender(World.getInstance().getAgents().get(0));
+								conflict.setNode(node);
+								return conflict;
+							}*/
 						}
 					}
 				}

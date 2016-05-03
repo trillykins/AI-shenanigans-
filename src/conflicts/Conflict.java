@@ -79,7 +79,7 @@ public class Conflict {
 	}
 
 	public void solveAgentOnBox() {
-		System.err.println("Theres is a agent on box conflict!");
+		// System.err.println("Theres is a agent on box conflict!");
 
 	}
 
@@ -126,14 +126,15 @@ public class Conflict {
 		int noGoals = World.getInstance().getGoals().size();
 		if (newPlanAgentToMove.size() - 1 >= 0 && newPlanAgentToMove.size() - 1 >= 0) {
 
-			Position newGoalPos = new Position(newPlanAgentToMove.get(newPlanAgentToMove.size() - 1).agentRow, newPlanAgentToMove.get(newPlanAgentToMove.size() - 1).agentCol);
+			Position newGoalPos = new Position(newPlanAgentToMove.get(newPlanAgentToMove.size() - 1).agentRow,
+					newPlanAgentToMove.get(newPlanAgentToMove.size() - 1).agentCol);
 			char goalChar = Character.toLowerCase(agentToMoveBox.getLetter());
 			Color color = agentToMove.getColor();
 			Goal newGoal = new Goal(noGoals + 1, newGoalPos, goalChar, color, noGoals + 1);
 
 			List<Node> newPlanAgentToStay = allSolutions.get(agentToStay.getId());
 			for (int i = 0; i < index - 1; i++) {
-				if(newPlanAgentToStay.size() == 0)
+				if (newPlanAgentToStay.size() == 0)
 					break;
 				newPlanAgentToStay.remove(0);
 			}
@@ -162,7 +163,7 @@ public class Conflict {
 	}
 
 	public void solveAgentOnAgent(Node node, Agent a1, Agent a2, int index, List<List<Node>> allSolutions) {
-		System.err.println("Theres is a agent on agent conflict!");
+		// System.err.println("Theres is a agent on agent conflict!");
 		Agent agentToMove = a1.getPriority() > a2.getPriority() ? a2 : a1;
 		Agent agentToStay = a1.getPriority() > a2.getPriority() ? a1 : a2;
 
@@ -198,26 +199,22 @@ public class Conflict {
 
 	public void solveAgentOnBox(Node node, Agent agent, Box box, int index, List<List<Node>> allSolutions) {
 		Agent agentToMove = agent;
-
 		agentToMove.generateInitialState();
-		if (index - 2 >= 0) {
-			agentToMove.initialState.agentRow = allSolutions.get(agent.getId()).get(index - 2).agentRow;
-			agentToMove.initialState.agentCol = allSolutions.get(agent.getId()).get(index - 2).agentCol;
-			agentToMove.initialState.boxes.put(agent.getIntention().getBox().getId(), agent.getIntention().getBox());
-			agentToMove.initialState.goals.put(agent.getIntention().getDesire().getBelief().getGoal().getId(),
-					agent.getIntention().getDesire().getBelief().getGoal());
-			agentToMove.initialState.boxes.put(box.getId(), box);
+		agentToMove.initialState.setPosition(World.getInstance().getAgents().get(0).getPosition());
+		agentToMove.initialState.boxes.put(agent.getIntention().getBox().getId(), agent.getIntention().getBox());
+		agentToMove.initialState.goals.put(agent.getIntention().getDesire().getBelief().getGoal().getId(),
+				agent.getIntention().getDesire().getBelief().getGoal());
+		agentToMove.initialState.boxes.put(box.getId(), box);
 
-			Strategy strategy = new StrategyBestFirst(new AStar(agentToMove.initialState));
-			// Strategy strategy = new StrategyBFS();
-			Search s = new Search();
+		Strategy strategy = new StrategyBestFirst(new AStar(agentToMove.initialState));
+		// Strategy strategy = new StrategyBFS();
+		Search s = new Search();
 
-			List<Node> plan = s.search(strategy, agentToMove.initialState, SearchType.PATH);
-
-			World.getInstance().getSolutionMap().put(agentToMove.getId(), plan);
-			Agent agentToMoveAway = World.getInstance().getAgents().get(agentToMove.getId());
-			World.getInstance().getBeliefs().add(agentToMoveAway.getIntention().getDesire().getBelief());
-		}
+		List<Node> plan = s.search(strategy, agentToMove.initialState, SearchType.PATH);
+		World.getInstance().write("agent conflict resolution plan: \n" + plan);
+		World.getInstance().getSolutionMap().put(agentToMove.getId(), plan);
+//		Agent agentToMoveAway = World.getInstance().getAgents().get(agentToMove.getId());
+//		World.getInstance().getBeliefs().add(agentToMoveAway.getIntention().getDesire().getBelief());
 	}
 
 	private List<Node> updatePlan(int agentId, int index) {
