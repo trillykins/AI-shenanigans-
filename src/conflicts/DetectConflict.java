@@ -74,25 +74,30 @@ public class DetectConflict {
 					Agent sender = null;
 					Agent receiver = null;
 					if (a.getId() != agent.getId()) {
-						LinkedList<Node> solutionForAgentX = (LinkedList<Node>) World.getInstance().getSolutionMap().get(a.getId());
+						LinkedList<Node> solutionForAgentX = (LinkedList<Node>) World.getInstance().getSolutionMap()
+								.get(a.getId());
 						// solution list is not empty
 						if (solutionForAgentX != null && solutionForAgentX.size() > 0) {
-							Node next = solutionForAgentX.peekLast();
-							if (next.agentCol == nodeCol && next.agentRow == nodeRow
-									|| agent.getPosition() == a.getPosition()) {
-								conflict = new Conflict();
-								conflict.setConflictType(ConflictType.AGENT);
-								if (a.getPriority() > agent.getPriority()) {
-									sender = a;
-									receiver = agent;
-								} else {
-									sender = agent;
-									receiver = a;
+							// Node next = solutionForAgentX.peekLast(); -- this
+							// peekLast does not make sense to me (THEA)
+							if (solutionForAgentX.size() > index) {
+								Node next = solutionForAgentX.get(index);
+								if (next.agentCol == nodeCol && next.agentRow == nodeRow
+										|| agent.getPosition() == a.getPosition()) {
+									conflict = new Conflict();
+									conflict.setConflictType(ConflictType.AGENT);
+									if (a.getPriority() > agent.getPriority()) {
+										sender = a;
+										receiver = agent;
+									} else {
+										sender = agent;
+										receiver = a;
+									}
+									conflict.setSender(sender);
+									conflict.setReceiver(receiver);
+									conflict.setNode(node);
+									return conflict;
 								}
-								conflict.setSender(sender);
-								conflict.setReceiver(receiver);
-								conflict.setNode(node);
-								return conflict;
 							}
 						}
 						if (nodeCol == a.getPosition().getY() && nodeRow == a.getPosition().getX()) {
@@ -101,23 +106,33 @@ public class DetectConflict {
 							conflict.setSender(agent);
 							conflict.setReceiver(a);
 							Node previousNode = node.parent;
-							// Need to get the previous node, as the current one already has a conflict.
+							// Need to get the previous node, as the current one
+							// already has a conflict.
 							conflict.setNode(previousNode);
 							return conflict;
 						}
-						boolean isOtherAgentBox = checkBoxes(nodeRow, nodeCol, a);
+
+						Node nextNodeCurrAgent = null;
+						if (World.getInstance().getSolutionMap().get(agent.getId()).size() > index + 1)
+							nextNodeCurrAgent = World.getInstance().getSolutionMap().get(agent.getId()).get(index + 1);
+
+						boolean isOtherAgentBox = checkBoxes(nodeRow, nodeCol, a, nextNodeCurrAgent);
 						if (isOtherAgentBox) {
+							System.err.println("her 3");
 							conflict = new Conflict();
 							if (node.action.actType.equals(Command.type.Move)) {
 								conflict.setConflictType(ConflictType.SINGLE_AGENT_BOX);
-							} else {
-								conflict.setConflictType(ConflictType.BOX_BOX);
+							} else if (node.action.actType.equals(Command.type.Pull)
+									|| node.action.actType.equals(Command.type.Push)) {
+								{
+									conflict.setConflictType(ConflictType.BOX_BOX);
+								}
+								conflict.setBox(conflictBox);
+								conflict.setSender(agent);
+								conflict.setReceiver(a);
+								conflict.setNode(node);
+								return conflict;
 							}
-							conflict.setBox(conflictBox);
-							conflict.setSender(agent);
-							conflict.setReceiver(a);
-							conflict.setNode(node);
-							return conflict;
 						}
 					}
 				}
@@ -138,9 +153,7 @@ public class DetectConflict {
 	 * @return
 	 */
 	public boolean isCellFree(int row, int col, Agent agent) {
-
 		boolean isBoxPosi = isBoxPosi(row, col);
-
 		for (Agent agen : World.getInstance().getAgents().values()) {
 			if (agen.getId() != agent.getId()) {
 				// check current postion is the next postion of other agent
@@ -159,7 +172,7 @@ public class DetectConflict {
 				} else if (isBoxPosi) {
 					// If current position is the box of other agent, then could
 					// not move
-					if (checkBoxes(row, col, agen)) {
+					if (checkBoxes(row, col, agen, null)) {
 						return false;
 					}
 
@@ -169,7 +182,7 @@ public class DetectConflict {
 		}
 		boolean isOwnBox = true;
 		if (isBoxPosi) {
-			isOwnBox = checkBoxes(row, col, agent);
+			isOwnBox = checkBoxes(row, col, agent, null);
 		}
 		return isOwnBox && !World.getInstance().getWalls().contains(new Position(row, col));
 	}
@@ -199,12 +212,27 @@ public class DetectConflict {
 	 * @param agen
 	 * @return
 	 */
-	public boolean checkBoxes(int row, int col, Agent agen) {
+	public boolean checkBoxes(int row, int col, Agent agen, Node nextNodeCurrAgent) {
+		/* agent on box */
 		for (Integer bId : agen.initialState.boxes.keySet()) {
 			Box b = World.getInstance().getBoxes().get(bId);
 			if (b.getPosition().equals(new Position(row, col))) {
 				conflictBox = b;
 				return true;
+			} else if (nextNodeCurrAgent != null) {
+				/* box on box conflict detected */
+				if (nextNodeCurrAgent.agentRow == b.getPosition().getX()
+						&& nextNodeCurrAgent.agentCol == b.getPosition().getY()) {
+					conflictBox = b;
+					return true;
+				} else if (nextNodeCurrAgent.boxes.values().size() > 0) {
+					for (Box box : nextNodeCurrAgent.boxes.values()) {
+						if (box.getPosition().equals(b.getPosition())) {
+							conflictBox = b;
+							return true;
+						}
+					}
+				}
 			} else {
 				return false;
 			}

@@ -2,10 +2,10 @@ package conflicts;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import atoms.Agent;
 import atoms.Box;
+import atoms.Goal;
 import atoms.Position;
 import atoms.World;
 import heuristics.AStar;
@@ -68,7 +68,62 @@ public class Conflict {
 		this.box = box;
 	}
 
+	public void solveAgentOnBox(){
+		System.err.println("Theres is a agent on box conflict!");
+		
+	}
+	public void solveBoxOnBox(Conflict conflict, int index, List<List<Node>> allSolutions){
+		System.err.println("Theres is a box on box conflict!");
+		/*Here we look at the agent who's box we marked as a conflict box (in conflict type)*/
+		Agent agentToMove = conflict.getReceiver();
+		Agent agentToStay = conflict.getSender();
+		
+		/*First we find the coordinate of where to put a new goal*/
+		agentToMove.generateInitialState();
+		agentToMove.initialState.walls.add(new Position(agentToStay.getPosition()));
+		agentToMove.initialState.agentRow = agentToMove.getPosition().getX();
+		agentToMove.initialState.agentCol = agentToMove.getPosition().getY();
+
+		Strategy strategy = new StrategyBFS();
+		Search s = new Search();
+		s.setPlanForAgentToStay(updatePlan(agentToStay.getId(), index));
+		List<Node> newPlanAgentToMove = s.search(strategy, agentToMove.initialState, SearchType.MOVE_AWAY);
+		agentToMove.initialState.walls.remove(new Position(agentToStay.getPosition()));
+		
+		/*We create a new goal, for which we want the agent to move the blocking box to*/
+		Goal newGoal = new Goal(World.getInstance().getGoals().size()+1, 
+				new Position(	newPlanAgentToMove.get(newPlanAgentToMove.size()-1).agentRow,
+								newPlanAgentToMove.get(newPlanAgentToMove.size()-1).agentCol), 
+				Character.toLowerCase(conflict.getBox().getLetter()),agentToMove.getColor(),World.getInstance().getGoals().size()+1);
+		
+		List<Node> newPlanAgentToStay = allSolutions.get(agentToStay.getId());
+		for (int i = 0; i < index - 1; i++) {
+			newPlanAgentToStay.remove(0);
+		}
+		agentToMove.initialState.walls.remove(new Position(agentToStay.getPosition()));
+		
+		/*We set the new goal and create a plan for that goal*/
+		agentToMove.generateInitialState();
+		agentToMove.initialState.agentRow = agentToMove.getPosition().getX();
+		agentToMove.initialState.agentCol = agentToMove.getPosition().getY();
+		agentToMove.initialState.goals.put(newGoal.getId(), newGoal);
+		agentToMove.initialState.boxes.put(conflict.getBox().getId(), conflict.getBox());
+		strategy = new StrategyBFS();
+		s = new Search();
+		s.setPlanForAgentToStay(updatePlan(agentToStay.getId(), index));
+		newPlanAgentToMove = s.search(strategy, agentToMove.initialState, SearchType.PATH);
+		
+		Node noOp = agentToStay.initialState;
+		noOp.action = new Command();
+		newPlanAgentToStay.add(0, noOp);
+		World.getInstance().getSolutionMap().put(agentToMove.getId(), newPlanAgentToMove);
+		World.getInstance().getSolutionMap().put(agentToStay.getId(), newPlanAgentToStay);
+		Agent agentToMoveAway = World.getInstance().getAgents().get(newPlanAgentToMove.get(0).agentId);
+		World.getInstance().getBeliefs().add(agentToMoveAway.getIntention().getDesire().getBelief());
+		
+	}
 	public void solveAgentOnAgent(Node node, Agent a1, Agent a2, int index, List<List<Node>> allSolutions) {
+		System.err.println("Theres is a agent on agent conflict!");
 		Agent agentToMove = a1.getPriority() > a2.getPriority() ? a2 : a1;
 		Agent agentToStay = a1.getPriority() > a2.getPriority() ? a1 : a2;
 

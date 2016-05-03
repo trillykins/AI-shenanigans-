@@ -96,12 +96,14 @@ public class Run {
 				if (con != null && !replanned) {
 					switch (con.getConflictType()) {
 					case AGENT:
-						con.solveAgentOnAgent(con.getNode(), con.getSender(), con.getReceiver(), stepInPlan, allSolutions);
+						con.solveAgentOnAgent(con.getNode(), con.getSender(), con.getReceiver(), stepInPlan,
+								allSolutions);
 						break;
 					case SINGLE_AGENT_BOX:
 						System.err.println("BOX CONFLICT");
 						System.err.println(con.getBox());
-						con.solveAgentOnBox(con.getNode(), World.getInstance().getAgents().get(0), con.getBox(), stepInPlan, allSolutions);
+						con.solveAgentOnBox(con.getNode(), World.getInstance().getAgents().get(0), con.getBox(),
+								stepInPlan, allSolutions);
 						break;
 					case BOX_BOX:
 						break;
@@ -164,6 +166,7 @@ public class Run {
 				for (List<Node> solution : world.getSolutionMap().values()) {
 					allSolutions.add(solution);
 				}
+				replanned = false;
 			}
 
 			int size = world.findLongestPlan();
@@ -204,6 +207,7 @@ public class Run {
 								stepInPlan, allSolutions);
 						break;
 					case BOX_BOX:
+						con.solveBoxOnBox(con, stepInPlan, allSolutions);
 						break;
 					default:
 						break;

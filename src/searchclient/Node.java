@@ -81,6 +81,31 @@ public class Node {
 		return false;
 	}
 
+
+	public boolean movedAway(List<Node> otherPlan) {
+		Position aPos = new Position(agentRow, agentCol);
+		for (Node otherNode : otherPlan) {
+			if (otherNode.agentRow == agentRow && otherNode.agentCol == agentCol)
+				return false;
+			for (Box b : otherNode.boxes.values())
+				if (b.getPosition().equals(aPos))
+					return false;
+		}
+		return true;
+	}
+	
+	public boolean movedAwayWithBox(List<Node> otherPlan) {
+		Position aPos = new Position(agentRow, agentCol);
+		for (Node otherNode : otherPlan) {
+			if (otherNode.agentRow == agentRow && otherNode.agentCol == agentCol)
+				return false;
+			for (Box b : otherNode.boxes.values())
+				if (b.getPosition().equals(aPos))
+					return false;
+		}
+		return true;
+	}
+	
 	public ArrayList<Node> getExpandedNodes() {
 		ArrayList<Node> expandedNodes = new ArrayList<Node>(Command.every.length);
 		for (Command c : Command.every) {
@@ -272,17 +297,4 @@ public class Node {
 		}
 		return s.toString();
 	}
-
-	public boolean movedAway(List<Node> otherPlan) {
-		Position aPos = new Position(agentRow, agentCol);
-		for (Node otherNode : otherPlan) {
-			if (otherNode.agentRow == agentRow && otherNode.agentCol == agentCol)
-				return false;
-			for (Box b : otherNode.boxes.values())
-				if (b.getPosition().equals(aPos))
-					return false;
-		}
-		return true;
-	}
-	
 }
