@@ -36,7 +36,7 @@ public class DetectConflict {
 			Agent a1 = World.getInstance().getAgents().get(0);
 			/*
 			 * as there is no other agents that can be in a1's way, the only
-			 * obstacle a1 can bump into is a box
+			 * obsticle a1 can bump into is a box
 			 */
 			Intention intention = a1.getIntention();
 			if (intention != null) {
@@ -49,11 +49,16 @@ public class DetectConflict {
 								|| intentionBox.getPosition().equals(box.getPosition())) {
 							conflict = new Conflict();
 							if (node.action.actType.equals(Command.type.Move)) {
-								conflict.setConflictType(ConflictType.Agent_Box);
+								conflict.setConflictType(ConflictType.SINGLE_AGENT_BOX);
 							} else {
-								conflict.setConflictType(ConflictType.Box_Box);
+								conflict.setConflictType(ConflictType.BOX_BOX);
 							}
+<<<<<<< HEAD
 							conflict.setReceiverBox(box);
+=======
+							conflict.setSender(World.getInstance().getAgents().get(0));
+							conflict.setBox(box);
+>>>>>>> origin/GP-and-Intention-V2
 							conflict.setNode(node);
 							return conflict;
 						}
@@ -78,6 +83,7 @@ public class DetectConflict {
 								.get(a.getId());
 						// solution list is not empty
 						if (solutionForAgentX != null && solutionForAgentX.size() > 0) {
+<<<<<<< HEAD
 							//Node next = solutionForAgentX.peekLast(); -- this peekLast does not make sense to me (THEA)
 							if(solutionForAgentX.size() > index){
 							Node next = solutionForAgentX.get(index);
@@ -92,47 +98,71 @@ public class DetectConflict {
 								} else {
 									sender = agent;
 									receiver = a;
+=======
+							// Node next = solutionForAgentX.peekLast(); -- this
+							// peekLast does not make sense to me (THEA)
+							if (solutionForAgentX.size() > index) {
+								Node next = solutionForAgentX.get(index);
+								if (next.agentCol == nodeCol && next.agentRow == nodeRow
+										|| agent.getPosition() == a.getPosition()) {
+									conflict = new Conflict();
+									conflict.setConflictType(ConflictType.AGENT);
+									if (a.getPriority() > agent.getPriority()) {
+										sender = a;
+										receiver = agent;
+									} else {
+										sender = agent;
+										receiver = a;
+									}
+									conflict.setSender(sender);
+									conflict.setReceiver(receiver);
+									conflict.setNode(node);
+									return conflict;
+>>>>>>> origin/GP-and-Intention-V2
 								}
-								conflict.setSender(sender);
-								conflict.setReceiver(receiver);
-								conflict.setNode(node);
-								return conflict;
-							}
 							}
 						}
-
 						if (nodeCol == a.getPosition().getY() && nodeRow == a.getPosition().getX()) {
 							conflict = new Conflict();
-							conflict.setConflictType(ConflictType.Agent);
+							conflict.setConflictType(ConflictType.AGENT);
 							conflict.setSender(agent);
 							conflict.setReceiver(a);
 							Node previousNode = node.parent;
-							conflict.setNode(previousNode); // Need to get the
-															// previous node, as
-															// the current one
-															// already has a
-															// conflict.
+							// Need to get the previous node, as the current one
+							// already has a conflict.
+							conflict.setNode(previousNode);
 							return conflict;
 						}
-						
+
 						Node nextNodeCurrAgent = null;
-						if(World.getInstance().getSolutionMap().get(agent.getId()).size() > index + 1)
-							nextNodeCurrAgent = World.getInstance().getSolutionMap().get(agent.getId()).get(index+1);
-						
-						boolean isOtherAgentBox = checkBoxes(nodeRow, nodeCol,a,nextNodeCurrAgent);
+						if (World.getInstance().getSolutionMap().get(agent.getId()).size() > index + 1)
+							nextNodeCurrAgent = World.getInstance().getSolutionMap().get(agent.getId()).get(index + 1);
+
+						boolean isOtherAgentBox = checkBoxes(nodeRow, nodeCol, a, nextNodeCurrAgent);
 						if (isOtherAgentBox) {
 							conflict = new Conflict();
 							if (node.action.actType.equals(Command.type.Move)) {
-								conflict.setConflictType(ConflictType.Agent_Box);
-							} else if (node.action.actType.equals(Command.type.Pull) || node.action.actType.equals(Command.type.Push)){
-								conflict.setConflictType(ConflictType.Box_Box);
+								conflict.setConflictType(ConflictType.SINGLE_AGENT_BOX);
+							} else if (node.action.actType.equals(Command.type.Pull)
+									|| node.action.actType.equals(Command.type.Push)) {
+								{
+									conflict.setConflictType(ConflictType.BOX_BOX);
+								}
+								conflict.setBox(conflictBox);
+								conflict.setSender(agent);
+								conflict.setReceiver(a);
+								conflict.setNode(node);
+								return conflict;
 							}
+<<<<<<< HEAD
 							conflict.setReceiverBox(receiverBox);
 							conflict.setSenderBox(senderBox);
 							conflict.setSender(agent);
 							conflict.setReceiver(a);
 							conflict.setNode(node);
 							return conflict;
+=======
+>>>>>>> origin/GP-and-Intention-V2
 						}
 					}
 				}
@@ -157,9 +187,9 @@ public class DetectConflict {
 		for (Agent agen : World.getInstance().getAgents().values()) {
 			if (agen.getId() != agent.getId()) {
 				// check current postion is the next postion of other agent
-				LinkedList<Node> solu = (LinkedList<Node>) World.getInstance().getSolutionMap().get(agen.getId());
-				if (solu.size() > 0) {
-					Node next = solu.peek();
+				LinkedList<Node> plan = (LinkedList<Node>) World.getInstance().getSolutionMap().get(agen.getId());
+				if (plan.size() > 0) {
+					Node next = plan.peek();
 					int nextcol = next.agentCol;
 					int nextrow = next.agentRow;
 					if (nextcol == col && nextrow == row) {
@@ -172,7 +202,7 @@ public class DetectConflict {
 				} else if (isBoxPosi) {
 					// If current position is the box of other agent, then could
 					// not move
-					if (checkBoxes(row, col, agen,null)) {
+					if (checkBoxes(row, col, agen, null)) {
 						return false;
 					}
 
@@ -182,7 +212,7 @@ public class DetectConflict {
 		}
 		boolean isOwnBox = true;
 		if (isBoxPosi) {
-			isOwnBox = checkBoxes(row, col, agent,null);
+			isOwnBox = checkBoxes(row, col, agent, null);
 		}
 		return isOwnBox && !World.getInstance().getWalls().contains(new Position(row, col));
 	}
@@ -212,13 +242,14 @@ public class DetectConflict {
 	 * @param agen
 	 * @return
 	 */
-	public boolean checkBoxes(int row, int col, Agent agen,Node nextNodeCurrAgent) {
-		/*agent on box*/
+	public boolean checkBoxes(int row, int col, Agent agen, Node nextNodeCurrAgent) {
+		/* agent on box */
 		for (Integer bId : agen.initialState.boxes.keySet()) {
 			Box b = World.getInstance().getBoxes().get(bId);
 			if (b.getPosition().equals(new Position(row, col))) {
 				receiverBox = b;
 				return true;
+<<<<<<< HEAD
 			} else if(nextNodeCurrAgent != null){
 				/*box on box conflict detected*/
 				if(nextNodeCurrAgent.agentRow == b.getPosition().getX() && nextNodeCurrAgent.agentCol == b.getPosition().getY()){
@@ -229,15 +260,26 @@ public class DetectConflict {
 						if(box.getPosition().equals(b.getPosition())){
 							receiverBox = b;
 							senderBox = box;
+=======
+			} else if (nextNodeCurrAgent != null) {
+				/* box on box conflict detected */
+				if (nextNodeCurrAgent.agentRow == b.getPosition().getX()
+						&& nextNodeCurrAgent.agentCol == b.getPosition().getY()) {
+					conflictBox = b;
+					return true;
+				} else if (nextNodeCurrAgent.boxes.values().size() > 0) {
+					for (Box box : nextNodeCurrAgent.boxes.values()) {
+						if (box.getPosition().equals(b.getPosition())) {
+							conflictBox = b;
+>>>>>>> origin/GP-and-Intention-V2
 							return true;
 						}
 					}
 				}
-			}else {
+			} else {
 				return false;
 			}
 		}
 		return false;
 	}
-
 }

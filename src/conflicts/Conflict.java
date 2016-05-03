@@ -8,12 +8,14 @@ import atoms.Box;
 import atoms.Goal;
 import atoms.Position;
 import atoms.World;
+import heuristics.AStar;
 import searchclient.Command;
 import searchclient.Node;
 import searchclient.Search;
 import searchclient.Search.SearchType;
 import strategies.Strategy;
 import strategies.StrategyBFS;
+import strategies.StrategyBestFirst;
 
 public class Conflict {
 	private ConflictType conflictType;
@@ -36,7 +38,7 @@ public class Conflict {
 	}
 
 	public enum ConflictType {
-		Agent, Box_Box, Agent_Box,
+		AGENT, BOX_BOX, SINGLE_AGENT_BOX,
 	}
 
 	public ConflictType getConflictType() {
@@ -106,7 +108,7 @@ public class Conflict {
 		Strategy strategy = new StrategyBFS();
 		Search s = new Search();
 		s.setPlanForAgentToStay(updatePlan(agentToStay.getId(), index));
-		List<Node> newPlanAgentToMove = s.search(strategy, agentToMove.initialState, SearchType.MoveAway);
+		List<Node> newPlanAgentToMove = s.search(strategy, agentToMove.initialState, SearchType.MOVE_AWAY);
 		agentToMove.initialState.walls.remove(new Position(agentToStay.getPosition()));
 		
 		/*We create a new goal, for which we want the agent to move the blocking box to*/
@@ -157,7 +159,7 @@ public class Conflict {
 		Strategy strategy = new StrategyBFS();
 		Search s = new Search();
 		s.setPlanForAgentToStay(updatePlan(agentToStay.getId(), index));
-		List<Node> newPlanAgentToMove = s.search(strategy, agentToMove.initialState, SearchType.MoveAway);
+		List<Node> newPlanAgentToMove = s.search(strategy, agentToMove.initialState, SearchType.MOVE_AWAY);
 		List<Node> newPlanAgentToStay = allSolutions.get(agentToStay.getId());
 		for (int i = 0; i < index - 1; i++) {
 			newPlanAgentToStay.remove(0);
@@ -170,6 +172,28 @@ public class Conflict {
 		World.getInstance().getSolutionMap().put(agentToStay.getId(), newPlanAgentToStay);
 		Agent agentToMoveAway = World.getInstance().getAgents().get(newPlanAgentToMove.get(0).agentId);
 		World.getInstance().getBeliefs().add(agentToMoveAway.getIntention().getDesire().getBelief());
+	}
+
+	public void solveAgentOnBox(Node node, Agent agent, Box box, int index, List<List<Node>> allSolutions) {
+		Agent agentToMove = agent;
+
+		agentToMove.generateInitialState();
+		agentToMove.initialState.agentRow = allSolutions.get(agent.getId()).get(index-2).agentRow;
+		agentToMove.initialState.agentCol = allSolutions.get(agent.getId()).get(index-2).agentCol;
+		agentToMove.initialState.boxes.put(agent.getIntention().getBox().getId(), agent.getIntention().getBox());
+		agentToMove.initialState.goals.put(agent.getIntention().getDesire().getBelief().getGoal().getId(), agent.getIntention().getDesire().getBelief().getGoal());
+		agentToMove.initialState.boxes.put(box.getId(), box);
+		
+		Strategy strategy = new StrategyBestFirst(new AStar(agentToMove.initialState));
+//		Strategy strategy = new StrategyBFS();
+		Search s = new Search();
+		
+		List<Node> plan = s.search(strategy, agentToMove.initialState, SearchType.PATH);
+		
+		World.getInstance().getSolutionMap().put(agentToMove.getId(), plan);
+		Agent agentToMoveAway = World.getInstance().getAgents().get(agentToMove.getId());
+		World.getInstance().getBeliefs().add(agentToMoveAway.getIntention().getDesire().getBelief());
+		
 	}
 
 	private List<Node> updatePlan(int agentId, int index) {
@@ -187,7 +211,7 @@ public class Conflict {
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Conflict [conflictType=").append(conflictType).append(", sender=").append(sender)
-		.append(", receiver=").append(receiver).append(", node=").append(node).append("]");
+		.append(", receiver=").append(receiver).append(", node=").append("\n").append(node).append("]");
 		return builder.toString();
 	}
 }

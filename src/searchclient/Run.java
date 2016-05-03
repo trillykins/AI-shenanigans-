@@ -11,11 +11,8 @@ import java.util.Map;
 
 import atoms.Agent;
 import atoms.Box;
-import atoms.Goal;
 import atoms.Position;
 import atoms.World;
-import bdi.Belief;
-import bdi.Intention;
 import conflicts.Conflict;
 import conflicts.DetectConflict;
 import heuristics.AStar;
@@ -24,6 +21,7 @@ import strategies.Strategy;
 import strategies.StrategyBestFirst;
 
 public class Run {
+	private World world = World.getInstance();
 
 	public static void main(String[] args) throws Exception {
 		System.err.println("SearchClient initializing. I am sending this using the error output stream.");
@@ -35,13 +33,112 @@ public class Run {
 	}
 
 	private void runSolution(SearchClient client) {
-		World world = World.getInstance();
+		if (world.getAgents().size() == 1) {
+			SAPlanner();
+		} else {
+			MAPlanner();
+		}
+
+	}
+
+	private void SAPlanner() {
+		boolean replanned = false;
+		while (!world.isGlobalGoalState()) {
+			List<List<Node>> allSolutions = new ArrayList<>(0);
+			if (!replanned) {
+				Map<Integer, List<Node>> agentSolutions = new HashMap<>(0);
+				world.generatePlans();
+				/* 1. Create solutions for each agent */
+				Agent a = world.getAgents().get(0);
+				Strategy strategy = new StrategyBestFirst(new AStar(a.initialState));
+				Search s = new Search();
+				List<Node> solution = s.search(strategy, a.initialState, SearchType.PATH);
+				for (Box box : World.getInstance().getBoxes().values()) {
+					if (a.getIntention() != null && !box.equals(a.getIntention().getBox())) {
+						a.initialState.boxes.remove(box.getId());
+					}
+				}
+				if (solution != null && solution.size() > 0) {
+					agentSolutions.put(a.getId(), solution);
+					allSolutions.add(solution);
+				} else {
+					List<Node> empty = new LinkedList<Node>();
+					Node noOp = a.initialState;
+					noOp.action = new Command();
+					empty.add(noOp);
+					agentSolutions.put(a.getId(), empty);
+					allSolutions.add(empty);
+				}
+				world.setSolutionMap(agentSolutions);
+			} else {
+				for (List<Node> solution : world.getSolutionMap().values()) {
+					allSolutions.add(solution);
+				}
+			}
+
+			List<Node> plan = world.getSolutionMap().get(0);
+			int size = world.findLongestPlan();
+			Map<Integer, Position> updatedAgentPositions = new HashMap<Integer, Position>(0);
+			Map<Integer, Box> updatedBoxes = new HashMap<Integer, Box>(0);
+			for (int stepInPlan = 0; stepInPlan < plan.size(); stepInPlan++) {
+				StringBuilder sb = new StringBuilder();
+				sb.append("[");
+				Node n = plan.get(stepInPlan);
+				sb.append(n.action.toString());
+				Agent agent = world.getAgents().get(n.agentId);
+				updatedAgentPositions.put(agent.getId(), new Position(n.agentRow, n.agentCol));
+				for (Box box : n.boxes.values()) {
+					updatedBoxes.put(box.getId(), box);
+				}
+				sb.append("]");
+				DetectConflict detectCon = new DetectConflict();
+				Conflict con = detectCon.checkConflict(stepInPlan);
+				if (con != null && !replanned) {
+					switch (con.getConflictType()) {
+					case AGENT:
+						con.solveAgentOnAgent(con.getNode(), con.getSender(), con.getReceiver(), stepInPlan,
+								allSolutions);
+						break;
+					case SINGLE_AGENT_BOX:
+						System.err.println("BOX CONFLICT");
+						System.err.println(con.getBox());
+						con.solveAgentOnBox(con.getNode(), World.getInstance().getAgents().get(0), con.getBox(),
+								stepInPlan, allSolutions);
+						break;
+					case BOX_BOX:
+						break;
+					default:
+						break;
+					}
+					replanned = true;
+					break;
+				} else {
+					replanned = false;
+					System.out.println(sb.toString());
+					System.err.println(sb.toString());
+					try {
+						BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+						if (in.ready())
+							in.readLine();
+					} catch (IOException e) {
+						System.err.println(e.getMessage());
+					}
+					Utils.performUpdates(updatedAgentPositions, updatedBoxes);
+				}
+				world.updateBeliefs();
+				System.err.println("World:\n" + world.toString());
+				System.err.println("Global goal state found = " + world.isGlobalGoalState());
+			}
+		}
+	}
+
+	private void MAPlanner() {
 		boolean replanned = false;
 		while (!world.isGlobalGoalState()) {
 			List<List<Node>> allSolutions = new ArrayList<List<Node>>(0);
 			if (!replanned) {
 				Map<Integer, List<Node>> agentSolutions = new HashMap<Integer, List<Node>>(0);
-				generatePlanAgents();
+				world.generatePlans();
 				/* 1. Create solutions for each agent */
 				for (Agent a : world.getAgents().values()) {
 					Strategy strategy = new StrategyBestFirst(new AStar(a.initialState));
@@ -69,6 +166,7 @@ public class Run {
 				for (List<Node> solution : world.getSolutionMap().values()) {
 					allSolutions.add(solution);
 				}
+				replanned = false;
 			}
 
 			int size = world.findLongestPlan();
@@ -96,22 +194,26 @@ public class Run {
 				sb.append("]");
 				DetectConflict detectCon = new DetectConflict();
 				Conflict con = detectCon.checkConflict(stepInPlan);
-				if (con != null) {
+				if (con != null && !replanned) {
 					switch (con.getConflictType()) {
-					case Agent:
+					case AGENT:
 						con.solveAgentOnAgent(con.getNode(), con.getSender(), con.getReceiver(), stepInPlan,
 								allSolutions);
 						break;
-					case Agent_Box:
-						con.solveAgentOnBox();
+					case SINGLE_AGENT_BOX:
+						System.err.println("BOX CONFLICT");
+						System.err.println(con.getBox());
+						con.solveAgentOnBox(con.getNode(), World.getInstance().getAgents().get(0), con.getBox(),
+								stepInPlan, allSolutions);
 						break;
-					case Box_Box:
-						con.solveBoxOnBox(con, stepInPlan,
-								allSolutions);
+					case BOX_BOX:
+						con.solveBoxOnBox(con, stepInPlan, allSolutions);
+						break;
+					default:
 						break;
 					}
 					replanned = true;
-					break /* plan */;
+					break;
 				} else {
 					replanned = false;
 					System.out.println(sb.toString());
@@ -122,58 +224,19 @@ public class Run {
 							in.readLine();
 					} catch (IOException e) {
 						System.err.println(e.getMessage());
-						// System.exit(0);
 					}
 					Utils.performUpdates(updatedAgentPositions, updatedBoxes);
 				}
-				if(world.isGlobalGoalState()) {
+				if (world.isGlobalGoalState()) {
 					System.err.println("DONE");
 					return;
 				}
 
-				updateBeliefs();
+				world.updateBeliefs();
 				System.err.println("World:\n" + world.toString());
 				System.err.println("Global goal state found = " + world.isGlobalGoalState());
 			}
 		}
-	}
 
-	public void updateBeliefs() {
-		for (Goal goal : World.getInstance().getGoals().values()) {
-			if (!goal.isSolved()) {
-				boolean contained = true;
-				for (Belief b : World.getInstance().getBeliefs()) {
-					if (goal.equals(b.getGoal()))
-						contained = true;
-				}
-				if(!contained)
-					World.getInstance().getBeliefs().add(new Belief(goal));
-			}
-		}
-	}
-
-	public void generatePlanAgents() {
-		for (Agent agent : World.getInstance().getAgents().values()) {
-			agent.generateInitialState();
-			if (!agent.generateDesires()) {
-				continue;
-			}
-			if (!agent.generateIntention()) {
-				continue;
-			}
-			Intention intention = agent.getIntention();
-			Goal goal = intention.getDesire().getBelief().getGoal();
-			Box intentionBox = intention.getBox();
-			World.getInstance().getBeliefs().remove(intention.getDesire().getBelief());
-			agent.initialState.goals.put(goal.getId(), goal);
-			agent.initialState.boxes.put(intentionBox.getId(), intentionBox);
-
-			// Add boxes of same color to the initialstate.
-//			for (Box box : World.getInstance().getBoxes().values()) {
-//				if (box.getColor().equals(agent.getColor())) {
-//					agent.initialState.boxes.put(box.getId(), box);
-//				}
-//			}
-		}
 	}
 }

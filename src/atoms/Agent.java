@@ -118,7 +118,7 @@ public class Agent implements IMessage {
 	/*
 	 * Generate intention finds intentions based on cost and goal priority goal
 	 * priority reflects how many occupied surrounding spaces a goal have maybe
-	 * This method also consider the closest box that can full-fill the goal
+	 * This method also consider the closest box that can fulfill the goal
 	 */
 	public boolean generateIntention() {
 		if (desires.isEmpty())
@@ -134,14 +134,12 @@ public class Agent implements IMessage {
 			/*if a goal has been solved we do not want to consider it in our calculations*/
 			if(goal.isSolved())
 				continue;
-			
 			int goalPriority = goal.getPriority();
 			
 			/* compute distance from agent to the closest box.*/
 			List<Object> result = findClosestBox(goal);
 			int costOfClosestBoxToGoal = (int) result.get(0);
 			closestBox = (Box) result.get(1);
-			
 			int costOfAgentToClosestBox = Utils.manhattenDistance(pos, closestBox.getPosition());
 			
 			/*calculate current number of free spaces surrounding the goal*/
@@ -155,7 +153,7 @@ public class Agent implements IMessage {
 //			
 			/*
 			 * we are looking for the smallest value possible, the optimal would
-			 * be a very close goal, which have 0 occupied neighbours.
+			 * be a very close goal, which have 0 occupied neighbors.
 			 */
 			if (bestTotal > currTotal) {
 				bestGoalPriority = goalPriority;
@@ -175,6 +173,7 @@ public class Agent implements IMessage {
 				}
 			}
 		}
+		System.err.println("Best intention = " + bestDesire + ", " + bestBox);
 		intention = (bestDesire != null && bestBox != null ? new Intention(bestDesire, bestBox) : null);
 		return intention != null;
 	}
@@ -199,7 +198,7 @@ public class Agent implements IMessage {
 		result.add(b);
 		return result;
 	}
-	
+
 	@Override
 	public Message createMessage(Agent receiver, MessageType type, String content) {
 		return new Message(this, receiver, type, content);
@@ -247,8 +246,8 @@ public class Agent implements IMessage {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Agent [id=").append(id).append(", color=").append(col).append(", pos=").append(pos)
-				.append(", priority=").append(priority).append("]");
+		builder.append("Agent [id=").append(id).append(", colour=").append(col).append(", ").append(pos).append(", priority=")
+				.append(priority).append("]");
 		return builder.toString();
 	}
 }
