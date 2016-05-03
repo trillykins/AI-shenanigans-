@@ -258,6 +258,10 @@ public class Node {
 			return false;
 		return true;
 	}
+	
+	public Position getPosition() {
+		return new Position(agentRow, agentCol);
+	}
 
 	public String toString() {
 		StringBuilder s = new StringBuilder();

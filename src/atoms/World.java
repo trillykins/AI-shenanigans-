@@ -190,6 +190,8 @@ public class World {
 						break;
 					}
 				}
+				if(skip)
+					continue;
 				for (Agent a : agents.values()) {
 					if (row == a.getPosition().getX() && col == a.getPosition().getY()) {
 						s.append(a.getId());

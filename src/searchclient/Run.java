@@ -228,6 +228,7 @@ public class Run {
 				}
 				if (world.isGlobalGoalState()) {
 					System.err.println("DONE");
+					System.err.println("World:\n" + world.toString());
 					return;
 				}
 
