@@ -38,7 +38,6 @@ public class Run {
 		} else {
 			MAPlanner();
 		}
-
 	}
 
 	private void SAPlanner() {
@@ -47,9 +46,9 @@ public class Run {
 			List<List<Node>> allSolutions = new ArrayList<>(0);
 			if (!replanned) {
 				Map<Integer, List<Node>> agentSolutions = new HashMap<>(0);
-				world.generatePlans();
 				/* 1. Create solutions for each agent */
 				Agent a = world.getAgents().get(0);
+				world.generatePlan(a);
 				Strategy strategy = new StrategyBestFirst(new AStar(a.initialState));
 				Search s = new Search();
 				List<Node> solution = s.search(strategy, a.initialState, SearchType.PATH);
@@ -77,7 +76,6 @@ public class Run {
 			}
 
 			List<Node> plan = world.getSolutionMap().get(0);
-			int size = world.findLongestPlan();
 			Map<Integer, Position> updatedAgentPositions = new HashMap<Integer, Position>(0);
 			Map<Integer, Box> updatedBoxes = new HashMap<Integer, Box>(0);
 			for (int stepInPlan = 0; stepInPlan < plan.size(); stepInPlan++) {
@@ -105,8 +103,10 @@ public class Run {
 								stepInPlan, allSolutions);
 						break;
 					case BOX_BOX:
+						System.err.println("BOX_BOX CONFLICT");
 						break;
 					default:
+						System.err.println("UNDEFINED CONFLICT");
 						break;
 					}
 					replanned = true;
