@@ -204,7 +204,6 @@ public class Run {
 						break;
 					case SINGLE_AGENT_BOX:
 						world.write("BOX CONFLICT");
-//						System.err.println(con.getReceiverBox());
 						con.solveAgentOnBox(con.getNode(), World.getInstance().getAgents().get(0), con.getReceiverBox(),
 								stepInPlan, allSolutions);
 						break;
@@ -221,6 +220,7 @@ public class Run {
 					replanned = false;
 					System.out.println(sb.toString());
 					world.write(sb.toString());
+					world.write(world.toString());
 					try {
 						BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 						if (in.ready())
