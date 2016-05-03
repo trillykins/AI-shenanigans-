@@ -19,10 +19,13 @@ import heuristics.AStar;
 import searchclient.Search.SearchType;
 import strategies.Strategy;
 import strategies.StrategyBestFirst;
+import utils.FileUtils;
+import utils.Utils;
 
 public class Run {
 	private World world = World.getInstance();
-
+	private FileUtils files = new FileUtils();
+	
 	public static void main(String[] args) throws Exception {
 		System.err.println("SearchClient initializing. I am sending this using the error output stream.");
 		SearchClient client = new SearchClient();
@@ -33,6 +36,7 @@ public class Run {
 	}
 
 	private void runSolution(SearchClient client) {
+		files.write("Initial state:\n" + world.toString());
 		if (world.getAgents().size() == 1) {
 			SAPlanner();
 		} else {
@@ -94,19 +98,19 @@ public class Run {
 				if (con != null && !replanned) {
 					switch (con.getConflictType()) {
 					case AGENT:
-						con.solveAgentOnAgent(con.getNode(), con.getSender(), con.getReceiver(), stepInPlan,
-								allSolutions);
+						files.write("AGENT-ON-AGENT CONFLICT");
+//						System.err.println("AGENT-ON-AGENT CONFLICT");
+						con.solveAgentOnAgent(con.getNode(), con.getSender(), con.getReceiver(), stepInPlan, allSolutions);
 						break;
 					case SINGLE_AGENT_BOX:
-						System.err.println("BOX CONFLICT");
-						con.solveAgentOnBox(con.getNode(), World.getInstance().getAgents().get(0), con.getReceiverBox(),
-								stepInPlan, allSolutions);
+						files.write("BOX CONFLICT");
+						con.solveAgentOnBox(con.getNode(), World.getInstance().getAgents().get(0), con.getReceiverBox(), stepInPlan, allSolutions);
 						break;
 					case BOX_BOX:
-						System.err.println("BOX_BOX CONFLICT");
+						files.write("BOX_BOX CONFLICT");
 						break;
 					default:
-						System.err.println("UNDEFINED CONFLICT");
+						files.write("UNDEFINED CONFLICT");
 						break;
 					}
 					replanned = true;
@@ -114,19 +118,19 @@ public class Run {
 				} else {
 					replanned = false;
 					System.out.println(sb.toString());
-					System.err.println(sb.toString());
+					files.write(sb.toString());
 					try {
 						BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 						if (in.ready())
 							in.readLine();
 					} catch (IOException e) {
-						System.err.println(e.getMessage());
+						files.write(e.getMessage());
 					}
 					Utils.performUpdates(updatedAgentPositions, updatedBoxes);
 				}
 				world.updateBeliefs();
-				System.err.println("World:\n" + world.toString());
-				System.err.println("Global goal state found = " + world.isGlobalGoalState());
+				files.write("World:\n" + world.toString());
+				files.write("Global goal state found = " + world.isGlobalGoalState());
 			}
 		}
 	}

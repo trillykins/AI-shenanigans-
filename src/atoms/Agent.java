@@ -15,7 +15,7 @@ import bdi.Desire;
 import bdi.Intention;
 import searchclient.Command;
 import searchclient.Node;
-import searchclient.Utils;
+import utils.Utils;
 
 public class Agent implements IMessage {
 	private int id;
