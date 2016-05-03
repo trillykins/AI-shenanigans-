@@ -101,8 +101,7 @@ public class Run {
 						break;
 					case SINGLE_AGENT_BOX:
 						System.err.println("BOX CONFLICT");
-						System.err.println(con.getBox());
-						con.solveAgentOnBox(con.getNode(), World.getInstance().getAgents().get(0), con.getBox(),
+						con.solveAgentOnBox(con.getNode(), World.getInstance().getAgents().get(0), con.getReceiverBox(),
 								stepInPlan, allSolutions);
 						break;
 					case BOX_BOX:
@@ -202,8 +201,8 @@ public class Run {
 						break;
 					case SINGLE_AGENT_BOX:
 						System.err.println("BOX CONFLICT");
-						System.err.println(con.getBox());
-						con.solveAgentOnBox(con.getNode(), World.getInstance().getAgents().get(0), con.getBox(),
+						System.err.println(con.getReceiverBox());
+						con.solveAgentOnBox(con.getNode(), World.getInstance().getAgents().get(0), con.getReceiverBox(),
 								stepInPlan, allSolutions);
 						break;
 					case BOX_BOX:

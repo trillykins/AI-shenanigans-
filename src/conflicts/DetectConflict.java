@@ -53,12 +53,8 @@ public class DetectConflict {
 							} else {
 								conflict.setConflictType(ConflictType.BOX_BOX);
 							}
-<<<<<<< HEAD
 							conflict.setReceiverBox(box);
-=======
 							conflict.setSender(World.getInstance().getAgents().get(0));
-							conflict.setBox(box);
->>>>>>> origin/GP-and-Intention-V2
 							conflict.setNode(node);
 							return conflict;
 						}
@@ -83,22 +79,6 @@ public class DetectConflict {
 								.get(a.getId());
 						// solution list is not empty
 						if (solutionForAgentX != null && solutionForAgentX.size() > 0) {
-<<<<<<< HEAD
-							//Node next = solutionForAgentX.peekLast(); -- this peekLast does not make sense to me (THEA)
-							if(solutionForAgentX.size() > index){
-							Node next = solutionForAgentX.get(index);
-							if (next.agentCol == nodeCol && next.agentRow == nodeRow
-									|| agent.getPosition() == a.getPosition()) {
-								conflict = new Conflict();
-								conflict.setConflictType(ConflictType.Agent);
-								
-								if (a.getPriority() > agent.getPriority()) {
-									sender = a;
-									receiver = agent;
-								} else {
-									sender = agent;
-									receiver = a;
-=======
 							// Node next = solutionForAgentX.peekLast(); -- this
 							// peekLast does not make sense to me (THEA)
 							if (solutionForAgentX.size() > index) {
@@ -107,6 +87,7 @@ public class DetectConflict {
 										|| agent.getPosition() == a.getPosition()) {
 									conflict = new Conflict();
 									conflict.setConflictType(ConflictType.AGENT);
+
 									if (a.getPriority() > agent.getPriority()) {
 										sender = a;
 										receiver = agent;
@@ -114,55 +95,44 @@ public class DetectConflict {
 										sender = agent;
 										receiver = a;
 									}
-									conflict.setSender(sender);
-									conflict.setReceiver(receiver);
-									conflict.setNode(node);
-									return conflict;
->>>>>>> origin/GP-and-Intention-V2
 								}
 							}
-						}
-						if (nodeCol == a.getPosition().getY() && nodeRow == a.getPosition().getX()) {
-							conflict = new Conflict();
-							conflict.setConflictType(ConflictType.AGENT);
-							conflict.setSender(agent);
-							conflict.setReceiver(a);
-							Node previousNode = node.parent;
-							// Need to get the previous node, as the current one
-							// already has a conflict.
-							conflict.setNode(previousNode);
-							return conflict;
-						}
-
-						Node nextNodeCurrAgent = null;
-						if (World.getInstance().getSolutionMap().get(agent.getId()).size() > index + 1)
-							nextNodeCurrAgent = World.getInstance().getSolutionMap().get(agent.getId()).get(index + 1);
-
-						boolean isOtherAgentBox = checkBoxes(nodeRow, nodeCol, a, nextNodeCurrAgent);
-						if (isOtherAgentBox) {
-							conflict = new Conflict();
-							if (node.action.actType.equals(Command.type.Move)) {
-								conflict.setConflictType(ConflictType.SINGLE_AGENT_BOX);
-							} else if (node.action.actType.equals(Command.type.Pull)
-									|| node.action.actType.equals(Command.type.Push)) {
-								{
-									conflict.setConflictType(ConflictType.BOX_BOX);
-								}
-								conflict.setBox(conflictBox);
+							if (nodeCol == a.getPosition().getY() && nodeRow == a.getPosition().getX()) {
+								conflict = new Conflict();
+								conflict.setConflictType(ConflictType.AGENT);
 								conflict.setSender(agent);
 								conflict.setReceiver(a);
-								conflict.setNode(node);
+								Node previousNode = node.parent;
+								// Need to get the previous node, as the current
+								// one
+								// already has a conflict.
+								conflict.setNode(previousNode);
 								return conflict;
 							}
-<<<<<<< HEAD
-							conflict.setReceiverBox(receiverBox);
-							conflict.setSenderBox(senderBox);
-							conflict.setSender(agent);
-							conflict.setReceiver(a);
-							conflict.setNode(node);
-							return conflict;
-=======
->>>>>>> origin/GP-and-Intention-V2
+
+							Node nextNodeCurrAgent = null;
+							if (World.getInstance().getSolutionMap().get(agent.getId()).size() > index + 1)
+								nextNodeCurrAgent = World.getInstance().getSolutionMap().get(agent.getId())
+										.get(index + 1);
+
+							boolean isOtherAgentBox = checkBoxes(nodeRow, nodeCol, a, nextNodeCurrAgent);
+							if (isOtherAgentBox) {
+								conflict = new Conflict();
+								if (node.action.actType.equals(Command.type.Move)) {
+									conflict.setConflictType(ConflictType.SINGLE_AGENT_BOX);
+								} else if (node.action.actType.equals(Command.type.Pull)
+										|| node.action.actType.equals(Command.type.Push)) {
+									{
+										conflict.setConflictType(ConflictType.BOX_BOX);
+									}
+									conflict.setReceiverBox(receiverBox);
+									conflict.setSenderBox(senderBox);
+									conflict.setSender(agent);
+									conflict.setReceiver(a);
+									conflict.setNode(node);
+									return conflict;
+								}
+							}
 						}
 					}
 				}
@@ -249,29 +219,17 @@ public class DetectConflict {
 			if (b.getPosition().equals(new Position(row, col))) {
 				receiverBox = b;
 				return true;
-<<<<<<< HEAD
-			} else if(nextNodeCurrAgent != null){
-				/*box on box conflict detected*/
-				if(nextNodeCurrAgent.agentRow == b.getPosition().getX() && nextNodeCurrAgent.agentCol == b.getPosition().getY()){
-					receiverBox = b;
-					return true;
-				}else if (nextNodeCurrAgent.boxes.values().size() > 0){
-					for(Box box : nextNodeCurrAgent.boxes.values()){
-						if(box.getPosition().equals(b.getPosition())){
-							receiverBox = b;
-							senderBox = box;
-=======
 			} else if (nextNodeCurrAgent != null) {
 				/* box on box conflict detected */
 				if (nextNodeCurrAgent.agentRow == b.getPosition().getX()
 						&& nextNodeCurrAgent.agentCol == b.getPosition().getY()) {
-					conflictBox = b;
+					receiverBox = b;
 					return true;
 				} else if (nextNodeCurrAgent.boxes.values().size() > 0) {
 					for (Box box : nextNodeCurrAgent.boxes.values()) {
 						if (box.getPosition().equals(b.getPosition())) {
-							conflictBox = b;
->>>>>>> origin/GP-and-Intention-V2
+							receiverBox = b;
+							senderBox = box;
 							return true;
 						}
 					}
