@@ -86,7 +86,16 @@ public class DetectConflict {
 									Node previousNode = curAgentNode.parent;
 									conflict.setNode(previousNode);
 									return conflict;
+								}else if(checkBoxPosiForMulitAge(curAgent,curAgentNode.getPosition())) {
+									Node previousNode = curAgentNode.parent;
+									conflict  = createConflict(ConflictType.SINGLE_AGENT_BOX,curAgent,otherAgent,previousNode);
+									return conflict;
 								}
+							}
+							if(checkBoxPosiForMulitAge(curAgent,curAgentNode.getPosition())) {
+								Node previousNode = curAgentNode.parent;
+								conflict  = createConflict(ConflictType.SINGLE_AGENT_BOX,curAgent,otherAgent,previousNode);
+								return conflict;
 							}
 							Node nextNodeCurrAgent = null;
 							if (World.getInstance().getSolutionMap().get(curAgent.getId()).size() > index + 1)
@@ -117,6 +126,17 @@ public class DetectConflict {
 			}
 		}
 		return null;
+	}
+	
+	private Conflict createConflict(ConflictType type, Agent sender, Agent receiver, Node curr) {
+		Conflict conflict = new Conflict();
+		conflict.setConflictType(type);
+		conflict.setReceiverBox(receiverBox);
+		conflict.setSenderBox(senderBox);
+		conflict.setSender(sender);
+		conflict.setReceiver(receiver);
+		conflict.setNode(curr);
+		return conflict;
 	}
 
 	/**
@@ -214,6 +234,16 @@ public class DetectConflict {
 				}
 			} else {
 				return false;
+			}
+		}
+		return false;
+	}
+	
+	private boolean checkBoxPosiForMulitAge(Agent agent,Position nodePosi) {
+		for(Box box: World.getInstance().getBoxes().values()) {
+			if(box.getPosition().equals(nodePosi) && !box.getColor().equals(agent.getColor())) {
+				receiverBox = box;
+				return true;
 			}
 		}
 		return false;
