@@ -49,7 +49,7 @@ public class Box {
 
 	public boolean isOnGoal() {
 		for(Goal goal : World.getInstance().getGoals().values()) {
-			if(goal.getPosition().equals(position) && goal.getLetter() == Character.toLowerCase(letter)) {
+			if(position.equals(goal.getPosition()) && goal.getLetter() == Character.toLowerCase(letter)) {
 				return true;
 			}
 		}
@@ -94,7 +94,7 @@ public class Box {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Box [position=").append(position).append(", letter=").append(letter).append(", color=")
+		builder.append("Box ").append("id=").append(id).append(", [position=").append(position).append(", letter=").append(letter).append(", color=")
 				.append(color).append("]");
 		return builder.toString();
 	}

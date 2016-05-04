@@ -173,7 +173,6 @@ public class Agent implements IMessage {
 				}
 			}
 		}
-		System.err.println("Best intention = " + bestDesire + ", " + bestBox);
 		intention = (bestDesire != null && bestBox != null ? new Intention(bestDesire, bestBox) : null);
 		return intention != null;
 	}
@@ -184,9 +183,7 @@ public class Agent implements IMessage {
 		World world = World.getInstance();
 		Integer smallestDistance = Integer.MAX_VALUE;
 		for (Box box : world.getBoxes().values()) {
-			if (!box.isOnGoal() && Character.toLowerCase(box.getLetter()) == goal.getLetter()
-//					&& (world.getBoxesInGoals().get(box.getId()) == null)
-					) {
+			if (!box.isOnGoal() && Character.toLowerCase(box.getLetter()) == goal.getLetter()) {
 				int currDistance = Utils.manhattenDistance(box.getPosition(), goal.getPosition());
 				if (smallestDistance > currDistance) {
 					smallestDistance = currDistance;

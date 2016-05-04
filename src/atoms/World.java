@@ -9,6 +9,7 @@ import bdi.Belief;
 import bdi.Intention;
 import searchclient.Node;
 import searchclient.SearchClient;
+import utils.FileUtils;
 
 public class World {
 	private Map<Integer, Agent> agents;
@@ -21,7 +22,8 @@ public class World {
 	private Set<Belief> beliefs;
 	private Map<Integer, List<Node>> solutionMap;
 	private Map<Position, FreeSpace> freeSpace;
-	// private Map<Integer, List<FreeSpace>> freeSpace;
+
+	private FileUtils files = new FileUtils();
 
 	private static World instance = null;
 
@@ -35,6 +37,10 @@ public class World {
 	protected World() {
 	}
 
+	public void write(String str) {
+		files.write(str);
+	}
+	
 	public Map<Integer, Box> getBoxesInGoals() {
 		return boxesInGoals;
 	}
@@ -144,6 +150,31 @@ public class World {
 		}
 	}
 	
+<<<<<<< HEAD
+=======
+	public Agent generateSAPlan(Agent agent) {
+		agent.generateInitialState();
+		if (!agent.generateDesires()) {
+			return agent;
+		}
+		if (!agent.generateIntention()) {
+			return agent;
+		}
+		Intention intention = agent.getIntention();
+//		System.err.println(intention.getDesire() == null);
+		Goal goal = intention.getDesire().getBelief().getGoal();
+		Box intentionBox = intention.getBox();
+		World.getInstance().getBeliefs().remove(intention.getDesire().getBelief());
+		agent.initialState.goals.put(goal.getId(), goal);
+		agent.initialState.boxes.put(intentionBox.getId(), intentionBox);
+		
+		for(Box box : boxes.values()) {
+			if(box.isOnGoal())
+				agent.initialState.boxes.put(box.getId(), box);
+		}
+		return agent;
+	}
+
 	public Agent generatePlan(Agent agent) {
 		agent.generateInitialState();
 		if (!agent.generateDesires()) {
@@ -153,7 +184,6 @@ public class World {
 			return agent;
 		}
 		Intention intention = agent.getIntention();
-		System.err.println(intention.getDesire() == null);
 		Goal goal = intention.getDesire().getBelief().getGoal();
 		Box intentionBox = intention.getBox();
 		World.getInstance().getBeliefs().remove(intention.getDesire().getBelief());
