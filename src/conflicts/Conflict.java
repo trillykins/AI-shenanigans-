@@ -158,6 +158,7 @@ public class Conflict {
 	}
 
 	public void solveAgentOnAgent(Node node, Agent a1, Agent a2, int index, List<List<Node>> allSolutions) {
+		// System.err.println("Theres is a agent on agent conflict!");
 		Agent agentToMove = a1.getPriority() > a2.getPriority() ? a2 : a1;
 		Agent agentToStay = a1.getPriority() > a2.getPriority() ? a1 : a2;
 

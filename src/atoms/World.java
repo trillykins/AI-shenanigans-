@@ -1,5 +1,6 @@
 package atoms;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -22,9 +23,8 @@ public class World {
 	private Set<Belief> beliefs;
 	private Map<Integer, List<Node>> solutionMap;
 	private Map<Position, FreeSpace> freeSpace;
-
 	private FileUtils files = new FileUtils();
-
+    
 	private static World instance = null;
 
 	public static World getInstance() {
@@ -149,7 +149,6 @@ public class World {
 			}
 		}
 	}
-
 	public Agent generateSAPlan(Agent agent) {
 		agent.generateInitialState();
 		if (!agent.generateDesires()) {
@@ -172,7 +171,6 @@ public class World {
 		}
 		return agent;
 	}
-
 	public Agent generatePlan(Agent agent) {
 		agent.generateInitialState();
 		if (!agent.generateDesires()) {
@@ -182,9 +180,21 @@ public class World {
 			return agent;
 		}
 		Intention intention = agent.getIntention();
+		write("here we have selected intion for agent : " + agent.getId() + " intention is : " + intention.toString());
 		Goal goal = intention.getDesire().getBelief().getGoal();
 		Box intentionBox = intention.getBox();
-		World.getInstance().getBeliefs().remove(intention.getDesire().getBelief());
+		
+		/*TODO : the below line did not work (probably of how sets work in java, with custom datatypes dunno)*/
+		//World.getInstance().getBeliefs().remove(intention.getDesire().getBelief());
+		Set<Belief> beliefs = new HashSet<Belief>();
+		Belief belief = intention.getDesire().getBelief();
+		for(Belief bel : World.getInstance().getBeliefs()){
+			if (!belief.equals(bel)) {
+				beliefs.add(bel);
+			}
+		}
+		World.getInstance().setBeliefs(beliefs);
+		//write("the new beliefs : " + World.getInstance().getBeliefs());
 		agent.initialState.goals.put(goal.getId(), goal);
 		agent.initialState.boxes.put(intentionBox.getId(), intentionBox);
 		return agent;

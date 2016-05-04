@@ -52,7 +52,6 @@ public class Run {
 
 	private void SAPlanner() {
 		boolean replanned = false;
-
 		test: while (!world.isGlobalGoalState()) {
 			List<List<Node>> allSolutions = new ArrayList<>(0);
 			if (!replanned) {
@@ -206,13 +205,13 @@ public class Run {
 				if (con != null && !replanned) {
 					switch (con.getConflictType()) {
 					case AGENT:
+						world.write("AGENT CONFLICT");
 						con.solveAgentOnAgent(con.getNode(), con.getSender(), con.getReceiver(), stepInPlan,
 								allSolutions);
 						break;
 					case SINGLE_AGENT_BOX:
 						world.write("BOX CONFLICT");
-						con.solveAgentOnBox(con.getNode(), World.getInstance().getAgents().get(0), con.getReceiverBox(),
-								stepInPlan, allSolutions);
+						con.solveAgentOnBox(con.getNode(), World.getInstance().getAgents().get(0), con.getReceiverBox(),stepInPlan, allSolutions);
 						break;
 					case BOX_BOX:
 						world.write("BOX_BOX CONFLICT");
