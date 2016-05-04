@@ -149,9 +149,7 @@ public class World {
 			}
 		}
 	}
-	
-<<<<<<< HEAD
-=======
+
 	public Agent generateSAPlan(Agent agent) {
 		agent.generateInitialState();
 		if (!agent.generateDesires()) {
