@@ -95,7 +95,24 @@ public class DetectConflict {
 									}
 									return conflict;
 								}
+
 							}
+							
+							boolean isOtherBoxes = isOtherBoxes(otherAgent,curAgentNode.getPosition());
+							if(isOtherBoxes) {
+								conflict = new Conflict();
+								conflict.setConflictType(ConflictType.SINGLE_AGENT_BOX);
+								conflict.setSender(curAgent);
+								conflict.setReceiver(otherAgent);
+								/*TODO : Soooo.. for single agent we put in next node, but for multi agent we put in previous node? da fuck
+								 * PLEASE EXPLAIN!!!*/
+								Node previousNode = curAgentNode.parent;
+								conflict.setNode(previousNode);
+								conflict.setReceiverBox(receiverBox);	
+								return conflict;
+							}
+							
+							
 							/*We consider an agent that moved into a box or box on box conflict*/
 							Node nextNodeCurrAgent = null;
 							if (World.getInstance().getSolutionMap().get(curAgent.getId()).size() > index + 1)
@@ -146,6 +163,16 @@ public class DetectConflict {
 			}
 		}
 		return null;
+	}
+	
+	private boolean isOtherBoxes(Agent agent,Position posi) {
+		for(Box box: World.getInstance().getBoxes().values()) {
+			if(box.getColor().equals(agent.getColor()) && box.getPosition().equals(posi)) {
+				receiverBox = box;
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	private Conflict createConflict(ConflictType type, Agent sender, Agent receiver, Node curr) {

@@ -14,7 +14,6 @@ import java.util.Map;
 import searchclient.Search.SearchType;
 import strategies.Strategy;
 import strategies.StrategyBestFirst;
-import utils.FileUtils;
 import utils.Utils;
 import atoms.Agent;
 import atoms.Box;
@@ -22,12 +21,7 @@ import atoms.Position;
 import atoms.World;
 import conflicts.Conflict;
 import conflicts.DetectConflict;
-import heuristics.AStar;
-import searchclient.Search.SearchType;
-import strategies.Strategy;
-import strategies.StrategyBestFirst;
-import utils.FileUtils;
-import utils.Utils;
+import conflicts.MABoxConflicts;
 
 public class Run {
 	private World world = World.getInstance();
@@ -206,15 +200,19 @@ public class Run {
 					switch (con.getConflictType()) {
 					case AGENT:
 						world.write("AGENT CONFLICT");
+						//System.out.println("AGENT CONFLICT");
 						con.solveAgentOnAgent(con.getNode(), con.getSender(), con.getReceiver(), stepInPlan,
 								allSolutions);
 						break;
 					case SINGLE_AGENT_BOX:
 						world.write("BOX CONFLICT");
-						con.solveAgentOnBox(con.getNode(), World.getInstance().getAgents().get(0), con.getReceiverBox(),stepInPlan, allSolutions);
+						///System.out.println("BOX CONFLICT");
+						MABoxConflicts maBox = new MABoxConflicts();
+						maBox.solveMAgentBoxConflict(con, stepInPlan, allSolutions);
 						break;
 					case BOX_BOX:
 						world.write("BOX_BOX CONFLICT");
+						//System.out.println("BOX_BOX CONFLICT");
 						con.solveBoxOnBox(con, stepInPlan, allSolutions);
 						break;
 					default:
@@ -225,6 +223,7 @@ public class Run {
 				} else {
 					replanned = false;
 					System.out.println(sb.toString());
+					//System.out.println(world.toString());
 					world.write(sb.toString());
 					world.write(world.toString());
 					try {

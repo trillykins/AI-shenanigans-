@@ -1,6 +1,7 @@
 package searchclient;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import utils.Utils;
 import analysis.LevelAnalysis;
 import analysis.MapAnalysis;
 import atoms.Agent;
@@ -19,7 +21,6 @@ import atoms.Goal;
 import atoms.Position;
 import atoms.World;
 import bdi.Belief;
-import utils.Utils;
 
 public class SearchClient {
 	public static int MAX_ROW = 0;
@@ -37,6 +38,7 @@ public class SearchClient {
 		colors = new HashMap<Character, String>(0);
 		colorSet = new HashSet<Color>(0);
 		in = new BufferedReader(new InputStreamReader(System.in));
+		//in = new BufferedReader(new FileReader("//Users//sunmengwei//Documents//levels//MAParAndriod.lvl"));
 		world = World.getInstance();
 	}
 
@@ -88,7 +90,7 @@ public class SearchClient {
 		int row = 0, column = 0;
 		
 		List<Position> freeSpaces = new ArrayList<Position>();
-		while (!line.equals("")) {
+		while (line != null && !line.equals("")) {
 			for (int i = 0; i < line.length(); i++) {
 				boolean isWall = false;
 				char id = line.charAt(i);

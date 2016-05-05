@@ -3,6 +3,7 @@ package conflicts;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import searchclient.Command;
 import searchclient.Node;
@@ -15,6 +16,8 @@ import atoms.Box;
 import atoms.Goal;
 import atoms.Position;
 import atoms.World;
+import bdi.Belief;
+import bdi.Desire;
 import bdi.Intention;
 
 public class MABoxConflicts {
@@ -95,12 +98,6 @@ public class MABoxConflicts {
 				int size = newOriAgentPlan.size();
 				parent = newOriAgentPlan.get(size-1);
 			}
-//			Node node = plan.get(i);
-//			if(canAgentMove(node,oriAgent,box)) {
-//				break;
-//			}else {
-//				
-//			}
 			newOriAgentPlan.add(createNoOpNode(oriAgent,parent));
 		}
 		
@@ -144,54 +141,34 @@ public class MABoxConflicts {
 		World.getInstance().getSolutionMap().put(ag.getId(), newPlanForMovingBox);
 	}
 	
-	private int searchConflictIndex(Node node,Agent agent) {
-		List<Node> oriAgentPlan = World.getInstance().getSolutionMap().get(agent.getId());
-		if(oriAgentPlan != null && oriAgentPlan.size() > 0) {
-			for(int i=0;i<oriAgentPlan.size();i++) {
-				Node no = oriAgentPlan.get(i);
-				if(no.equals(node)) {
-					return i;
-				}
-			}
-		}
-		return -1;
-	}
-
-	private Agent findAgentToMoveBox(Agent agent,Box box,int index) {
-		for(Integer agId: World.getInstance().getAgents().keySet()) {
-			Agent ag = World.getInstance().getAgents().get(agId);
-			if(ag.getId() != agent.getId() && box.getColor().equals(ag.getColor())) {
-				return ag;
-			}
-		}
-		return null;
-	}
-	
 	private List<Node> generateNewPlanForMovingBox(Agent agent,Position moveToPosition,Box moveBox) {
 		Strategy strategy = new StrategyBFS();
 		Search sear = new Search();
-	
-		agent.initialState.agentCol = agent.getPosition().getY();
-		agent.initialState.agentRow = agent.getPosition().getX();
-		//Add a wall to box position
+		
 		int goalId = agent.initialState.goals.size()+1;
 		Goal newGoal = new Goal(goalId,
 				moveToPosition,Character.toLowerCase(moveBox.getLetter()),null,0);
+		Intention inten = agent.getIntention();
+		if(inten != null) {
+			Goal currentDesire = inten.getDesire().getBelief().getGoal();
+			if(!currentDesire.getPosition().equals(moveToPosition)) {
+				
+				Belief newBelief = new Belief(newGoal);
+				Intention newInten = new Intention(new Desire(newBelief,agent),moveBox);
+				agent.setIntention(newInten);
+			}
+		}
+	
+		agent.initialState.agentCol = agent.getPosition().getY();
+		agent.initialState.agentRow = agent.getPosition().getX();
 		agent.initialState.goals.put(goalId, newGoal);
 		agent.initialState.boxes.put(moveBox.getId(),moveBox);
 		
-		List<Node> newPlan = sear.search(strategy, agent.initialState, Search.SearchType.PATH);
-		return newPlan;
-	}
 	
-	private int compareReplanSize(Agent oriAgent,List<Node> plan) {
-		List<Node> oriPlan = World.getInstance().getSolutionMap().get(oriAgent.getId());
-		int oriPSize = oriPlan.size();
-		int newSize = plan.size();
-		if(oriPSize >= newSize) {
-			return oriPSize - newSize;
-		}
-		return -1;
+		List<Node> newPlan = sear.search(strategy, agent.initialState, Search.SearchType.PATH);
+		
+		agent.generateIntention();
+		return newPlan;
 	}
 	
 	/**
