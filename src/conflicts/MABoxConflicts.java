@@ -145,20 +145,11 @@ public class MABoxConflicts {
 		Strategy strategy = new StrategyBFS();
 		Search sear = new Search();
 		
+		Agent temporaryAgent = agent;
 		int goalId = agent.initialState.goals.size()+1;
 		Goal newGoal = new Goal(goalId,
-				moveToPosition,Character.toLowerCase(moveBox.getLetter()),null,0);
-		Intention inten = agent.getIntention();
-		if(inten != null) {
-			Goal currentDesire = inten.getDesire().getBelief().getGoal();
-			if(!currentDesire.getPosition().equals(moveToPosition)) {
-				
-				Belief newBelief = new Belief(newGoal);
-				Intention newInten = new Intention(new Desire(newBelief,agent),moveBox);
-				agent.setIntention(newInten);
-			}
-		}
-	
+				moveToPosition,Character.toLowerCase(moveBox.getLetter()),null,0);	
+		agent.generateInitialState();
 		agent.initialState.agentCol = agent.getPosition().getY();
 		agent.initialState.agentRow = agent.getPosition().getX();
 		agent.initialState.goals.put(goalId, newGoal);
@@ -167,7 +158,19 @@ public class MABoxConflicts {
 	
 		List<Node> newPlan = sear.search(strategy, agent.initialState, Search.SearchType.PATH);
 		
-		agent.generateIntention();
+		/**
+		 * After replan, continue the previous plan
+		 */
+		Node lastNode = newPlan.get(newPlan.size()-1);
+		temporaryAgent.initialState.agentCol = lastNode.agentCol;
+		temporaryAgent.initialState.agentRow = lastNode.agentRow;
+		
+		World.getInstance().generatePlan(temporaryAgent);
+		Strategy strategyBFS = new StrategyBFS();
+		Search search = new Search();
+		List<Node> furtherPlan = search.search(strategyBFS, temporaryAgent.initialState, Search.SearchType.PATH);
+		
+		newPlan.addAll(furtherPlan);
 		return newPlan;
 	}
 	

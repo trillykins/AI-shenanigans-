@@ -146,13 +146,15 @@ public class DetectConflict {
 										|| curAgentNode.action.actType.equals(Command.type.Push)) {
 									for (Integer bId : curAgent.initialState.boxes.keySet()) {
 										Box b = curAgentNode.boxes.get(bId);
-										if(b.getPosition().equals(planForOtherAgent.get(index).getPosition())){
-											conflict = new Conflict();
-											conflict.setConflictType(ConflictType.SINGLE_AGENT_BOX);
-											conflict.setSender(curAgent);
-											conflict.setReceiver(otherAgent);
-											conflict.setNode(curAgentNode);
-											return conflict;
+										if(b != null) {
+											if(b.getPosition().equals(planForOtherAgent.get(index).getPosition())){
+												conflict = new Conflict();
+												conflict.setConflictType(ConflictType.SINGLE_AGENT_BOX);
+												conflict.setSender(curAgent);
+												conflict.setReceiver(otherAgent);
+												conflict.setNode(curAgentNode);
+												return conflict;
+											}
 										}
 									}
 								}

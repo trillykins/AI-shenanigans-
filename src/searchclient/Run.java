@@ -223,7 +223,7 @@ public class Run {
 				} else {
 					replanned = false;
 					System.out.println(sb.toString());
-					//System.out.println(world.toString());
+					System.out.println(world.toString());
 					world.write(sb.toString());
 					world.write(world.toString());
 					try {
