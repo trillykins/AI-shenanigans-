@@ -30,7 +30,7 @@ public class MABoxConflicts {
 		Agent receiver = conflict.getReceiver();
 		Node node = conflict.getNode();
 		//Check is it same color of sender agent
-		if(sender.getColor().equals(conflictBox.getColor())) {
+		if(sender.getColor().equals(conflictBox.getColor()) && sender.getIntention().getBox().equals(conflictBox)) {
 			moveReceiverAgentAway(receiver,sender, index,conflictBox);
 		}else {
 			List<Node> newPlan = findNewSolution(sender,conflictBox.getPosition());
@@ -96,9 +96,12 @@ public class MABoxConflicts {
 					for (int i=0;i<index-1; i++) {
 						otherSolution.remove(0);
 					}
-					Node parent = createNoOpNode(agent,null);
-					otherSolution.get(0).parent = parent;
-					otherSolution.add(0,parent);
+					if(!(otherSolution.size() == 1 
+							&& otherSolution.get(0).action.actType.equals(Command.type.NoOp))) {
+						Node parent = createNoOpNode(agent,null);
+						otherSolution.get(0).parent = parent;
+						otherSolution.add(0,parent);
+					}
 					World.getInstance().getSolutionMap().put(agen.getId(), otherSolution);
 				}
 			}

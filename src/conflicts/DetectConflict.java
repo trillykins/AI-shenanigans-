@@ -109,7 +109,7 @@ public class DetectConflict {
 							}
 							
 							/*Detects if the currAgent bumps into a box he cannot see*/
-							boolean isOtherBoxes = isOtherBoxes(otherAgent,curAgentNode.getPosition());
+							boolean isOtherBoxes = isOtherBoxesOrNonIntentionBox(curAgent,otherAgent,curAgentNode.getPosition());
 							if(isOtherBoxes) {
 								conflict = new Conflict();
 								conflict.setConflictType(ConflictType.SINGLE_AGENT_BOX);
@@ -161,6 +161,28 @@ public class DetectConflict {
 											return conflict;
 										}
 									}
+								}else {
+									/*
+									 * Add a situation that one agent has two goals, and already achieved one.
+									 * But the achieved goals is on the way of second solution
+									 */
+									Intention intention = curAgent.getIntention();
+									if(intention != null) {
+										Box intenbox = curAgent.getIntention().getBox();
+										Position nextMovePosition = new Position(curAgentNode.agentRow,curAgentNode.agentCol);
+										for (Box boxes : World.getInstance().getBoxes().values()) {
+											if(boxes.getPosition().equals(nextMovePosition) && 
+													!boxes.equals(intenbox)){
+												conflict = new Conflict();
+												conflict.setConflictType(ConflictType.SINGLE_AGENT_BOX);
+												conflict.setSender(curAgent);
+												conflict.setReceiver(otherAgent);
+												conflict.setNode(curAgentNode);
+												conflict.setReceiverBox(boxes);
+												return conflict;
+											}
+										}
+									}
 								}
 							}
 						}
@@ -171,8 +193,9 @@ public class DetectConflict {
 		return null;
 	}
 
-	private boolean isOtherBoxes(Agent otherAgent,Position currAgentPos) {
+	private boolean isOtherBoxesOrNonIntentionBox(Agent agent,Agent otherAgent,Position currAgentPos) {
 		for(Box box: World.getInstance().getBoxes().values()) {
+			//check if is it current agent non intention box
 			if(box.getColor().equals(otherAgent.getColor()) && box.getPosition().equals(currAgentPos)) {
 				receiverBox = box;
 				return true;
@@ -180,6 +203,7 @@ public class DetectConflict {
 		}
 		return false;
 	}
+
 	/**
 	 * Check whether the agent can move to the position(row,col) based on the
 	 * logic that : check is it a wall on this position or a movable box of this
