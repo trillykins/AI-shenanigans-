@@ -30,6 +30,16 @@ public class Agent implements IMessage {
 		this(id, Utils.determineColor(color), pos, priority);
 	}
 
+	public Agent(Agent agent) {
+		this.id = agent.getId();
+		this.col = agent.getColor();
+		this.pos = agent.getPosition();
+		this.priority = agent.getPriority();
+		this.desires = agent.getDesires();
+		this.intention = agent.getIntention();
+		this.initialState = agent.initialState;
+		//this.stepInPlan = agent.getStepInPlan();
+	}
 	public Agent(int id, Color color, Position pos, int priority) {
 		this.id = id;
 		this.col = color;

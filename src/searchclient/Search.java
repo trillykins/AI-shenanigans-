@@ -59,6 +59,11 @@ public class Search {
 					return leafNode.extractPlan();
 				}
 				break;
+			case MOVE_OWN_BOX:
+				if (leafNode.moveAgentAndBoxAway(otherPlan)){
+					return leafNode.extractPlan();
+				}
+				break;
 			default:
 				break;
 			}

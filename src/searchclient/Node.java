@@ -94,14 +94,28 @@ public class Node {
 		return true;
 	}
 	
-	public boolean movedAwayWithBox(List<Node> otherPlan) {
+//	public boolean movedAwayWithBox(List<Node> otherPlan) {
+//		Position aPos = new Position(agentRow, agentCol);
+//		for (Node otherNode : otherPlan) {
+//			if (otherNode.agentRow == agentRow && otherNode.agentCol == agentCol)
+//				return false;
+//			for (Box b : otherNode.boxes.values())
+//				if (b.getPosition().equals(aPos))
+//					return false;
+//		}
+//		return true;
+//	}
+	public boolean moveAgentAndBoxAway(List<Node> otherPlan){
 		Position aPos = new Position(agentRow, agentCol);
 		for (Node otherNode : otherPlan) {
+			System.err.println( " : agent pos" + aPos.toString());
 			if (otherNode.agentRow == agentRow && otherNode.agentCol == agentCol)
 				return false;
 			for (Box b : otherNode.boxes.values())
 				if (b.getPosition().equals(aPos))
 					return false;
+			if(!isGoalState())
+				return false;
 		}
 		return true;
 	}

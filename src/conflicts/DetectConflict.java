@@ -325,6 +325,7 @@ public class DetectConflict {
 	 */
 	public boolean checkBoxes(int row, int col, Agent otherAgent, Node nextNodeCurrAgent) {
 		/* agent on box */
+		//World.getInstance().write("her");
 		for (Integer bId : otherAgent.initialState.boxes.keySet()) {
 			Box b = World.getInstance().getBoxes().get(bId);
 			if (b.getPosition().equals(new Position(row, col))) {
@@ -335,6 +336,9 @@ public class DetectConflict {
 				if (nextNodeCurrAgent.agentRow == b.getPosition().getX()
 						&& nextNodeCurrAgent.agentCol == b.getPosition().getY()) {
 					receiverBox = b;
+					for (Box nextNodeCurrAgentBox : nextNodeCurrAgent.boxes.values()) {
+					senderBox = nextNodeCurrAgentBox;
+					}
 					return true;
 				} else if (nextNodeCurrAgent.boxes.values().size() > 0) {
 					for (Box box : nextNodeCurrAgent.boxes.values()) {
