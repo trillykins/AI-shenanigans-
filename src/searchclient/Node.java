@@ -8,7 +8,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
 import atoms.Box;
 import atoms.Color;
@@ -28,7 +27,7 @@ public class Node {
 	public int moveToPositionCol;
 	public Map<Integer, Box> boxes;
 	public Map<Integer, Goal> goals;
-	public Set<Position> walls;
+	public List<Position> walls;
 
 	public Node parent;
 	public Command action;
@@ -81,6 +80,31 @@ public class Node {
 		return false;
 	}
 
+
+	public boolean movedAway(List<Node> otherPlan) {
+		Position aPos = new Position(agentRow, agentCol);
+		for (Node otherNode : otherPlan) {
+			if (otherNode.agentRow == agentRow && otherNode.agentCol == agentCol)
+				return false;
+			for (Box b : otherNode.boxes.values())
+				if (b.getPosition().equals(aPos))
+					return false;
+		}
+		return true;
+	}
+	
+	public boolean movedAwayWithBox(List<Node> otherPlan) {
+		Position aPos = new Position(agentRow, agentCol);
+		for (Node otherNode : otherPlan) {
+			if (otherNode.agentRow == agentRow && otherNode.agentCol == agentCol)
+				return false;
+			for (Box b : otherNode.boxes.values())
+				if (b.getPosition().equals(aPos))
+					return false;
+		}
+		return true;
+	}
+	
 	public ArrayList<Node> getExpandedNodes() {
 		ArrayList<Node> expandedNodes = new ArrayList<Node>(Command.every.length);
 		for (Command c : Command.every) {
@@ -156,6 +180,7 @@ public class Node {
 	private boolean cellIsFree(int row, int col) {
 		Position pos = new Position(row, col);
 		for (Box b : boxes.values()) {
+//		for(Box b : World.getInstance().getBoxes().values()) {
 			if (b.getPosition().equals(pos))
 				return false;
 		}
@@ -187,7 +212,7 @@ public class Node {
 		Node copy = new Node(this, this.agentId);
 		copy.agentColor = this.agentColor;
 		copy.boxes = new HashMap<Integer, Box>(this.boxes);
-		copy.walls = new HashSet<Position>(this.walls);
+		copy.walls = new ArrayList<>(this.walls);
 		copy.goals = this.goals;
 		copy.moveToPositionRow = this.moveToPositionRow;
 		copy.moveToPositionCol = this.moveToPositionCol;
@@ -233,6 +258,15 @@ public class Node {
 			return false;
 		return true;
 	}
+	
+	public Position getPosition() {
+		return new Position(agentRow, agentCol);
+	}
+	
+	public void setPosition(Position pos) {
+		this.agentRow = pos.getX();
+		this.agentCol = pos.getY();
+	}
 
 	public String toString() {
 		StringBuilder s = new StringBuilder();
@@ -272,17 +306,4 @@ public class Node {
 		}
 		return s.toString();
 	}
-
-	public boolean movedAway(List<Node> otherPlan) {
-		Position aPos = new Position(agentRow, agentCol);
-		for (Node otherNode : otherPlan) {
-			if (otherNode.agentRow == agentRow && otherNode.agentCol == agentCol)
-				return false;
-			for (Box b : otherNode.boxes.values())
-				if (b.getPosition().equals(aPos))
-					return false;
-		}
-		return true;
-	}
-	
 }

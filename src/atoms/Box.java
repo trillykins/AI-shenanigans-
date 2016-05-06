@@ -5,14 +5,12 @@ public class Box {
 	private Position position;
 	private char letter;
 	private Color color;
-	private boolean isOnGoal;
 	
 	public Box(int id, Position p, char l, Color c) {
 		this.id = id;
 		this.position = p;
 		this.letter = l;
 		this.color = c;
-		this.isOnGoal = false;
 	}
 
 	public Position getPosition() {
@@ -49,22 +47,27 @@ public class Box {
 
 	public boolean isOnGoal() {
 		for(Goal goal : World.getInstance().getGoals().values()) {
-			if(goal.getPosition().equals(position) && goal.getLetter() == Character.toLowerCase(letter)) {
+			if(position.equals(goal.getPosition()) && goal.getLetter() == Character.toLowerCase(letter)) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
-//	public void setOnGoal(boolean isOnGoal) {
-//		this.isOnGoal = isOnGoal;
-//	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Box [id=").append(id).append(", position=").append(position).append(", letter=").append(letter)
+				.append(", color=").append(color).append("]");
+		return builder.toString();
+	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((color == null) ? 0 : color.hashCode());
+		result = prime * result + id;
 		result = prime * result + letter;
 		result = prime * result + ((position == null) ? 0 : position.hashCode());
 		return result;
@@ -81,6 +84,8 @@ public class Box {
 		Box other = (Box) obj;
 		if (color != other.color)
 			return false;
+		if (id != other.id)
+			return false;
 		if (letter != other.letter)
 			return false;
 		if (position == null) {
@@ -90,13 +95,4 @@ public class Box {
 			return false;
 		return true;
 	}
-
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Box [position=").append(position).append(", letter=").append(letter).append(", color=")
-				.append(color).append("]");
-		return builder.toString();
-	}
-
 }

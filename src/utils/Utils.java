@@ -1,4 +1,4 @@
-package searchclient;
+package utils;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -10,6 +10,7 @@ import atoms.Box;
 import atoms.Color;
 import atoms.Position;
 import atoms.World;
+import searchclient.Node;
 
 public class Utils {
 
