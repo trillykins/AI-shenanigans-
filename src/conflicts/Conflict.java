@@ -175,26 +175,37 @@ public class Conflict {
 				agent.getIntention().getDesire().getBelief().getGoal());
 
 		Agent tmp = new Agent(agentToMove);
-		for (Box box : World.getInstance().getBoxes().values()) {
-			if (!senderBox.equals(box)) {
-				tmp.initialState.boxes.put(box.getId(), box);
-			}
-		}
-		// tmp.initialState.boxes.put(receiverBox.getId(), receiverBox);
-		Strategy strategy = new StrategyBestFirst(new AStar(tmp.initialState));
-		Search s = new Search();
+		tmp.initialState.boxes.put(receiverBox.getId(), receiverBox);
 
-		List<Node> plan = s.search(strategy, tmp.initialState, SearchType.PATH);
-		for (Box box : World.getInstance().getBoxes().values()) {
+		// check if generated plan is valid - check that the agent's position
+		// doesn't overlap with any box
+		boolean planValid = true;
+		Search s = new Search();
+		List<Node> plan = null;
+		do {
+			planValid = true;
+			plan = s.search(new StrategyBestFirst(new AStar(tmp.initialState)), tmp.initialState, SearchType.PATH);
+			for (Node n : plan) {
+				for (Box b : n.boxes.values()) {
+					if (!b.equals(receiverBox) && !b.equals(senderBox)
+							&& new Position(n.agentRow, n.agentCol).equals(b.getPosition())) {
+						tmp.initialState.boxes.put(b.getId(), b);
+						
+						planValid = false;
+					}
+				}
+			}
+		} while (!planValid);
+
+		// remove all other boxes from agent except its own
+		for (Box box : tmp.initialState.boxes.values()) {
 			if (!senderBox.equals(box)) {
 				tmp.initialState.boxes.remove(box);
 			}
 		}
-//		agentToMove.initialState.boxes.remove(receiverBox);
-		// System.err.println(senderBox);
-		System.err.println(receiverBox);
 		World.getInstance().getSolutionMap().put(agentToMove.getId(), plan);
 		World.getInstance().getBeliefs().add(agentToMove.getIntention().getDesire().getBelief());
+		System.err.println(plan);
 	}
 
 	public void solveBoxOnBox(Conflict conflict, int index, List<List<Node>> allSolutions) {
