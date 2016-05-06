@@ -10,10 +10,11 @@ import strategies.Strategy;
 
 public class Search {
 	public static int TIME = 300;
+	private List<Node> moveBoxPlan;
 	private List<Node> otherPlan;
 
 	public static enum SearchType {
-		PATH, MOVE_TO_POSITION, MOVE_AWAY, MOVE_OWN_BOX
+		PATH, MOVE_TO_POSITION, MOVE_AWAY, MOVE_OWN_BOX, MOVE_BOX
 	}
 
 	public void setPlanForAgentToStay(List<Node> otherPlan) {
@@ -22,6 +23,14 @@ public class Search {
 	
 	public List<Node> getOtherPlan() {
 		return this.otherPlan;
+	}
+
+	public void setPlanForMovingBox(List<Node> moveBoxPlan) {
+		this.moveBoxPlan = moveBoxPlan;
+	}
+	
+	public List<Node> getPlanForMovingBox() {
+		return this.moveBoxPlan;
 	}
 
 	public LinkedList<Node> search(Strategy strategy, Node initialState, SearchType searchType) {
@@ -56,6 +65,11 @@ public class Search {
 				break;
 			case MOVE_AWAY:
 				if (leafNode.movedAway(otherPlan)) {
+					return leafNode.extractPlan();
+				}
+				break;
+			case MOVE_BOX:	// gave up - doesn't work
+				if (leafNode.movedAway(moveBoxPlan)) {
 					return leafNode.extractPlan();
 				}
 				break;

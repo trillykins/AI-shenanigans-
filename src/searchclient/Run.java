@@ -96,6 +96,7 @@ public class Run {
 				DetectConflict detectCon = new DetectConflict();
 				Conflict con = detectCon.checkConflict(stepInPlan);
 				if (con != null && !replanned) {
+					world.write(con.toString());
 					switch (con.getConflictType()) {
 					case AGENT:
 						world.write("AGENT-ON-AGENT CONFLICT");
@@ -107,6 +108,7 @@ public class Run {
 						break;
 					case BOX_BOX:
 						world.write("BOX_BOX CONFLICT");
+						con.solveBoxOnBox(con, stepInPlan, allSolutions);
 						break;
 					default:
 						world.write("UNDEFINED CONFLICT");
