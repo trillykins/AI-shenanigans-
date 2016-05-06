@@ -176,14 +176,22 @@ public class Conflict {
 		Node noOp = agentToStay.initialState;
 		noOp.action = new Command();
 		newPlanAgentToStay.add(0, noOp);
-		if (newPlanAgentToMove.size() < newPlanAgentToStay.size()) {
-			int noOpsToAdd = Math.abs(newPlanAgentToMove.size() - newPlanAgentToStay.size());
-			for (int i = 0; i < noOpsToAdd; i++) {
-				Node n = newPlanAgentToMove.getLast().childNode();
-				noOp = n;
-				noOp.action = new Command();
-				newPlanAgentToMove.add(noOp);
+		if (newPlanAgentToMove != null && !newPlanAgentToMove.isEmpty()) {
+			if(newPlanAgentToMove.size() < newPlanAgentToStay.size()) {
+				int noOpsToAdd = Math.abs(newPlanAgentToMove.size() - newPlanAgentToStay.size());
+				for (int i = 0; i < noOpsToAdd; i++) {
+					Node n = newPlanAgentToMove.getLast().childNode();
+					noOp = n;
+					noOp.action = new Command();
+					newPlanAgentToMove.add(noOp);
+				}
 			}
+		} else {
+			agentToMove.generateInitialState();
+			Node n = agentToMove.initialState;
+			noOp = n;
+			noOp.action = new Command();
+			newPlanAgentToMove.add(noOp);
 		}
 		agentToMove.setPlan(newPlanAgentToMove);
 		agentToMove.setStepInPlan(0);
