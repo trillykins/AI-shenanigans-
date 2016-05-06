@@ -10,6 +10,8 @@ import atoms.Goal;
 import atoms.Position;
 import atoms.World;
 import heuristics.AStar;
+import heuristics.Greedy;
+import heuristics.WeightedAStar;
 import searchclient.Command;
 import searchclient.Node;
 import searchclient.Search;
@@ -201,21 +203,29 @@ public class Conflict {
 		Agent agentToMove = agent;
 		agentToMove.generateInitialState();
 		agentToMove.initialState.setPosition(World.getInstance().getAgents().get(0).getPosition());
-		agentToMove.initialState.boxes.put(agent.getIntention().getBox().getId(), agent.getIntention().getBox());
-		agentToMove.initialState.goals.put(agent.getIntention().getDesire().getBelief().getGoal().getId(),
-				agent.getIntention().getDesire().getBelief().getGoal());
-		agentToMove.initialState.boxes.put(box.getId(), box);
+		agentToMove.initialState.boxes.put(agent.getIntention().getBox().getId(), World.getInstance().getBoxes().get(agent.getIntention().getBox().getId()));
+		agentToMove.initialState.goals.put(agent.getIntention().getDesire().getBelief().getGoal().getId(), agent.getIntention().getDesire().getBelief().getGoal());
 
-		Strategy strategy = new StrategyBestFirst(new AStar(agentToMove.initialState));
-		// Strategy strategy = new StrategyBFS();
+		Agent tmp = new Agent(agentToMove);
+		tmp.initialState.walls.add(box.getPosition());
+		Strategy strategy = new StrategyBestFirst(new AStar(tmp.initialState));
 		Search s = new Search();
 
-		List<Node> plan = s.search(strategy, agentToMove.initialState, SearchType.PATH);
-		World.getInstance().write("agent conflict resolution plan: \n" + plan);
+		List<Node> plan = s.search(strategy, tmp.initialState, SearchType.PATH);
+		World.getInstance().write("plan = " + (plan == null ? "null" : "WORKZ"));
+		if(plan == null || plan.isEmpty()) {
+			if(agentToMove.initialState.walls.contains(box.getPosition()))
+				agentToMove.initialState.walls.remove(box.getPosition());
+			agentToMove.initialState.boxes.put(box.getId(), box);
+			strategy = new StrategyBestFirst(new AStar(agentToMove.initialState));
+			s = new Search();
+			plan = s.search(strategy, agentToMove.initialState, SearchType.PATH);			
+		} else {
+			agentToMove.initialState.walls.remove(box.getPosition());
+		}
 		World.getInstance().getSolutionMap().put(agentToMove.getId(), plan);
-//		Agent agentToMoveAway = World.getInstance().getAgents().get(agentToMove.getId());
-//		World.getInstance().getBeliefs().add(agentToMoveAway.getIntention().getDesire().getBelief());
-	}
+		World.getInstance().getBeliefs().add(agentToMove.getIntention().getDesire().getBelief());
+ 	}
 
 	private List<Node> updatePlan(int agentId, int index) {
 		List<Node> updPlan = new LinkedList<Node>();

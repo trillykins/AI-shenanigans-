@@ -8,7 +8,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
 import atoms.Box;
 import atoms.Color;
@@ -28,7 +27,7 @@ public class Node {
 	public int moveToPositionCol;
 	public Map<Integer, Box> boxes;
 	public Map<Integer, Goal> goals;
-	public Set<Position> walls;
+	public List<Position> walls;
 
 	public Node parent;
 	public Command action;
@@ -213,7 +212,7 @@ public class Node {
 		Node copy = new Node(this, this.agentId);
 		copy.agentColor = this.agentColor;
 		copy.boxes = new HashMap<Integer, Box>(this.boxes);
-		copy.walls = new HashSet<Position>(this.walls);
+		copy.walls = new ArrayList<>(this.walls);
 		copy.goals = this.goals;
 		copy.moveToPositionRow = this.moveToPositionRow;
 		copy.moveToPositionCol = this.moveToPositionCol;

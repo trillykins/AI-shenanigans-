@@ -64,6 +64,7 @@ public class Run {
 					agentSolutions.put(a.getId(), solution);
 					allSolutions.add(solution);
 				} else {
+					world.write("Solution is empty.. init state:\n" + a.initialState.toString());
 					List<Node> empty = new LinkedList<Node>();
 					Node noOp = a.initialState;
 					noOp.action = new Command();

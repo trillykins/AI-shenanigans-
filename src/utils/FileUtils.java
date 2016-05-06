@@ -9,8 +9,7 @@ import java.io.PrintWriter;
 public class FileUtils {
 	public FileUtils() {
 		File file = new File("output.txt");
-		if(file.exists()) 
-			file.delete();
+		file.delete();
 	}
 	
 	public void write(String str) {

@@ -1,9 +1,8 @@
 package atoms;
 
-import java.util.HashSet;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import analysis.FreeSpace;
 import bdi.Belief;
@@ -18,9 +17,9 @@ public class World {
 	private Map<Integer, Goal> goals;
 	private Map<Integer, Box> boxesInGoals;
 	private Map<Integer, Goal> solvedGoals;
-	private Set<Position> walls;
-	private Set<Color> colors;
-	private Set<Belief> beliefs;
+	private List<Position> walls;
+	private List<Color> colors;
+	private List<Belief> beliefs;
 	private Map<Integer, List<Node>> solutionMap;
 	private Map<Position, FreeSpace> freeSpace;
 	private FileUtils files = new FileUtils();
@@ -58,22 +57,6 @@ public class World {
 		this.solvedGoals = solvedGoals;
 	}
 
-	public Set<Belief> getBeliefs() {
-		return beliefs;
-	}
-
-	public void setBeliefs(Set<Belief> beliefs) {
-		this.beliefs = beliefs;
-	}
-
-	public Set<Color> getColors() {
-		return colors;
-	}
-
-	public void setColors(Set<Color> colors) {
-		this.colors = colors;
-	}
-
 	public Map<Integer, Agent> getAgents() {
 		return agents;
 	}
@@ -98,14 +81,6 @@ public class World {
 		this.goals = goals;
 	}
 
-	public Set<Position> getWalls() {
-		return walls;
-	}
-
-	public void setWalls(Set<Position> walls) {
-		this.walls = walls;
-	}
-
 	public Map<Integer, List<Node>> getSolutionMap() {
 		return solutionMap;
 	}
@@ -122,6 +97,38 @@ public class World {
 		this.freeSpace = freeSpace;
 	}
 
+	public List<Position> getWalls() {
+		return walls;
+	}
+
+	public void setWalls(List<Position> walls) {
+		this.walls = walls;
+	}
+
+	public List<Color> getColors() {
+		return colors;
+	}
+
+	public void setColors(List<Color> colors) {
+		this.colors = colors;
+	}
+
+	public List<Belief> getBeliefs() {
+		return beliefs;
+	}
+
+	public void setBeliefs(List<Belief> beliefs) {
+		this.beliefs = beliefs;
+	}
+
+	public FileUtils getFiles() {
+		return files;
+	}
+
+	public void setFiles(FileUtils files) {
+		this.files = files;
+	}
+	
 	public boolean isGlobalGoalState() {
 		for (Goal goal : goals.values()) {
 			if (!goal.isSolved())
@@ -183,21 +190,25 @@ public class World {
 			return agent;
 		}
 		Intention intention = agent.getIntention();
+		write("beliefs before removing: " + Arrays.toString(beliefs.toArray()));
+		write("contains: " + beliefs.contains(intention.getDesire().getBelief()));
+		write("removing belief: " + intention.getDesire().getBelief());
+		World.getInstance().beliefs.remove(intention.getDesire().getBelief());
+		write("beliefs after removing: " + Arrays.toString(beliefs.toArray()));
 		write("here we have selected intion for agent : " + agent.getId() + " intention is : " + intention.toString());
 		Goal goal = intention.getDesire().getBelief().getGoal();
 		Box intentionBox = intention.getBox();
 		
-		/*TODO : the below line did not work (probably of how sets work in java, with custom datatypes dunno)*/
-		//World.getInstance().getBeliefs().remove(intention.getDesire().getBelief());
-		Set<Belief> beliefs = new HashSet<Belief>();
-		Belief belief = intention.getDesire().getBelief();
-		for(Belief bel : World.getInstance().getBeliefs()){
-			if (!belief.equals(bel)) {
-				beliefs.add(bel);
-			}
-		}
-		World.getInstance().setBeliefs(beliefs);
-		//write("the new beliefs : " + World.getInstance().getBeliefs());
+//		Set<Belief> beliefs = new HashSet<Belief>();
+//		Belief belief = intention.getDesire().getBelief();
+//		for(Belief bel : World.getInstance().getBeliefs()){
+//			if (!belief.equals(bel)) {
+//				beliefs.add(bel);
+//			}
+//		}
+//		World.getInstance().setBeliefs(beliefs);
+//		World.getInstance().getBeliefs().remove(intention.getDesire().getBelief());
+
 		agent.initialState.goals.put(goal.getId(), goal);
 		agent.initialState.boxes.put(intentionBox.getId(), intentionBox);
 		return agent;

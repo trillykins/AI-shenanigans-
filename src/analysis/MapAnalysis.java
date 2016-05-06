@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
-import java.util.Set;
 
 import atoms.Agent;
 import atoms.Box;
@@ -19,9 +18,9 @@ public class MapAnalysis {
 	private Map<Integer, Agent> agents;
 	private Map<Integer, Box> boxes;
 	private Map<Integer, Goal> goals;
-	private Set<Position> walls;
+	private List<Position> walls;
 	
-	private List<Position> narrowCells = new ArrayList<Position>();
+	private List<Position> narrowCells = new ArrayList<>();
 	 
 	public MapAnalysis(){
 		 world = World.getInstance();

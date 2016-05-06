@@ -5,10 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import analysis.LevelAnalysis;
 import analysis.MapAnalysis;
@@ -28,14 +26,14 @@ public class SearchClient {
 	public static BufferedReader in;
 	public static Map<Integer, Byte[][]> precomputedGoalH;
 	private Map<Character, String> colors;
-	Set<Color> colorSet;
+	List<Color> colorSet;
 	World world;
 	LevelAnalysis levelAnalysis;
 
 	public SearchClient() throws IOException {
 		precomputedGoalH = new HashMap<>(0);
-		colors = new HashMap<Character, String>(0);
-		colorSet = new HashSet<Color>(0);
+		colors = new HashMap<>(0);
+		colorSet = new ArrayList<>(0);
 		in = new BufferedReader(new InputStreamReader(System.in));
 		world = World.getInstance();
 	}
@@ -80,11 +78,11 @@ public class SearchClient {
 	}
 
 	public void initWorld(String line) {
-		Set<Position> walls = new HashSet<>(0);
+		List<Position> walls = new ArrayList<>(0);
 		Map<Integer, Goal> goals = new HashMap<>(0);
 		Map<Integer, Box> boxes = new HashMap<>(0);
 		Map<Integer, Agent> agents = new HashMap<>(0);
-		Set<Belief> beliefs = new HashSet<>(0);
+		List<Belief> beliefs = new ArrayList<>(0);
 		int row = 0, column = 0;
 		
 		List<Position> freeSpaces = new ArrayList<Position>();

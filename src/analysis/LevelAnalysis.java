@@ -2,7 +2,6 @@ package analysis;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import atoms.Agent;
 import atoms.Box;
@@ -15,8 +14,8 @@ public class LevelAnalysis {
 	private Map<Integer, Agent> agents;
 	private Map<Integer, Box> boxes;
 	private Map<Integer, Goal> goals;
-	private Set<Position> walls;
 	private Map<Position,FreeSpace> freespace;
+	private List<Position> walls;
 	
 	public LevelAnalysis(){
 		 world = World.getInstance();

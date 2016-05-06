@@ -54,11 +54,6 @@ public class Goal {
 		}
 		return false;
 	}
-	
-	@Override
-	public String toString() {
-		return "Goal [id=" + id + ", position=" + position + ", letter=" + letter + ", priority=" + priority + "]";
-	}
 
 	@Override
 	public int hashCode() {
@@ -94,4 +89,11 @@ public class Goal {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Goal [id=").append(id).append(", position=").append(position).append(", letter=").append(letter)
+				.append(", priority=").append(priority).append("]");
+		return builder.toString();
+	}
 }
