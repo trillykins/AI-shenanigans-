@@ -139,7 +139,7 @@ public class World {
 	public void updateBeliefs() {
 		for (Goal goal : World.getInstance().getGoals().values()) {
 			if (!goal.isSolved()) {
-				boolean contained = true;
+				boolean contained = false;//true
 				for (Belief b : World.getInstance().getBeliefs()) {
 					if (goal.equals(b.getGoal()))
 						contained = true;

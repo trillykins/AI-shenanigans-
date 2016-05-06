@@ -25,7 +25,7 @@ public class DetectConflict {
 			Agent a1 = World.getInstance().getAgents().get(0);
 			/*
 			 * as there is no other agents that can be in a1's way, the only
-			 * obsticle a1 can bump into is a box
+			 * obstacle a1 can bump into is a box
 			 */
 			Intention intention = a1.getIntention();
 			if (intention != null) {
@@ -36,21 +36,31 @@ public class DetectConflict {
 					if (!box.equals(intentionBox)) {
 						if (box.getPosition().equals(next.getPosition())) {
 							conflict = new Conflict();
-							if (next.action.actType.equals(Command.type.Move) || next.action.actType.equals(Command.type.Pull)) {
+							if (next.action.actType.equals(Command.type.Move)  || next.action.actType.equals(Command.type.Pull)) {
 								conflict.setConflictType(ConflictType.SINGLE_AGENT_BOX);
 								conflict.setReceiverBox(box);
 								conflict.setSender(World.getInstance().getAgents().get(0));
 								conflict.setNode(next);
-
 								return conflict;
-							} /*else {
-								conflict.setConflictType(ConflictType.BOX_BOX);
-								conflict.setReceiverBox(box);
-								conflict.setSender(World.getInstance().getAgents().get(0));
-								conflict.setNode(node);
-								return conflict;
-							}*/
+							}
 						}
+						/*Want to check if the next node (to the box we are "carring") is a box)*/
+						else {
+							for (Box nextNodeBox : next.boxes.values()) {
+								if(box.getPosition().equals(nextNodeBox.getPosition()) && next.action.actType.equals(Command.type.Push)){
+//									World.getInstance().write("heeeeer");
+//									World.getInstance().write(next.toString());
+//									System.exit(0);
+									conflict.setConflictType(ConflictType.BOX_BOX);
+									conflict.setReceiverBox(box);
+									conflict.setSender(World.getInstance().getAgents().get(0));
+									conflict.setNode(next);
+									return conflict;
+								}
+							}	
+
+						}
+
 					}
 				}
 			}
@@ -65,9 +75,10 @@ public class DetectConflict {
 				Node curAgentNode = World.getInstance().getSolutionMap().get(curAgent.getId()).get(index);
 				for (Agent otherAgent : World.getInstance().getAgents().values()) {
 					if (otherAgent.getId() != curAgent.getId()) {
+
 						List<Node> planForOtherAgent = World.getInstance().getSolutionMap().get(otherAgent.getId());
 						if (planForOtherAgent != null && planForOtherAgent.size() > 0) {
-							
+
 							/*Agent on agent detection*/
 							if (planForOtherAgent.size() > index) {
 								Node otherAgentNode = planForOtherAgent.get(index);
@@ -82,7 +93,7 @@ public class DetectConflict {
 									 * PLEASE EXPLAIN!!!*/
 									Node previousNode = curAgentNode.parent;
 									conflict.setNode(previousNode);
-									
+
 									if(curAgentNode.action.actType.equals(Command.type.Pull) || curAgentNode.action.actType.equals(Command.type.Push)){
 										for (Box box : curAgentNode.boxes.values()) {
 											conflict.setSenderBox(box);
@@ -95,30 +106,26 @@ public class DetectConflict {
 									}
 									return conflict;
 								}
-
 							}
 							
+							/*Detects if the currAgent bumps into a box he cannot see*/
 							boolean isOtherBoxes = isOtherBoxes(otherAgent,curAgentNode.getPosition());
 							if(isOtherBoxes) {
 								conflict = new Conflict();
 								conflict.setConflictType(ConflictType.SINGLE_AGENT_BOX);
 								conflict.setSender(curAgent);
 								conflict.setReceiver(otherAgent);
-								/*TODO : Soooo.. for single agent we put in next node, but for multi agent we put in previous node? da fuck
-								 * PLEASE EXPLAIN!!!*/
-								Node previousNode = curAgentNode.parent;
-								conflict.setNode(previousNode);
+								conflict.setNode(curAgentNode);
 								conflict.setReceiverBox(receiverBox);	
 								return conflict;
 							}
-							
 							
 							/*We consider an agent that moved into a box or box on box conflict*/
 							Node nextNodeCurrAgent = null;
 							if (World.getInstance().getSolutionMap().get(curAgent.getId()).size() > index + 1)
 								nextNodeCurrAgent = World.getInstance().getSolutionMap().get(curAgent.getId())
-										.get(index + 1);
-							
+								.get(index + 1);
+
 							boolean isOtherAgentBox = checkBoxes(curAgentNode.agentRow, curAgentNode.agentCol,
 									otherAgent, nextNodeCurrAgent);
 							if (isOtherAgentBox) {
@@ -127,18 +134,16 @@ public class DetectConflict {
 									conflict.setConflictType(ConflictType.SINGLE_AGENT_BOX);
 								} else if (curAgentNode.action.actType.equals(Command.type.Pull)
 										|| curAgentNode.action.actType.equals(Command.type.Push)) {
-									{
-										conflict.setConflictType(ConflictType.BOX_BOX);
-									}
-									conflict.setReceiverBox(receiverBox);
-									conflict.setSenderBox(senderBox);
-									conflict.setSender(curAgent);
-									conflict.setReceiver(otherAgent);
-									conflict.setNode(curAgentNode);
-									return conflict;
+									conflict.setConflictType(ConflictType.BOX_BOX);
 								}
+								conflict.setReceiverBox(receiverBox);
+								conflict.setSenderBox(senderBox);
+								conflict.setSender(curAgent);
+								conflict.setReceiver(otherAgent);
+								conflict.setNode(curAgentNode);
+								return conflict;
 							}
-							
+
 							/*Agent on box detection (where curAgent pulls or pushes a box)*/
 							if (planForOtherAgent.size() > index) {
 								/*if the box we are pulling or pushing is in the field of the agent*/
@@ -146,16 +151,14 @@ public class DetectConflict {
 										|| curAgentNode.action.actType.equals(Command.type.Push)) {
 									for (Integer bId : curAgent.initialState.boxes.keySet()) {
 										Box b = curAgentNode.boxes.get(bId);
-										if(b != null) {
-											if(b.getPosition().equals(planForOtherAgent.get(index).getPosition())){
-												conflict = new Conflict();
-												conflict.setConflictType(ConflictType.SINGLE_AGENT_BOX);
-												conflict.setSender(curAgent);
-												conflict.setReceiver(otherAgent);
-												conflict.setNode(curAgentNode);
-												conflict.setReceiverBox(b);
-												return conflict;
-											}
+										if(b.getPosition().equals(planForOtherAgent.get(index).getPosition())){
+											conflict = new Conflict();
+											conflict.setConflictType(ConflictType.SINGLE_AGENT_BOX);
+											conflict.setSender(curAgent);
+											conflict.setReceiver(otherAgent);
+											conflict.setNode(curAgentNode);
+											conflict.setReceiverBox(b);
+											return conflict;
 										}
 									}
 								}
@@ -167,28 +170,16 @@ public class DetectConflict {
 		}
 		return null;
 	}
-	
-	private boolean isOtherBoxes(Agent agent,Position posi) {
+
+	private boolean isOtherBoxes(Agent otherAgent,Position currAgentPos) {
 		for(Box box: World.getInstance().getBoxes().values()) {
-			if(box.getColor().equals(agent.getColor()) && box.getPosition().equals(posi)) {
+			if(box.getColor().equals(otherAgent.getColor()) && box.getPosition().equals(currAgentPos)) {
 				receiverBox = box;
 				return true;
 			}
 		}
 		return false;
 	}
-	
-	private Conflict createConflict(ConflictType type, Agent sender, Agent receiver, Node curr) {
-		Conflict conflict = new Conflict();
-		conflict.setConflictType(type);
-		conflict.setReceiverBox(receiverBox);
-		conflict.setSenderBox(senderBox);
-		conflict.setSender(sender);
-		conflict.setReceiver(receiver);
-		conflict.setNode(curr);
-		return conflict;
-	}
-
 	/**
 	 * Check whether the agent can move to the position(row,col) based on the
 	 * logic that : check is it a wall on this position or a movable box of this
@@ -257,12 +248,12 @@ public class DetectConflict {
 	 * 
 	 * @param row
 	 * @param col
-	 * @param agen
+	 * @param otherAgent
 	 * @return
 	 */
-	public boolean checkBoxes(int row, int col, Agent agen, Node nextNodeCurrAgent) {
+	public boolean checkBoxes(int row, int col, Agent otherAgent, Node nextNodeCurrAgent) {
 		/* agent on box */
-		for (Integer bId : agen.initialState.boxes.keySet()) {
+		for (Integer bId : otherAgent.initialState.boxes.keySet()) {
 			Box b = World.getInstance().getBoxes().get(bId);
 			if (b.getPosition().equals(new Position(row, col))) {
 				receiverBox = b;
@@ -284,6 +275,19 @@ public class DetectConflict {
 				}
 			} else {
 				return false;
+			}
+		}
+		/*run though boxes that does not belong to any agents (this case all boxes)*/
+		for(Integer bid : World.getInstance().getBoxes().keySet()){
+			Box b = World.getInstance().getBoxes().get(bid);
+			if (nextNodeCurrAgent == null) return false;
+			/*TODO if this can be optimized maybe it should be :S running through all boxes*/
+			for (Box nextNodeCurrAgentBox : nextNodeCurrAgent.boxes.values()) {
+				if(b.getPosition().equals(nextNodeCurrAgentBox.getPosition()) && !b.equals(nextNodeCurrAgentBox)){
+					receiverBox = b;
+					senderBox = nextNodeCurrAgentBox;
+					return true;
+				}
 			}
 		}
 		return false;
