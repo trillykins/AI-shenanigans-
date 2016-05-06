@@ -82,6 +82,8 @@ public class Utils {
 				World.getInstance().getBoxes().put(boxId, boxes.get(boxId));
 			}
 		}
+		for(Agent agent : World.getInstance().getAgents().values())
+			agent.setStepInPlan(agent.getStepInPlan() + 1);
 	}
 
 	public static boolean canMakeNextMove(int index, List<LinkedList<Node>> allSolutions) {

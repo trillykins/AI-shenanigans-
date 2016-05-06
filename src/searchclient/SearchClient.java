@@ -35,6 +35,7 @@ public class SearchClient {
 		colors = new HashMap<>(0);
 		colorSet = new ArrayList<>(0);
 		in = new BufferedReader(new InputStreamReader(System.in));
+//		in = new BufferedReader(new FileReader("C:/Users/Christoffer/workspace/dtu/AI-shenanigans-/src/levels/MAsimple2.lvl"));
 		world = World.getInstance();
 	}
 
@@ -86,7 +87,7 @@ public class SearchClient {
 		int row = 0, column = 0;
 		
 		List<Position> freeSpaces = new ArrayList<Position>();
-		while (!line.equals("")) {
+		while (line != null && !line.equals("")) {
 			for (int i = 0; i < line.length(); i++) {
 				boolean isWall = false;
 				char id = line.charAt(i);
