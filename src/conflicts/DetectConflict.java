@@ -48,9 +48,6 @@ public class DetectConflict {
 						else {
 							for (Box nextNodeBox : next.boxes.values()) {
 								if(box.getPosition().equals(nextNodeBox.getPosition()) && next.action.actType.equals(Command.type.Push)){
-//									World.getInstance().write("heeeeer");
-//									World.getInstance().write(next.toString());
-//									System.exit(0);
 									conflict.setConflictType(ConflictType.BOX_BOX);
 									conflict.setReceiverBox(box);
 									conflict.setSender(World.getInstance().getAgents().get(0));
@@ -69,7 +66,8 @@ public class DetectConflict {
 				/*We don't want to look further if the currAgents plan is null or the size is smaller than curr index*/
 				if (curAgent.getId() > World.getInstance().getSolutionMap().size()
 						|| World.getInstance().getSolutionMap().get(curAgent.getId()) == null
-						|| index >= World.getInstance().getSolutionMap().get(curAgent.getId()).size()) {
+						|| index >= World.getInstance().getSolutionMap().get(curAgent.getId()).size()
+						|| isFinishSolution(curAgent)) {
 					continue;
 				}
 				Node curAgentNode = World.getInstance().getSolutionMap().get(curAgent.getId()).get(index);
@@ -103,6 +101,46 @@ public class DetectConflict {
 										for (Box box : curAgentNode.boxes.values()) {
 											conflict.setReceiverBox(box);	
 										}
+									}
+									return conflict;
+								}
+							}else {
+								if(curAgentNode.action.actType.equals(Command.type.Push)) {
+									Node parent = curAgentNode.parent;
+									for(Box box: parent.boxes.values()) {
+										if(box.getPosition().equals(otherAgent.getPosition())) {
+											conflict = new Conflict();
+											conflict.setSender(curAgent);
+											conflict.setReceiver(otherAgent);
+											/*TODO : Soooo.. for single agent we put in next node, but for multi agent we put in previous node? da fuck
+											 * PLEASE EXPLAIN!!!*/
+											conflict.setNode(parent);
+											conflict.setConflictType(ConflictType.SINGLE_AGENT_BOX);
+											conflict.setSenderBox(box);
+											conflict.setReceiverBox(box);
+											return conflict;
+										}
+									}
+								}
+								if (curAgent.getPosition().equals(otherAgent.getPosition())
+										|| (curAgentNode.getPosition().equals(otherAgent.getPosition()))) {
+									conflict = new Conflict();
+									conflict.setSender(curAgent);
+									conflict.setReceiver(otherAgent);
+									/*TODO : Soooo.. for single agent we put in next node, but for multi agent we put in previous node? da fuck
+									 * PLEASE EXPLAIN!!!*/
+									conflict.setNode(curAgentNode);
+
+									if(curAgentNode.action.actType.equals(Command.type.Pull) || curAgentNode.action.actType.equals(Command.type.Push)){
+										conflict.setConflictType(ConflictType.SINGLE_AGENT_BOX);
+
+									}else {
+										conflict.setConflictType(ConflictType.AGENT);
+										
+									}
+									for (Box box : curAgentNode.boxes.values()) {
+										conflict.setSenderBox(box);
+										conflict.setReceiverBox(box);
 									}
 									return conflict;
 								}
@@ -191,6 +229,16 @@ public class DetectConflict {
 			}
 		}
 		return null;
+	}
+	
+	private boolean isFinishSolution(Agent agent) {
+		List<Node> solution = World.getInstance().getSolutionMap().get(agent.getId());
+		if(solution != null && solution.size() == 1) {
+			if(solution.get(0).action.actType.equals(Command.type.NoOp)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private boolean isOtherBoxesOrNonIntentionBox(Agent agent,Agent otherAgent,Position currAgentPos) {

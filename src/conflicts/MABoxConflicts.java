@@ -30,10 +30,18 @@ public class MABoxConflicts {
 		Agent receiver = conflict.getReceiver();
 		Node node = conflict.getNode();
 		//Check is it same color of sender agent
-		if(sender.getColor().equals(conflictBox.getColor()) && sender.getIntention().getBox().equals(conflictBox)) {
-			moveReceiverAgentAway(receiver,sender, index,conflictBox);
+		if(sender.getColor().equals(conflictBox.getColor()) && sender.getIntention().getBox().getLetter() == conflictBox.getLetter()) {
+			List<Node> newPlan = findNewSolution(node,sender,receiver.getPosition());
+			if(newPlan != null && newPlan.size() >0) {
+				World.getInstance().getSolutionMap().put(sender.getId(), newPlan);
+				sender.initialState.walls.remove(conflictBox.getPosition());
+				
+				updateOthersSolutions(sender,index);
+			}else {
+				moveReceiverAgentAway(receiver,sender, index,conflictBox);
+			}
 		}else {
-			List<Node> newPlan = findNewSolution(sender,conflictBox.getPosition());
+			List<Node> newPlan = findNewSolution(node,sender,conflictBox.getPosition());
 			if(newPlan != null && newPlan.size() >0) {
 				World.getInstance().getSolutionMap().put(sender.getId(), newPlan);
 				sender.initialState.walls.remove(conflictBox.getPosition());
@@ -250,12 +258,16 @@ public class MABoxConflicts {
 	private boolean checkFutureRouteConflict(Position posi,Agent agent,int index) {
 		List<Node> solutions = World.getInstance().getSolutionMap().get(agent.getId());
 		if(solutions != null && solutions.size() >0) {
-			for(int i=0;i<solutions.size();i++) {
-				Node node = solutions.get(i);
-				int col = node.agentCol;
-				int row = node.agentRow;
-				if(new Position(row,col).equals(posi)) {
-					return false;
+			if(solutions.size() == 1 && solutions.get(0).action.actType.equals(Command.type.NoOp)) {
+				return false;
+			}else {
+				for(int i=0;i<solutions.size();i++) {
+					Node node = solutions.get(i);
+					int col = node.agentCol;
+					int row = node.agentRow;
+					if(new Position(row,col).equals(posi)) {
+						return false;
+					}
 				}
 			}
 		}
@@ -286,16 +298,25 @@ public class MABoxConflicts {
 		return freeSpace.get(highPosi);
 	}
 
-	private List<Node> findNewSolution(Agent agent,Position posi) {
+	private List<Node> findNewSolution(Node currentNode,Agent agent,Position posi) {
 		Strategy strategy = new StrategyBFS();
 		Search sear = new Search();
 	
-		agent.initialState.agentCol = agent.getPosition().getY();
-		agent.initialState.agentRow = agent.getPosition().getX();
 		//Add a wall to box position
 		agent.initialState.walls.add(posi);
-		
-		List<Node> newPlan = sear.search(strategy, agent.initialState, Search.SearchType.PATH);
+		List<Node> newPlan = new LinkedList<Node>();
+		if(!currentNode.action.actType.equals(Command.type.Move)) {
+			/**
+			 * If the agent is carrying a box, then should update the box position then replan
+			 */
+			agent.initialState.agentCol = currentNode.parent.agentCol;
+			agent.initialState.agentRow = currentNode.parent.agentRow;
+			agent.initialState.boxes = currentNode.parent.boxes;
+		}else {
+			agent.initialState.agentCol = agent.getPosition().getY();
+			agent.initialState.agentRow = agent.getPosition().getY();
+		}
+		newPlan = sear.search(strategy, agent.initialState, Search.SearchType.PATH);
 		return newPlan;
 	}
 
