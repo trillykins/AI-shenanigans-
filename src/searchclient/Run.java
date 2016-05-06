@@ -19,13 +19,14 @@ import heuristics.AStar;
 import searchclient.Search.SearchType;
 import strategies.Strategy;
 import strategies.StrategyBestFirst;
+import utils.FileUtils;
 import utils.Utils;
 
 public class Run {
 	private World world = World.getInstance();
 	
 	public static void main(String[] args) throws Exception {
-		World.getInstance().write("SearchClient initializing. I am sending this using the error output stream.");
+//		System.err.println("SearchClient initializing. I am sending this using the error output stream.");
 		SearchClient client = new SearchClient();
 		client.init();
 		SearchClient.TIME = args.length > 1 ? Integer.parseInt(args[1]) : 300;
@@ -203,7 +204,6 @@ public class Run {
 						break;
 					case SINGLE_AGENT_BOX:
 						world.write("BOX CONFLICT");
-//						System.err.println(con.getReceiverBox());
 						con.solveAgentOnBox(con.getNode(), World.getInstance().getAgents().get(0), con.getReceiverBox(),
 								stepInPlan, allSolutions);
 						break;
@@ -220,6 +220,7 @@ public class Run {
 					replanned = false;
 					System.out.println(sb.toString());
 					world.write(sb.toString());
+					world.write(world.toString());
 					try {
 						BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 						if (in.ready())

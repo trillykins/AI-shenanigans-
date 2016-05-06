@@ -17,18 +17,6 @@ public class DetectConflict {
 	private Box receiverBox = null;
 	private Box senderBox = null;
 
-	/**
-	 * Check the next step of current moving agent whether has conflict with
-	 * other agent or not
-	 * 
-	 * Update with new conflict type: if current node of agent equals Move, then
-	 * it would be Agent-box conflicts otherwise if it is push or pull, then it
-	 * would be box-box conflict
-	 * 
-	 * @param node
-	 * @param agent
-	 * @return
-	 */
 	public Conflict checkConflict(int index) {
 		Conflict conflict = null;
 
@@ -53,6 +41,7 @@ public class DetectConflict {
 								conflict.setReceiverBox(box);
 								conflict.setSender(World.getInstance().getAgents().get(0));
 								conflict.setNode(next);
+
 								return conflict;
 							} /*else {
 								conflict.setConflictType(ConflictType.BOX_BOX);
@@ -65,8 +54,9 @@ public class DetectConflict {
 					}
 				}
 			}
-		} else {
+		} else { /*Dealing with MA situation*/
 			for (Agent curAgent : World.getInstance().getAgents().values()) {
+				/*We don't want to look further if the currAgents plan is null or the size is smaller than curr index*/
 				if (curAgent.getId() > World.getInstance().getSolutionMap().size()
 						|| World.getInstance().getSolutionMap().get(curAgent.getId()) == null
 						|| index >= World.getInstance().getSolutionMap().get(curAgent.getId()).size()) {
@@ -75,8 +65,11 @@ public class DetectConflict {
 				Node curAgentNode = World.getInstance().getSolutionMap().get(curAgent.getId()).get(index);
 				for (Agent otherAgent : World.getInstance().getAgents().values()) {
 					if (otherAgent.getId() != curAgent.getId()) {
+						
 						List<Node> planForOtherAgent = World.getInstance().getSolutionMap().get(otherAgent.getId());
 						if (planForOtherAgent != null && planForOtherAgent.size() > 0) {
+							
+							/*Agent on agent detection*/
 							if (planForOtherAgent.size() > index) {
 								Node otherAgentNode = planForOtherAgent.get(index);
 								if (otherAgentNode.getPosition().equals(curAgentNode.getPosition())
@@ -86,18 +79,33 @@ public class DetectConflict {
 									conflict.setConflictType(ConflictType.AGENT);
 									conflict.setSender(curAgent);
 									conflict.setReceiver(otherAgent);
+									/*TODO : Soooo.. for single agent we put in next node, but for multi agent we put in previous node? da fuck
+									 * PLEASE EXPLAIN!!!*/
 									Node previousNode = curAgentNode.parent;
 									conflict.setNode(previousNode);
+									
+									if(curAgentNode.action.actType.equals(Command.type.Pull) || curAgentNode.action.actType.equals(Command.type.Push)){
+										for (Box box : curAgentNode.boxes.values()) {
+											conflict.setSenderBox(box);
+										}
+									}
+									if(otherAgentNode.action.actType.equals(Command.type.Pull) || otherAgentNode.action.actType.equals(Command.type.Push)){
+										for (Box box : curAgentNode.boxes.values()) {
+											conflict.setReceiverBox(box);	
+										}
+									}
 									return conflict;
 								}
 							}
+							/*We consider an agent that moved into a box or box on box conflict*/
 							Node nextNodeCurrAgent = null;
 							if (World.getInstance().getSolutionMap().get(curAgent.getId()).size() > index + 1)
 								nextNodeCurrAgent = World.getInstance().getSolutionMap().get(curAgent.getId())
 										.get(index + 1);
-
+							
 							boolean isOtherAgentBox = checkBoxes(curAgentNode.agentRow, curAgentNode.agentCol,
 									otherAgent, nextNodeCurrAgent);
+//							World.getInstance().write("Agent ID : " + curAgent.getId() + ", state : \n" + curAgentNode.toString());
 							if (isOtherAgentBox) {
 								conflict = new Conflict();
 								if (curAgentNode.action.actType.equals(Command.type.Move)) {
@@ -113,6 +121,25 @@ public class DetectConflict {
 									conflict.setReceiver(otherAgent);
 									conflict.setNode(curAgentNode);
 									return conflict;
+								}
+							}
+							
+							/*Agent on box detection (where curAgent pulls or pushes a box)*/
+							if (planForOtherAgent.size() > index) {
+								/*if the box we are pulling or pushing is in the field of the agent*/
+								if (curAgentNode.action.actType.equals(Command.type.Pull)
+										|| curAgentNode.action.actType.equals(Command.type.Push)) {
+									for (Integer bId : curAgent.initialState.boxes.keySet()) {
+										Box b = curAgentNode.boxes.get(bId);
+										if(b.getPosition().equals(planForOtherAgent.get(index).getPosition())){
+											conflict = new Conflict();
+											conflict.setConflictType(ConflictType.SINGLE_AGENT_BOX);
+											conflict.setSender(curAgent);
+											conflict.setReceiver(otherAgent);
+											conflict.setNode(curAgentNode);
+											return conflict;
+										}
+									}
 								}
 							}
 						}
