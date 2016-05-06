@@ -1,5 +1,6 @@
 package conflicts;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -30,38 +31,60 @@ public class MABoxConflicts {
 		Node node = conflict.getNode();
 		//Check is it same color of sender agent
 		if(sender.getColor().equals(conflictBox.getColor())) {
-			
-		}
-		List<Node> newPlan = findNewSolution(sender,conflictBox.getPosition());
-		if(newPlan != null && newPlan.size() >0) {
-			World.getInstance().getSolutionMap().put(sender.getId(), newPlan);
-			sender.initialState.walls.remove(conflictBox.getPosition());
-			
-			updateOthersSolutions(sender,index);
+			moveReceiverAgentAway(receiver,sender, index,conflictBox);
 		}else {
-			sender.initialState.walls.remove(conflictBox.getPosition());
-			if(receiver != null) {
-				Intention intention = receiver.getIntention();
-				if(intention != null) {
-					Box intBox = intention.getBox();
-					if(conflictBox.equals(intBox)) {//The intention is the same box
-						moveIntentionBox(conflictBox,sender,receiver,index);
-						return;
-					}else {
-						//Re generate the intention
-						if(conflictBox.isOnGoal()) {//If the current box isOnGoal, then remove it and generate the new solution later
-							solveBoxOnGoalConflict(node,sender,receiver,conflictBox,index);
+			List<Node> newPlan = findNewSolution(sender,conflictBox.getPosition());
+			if(newPlan != null && newPlan.size() >0) {
+				World.getInstance().getSolutionMap().put(sender.getId(), newPlan);
+				sender.initialState.walls.remove(conflictBox.getPosition());
+				
+				updateOthersSolutions(sender,index);
+			}else {
+				sender.initialState.walls.remove(conflictBox.getPosition());
+				if(receiver != null) {
+					Intention intention = receiver.getIntention();
+					if(intention != null) {
+						Box intBox = intention.getBox();
+						if(conflictBox.equals(intBox)) {//The intention is the same box
+							moveIntentionBox(conflictBox,sender,receiver,index);
 							return;
 						}else {
-						//generateThenewIntention
-							//receiver.generateIntention();
-							solveBoxOnGoalConflict(node,sender,receiver,conflictBox,index);
-							return;
+							//Re generate the intention
+							if(conflictBox.isOnGoal()) {//If the current box isOnGoal, then remove it and generate the new solution later
+								solveBoxOnGoalConflict(node,sender,receiver,conflictBox,index);
+								return;
+							}else {
+							//generateThenewIntention
+								//receiver.generateIntention();
+								solveBoxOnGoalConflict(node,sender,receiver,conflictBox,index);
+								return;
+							}
 						}
 					}
 				}
+				//Agent removeBoxAg = findAgentToMoveBox(sender,conflictBox,index);
 			}
-			//Agent removeBoxAg = findAgentToMoveBox(sender,conflictBox,index);
+		}
+	}
+	
+	private void moveReceiverAgentAway(Agent agent,Agent agentToStay,int index,Box moveBox) {
+		Map<Position,FreeSpace> fresSp = World.getInstance().getFreeSpace();
+		Position moveToPosition = findPossiblePosition(fresSp,agent,index);
+		if(moveToPosition != null) {
+			Strategy strategy = new StrategyBFS();
+			Search sear = new Search();
+			
+			agent.generateInitialState();
+			agent.initialState.agentCol = agent.getPosition().getY();
+			agent.initialState.agentRow = agent.getPosition().getX();
+			
+			agent.initialState.moveToPositionCol = moveToPosition.getY();
+			agent.initialState.moveToPositionRow = moveToPosition.getX();
+		
+			List<Node> newPlan = sear.search(strategy, agent.initialState, Search.SearchType.MOVE_TO_POSITION);
+			World.getInstance().getSolutionMap().put(agent.getId(), newPlan);
+			
+			updateOthersSolutions(agent,index);
 		}
 	}
 	
@@ -73,9 +96,10 @@ public class MABoxConflicts {
 					for (int i=0;i<index-1; i++) {
 						otherSolution.remove(0);
 					}
+					Node parent = createNoOpNode(agent,null);
+					otherSolution.get(0).parent = parent;
+					otherSolution.add(0,parent);
 					World.getInstance().getSolutionMap().put(agen.getId(), otherSolution);
-				}else if(otherSolution == null) {
-					World.getInstance().getSolutionMap().put(agen.getId(), null);
 				}
 			}
 		}
@@ -114,8 +138,10 @@ public class MABoxConflicts {
 	}
 	
 	private void solveBoxOnGoalConflict(Node node,Agent oriAgent,Agent ag,Box box,int index) {
-		Map<Position,FreeSpace> fresSp = World.getInstance().getFreeSpace();
-		Position posi = findPossiblePosition(fresSp,ag,index);
+		World world = World.getInstance();
+		Map<Position,FreeSpace> fresSp = world.getFreeSpace();
+		Map<Position,FreeSpace> copyOfFreespace = new HashMap<Position,FreeSpace>(fresSp);
+		Position posi = findPossiblePosition(copyOfFreespace,ag,index);
 		
 		List<Node> oriAgentPlan = World.getInstance().getSolutionMap().get(oriAgent.getId());
 		List<Node> refreshOriPlan = new LinkedList<Node>();
@@ -145,7 +171,6 @@ public class MABoxConflicts {
 		Strategy strategy = new StrategyBFS();
 		Search sear = new Search();
 		
-		Agent temporaryAgent = agent;
 		int goalId = agent.initialState.goals.size()+1;
 		Goal newGoal = new Goal(goalId,
 				moveToPosition,Character.toLowerCase(moveBox.getLetter()),null,0);	
@@ -157,20 +182,20 @@ public class MABoxConflicts {
 		
 	
 		List<Node> newPlan = sear.search(strategy, agent.initialState, Search.SearchType.PATH);
-		
-		/**
-		 * After replan, continue the previous plan
-		 */
-		Node lastNode = newPlan.get(newPlan.size()-1);
-		temporaryAgent.initialState.agentCol = lastNode.agentCol;
-		temporaryAgent.initialState.agentRow = lastNode.agentRow;
-		
-		World.getInstance().generatePlan(temporaryAgent);
-		Strategy strategyBFS = new StrategyBFS();
-		Search search = new Search();
-		List<Node> furtherPlan = search.search(strategyBFS, temporaryAgent.initialState, Search.SearchType.PATH);
-		
-		newPlan.addAll(furtherPlan);
+//		
+//		/**
+//		 * After replan, continue the previous plan
+//		 */
+//		Node lastNode = newPlan.get(newPlan.size()-1);
+//		temporaryAgent.initialState.agentCol = lastNode.agentCol;
+//		temporaryAgent.initialState.agentRow = lastNode.agentRow;
+//		
+//		World.getInstance().generatePlan(temporaryAgent);
+//		Strategy strategyBFS = new StrategyBFS();
+//		Search search = new Search();
+//		List<Node> furtherPlan = search.search(strategyBFS, temporaryAgent.initialState, Search.SearchType.PATH);
+//		
+//		newPlan.addAll(furtherPlan);
 		return newPlan;
 	}
 	
@@ -182,11 +207,36 @@ public class MABoxConflicts {
 	 */	
 	private Position findPossiblePosition(Map<Position, FreeSpace> fress,Agent agent,int index) {
 		FreeSpace free = getHighestPriorityOfFreeSpace(fress);
+		Map<Position,FreeSpace> newMap = new HashMap<Position,FreeSpace>();
 		if(free != null) {
 			Position posi = free.getPosition();
+			if(posi.equals(agent.getPosition())) {
+				for(Position newPosi: fress.keySet()) {
+					if(!newPosi.equals(posi)) {
+						newMap.put(newPosi, fress.get(newPosi));
+					}
+				}
+				return findPossiblePosition(newMap,agent,index);
+			}
+			
+			/*is there a goal*/
+			for(Goal goal : World.getInstance().getGoals().values()){
+				if(goal.getPosition().getX() == posi.getX() && goal.getPosition().getY() == posi.getY()) {
+					for(Position newPosi: fress.keySet()) {
+						if(!newPosi.equals(posi)) {
+							newMap.put(newPosi, fress.get(newPosi));
+						}
+					}
+					return findPossiblePosition(newMap,agent,index);
+				}
+			}
 			if(checkFutureRouteConflict(posi,agent,index)) {
-				fress.remove(posi);
-				return findPossiblePosition(fress,agent,index);
+				for(Position newPosi: fress.keySet()) {
+					if(!newPosi.equals(posi)) {
+						newMap.put(newPosi, fress.get(newPosi));
+					}
+				}
+				return findPossiblePosition(newMap,agent,index);
 			}else {
 				return posi;
 			}
@@ -244,31 +294,6 @@ public class MABoxConflicts {
 		
 		List<Node> newPlan = sear.search(strategy, agent.initialState, Search.SearchType.PATH);
 		return newPlan;
-	}
-	
-	public void generatePlanAgents() {
-		for (Agent agent : World.getInstance().getAgents().values()) {
-			agent.generateInitialState();
-			if (!agent.generateDesires()) {
-				continue;
-			}
-			if (!agent.generateIntention()) {
-				continue;
-			}
-			Intention intention = agent.getIntention();
-			Goal goal = intention.getDesire().getBelief().getGoal();
-			Box intentionBox = intention.getBox();
-			World.getInstance().getBeliefs().remove(intention.getDesire().getBelief());
-			agent.initialState.goals.put(goal.getId(), goal);
-			agent.initialState.boxes.put(intentionBox.getId(), intentionBox);
-
-			// Add boxes of same color to the initialstate.
-//			for (Box box : World.getInstance().getBoxes().values()) {
-//				if (box.getColor().equals(agent.getColor())) {
-//					agent.initialState.boxes.put(box.getId(), box);
-//				}
-//			}
-		}
 	}
 
 }

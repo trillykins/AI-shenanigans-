@@ -153,6 +153,7 @@ public class DetectConflict {
 												conflict.setSender(curAgent);
 												conflict.setReceiver(otherAgent);
 												conflict.setNode(curAgentNode);
+												conflict.setReceiverBox(b);
 												return conflict;
 											}
 										}
