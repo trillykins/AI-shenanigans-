@@ -8,13 +8,13 @@ import java.io.PrintWriter;
 
 public class FileUtils {
 	public FileUtils() {
-		File file = new File("out.txt");
+		File file = new File("output.txt");
 		if(file.exists()) 
 			file.delete();
 	}
 	
 	public void write(String str) {
-		try (FileWriter fw = new FileWriter("out.txt", true);
+		try (FileWriter fw = new FileWriter("output.txt", true);
 				BufferedWriter bw = new BufferedWriter(fw);
 				PrintWriter out = new PrintWriter(bw)) {
 			out.println(str);

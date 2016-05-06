@@ -236,10 +236,9 @@ public class Run {
 				}
 
 				world.updateBeliefs();
-//				System.err.println("World:\n" + world.toString());
-//				System.err.println("Global goal state found = " + world.isGlobalGoalState());
+				world.write("World:\n" + world.toString());
+				world.write("Global goal state found = " + world.isGlobalGoalState());
 			}
 		}
-
 	}
 }

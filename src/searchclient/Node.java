@@ -181,6 +181,7 @@ public class Node {
 	private boolean cellIsFree(int row, int col) {
 		Position pos = new Position(row, col);
 		for (Box b : boxes.values()) {
+//		for(Box b : World.getInstance().getBoxes().values()) {
 			if (b.getPosition().equals(pos))
 				return false;
 		}
