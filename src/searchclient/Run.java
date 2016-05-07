@@ -14,6 +14,7 @@ import atoms.Position;
 import atoms.World;
 import conflicts.Conflict;
 import conflicts.DetectConflict;
+import conflicts.MABoxConflicts;
 import heuristics.AStar;
 import searchclient.Search.SearchType;
 import strategies.Strategy;
@@ -177,10 +178,12 @@ public class Run {
 					break;
 				case SINGLE_AGENT_BOX:
 					world.write("BOX CONFLICT");
-					con.solveAgentOnBox(con.getNode(), World.getInstance().getAgents().get(0), con.getReceiverBox());
+					MABoxConflicts maBox = new MABoxConflicts();
+					maBox.solveMAgentBoxConflict(con);
 					break;
 				case BOX_BOX:
 					world.write("BOX_BOX CONFLICT");
+					//con.solveBoxOnBox(conflict, index, allSolutions);
 					break;
 				default:
 					world.write("UNDEFINED CONFLICT");
@@ -198,6 +201,7 @@ public class Run {
 						in.readLine();
 				} catch (IOException e) {
 					world.write(e.getMessage());
+					
 				}
 				Utils.performUpdates(updatedAgentPositions, updatedBoxes);
 			}
