@@ -87,7 +87,7 @@ public class DetectConflict {
 							return conflict;
 						}
 					}else {
-						conflict = currentPullingOrMoveConflictCheck(curAgentNode,curAgent,otherAgent);
+						conflict = currentPullingOrMoveConflictCheck(curAgentNode,otherAgentNode,curAgent,otherAgent);
 						if(conflict != null) {
 							return conflict;
 						}
@@ -225,14 +225,25 @@ public class DetectConflict {
 	 * @param otherAgent
 	 * @return
 	 */
-	private Conflict currentPullingOrMoveConflictCheck(Node curAgentNode,Agent curAgent,Agent otherAgent) {
+	private Conflict currentPullingOrMoveConflictCheck(Node curAgentNode,Node otherAgentNode,Agent curAgent,Agent otherAgent) {
 		if (curAgentNode.getPosition().equals(otherAgent.getPosition()) || 
-				curAgentNode.getPosition().equals(otherAgent.getPosition())) {
+				curAgent.getPosition().equals(otherAgent.getPosition())) {
 			Box receiverBox = null;
 			for (Box box : curAgentNode.boxes.values()) {
 				receiverBox = box;
 			}
 			return createConflict(curAgent,otherAgent,receiverBox,null,curAgentNode,ConflictType.AGENT);
+		}
+		
+		if(otherAgentNode != null) {
+			if (curAgentNode.getPosition().equals(otherAgentNode.getPosition()) || 
+					curAgent.getPosition().equals(otherAgentNode.getPosition())) {
+				Box receiverBox = null;
+				for (Box box : curAgentNode.boxes.values()) {
+					receiverBox = box;
+				}
+				return createConflict(curAgent,otherAgent,receiverBox,null,curAgentNode,ConflictType.AGENT);
+			}
 		}
 		
 		for(Box box:World.getInstance().getBoxes().values()) {
