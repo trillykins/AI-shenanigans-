@@ -1,5 +1,6 @@
 package conflicts;
 
+import java.util.LinkedList;
 import java.util.List;
 import atoms.Agent;
 import atoms.Box;
@@ -14,7 +15,7 @@ import searchclient.Search.SearchType;
 import strategies.Strategy;
 import strategies.StrategyBFS;
 
-public class BoxOnBoxConflict {
+public class MABoxOnBoxConflict {
 
 
 
@@ -26,9 +27,7 @@ public class BoxOnBoxConflict {
 
 	}
 
-	public static void AgentWithBoxOnAgentWithBoxConflict(int index, List<List<Node>> allSolutions,
-			Agent agentToMove, Agent agentToStay, Box agentToMoveBox){
-
+	public static void AgentWithBoxOnAgentWithBoxConflict(Agent agentToMove, Agent agentToStay, Box agentToMoveBox){
 		/* First we find the coordinate of where to put a new goal */
 		agentToMove.generateInitialState();
 		agentToMove.initialState.walls.add(new Position(agentToStay.getPosition()));
@@ -37,7 +36,7 @@ public class BoxOnBoxConflict {
 		Strategy strategy = new StrategyBFS();
 		Search s = new Search();
 		s.setPlanForAgentToStay(Conflict.updatePlan(agentToStay));
-		List<Node> newPlanAgentToMove = s.search(strategy, agentToMove.initialState, SearchType.MOVE_AWAY);
+		LinkedList<Node> newPlanAgentToMove = s.search(strategy, agentToMove.initialState, SearchType.MOVE_AWAY);
 		agentToMove.initialState.walls.remove(new Position(agentToStay.getPosition()));
 		/*
 		 * We create a new goal, for which we want the agent to move the
@@ -57,12 +56,14 @@ public class BoxOnBoxConflict {
 		char goalChar = Character.toLowerCase(agentToMoveBox.getLetter());
 		Color color = agentToMove.getColor();
 		Goal newGoal = new Goal(noGoals + 1, newGoalPos, goalChar, color, noGoals + 1);
-		List<Node> newPlanAgentToStay = allSolutions.get(agentToStay.getId());
-		for (int i = 0; i < index - 1; i++) {
+		List<Node> newPlanAgentToStay = agentToStay.getPlan();
+		int agentToStayCurrIndex = agentToStay.getStepInPlan();
+		for (int i = 0; i < agentToStayCurrIndex - 1; i++) {
 			if (newPlanAgentToStay.size() == 0)
 				break;
 			newPlanAgentToStay.remove(0);
 		}
+		
 		agentToMove.initialState.walls.remove(new Position(agentToStay.getPosition()));
 
 		/* We set the new goal and create a plan for that goal */
@@ -70,19 +71,29 @@ public class BoxOnBoxConflict {
 		agentToMove.initialState.agentRow = agentToMove.getPosition().getX();
 		agentToMove.initialState.agentCol = agentToMove.getPosition().getY();
 		agentToMove.initialState.goals.put(newGoal.getId(), newGoal);
-
 		agentToMove.initialState.boxes.put(agentToMoveBox.getId(), agentToMoveBox);
 		strategy = new StrategyBFS();
 		s = new Search();
-		s.setPlanForAgentToStay(World.getInstance().getSolutionMap().get(agentToStay.getId()));
+		s.setPlanForAgentToStay(newPlanAgentToStay);
 		newPlanAgentToMove = s.search(strategy, agentToMove.initialState, SearchType.MOVE_OWN_BOX);
-		Node noOp = agentToStay.initialState;
+
+		/*For the agent to stay we add 1 noOp - pretty random*/
+		Node noOp = agentToStay.getPlan().get(0);
 		noOp.action = new Command();
 		newPlanAgentToStay.add(0, noOp);
-		newPlanAgentToStay.add(0, noOp);
-		World.getInstance().getSolutionMap().put(agentToMove.getId(), newPlanAgentToMove);
-		World.getInstance().getSolutionMap().put(agentToStay.getId(), newPlanAgentToStay);
-		Agent agentToMoveAway = World.getInstance().getAgents().get(newPlanAgentToMove.get(0).agentId);
-		World.getInstance().getBeliefs().add(agentToMoveAway.getIntention().getDesire().getBelief());
+		
+		/*we add noOps acc. to how many steps the new plan is*/
+		noOp = newPlanAgentToMove.get(newPlanAgentToMove.size()-1);
+		int newPlanAgentToMoveSize = newPlanAgentToMove.size();
+		for(int i = 0; i < newPlanAgentToMoveSize;i++){
+			newPlanAgentToMove.add(newPlanAgentToMove.size(),noOp);
+		}
+		
+		agentToMove.setPlan(newPlanAgentToMove);
+		agentToMove.setStepInPlan(0);
+		agentToStay.setPlan(newPlanAgentToStay);
+		agentToStay.setStepInPlan(0);
+		World.getInstance().getBeliefs().add(agentToMove.getIntention().getDesire().getBelief());
 	}
 }
+

@@ -183,7 +183,7 @@ public class Run {
 					break;
 				case BOX_BOX:
 					world.write("BOX_BOX CONFLICT");
-					//con.solveBoxOnBox(conflict, index, allSolutions);
+					con.solveMABoxOnBox(con);
 					break;
 				default:
 					world.write("UNDEFINED CONFLICT");
