@@ -40,55 +40,19 @@ public class DetectConflict {
 			Node next = agent.getPlan().get(agent.getStepInPlan());
 			Box intentionBox = intention.getBox();
 			Box intentionBoxPositionInNext = next.boxes.get(intention.getBox().getId());
-//			Position pushedBoxPosition = null;
 			switch (next.action.actType) {
 			case Move:
 				for (Box box : World.getInstance().getBoxes().values()) {
 					if (box.getPosition().equals(next.getAgentPosition()) && !box.equals(intentionBox)) {
+						System.err.println("MOVE");
 						return createConflict(agent, null, box, null, next, ConflictType.SINGLE_AGENT_BOX);
 					}
 				}
 				break;
 			case Push:
-//				if (next.action.dir1 == Command.dir.N && next.action.dir2 == Command.dir.N) {
-//					pushedBoxPosition = new Position(next.getAgentPosition().getX() - 1, next.getAgentPosition().getY());
-//				} else if (next.action.dir1 == Command.dir.N && next.action.dir2 == Command.dir.E) {
-//					pushedBoxPosition = new Position(next.getAgentPosition().getX() - 1, next.getAgentPosition().getY() + 1);
-//				} else if (next.action.dir1 == Command.dir.N && next.action.dir2 == Command.dir.W) {
-//					pushedBoxPosition = new Position(next.getAgentPosition().getX() - 1, next.getAgentPosition().getY() - 1);
-//				} else if (next.action.dir1 == Command.dir.E && next.action.dir2 == Command.dir.N) {
-//					pushedBoxPosition = new Position(next.getAgentPosition().getX() - 1, next.getAgentPosition().getY() + 1);
-//				} else if (next.action.dir1 == Command.dir.E && next.action.dir2 == Command.dir.E) {
-//					pushedBoxPosition = new Position(next.getAgentPosition().getX(), next.getAgentPosition().getY() + 1);
-//				} else if (next.action.dir1 == Command.dir.E && next.action.dir2 == Command.dir.S) {
-//					pushedBoxPosition = new Position(next.getAgentPosition().getX() + 1, next.getAgentPosition().getY() + 1);
-//				} else if (next.action.dir1 == Command.dir.S && next.action.dir2 == Command.dir.E) {
-//					pushedBoxPosition = new Position(next.getAgentPosition().getX() + 1, next.getAgentPosition().getY() + 1);
-//				} else if (next.action.dir1 == Command.dir.S && next.action.dir2 == Command.dir.S) {
-//					pushedBoxPosition = new Position(next.getAgentPosition().getX() + 1, next.getAgentPosition().getY());
-//				} else if (next.action.dir1 == Command.dir.S && next.action.dir2 == Command.dir.W) {
-//					pushedBoxPosition = new Position(next.getAgentPosition().getX() + 1, next.getAgentPosition().getY() - 1);
-//				} else if (next.action.dir1 == Command.dir.E && next.action.dir2 == Command.dir.N) {
-//					pushedBoxPosition = new Position(next.getAgentPosition().getX() - 1, next.getAgentPosition().getY() + 1);
-//				} else if (next.action.dir1 == Command.dir.E && next.action.dir2 == Command.dir.E) {
-//					pushedBoxPosition = new Position(next.getAgentPosition().getX(), next.getAgentPosition().getY() + 1);
-//				} else if (next.action.dir1 == Command.dir.E && next.action.dir2 == Command.dir.S) {
-//					pushedBoxPosition = new Position(next.getAgentPosition().getX() + 1, next.getAgentPosition().getY() + 1);
-//				} else if (next.action.dir1 == Command.dir.W && next.action.dir2 == Command.dir.N) {
-//					pushedBoxPosition = new Position(next.getAgentPosition().getX() - 1, next.getAgentPosition().getY() - 1);
-//				} else if (next.action.dir1 == Command.dir.W && next.action.dir2 == Command.dir.W) {
-//					pushedBoxPosition = new Position(next.getAgentPosition().getX(), next.getAgentPosition().getY() - 1);
-//				} else if (next.action.dir1 == Command.dir.W && next.action.dir2 == Command.dir.S) {
-//					pushedBoxPosition = new Position(next.getAgentPosition().getX() - 1, next.getAgentPosition().getY() - 1);
-//				} else {
-//					System.err.println(next.action.dir1);
-//					System.err.println(next.action.dir2);
-//					System.err.println(next.action.actType);
-//					System.err.println("Who the fuck knows...!");
-//					System.exit(-120938);
-//				}
 				for (Box conflictingBox : World.getInstance().getBoxes().values()) {
 					if (conflictingBox.getPosition().equals(intentionBoxPositionInNext.getPosition()) && !conflictingBox.equals(intentionBox)) {
+						System.err.println("PUSH");
 						return createConflict(agent, null, conflictingBox, intentionBox, next, ConflictType.BOX_BOX);
 					}
 				}
@@ -96,6 +60,7 @@ public class DetectConflict {
 			case Pull:
 				for (Box conflictingBox : World.getInstance().getBoxes().values()) {
 					if (conflictingBox.getPosition().equals(next.getAgentPosition()) && !conflictingBox.equals(intentionBox)) {
+						System.err.println("PULL");
 						return createConflict(agent, null, conflictingBox, intentionBox, next, ConflictType.SINGLE_AGENT_BOX);
 					}
 				}
@@ -105,33 +70,6 @@ public class DetectConflict {
 				System.exit(-1);
 				break;
 			}
-			// if (!box.equals(intentionBox)) {
-			// if (box.getPosition().equals(next.getAgentPosition())) {
-			// if (next.action.actType.equals(Command.type.Move)) {
-			// return createConflict(agent, null, box, null, next,
-			// ConflictType.SINGLE_AGENT_BOX);
-			// }
-			// else if
-			// (next.action.actType.equals(Command.type.Pull)) {
-			//
-			// }
-			// }
-			/*
-			 * Want to check if the next node (to the box we are "carrying") is
-			 * a box)
-			 */
-			// else {
-			// for (Box nextNodeBox : next.boxes.values()) {
-			// if (box.getPosition().equals(nextNodeBox.getPosition())
-			// && next.action.actType.equals(Command.type.Push)) {
-			// return createConflict(agent, null, box, null, next,
-			// ConflictType.BOX_BOX);
-			// }
-			// }
-			// }
-			// }
-			// }
-			// }
 		}
 		return null;
 	}

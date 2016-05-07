@@ -89,6 +89,7 @@ public class Run {
 			if (con != null && !replanned && conflictHash != con.getSender().getPosition().hashCode()) {
 				conflictHash = con.getSender().getPosition().hashCode();
 				world.write(world.getAgents().get(0).toString());
+				System.err.println(con.getConflictType());
 				switch (con.getConflictType()) {
 				case AGENT:
 					world.write("AGENT-ON-AGENT CONFLICT");
