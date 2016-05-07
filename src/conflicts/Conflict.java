@@ -80,24 +80,15 @@ public class Conflict {
 	}
 
 	
-	public void solveBoxOnBox(Conflict conflict, int index, List<List<Node>> allSolutions) {
-		/*
-		 * Here we look at the agent who's box we marked as a conflict box (in
-		 * conflict type)
-		 */
-		/*
-		 * In general it is a problem selecting the agent based on priority.
-		 * Here we need to consider narrow corridors or free fields or
-		 * something. See MAsimple9 where the wrong agent is selected to move
-		 * (lowest priority)
-		 */
-		/* testing */
+	public void solveMABoxOnBox(Conflict conflict/*, int index, List<List<Node>> allSolutions*/) {
+		
 		Agent agentToMove = null, agentToStay = null;
 		Box agentToMoveBox = null, agentToStayBox = null;
 		agentToMove = conflict.getReceiver();
-		agentToMoveBox = conflict.getReceiverBox();
+		/*we need to fetch the box where it is at in the moment, therefore we retrieve the box from world*/
+		//agentToMoveBox = conflict.getReceiverBox();
+		agentToMoveBox = World.getInstance().getBoxes().get(conflict.getReceiverBox().getId());
 		agentToStay = conflict.getSender();
-		 
 		/*HERE we need some code to differantiate beetween agen-box-other-agent-box conflict and agent-box-box conflict*/
 //		for(Agent agent : World.getInstance().getAgents().values()){
 //			if(agent.getIntention().getBox().equals(agentToMoveBox)){
@@ -105,7 +96,7 @@ public class Conflict {
 //				World.getInstance().write(""+index);
 //				if(allSolutions.get(agentToMove.getId()).get(index).action.actType.equals(Command.type.Pull)){
 //					World.getInstance().write(agent.getId() + " and box : " +agent.getIntention().getBox().getLetter() + " moveBox " + agentToMoveBox.getLetter());
-					BoxOnBoxConflict.AgentWithBoxOnAgentWithBoxConflict(index,allSolutions,agentToMove,agentToStay,agentToMoveBox);					
+					MABoxOnBoxConflict.AgentWithBoxOnAgentWithBoxConflict(agentToMove,agentToStay,agentToMoveBox);					
 //				}else{
 //					World.getInstance().write("HER SKAL DER SKE NOGET 1");
 //				}

@@ -201,9 +201,9 @@ public class DetectConflict {
 		}
 		
 		for(Box box: curAgentNode.boxes.values()) {//if current step would like to move to a box position or other agent's next step
-			for(Box otherBox:World.getInstance().getBoxes().values()) {
+			for(Box otherBox : World.getInstance().getBoxes().values()) {
 				if(box.getPosition().equals(otherBox.getPosition()) && (box.getId() != otherBox.getId())) {
-					return createConflict(curAgent,otherAgent,box,box,curAgentNode,ConflictType.BOX_BOX);
+					return createConflict(curAgent,otherAgent,otherBox,box,curAgentNode,ConflictType.BOX_BOX);
 				}
 			}
 			if(box.getPosition().equals(otherAgent.getPosition()) || box.getPosition().equals(otherAgentNode.getPosition())) {

@@ -106,7 +106,6 @@ public class Node {
 	public boolean moveAgentAndBoxAway(List<Node> otherPlan){
 		Position aPos = new Position(agentRow, agentCol);
 		for (Node otherNode : otherPlan) {
-			System.err.println( " : agent pos" + aPos.toString());
 			if (otherNode.agentRow == agentRow && otherNode.agentCol == agentCol)
 				return false;
 			for (Box b : otherNode.boxes.values())
