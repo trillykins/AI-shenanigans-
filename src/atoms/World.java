@@ -1,6 +1,5 @@
 package atoms;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -38,9 +37,9 @@ public class World {
 	}
 
 	public void write(String str) {
-//		files.write(str);
+		files.write(str);
 	}
-
+	
 	public Map<Integer, Box> getBoxesInGoals() {
 		return boxesInGoals;
 	}
@@ -128,7 +127,7 @@ public class World {
 	public void setFiles(FileUtils files) {
 		this.files = files;
 	}
-
+	
 	public boolean isGlobalGoalState() {
 		for (Goal goal : goals.values()) {
 			if (!goal.isSolved())
@@ -157,7 +156,7 @@ public class World {
 			}
 		}
 	}
-
+	
 	public Agent generateSAPlan(Agent agent) {
 		agent.generateInitialState();
 		if (!agent.generateDesires()) {
@@ -167,20 +166,20 @@ public class World {
 			return agent;
 		}
 		Intention intention = agent.getIntention();
-		// System.err.println(intention.getDesire() == null);
+//		System.err.println(intention.getDesire() == null);
 		Goal goal = intention.getDesire().getBelief().getGoal();
 		Box intentionBox = intention.getBox();
 		World.getInstance().getBeliefs().remove(intention.getDesire().getBelief());
 		agent.initialState.goals.put(goal.getId(), goal);
 		agent.initialState.boxes.put(intentionBox.getId(), intentionBox);
-
-		for (Box box : boxes.values()) {
-			if (box.isOnGoal())
+		
+		for(Box box : boxes.values()) {
+			if(box.isOnGoal())
 				agent.initialState.boxes.put(box.getId(), box);
 		}
 		return agent;
 	}
-
+	
 	public Agent generatePlan(Agent agent) {
 		agent.generateInitialState();
 		if (!agent.generateDesires()) {
@@ -190,24 +189,9 @@ public class World {
 			return agent;
 		}
 		Intention intention = agent.getIntention();
-		write("beliefs before removing: " + Arrays.toString(beliefs.toArray()));
-		write("contains: " + beliefs.contains(intention.getDesire().getBelief()));
-		write("removing belief: " + intention.getDesire().getBelief());
 		World.getInstance().beliefs.remove(intention.getDesire().getBelief());
-		write("beliefs after removing: " + Arrays.toString(beliefs.toArray()));
-		write("here we have selected intion for agent : " + agent.getId() + " intention is : " + intention.toString());
 		Goal goal = intention.getDesire().getBelief().getGoal();
 		Box intentionBox = intention.getBox();
-
-		// Set<Belief> beliefs = new HashSet<Belief>();
-		// Belief belief = intention.getDesire().getBelief();
-		// for(Belief bel : World.getInstance().getBeliefs()){
-		// if (!belief.equals(bel)) {
-		// beliefs.add(bel);
-		// }
-		// }
-		// World.getInstance().setBeliefs(beliefs);
-		// World.getInstance().getBeliefs().remove(intention.getDesire().getBelief());
 
 		agent.initialState.goals.put(goal.getId(), goal);
 		agent.initialState.boxes.put(intentionBox.getId(), intentionBox);
@@ -242,7 +226,7 @@ public class World {
 						break;
 					}
 				}
-				if (skip)
+				if(skip)
 					continue;
 				for (Agent a : agents.values()) {
 					if (row == a.getPosition().getX() && col == a.getPosition().getY()) {

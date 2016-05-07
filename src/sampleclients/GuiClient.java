@@ -46,19 +46,6 @@ public class GuiClient extends JFrame {
 		}
 
 		public void run() {
-			Runtime.getRuntime().addShutdownHook(new Thread() {
-		        public void run() {
-		            try {
-		                Thread.sleep(200);
-		                System.out.println("Shouting down ...");
-		                //some cleaning up code...
-
-		            } catch (InterruptedException e) {
-		                // TODO Auto-generated catch block
-		                e.printStackTrace();
-		            }
-		        }
-		    });
 			try {
 				BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 				while (true) {

@@ -42,7 +42,9 @@ public class Command {
 	};
 
 	public final type actType;
+	/** direction of agent **/
 	public final dir dir1;
+	/** direction of box **/ 
 	public final dir dir2;
 
 	public Command() {

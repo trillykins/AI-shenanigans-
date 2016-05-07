@@ -1,2 +1,16 @@
-/conflicts/
+/FIPA/
+/analysis/
 /atoms/
+/bdi/
+/conflicts/
+/gui.bat
+/heuristics/
+/levels/
+/readme-server.txt
+/sampleclients/
+/searchclient/
+/searchclient.bat
+/server.jar
+/strategies/
+/utils/
+/output.txt

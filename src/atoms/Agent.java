@@ -11,7 +11,6 @@ import analysis.LevelAnalysis;
 import bdi.Belief;
 import bdi.Desire;
 import bdi.Intention;
-import searchclient.Command;
 import searchclient.Node;
 import utils.Utils;
 
@@ -23,6 +22,8 @@ public class Agent implements IMessage {
 	private List<Desire> desires;
 	private Intention intention;
 	public Node initialState = null;
+	private int stepInPlan;
+	private List<Node> plan;
 
 	public Agent(int id, String color, Position pos, int priority) {
 		this(id, Utils.determineColor(color), pos, priority);
@@ -33,8 +34,11 @@ public class Agent implements IMessage {
 		this.color = color;
 		this.position = pos;
 		this.priority = priority;
+		this.stepInPlan = 0;
+		this.plan = new ArrayList<>(0);
 	}
 	
+
 	public Agent(Agent agent) {
 		this.id = agent.getId();
 		this.color = agent.getColor();
@@ -43,6 +47,7 @@ public class Agent implements IMessage {
 		this.desires = agent.getDesires();
 		this.intention = agent.getIntention();
 		this.initialState = agent.initialState;
+		this.stepInPlan = agent.getStepInPlan();
 	}
 
 	public void generateInitialState() {
@@ -56,8 +61,12 @@ public class Agent implements IMessage {
 		this.desires = new ArrayList<>(0);
 	}
 
-	public String act() {
-		return Command.every[1].toString();
+	public List<Node> getPlan() {
+		return plan;
+	}
+	
+	public void setPlan(List<Node> plan) {
+		this.plan = plan;
 	}
 
 	public int getId() {
@@ -100,20 +109,12 @@ public class Agent implements IMessage {
 		this.intention = intention;
 	}
 
-	public Color getCol() {
-		return color;
+	public int getStepInPlan() {
+		return stepInPlan;
 	}
 
-	public void setCol(Color col) {
-		this.color = col;
-	}
-
-	public Position getPos() {
-		return position;
-	}
-
-	public void setPos(Position pos) {
-		this.position = pos;
+	public void setStepInPlan(int stepInPlan) {
+		this.stepInPlan = stepInPlan;
 	}
 
 	public List<Desire> getDesires() {
