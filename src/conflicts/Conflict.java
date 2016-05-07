@@ -89,7 +89,6 @@ public class Conflict {
 		//agentToMoveBox = conflict.getReceiverBox();
 		agentToMoveBox = World.getInstance().getBoxes().get(conflict.getReceiverBox().getId());
 		agentToStay = conflict.getSender();
-		 
 		/*HERE we need some code to differantiate beetween agen-box-other-agent-box conflict and agent-box-box conflict*/
 //		for(Agent agent : World.getInstance().getAgents().values()){
 //			if(agent.getIntention().getBox().equals(agentToMoveBox)){

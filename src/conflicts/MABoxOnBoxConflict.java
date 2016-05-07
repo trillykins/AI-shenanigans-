@@ -2,12 +2,14 @@ package conflicts;
 
 import java.util.LinkedList;
 import java.util.List;
+
 import atoms.Agent;
 import atoms.Box;
 import atoms.Color;
 import atoms.Goal;
 import atoms.Position;
 import atoms.World;
+import bdi.Belief;
 import searchclient.Command;
 import searchclient.Node;
 import searchclient.Search;
@@ -93,7 +95,20 @@ public class MABoxOnBoxConflict {
 		agentToMove.setStepInPlan(0);
 		agentToStay.setPlan(newPlanAgentToStay);
 		agentToStay.setStepInPlan(0);
-		World.getInstance().getBeliefs().add(agentToMove.getIntention().getDesire().getBelief());
+		if(agentToMove.getIntention() != null)
+			World.getInstance().getBeliefs().add(agentToMove.getIntention().getDesire().getBelief());
+		else{
+			/* we check if the box is in a goal that matches his*/
+			for(Goal goal : World.getInstance().getGoals().values()){
+				if (goal.getPosition().equals(agentToMoveBox.getPosition()) && 
+						goal.getLetter() == Character.toLowerCase(agentToMoveBox.getLetter())){
+					/*we create a new intention and give it to the agent*/
+					Belief belief = new Belief(goal);
+					World.getInstance().getBeliefs().add(belief);
+				}
+			}
+			/* if not then we just move the box and don't do anything else*/
+		}
 	}
 }
 
