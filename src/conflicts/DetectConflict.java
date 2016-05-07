@@ -73,23 +73,24 @@ public class DetectConflict {
 			for (Agent otherAgent : World.getInstance().getAgents().values()) {
 				if (otherAgent.getId() != curAgent.getId()) {
 					List<Node> planForOtherAgent = otherAgent.getPlan();
+					Node otherAgentNode = null;
 					if (planForOtherAgent != null && planForOtherAgent.size() > 0) {
-						Node otherAgentNode = planForOtherAgent.get(otherAgent.getStepInPlan());
-						/*
-						 * If current agent node action is push, then should check the parent node
-						 */
-						boolean isCurrentPush = false;
-						if(curAgentNode.action.actType.equals(Command.type.Push)) {
-							isCurrentPush = true;
-						}
-						conflict = compareNextNodesOfTwoAgent(curAgentNode,otherAgentNode,curAgent,otherAgent,isCurrentPush);
+						otherAgentNode = planForOtherAgent.get(otherAgent.getStepInPlan());
+					}
+					
+					/*
+					 * If current agent node action is push, then should check the parent node
+					 */
+					if(curAgentNode.action.actType.equals(Command.type.Push)) {
+						conflict = currentPushingConflictCheck(curAgentNode,otherAgentNode,curAgent,otherAgent);
 						if(conflict != null) {
 							return conflict;
 						}
-					}
-					conflict = compareNextNodeWithBoxOrAgent(curAgentNode,curAgent,otherAgent);
-					if(conflict != null) {
-						return conflict;
+					}else {
+						conflict = currentPullingOrMoveConflictCheck(curAgentNode,curAgent,otherAgent);
+						if(conflict != null) {
+							return conflict;
+						}
 					}
 				}
 			}
@@ -136,13 +137,16 @@ public class DetectConflict {
 	}
 	
 	/**
-	 * first compare the next move of two agents
+	 * Compare the current pushing node with other's conflict
 	 * if current agent is pushing
-	 * 	   next agent is pushing====> box-box
-	 *     next agent is pulling or moving ====> agent-box
-	 * else if current agent is pulling or moving
-	 *     next agent is pushing ===> agent-box
-	 *     next agent is pulling or moving ====> agent-agent
+	 * 	   if other agent is pushing 
+	 * 				===> check current agent previous node boxes position = otherNode boxes position =====> Box-Box
+	 * 	            ===> check current node boxes position = otherNode boxes postion =======> Box-Box
+	 *     else if other agent is pulling or moving 
+	 *     			===> check current agent previous node boxes position = other agent postion/other agent's node position ======>Agent-Box
+	 *                                                                    = other box position   ==========>Box-Box
+	 *              ===> check current node boxes position = other agent postion/other agent's node position ======>Agent-Box
+	 *              								       = other box position   ==========>Box-Box
 	 * @param curAgentNode
 	 * @param otherAgentNode
 	 * @param curAgent
@@ -150,111 +154,102 @@ public class DetectConflict {
 	 * @param isPush
 	 * @return
 	 */
-	private Conflict compareNextNodesOfTwoAgent(Node curAgentNode,Node otherAgentNode,Agent curAgent,Agent otherAgent,boolean isPush) {
+	private Conflict currentPushingConflictCheck(Node curAgentNode,Node otherAgentNode,Agent curAgent,Agent otherAgent) {
 		/*
 		 * If other agent also pushing, then get other agent parent node, and check
 		 * In replan part, you need to go back the parent code to replan.
 		 */
-		if(isPush) {
-			Node parent = curAgentNode.parent;
-			/*
-			 * if the other agent also pushing, then if have conflicts, then it is box-box conflict.
-			 */
+		Node parent = curAgentNode.parent;
+		/*
+		 * if the other agent also pushing, then if have conflicts, then it is box-box conflict.
+		 */
+		if(otherAgentNode != null) {
 			if(otherAgentNode.action.actType.equals(Command.type.Push)) {
 				Position otherBoxPosition = null;
 				for(Box otherBox: otherAgentNode.boxes.values()) {
 					otherBoxPosition = otherBox.getPosition();
 					receiverBox = otherBox;
 				}
-				for(Box curBox: parent.boxes.values()) {
-					if(curBox.getPosition().equals(otherBoxPosition)) {
+				for(Box curBox: parent.boxes.values()) {//check could achieve previous node or not
+					if(curBox.getPosition().equals(otherBoxPosition) || curBox.getPosition().equals(otherAgent.getPosition())) {
+						senderBox = curBox;
+						return createConflict(curAgent,otherAgent,receiverBox,senderBox,parent.parent,ConflictType.BOX_BOX);
+					}
+				}
+				for(Box curBox: curAgentNode.boxes.values()) {//check could achieve current node or not
+					if(curBox.getPosition().equals(otherBoxPosition) || curBox.getPosition().equals(otherAgent.getPosition())) {
 						senderBox = curBox;
 						return createConflict(curAgent,otherAgent,receiverBox,senderBox,curAgentNode.parent,ConflictType.BOX_BOX);
 					}
 				}
-			}
-
-		}else{
-			/*
-			 * If the other agent is pulling or moving ,then it is Agent-Box OR Agent-Agent conflict
-			 * If curAgentNo is NoOp, then don't need to compare
-			 */
-			if(!curAgentNode.action.actType.equals(Command.type.NoOp)) {
-				if(curAgentNode.getPosition().equals(otherAgentNode.getPosition()) ||
-						curAgentNode.getPosition().equals(otherAgent.getPosition())) {
-					//If these agents are pushing,then it should be box-box conflict
-					for (Box box : curAgentNode.boxes.values()) {
-						senderBox = box;
-					}
-					return createConflict(curAgent,otherAgent,receiverBox,senderBox,curAgentNode,ConflictType.AGENT);
+				if(curAgent.getPosition().equals(otherAgentNode.getPosition()) ||
+						(curAgentNode.getPosition().equals(otherAgent.getPosition()))) {
+					return createConflict(curAgent,otherAgent,receiverBox,senderBox,curAgentNode.parent,ConflictType.AGENT);
 				}
-
 			}
 		}
-
+		for(Box box: parent.boxes.values()) {//if the previous step would like to move to a box position or other agent's next step
+			for(Box otherBox:World.getInstance().getBoxes().values()) {
+				if(box.getPosition().equals(otherBox.getPosition()) && (box.getId() != otherBox.getId())) {
+					return createConflict(curAgent,otherAgent,box,box,curAgentNode,ConflictType.BOX_BOX);
+				}
+			}
+			
+			if(box.getPosition().equals(otherAgent.getPosition()) || box.getPosition().equals(otherAgentNode.getPosition())) {
+				return createConflict(curAgent,otherAgent,box,box,parent,ConflictType.SINGLE_AGENT_BOX);
+			}
+		}
+		
+		for(Box box: curAgentNode.boxes.values()) {//if current step would like to move to a box position or other agent's next step
+			for(Box otherBox:World.getInstance().getBoxes().values()) {
+				if(box.getPosition().equals(otherBox.getPosition()) && (box.getId() != otherBox.getId())) {
+					return createConflict(curAgent,otherAgent,box,box,curAgentNode,ConflictType.BOX_BOX);
+				}
+			}
+			if(box.getPosition().equals(otherAgent.getPosition()) || box.getPosition().equals(otherAgentNode.getPosition())) {
+				return createConflict(curAgent,otherAgent,box,box,curAgentNode,ConflictType.SINGLE_AGENT_BOX);
+			}
+		}
 		return null;
 	}
 	
 	
 	/**
-	 * Compare the next position is box or agent
-	 * if current agent is pushing, next is box, then it is box-box conflict,next is agent ,then it is agent-box conflict
-	 * if current agent is pulling or moving, next is box, then agent-box conflict, next is agent. the it is agent-agent conflict
+	 * Check current pulling/Moving node conflict
+	 * 		if current node position = other agent position ========>Agent-Agent
+	 *                               = other agent node position ====>Agent-Agent
+	 *                               = other agent box/ own not-intention box =====> Agent-box
+	 *      if current agent position = other agent node position ====>Agent-Agent
 	 * @param curAgentNode
 	 * @param curAgent
 	 * @param otherAgent
 	 * @return
 	 */
-	private Conflict compareNextNodeWithBoxOrAgent(Node curAgentNode,Agent curAgent,Agent otherAgent) {
-		if(curAgentNode.action.actType.equals(Command.type.Push)) {//if it is pushing
-			Node parent = curAgentNode.parent;
-			for(Box box: parent.boxes.values()) {
-				if(box.getPosition().equals(otherAgent.getPosition())) {
-					return createConflict(curAgent,otherAgent,box,box,parent,ConflictType.SINGLE_AGENT_BOX);
-				}
+	private Conflict currentPullingOrMoveConflictCheck(Node curAgentNode,Agent curAgent,Agent otherAgent) {
+		if (curAgentNode.getPosition().equals(otherAgent.getPosition()) || 
+				curAgentNode.getPosition().equals(otherAgent.getPosition())) {
+			Box receiverBox = null;
+			for (Box box : curAgentNode.boxes.values()) {
+				receiverBox = box;
 			}
-			
-			for(Box box: World.getInstance().getBoxes().values()) {
-				//check if is it current agent non intention box
-				Position movingToPosi = new Position(parent.agentRow,parent.agentCol);
-				if(box.getColor().equals(otherAgent.getColor()) && box.getPosition().equals(movingToPosi)) {
+			return createConflict(curAgent,otherAgent,receiverBox,null,curAgentNode,ConflictType.AGENT);
+		}
+		
+		for(Box box:World.getInstance().getBoxes().values()) {
+			Intention inten = curAgent.getIntention();
+			if(inten != null) {
+				Box intenBox = inten.getBox();
+				if(box.getPosition().equals(curAgentNode.getPosition()) && !box.equals(intenBox)) {
 					receiverBox = box;
-					return createConflict(curAgent,otherAgent,receiverBox,box,parent,ConflictType.BOX_BOX);
-				}
-			}
-		}else {//it is moving or pulling
-			if ((curAgentNode.getPosition().equals(otherAgent.getPosition()))) {
-				Box receiverBox = null;
-				for (Box box : curAgentNode.boxes.values()) {
-					receiverBox = box;
-				}
-				return createConflict(curAgent,otherAgent,receiverBox,null,curAgentNode,ConflictType.AGENT);
-			}
-			
-			for(Box box: World.getInstance().getBoxes().values()) {
-				//check if is it current agent non intention box
-				if(box.getColor().equals(otherAgent.getColor()) && box.getPosition().equals(curAgentNode.getPosition())) {
-					receiverBox = box;
-					return createConflict(curAgent,otherAgent,receiverBox,box,curAgentNode,ConflictType.SINGLE_AGENT_BOX);
-				}
-			}
-			
-			for(Box box:World.getInstance().getBoxes().values()) {
-				Intention inten = curAgent.getIntention();
-				if(inten != null) {
-					Box intenBox = inten.getBox();
-					if(box.getPosition().equals(curAgentNode.getPosition()) && !box.equals(intenBox)) {
-						receiverBox = box;
-						/*
-						 * if the conflict box is the same color of current agent, then sender and receiver should be the same.
-						 */
-						if(box.getColor().equals(curAgent.getColor())) {
-							otherAgent = curAgent;
-						}
-						return createConflict(curAgent,otherAgent,receiverBox,senderBox,curAgentNode,ConflictType.SINGLE_AGENT_BOX);
+					/*
+					 * if the conflict box is the same color of current agent, then sender and receiver should be the same.
+					 */
+					if(box.getColor().equals(curAgent.getColor())) {
+						otherAgent = curAgent;
 					}
-				}	
-			}
+					return createConflict(curAgent,otherAgent,receiverBox,senderBox,curAgentNode,ConflictType.SINGLE_AGENT_BOX);
+				}
+			}	
 		}
 		
 		return null;
