@@ -140,11 +140,11 @@ public class Agent implements IMessage {
 		return desires.size() == 0 ? false : true;
 	}
 
-	/*
+	/**
 	 * Generate intention finds intentions based on cost and goal priority goal
 	 * priority reflects how many occupied surrounding spaces a goal have maybe
 	 * This method also consider the closest box that can fulfill the goal
-	 */
+	 **/
 	public boolean generateIntention() {
 		if (desires.isEmpty())
 			return false;

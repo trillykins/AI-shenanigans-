@@ -10,20 +10,8 @@ import atoms.Position;
 import atoms.World;
 
 public class LevelAnalysis {
-	private World world;
-	private Map<Integer, Agent> agents;
-	private Map<Integer, Box> boxes;
-	private Map<Integer, Goal> goals;
-	private Map<Position,FreeSpace> freespace;
-	private List<Position> walls;
 	
 	public LevelAnalysis(){
-		 world = World.getInstance();
-		 agents = world.getAgents();
-		 boxes = world.getBoxes();
-		 goals = world.getGoals();
-		 walls = world.getWalls();
-		 freespace = world.getFreeSpace();
 	}
 	
 	/*Goal priority is based on the number of occupied spaces surrounding a goal
@@ -35,31 +23,31 @@ public class LevelAnalysis {
 			if(isSpaceFree(goal,pos))
 				numberOfOccupiedSpaces++;
 		}
-		numberOfOccupiedSpaces += 10*freespace.get(goal.getPosition()).getNarrowCorValue();
+		numberOfOccupiedSpaces += 10 * World.getInstance().getFreeSpace().get(goal.getPosition()).getNarrowCorValue();
 //		System.err.println(goal.toString() + ", occ : " + numberOfOccupiedSpaces + " narrow : "+freespace.get(goal.getPosition()).getNarrowCorValue());
-		return 2*numberOfOccupiedSpaces;
+		return 2 * numberOfOccupiedSpaces;
 	}
 	
 	public boolean isSpaceFree(Goal g,Position position){
 		/*is there an agent*/
-		for(Agent agent : agents.values()){
+		for(Agent agent : World.getInstance().getAgents().values()){
 			if(agent.getPosition().getX() == position.getX() && agent.getPosition().getY() == position.getY())
 				return false;
 		}
 		/*is there a box*/
-		for(Box box : boxes.values()){
+		for(Box box : World.getInstance().getBoxes().values()){
 			if(box.getPosition().getX() == position.getX() && box.getPosition().getY() == position.getY())
 				if(!(Character.toLowerCase(box.getLetter()) == g.getLetter()))
 					return false;	
 		}
 		/*is there another goal*/
-		for(Goal goal : goals.values()){
+		for(Goal goal : World.getInstance().getGoals().values()){
 			if(goal.getPosition().getX() == position.getX() && goal.getPosition().getY() == position.getY())
 				return false;
 		}
 		/*is there a wall*/
-		for(Position wallPos : walls){
-			if(wallPos.getX() == position.getX() && wallPos.getY() == position.getY())
+		for(Position wallPosition : World.getInstance().getWalls()){
+			if(wallPosition.getX() == position.getX() && wallPosition.getY() == position.getY())
 				return false;
 		}
 		return true;
@@ -70,22 +58,14 @@ public class LevelAnalysis {
 		int yCord = position.getY();	
 		List<Position> positionList = new ArrayList<Position>();	
 		
-		Position pos1 = new Position(xCord-1,yCord);
-		positionList.add(pos1);
-		Position pos2 = new Position(xCord+1,yCord);
-		positionList.add(pos2);
-		Position pos3 = new Position(xCord,yCord-1);
-		positionList.add(pos3);
-		Position pos4 = new Position(xCord,yCord+1);
-		positionList.add(pos4);
-		Position pos5 = new Position(xCord+1,yCord+1);
-		positionList.add(pos5);
-		Position pos6 = new Position(xCord+1,yCord-1);
-		positionList.add(pos6);
-		Position pos7 = new Position(xCord-1,yCord+1);
-		positionList.add(pos7);
-		Position pos8 = new Position(xCord-1,yCord-1);
-		positionList.add(pos8);
+		positionList.add(new Position(xCord-1,yCord));
+		positionList.add(new Position(xCord+1,yCord));
+		positionList.add(new Position(xCord,yCord-1));
+		positionList.add(new Position(xCord,yCord+1));
+		positionList.add(new Position(xCord+1,yCord+1));
+		positionList.add(new Position(xCord+1,yCord-1));
+		positionList.add(new Position(xCord-1,yCord+1));
+		positionList.add(new Position(xCord-1,yCord-1));
 		return positionList;
 	}
 }

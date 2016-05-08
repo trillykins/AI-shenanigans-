@@ -211,8 +211,9 @@ public class Conflict {
 			for (Node n : plan) {
 				for (Box nb : n.boxes.values()) {
 					for (Box wb : World.getInstance().getBoxes().values()) {
-						if(nb.getId() != wb.getId() && nb.getPosition().equals(wb.getPosition()) && !n.boxes.containsKey(wb.getId()) && !tmp.initialState.walls.contains(wb.getPosition())){
-							System.err.println("BOX " + wb.getLetter() + " IN THE WAY!");
+						if (nb.getId() != wb.getId() && nb.getPosition().equals(wb.getPosition())
+								&& !n.boxes.containsKey(wb.getId())
+								&& !tmp.initialState.walls.contains(wb.getPosition())) {
 							tmp.initialState.boxes.put(wb.getId(), wb);
 							planValid = false;
 						}
@@ -224,11 +225,9 @@ public class Conflict {
 				System.err.println("NOT VALID!");
 			}
 		} while (!planValid);
-		
+
 		tmp.initialState.walls.remove(conflictingBox.getPosition());
 
-//		System.err.println(plan);
-//		System.exit(90);
 		// remove all other boxes from agent except its own
 		for (Box box : tmp.initialState.boxes.values()) {
 			if (!intentionBox.equals(box)) {

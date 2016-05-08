@@ -13,90 +13,76 @@ import atoms.Position;
 import atoms.World;
 
 public class MapAnalysis {
-	
-	private World world;
-	private Map<Integer, Agent> agents;
-	private Map<Integer, Box> boxes;
-	private Map<Integer, Goal> goals;
-	private List<Position> walls;
-	
+
 	private List<Position> narrowCells = new ArrayList<>();
-	 
-	public MapAnalysis(){
-		 world = World.getInstance();
-		 agents = world.getAgents();
-		 boxes = world.getBoxes();
-		 walls = world.getWalls();
-		 goals = world.getGoals();
-	}
-	
+
 	/**
 	 * Get all the free spaces map for all agents
-	 * @param position
-	 * @return
+	 * 
+	 * @param Position
+	 * @return Map<Position, FreeSpace>
 	 */
-	public Map<Position,FreeSpace> analysisFreeSpace(List<Position> position) {
-		Map<Position, FreeSpace> freeSpaces = new HashMap<Position,FreeSpace>();
-		for(int i=0;i<position.size();i++) {
-			Position posi = position.get(i);
-			if(isSpaceFree(posi)) {
+	public Map<Position, FreeSpace> analysisFreeSpace(List<Position> positions) {
+		Map<Position, FreeSpace> freeSpaces = new HashMap<Position, FreeSpace>();
+		for (Position position : positions) {
+			if (isFree(position)) {
 				FreeSpace free = new FreeSpace();
-				free.setPosition(posi);
-				free.setPriority(calculateCellPriority(posi));
-				free.setNarrowCorValue(calulateNarrowCorPriority(posi));
-				freeSpaces.put(posi, free);
+				free.setPosition(position);
+				free.setPriority(calculateCellPriority(position));
+				free.setNarrowCorValue(calulateNarrowCorPriority(position));
+				freeSpaces.put(position, free);
 			}
 		}
 		return freeSpaces;
 	}
-	
+
 	/**
-	 * Calculate cell priority 
-	 * if it is wall surrounding, then priority +1
-	 * if it has goal surrounding, then priority +2
+	 * Calculate cell priority if it is wall surrounding, then priority +1 if it
+	 * has goal surrounding, then priority +2
 	 * 
-	 * @param posi
-	 * @return
+	 * @param Position
+	 * @return int
 	 */
-	public int calculateCellPriority(Position posi){
-		
+	public int calculateCellPriority(Position posi) {
+
 		List<Position> allFields = getAllSurroungdings(posi);
 		int numberOfOccupiedSpaces = 0;
-		for(Position pos : allFields){
-			if(isWallPosi(pos)) {
+		for (Position pos : allFields) {
+			if (isWall(pos)) {
 				numberOfOccupiedSpaces++;
-			}else if(isGoalPosi(pos)) {
+			} else if (isGoal(pos)) {
 				numberOfOccupiedSpaces += 2;
 			}
-				
 		}
 		return numberOfOccupiedSpaces;
 	}
-	
+
 	/**
-	 * Calculate the narrow Corridor value
-	 * if the next cell is narrow corridor, then add one value.
+	 * Calculate the narrow Corridor value if the next cell is narrow corridor,
+	 * then add one value.
 	 * 
-	 *###############Updated on 27th April: Feel it is not reliable to decide the narrow corridor
-	 *  just based on the surrounding walls,can easily find an example that has not been covered yet.##########
-	 * @param posi
-	 * @return
+	 * Updated on 27th April: Feel it is not reliable to decide
+	 * the narrow corridor just based on the surrounding walls,can easily find
+	 * an example that has not been covered yet.
+	 * 
+	 * @param Position
+	 * @return int
 	 */
 	public int calulateNarrowCorPriority(Position posi) {
 		List<Position> fields = getAllSurroungdings(posi);
 		int numberOfOccupiedSpaces = 0;
-		for(Position pos : fields){
-			if(!isWallPosi(pos)) {
+		for (Position pos : fields) {
+			if (!isWall(pos)) {
 				numberOfOccupiedSpaces++;
-			}	
+			}
 		}
-		if(numberOfOccupiedSpaces <= 4) {
-			narrowCells.add(posi);	
+		if (numberOfOccupiedSpaces <= 4) {
+			narrowCells.add(posi);
 		}
-		
-		if(numberOfOccupiedSpaces > 3) {
-			for(Position position:narrowCells) {
-				if(isNeighbourCell(posi, position)) {
+
+		if (numberOfOccupiedSpaces > 3) {
+			for (Position position : narrowCells) {
+				if (isNeighbourCell(posi, position)) {
 					numberOfOccupiedSpaces++;
 					break;
 				}
@@ -104,138 +90,134 @@ public class MapAnalysis {
 		}
 		return numberOfOccupiedSpaces;
 	}
-	
-	private boolean isNeighbourCell(Position posi1,Position posi2) {
+
+	private boolean isNeighbourCell(Position posi1, Position posi2) {
 		int row1 = posi1.getX();
 		int row2 = posi2.getX();
-		
+
 		int col1 = posi1.getY();
 		int col2 = posi2.getY();
-		
-		if(row1 == row2) {
-			if(col1 == col2-1 || col1 == col2+1) {
+
+		if (row1 == row2) {
+			if (col1 == col2 - 1 || col1 == col2 + 1) {
 				return true;
 			}
 		}
-		
-		if(col1 == col2) {
-			if(row1 == row2-1 || row1 == row2+1) {
+
+		if (col1 == col2) {
+			if (row1 == row2 - 1 || row1 == row2 + 1) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	/**
-	 * Check the current position whether a wall or not
-	 * @param position
-	 * @return
+	 * Checks whether the position contains a wall
+	 * 
+	 * @param Position
+	 * @return boolean
 	 */
-	private boolean isWallPosi(Position position) {
-		/*is there a wall*/
-		for(Position wallPos : walls){
-			if(wallPos.getX() == position.getX() && wallPos.getY() == position.getY())
+	private boolean isWall(Position position) {
+		for (Position wallPos : World.getInstance().getWalls()) {
+			if (wallPos.getX() == position.getX() && wallPos.getY() == position.getY())
 				return true;
 		}
 		return false;
 	}
-	
-	private boolean isGoalPosi(Position position) {
-		for(Integer goali: goals.keySet()) {
-			Goal goal = goals.get(goali);
-			if(goal.getPosition().getX() == position.getX() && goal.getPosition().getY() == position.getY()) {
+
+	private boolean isGoal(Position position) {
+		for (Goal goal : World.getInstance().getGoals().values()) {
+			if (goal.getPosition().getX() == position.getX() && goal.getPosition().getY() == position.getY()) {
 				return true;
 			}
 		}
 		return false;
 	}
+
 	/**
 	 * Check if current space is a free space for specific agent
-	 * @param a
-	 * @param position
-	 * @return
+	 * 
+	 * @param Position
+	 * @return boolean
 	 */
-	public boolean isSpaceFree(Position position){
-		/*is there an agent*/
-		for(Agent agent : agents.values()){
-			if(agent.getPosition().getX() == position.getX() && agent.getPosition().getY() == position.getY())
+	public boolean isFree(Position position) {
+		/* is there an agent */
+		for (Agent agent : World.getInstance().getAgents().values()) {
+			if (agent.getPosition().getX() == position.getX() && agent.getPosition().getY() == position.getY())
 				return false;
 		}
-		/*is there a box*/
-		for(Box box : boxes.values()){
-			if(box.getPosition().getX() == position.getX() && box.getPosition().getY() == position.getY()) {
+		/* is there a box */
+		for (Box box : World.getInstance().getBoxes().values()) {
+			if (box.getPosition().getX() == position.getX() && box.getPosition().getY() == position.getY()) {
 				return false;
 			}
 		}
-		/*is there a wall*/
-		for(Position wallPos : walls){
-			if(wallPos.getX() == position.getX() && wallPos.getY() == position.getY())
+		/* is there a wall */
+		for (Position wallPos : World.getInstance().getWalls()) {
+			if (wallPos.getX() == position.getX() && wallPos.getY() == position.getY())
 				return false;
 		}
 		return true;
 	}
-	
+
 	private List<Position> getAllSurroungdings(Position posi) {
 		List<Position> fields = surroundingDirectCells(posi);
-		List<Position> InFields = surroundingInDirectCells(posi);
-		 
+		List<Position> InFields = surroundingIndirectCells(posi);
+
 		List<Position> allFields = new ArrayList<Position>();
 		allFields.addAll(fields);
 		allFields.addAll(InFields);
-		
+
 		return allFields;
 	}
+
 	/**
-	 * Get directly surrounding cells of a position(which a box or agent can directly move to like N,S,W,E)
-	 * @param position
-	 * @return
+	 * Get directly surrounding cells of a position(which a box or agent can
+	 * directly move to like N,S,W,E)
+	 * 
+	 * @param Position
+	 * @return List<Position>
 	 */
-	private List<Position> surroundingDirectCells(Position position){
+	private List<Position> surroundingDirectCells(Position position) {
 		int xCord = position.getX();
-		int yCord = position.getY();	
-		List<Position> positionList = new ArrayList<Position>();	
-		
-		Position pos1 = new Position(xCord-1,yCord);
-		positionList.add(pos1);
-		Position pos2 = new Position(xCord+1,yCord);
-		positionList.add(pos2);
-		Position pos3 = new Position(xCord,yCord-1);
-		positionList.add(pos3);
-		Position pos4 = new Position(xCord,yCord+1);
-		positionList.add(pos4);
-		
+		int yCord = position.getY();
+		List<Position> positionList = new ArrayList<Position>();
+
+		positionList.add(new Position(xCord - 1, yCord));
+		positionList.add(new Position(xCord + 1, yCord));
+		positionList.add(new Position(xCord, yCord - 1));
+		positionList.add(new Position(xCord, yCord + 1));
+
 		return positionList;
 	}
-	
+
 	/**
 	 * Get Indirectly surrounding cells of a position
-	 * @param position
-	 * @return
+	 * 
+	 * @param Position
+	 * @return List<Position>
 	 */
-	private List<Position> surroundingInDirectCells(Position position){
+	private List<Position> surroundingIndirectCells(Position position) {
 		int xCord = position.getX();
-		int yCord = position.getY();	
-		List<Position> positionList = new ArrayList<Position>();	
-		
-		Position pos5 = new Position(xCord-1,yCord-1);
-		positionList.add(pos5);
-		Position pos6 = new Position(xCord+1,yCord-1);
-		positionList.add(pos6);
-		Position pos7 = new Position(xCord-1,yCord+1);
-		positionList.add(pos7);
-		Position pos8 = new Position(xCord+1,yCord+1);
-		positionList.add(pos8);
-		
+		int yCord = position.getY();
+		List<Position> positionList = new ArrayList<Position>();
+
+		positionList.add(new Position(xCord - 1, yCord - 1));
+		positionList.add(new Position(xCord + 1, yCord - 1));
+		positionList.add(new Position(xCord - 1, yCord + 1));
+		positionList.add(new Position(xCord + 1, yCord + 1));
+
 		return positionList;
 	}
-	
-	private Map<Integer,PriorityQueue<FreeSpace>> generatePriorityQueue(Map<Integer,List<FreeSpace>> spaces) {
-		Map<Integer,PriorityQueue<FreeSpace>> priorityMap = new HashMap<Integer,PriorityQueue<FreeSpace>>();
-		for(Integer aid:spaces.keySet()) {
+
+	private Map<Integer, PriorityQueue<FreeSpace>> generatePriorityQueue(Map<Integer, List<FreeSpace>> spaces) {
+		Map<Integer, PriorityQueue<FreeSpace>> priorityMap = new HashMap<Integer, PriorityQueue<FreeSpace>>();
+		for (Integer aid : spaces.keySet()) {
 			PriorityQueue<FreeSpace> posiQueue = new PriorityQueue<FreeSpace>();
-			List<FreeSpace> positions= spaces.get(aid);
-			//int firstPri = positions.get(0).getPriority();
-			for(int i=0;i<positions.size();i++) {
+			List<FreeSpace> positions = spaces.get(aid);
+			// int firstPri = positions.get(0).getPriority();
+			for (int i = 0; i < positions.size(); i++) {
 				FreeSpace nexPos = positions.get(i);
 				posiQueue.add(nexPos);
 			}
