@@ -51,7 +51,7 @@ public class DetectConflict {
 				break;
 			case Push:
 				for (Box conflictingBox : World.getInstance().getBoxes().values()) {
-					if (conflictingBox.getPosition().equals(intentionBoxPositionInNext.getPosition()) && !conflictingBox.equals(intentionBox)) {
+					if (conflictingBox.getPosition().equals(intentionBoxPositionInNext.getPosition()) && conflictingBox.getId() != intentionBox.getId() /*&& !conflictingBox.equals(intentionBox)*/) {
 						System.err.println("PUSH");
 						return createConflict(agent, null, conflictingBox, intentionBox, next, ConflictType.BOX_BOX);
 					}

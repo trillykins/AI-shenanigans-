@@ -176,8 +176,8 @@ public class Conflict {
 		}
 	}
 
+	// TODO fix: does not validate plan
 	public void solveBoxOnBoxSA(Node node, Agent agent, Box intentionBox, Box conflictingBox) {
-
 		Agent agentToMove = agent;
 		agentToMove.generateInitialState();
 		agentToMove.initialState.setPosition(World.getInstance().getAgents().get(0).getPosition());
@@ -187,7 +187,6 @@ public class Conflict {
 				agent.getIntention().getDesire().getBelief().getGoal());
 
 		Agent tmp = new Agent(agentToMove);
-
 		tmp.initialState.walls.add(conflictingBox.getPosition());
 		Strategy strategy = new StrategyBestFirst(new AStar(tmp.initialState));
 		Search s = new Search();
@@ -204,33 +203,39 @@ public class Conflict {
 			tmp.initialState.walls.remove(conflictingBox.getPosition());
 		}
 
-		tmp.initialState.boxes.put(conflictingBox.getId(), conflictingBox);
-
 		// check if agent's position overlaps with any other boxes
 		boolean planValid = true;
 		do {
-			for (Node n : plan) {
-				for (Box b : n.boxes.values()) {
-					if (!b.equals(conflictingBox) && !b.equals(World.getInstance().getBoxes().get(intentionBox.getId()))
-							&& n.getAgentPosition().equals(b.getPosition())) {
-						tmp.initialState.boxes.put(b.getId(), b);
+			planValid = true;
 
-						planValid = false;
+			for (Node n : plan) {
+				for (Box nb : n.boxes.values()) {
+					for (Box wb : World.getInstance().getBoxes().values()) {
+						if(nb.getId() != wb.getId() && nb.getPosition().equals(wb.getPosition()) && !n.boxes.containsKey(wb.getId()) && !tmp.initialState.walls.contains(wb.getPosition())){
+							System.err.println("BOX " + wb.getLetter() + " IN THE WAY!");
+							tmp.initialState.boxes.put(wb.getId(), wb);
+							planValid = false;
+						}
 					}
 				}
 			}
-			if (!planValid){
+			if (!planValid) {
 				plan = s.search(new StrategyBestFirst(new AStar(tmp.initialState)), tmp.initialState, SearchType.PATH);
 				System.err.println("NOT VALID!");
 			}
 		} while (!planValid);
+		
+		tmp.initialState.walls.remove(conflictingBox.getPosition());
 
+//		System.err.println(plan);
+//		System.exit(90);
 		// remove all other boxes from agent except its own
-		// for (Box box : tmp.initialState.boxes.values()) {
-		// if (!intentionBox.equals(box)) {
-		// tmp.initialState.boxes.remove(box);
-		// }
-		// }
+		for (Box box : tmp.initialState.boxes.values()) {
+			if (!intentionBox.equals(box)) {
+				tmp.initialState.boxes.remove(box);
+			}
+		}
+
 		agentToMove.setPlan(plan);
 		agentToMove.setStepInPlan(0);
 		world.getBeliefs().add(agentToMove.getIntention().getDesire().getBelief());
@@ -288,7 +293,7 @@ public class Conflict {
 		world.getBeliefs().add(agentToMove.getIntention().getDesire().getBelief());
 	}
 
-	public void solveAgentOnBox(Node node, Agent agent, Box box) {
+	public void solveAgentOnBox(Node node, Agent agent, Box conflictingBox) {
 		Agent agentToMove = agent;
 		agentToMove.generateInitialState();
 		agentToMove.initialState.setPosition(World.getInstance().getAgents().get(0).getPosition());
@@ -298,23 +303,21 @@ public class Conflict {
 				agent.getIntention().getDesire().getBelief().getGoal());
 
 		Agent tmp = new Agent(agentToMove);
-		tmp.initialState.walls.add(box.getPosition());
+		tmp.initialState.walls.add(conflictingBox.getPosition());
 		Strategy strategy = new StrategyBestFirst(new AStar(tmp.initialState));
 		Search s = new Search();
 
 		List<Node> plan = s.search(strategy, tmp.initialState, SearchType.PATH);
 		if (plan == null || plan.isEmpty()) {
-			if (agentToMove.initialState.walls.contains(box.getPosition()))
-				agentToMove.initialState.walls.remove(box.getPosition());
-			agentToMove.initialState.boxes.put(box.getId(), box);
+			if (agentToMove.initialState.walls.contains(conflictingBox.getPosition()))
+				agentToMove.initialState.walls.remove(conflictingBox.getPosition());
+			agentToMove.initialState.boxes.put(conflictingBox.getId(), conflictingBox);
 			strategy = new StrategyBestFirst(new AStar(agentToMove.initialState));
 			s = new Search();
 			plan = s.search(strategy, agentToMove.initialState, SearchType.PATH);
 		} else {
-			agentToMove.initialState.walls.remove(box.getPosition());
+			agentToMove.initialState.walls.remove(conflictingBox.getPosition());
 		}
-		// System.err.println(plan);
-
 		agentToMove.setPlan(plan);
 		agentToMove.setStepInPlan(0);
 		World.getInstance().getBeliefs().add(agentToMove.getIntention().getDesire().getBelief());
