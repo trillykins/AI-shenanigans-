@@ -66,7 +66,6 @@ public class MABoxOnBoxConflict {
 			newPlanAgentToStay.remove(0);
 		}
 		
-		agentToMove.initialState.walls.remove(new Position(agentToStay.getPosition()));
 
 		/* We set the new goal and create a plan for that goal */
 		agentToMove.generateInitialState();
@@ -78,15 +77,19 @@ public class MABoxOnBoxConflict {
 		s = new Search();
 		s.setPlanForAgentToStay(newPlanAgentToStay);
 		newPlanAgentToMove = s.search(strategy, agentToMove.initialState, SearchType.MOVE_OWN_BOX);
-
+		agentToMove.initialState.walls.remove(new Position(agentToStay.getPosition()));
 		/*For the agent to stay we add 1 noOp - pretty random*/
 		Node noOp = agentToStay.getPlan().get(0);
 		noOp.action = new Command();
 		newPlanAgentToStay.add(0, noOp);
 		
-		/*we add noOps acc. to how many steps the new plan is*/
+		/*We add noOps acc. to how many steps the new plan is*/
 		noOp = newPlanAgentToMove.get(newPlanAgentToMove.size()-1);
 		int newPlanAgentToMoveSize = newPlanAgentToMove.size();
+		/*If the agent to move is only moving the box 1 step, then we assume
+		 * the other agent want to pass (which takes at least 2 steps). If we dont do this check we might end up with dead lock*/
+		if (newPlanAgentToMoveSize < 2)
+			newPlanAgentToMoveSize = 4;
 		for(int i = 0; i < newPlanAgentToMoveSize;i++){
 			newPlanAgentToMove.add(newPlanAgentToMove.size(),noOp);
 		}

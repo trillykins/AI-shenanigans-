@@ -160,7 +160,6 @@ public class MABoxConflicts {
 		Map<Position,FreeSpace> fresSp = world.getFreeSpace();
 		Map<Position,FreeSpace> copyOfFreespace = new HashMap<Position,FreeSpace>(fresSp);
 		Position posi = findPossiblePosition(copyOfFreespace,ag,ag.getStepInPlan());
-		
 		List<Node> oriAgentPlan = oriAgent.getPlan();
 		List<Node> refreshOriPlan = new LinkedList<Node>();
 		
@@ -179,17 +178,25 @@ public class MABoxConflicts {
 			}
 		}
 
+		List<Node> newPlanForMovingBox = generateNewPlanForMovingBox(ag,posi,box,oriAgentPlan);
+		/*Add noOps (can be optimized)*/
+		int newPlanForMovingBoxIndex = newPlanForMovingBox.size();
+		if (newPlanForMovingBoxIndex < 2)
+			newPlanForMovingBoxIndex = 4;
+		for(int i = 0; i < newPlanForMovingBoxIndex; i++){
+			newPlanForMovingBox.add(createNoOpNode(oriAgent,null));
+		}
+		ag.setPlan(newPlanForMovingBox);
+		ag.setStepInPlan(0);
+		
 		oriAgent.setPlan(refreshOriPlan);
 		oriAgent.setStepInPlan(0);
 		
-		List<Node> newPlanForMovingBox = generateNewPlanForMovingBox(ag,posi,box);
-		ag.setPlan(newPlanForMovingBox);
-		ag.setStepInPlan(0);
 	}
 	
-	private List<Node> generateNewPlanForMovingBox(Agent agent,Position moveToPosition,Box moveBox) {
+	private List<Node> generateNewPlanForMovingBox(Agent agent,Position moveToPosition,Box moveBox,List<Node> agentToStayPlan) {
 		Strategy strategy = new StrategyBFS();
-		Search sear = new Search();
+		Search s = new Search();
 		
 		int goalId = agent.initialState.goals.size()+1;
 		Goal newGoal = new Goal(goalId,
@@ -200,8 +207,11 @@ public class MABoxConflicts {
 		agent.initialState.goals.put(goalId, newGoal);
 		agent.initialState.boxes.put(moveBox.getId(),moveBox);
 		
+		/*wee need to set the other agents plan in order to compare in search*/
+		s.setPlanForAgentToStay(agentToStayPlan);
 	
-		List<Node> newPlan = sear.search(strategy, agent.initialState, Search.SearchType.PATH);
+		/*we call move-own-box : it compares with the other agents path and moves both agent and box :) */
+		List<Node> newPlan = s.search(strategy, agent.initialState, Search.SearchType.MOVE_OWN_BOX);
 		return newPlan;
 	}
 	

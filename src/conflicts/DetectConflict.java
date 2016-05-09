@@ -177,7 +177,9 @@ public class DetectConflict {
 					}
 				}
 				for(Box curBox: curAgentNode.boxes.values()) {//check could achieve current node or not
-					if(curBox.getPosition().equals(otherBoxPosition) || curBox.getPosition().equals(otherAgent.getPosition())) {
+					// this does not really make sense ? 
+					//if(curBox.getPosition().equals(otherBoxPosition) || curBox.getPosition().equals(otherAgent.getPosition())){
+					if(curBox.getPosition().equals(otherBoxPosition) /*|| curBox.getPosition().equals(otherAgent.getPosition())*/) {
 						senderBox = curBox;
 						return createConflict(curAgent,otherAgent,receiverBox,senderBox,curAgentNode.parent,ConflictType.BOX_BOX);
 					}
