@@ -332,6 +332,11 @@ public class MABoxConflicts {
 			agent.initialState.agentRow = currentNode.parent.agentRow;
 			agent.initialState.boxes = currentNode.parent.boxes;
 		}else {
+			Intention inten = agent.getIntention();
+			if(inten != null) {
+				agent.initialState.boxes.put(inten.getBox().getId(), inten.getBox());
+				agent.initialState.goals.put(inten.getDesire().getBelief().getGoal().getId(), inten.getDesire().getBelief().getGoal());
+			}
 			agent.initialState.agentCol = agent.getPosition().getY();
 			agent.initialState.agentRow = agent.getPosition().getX();
 		}
