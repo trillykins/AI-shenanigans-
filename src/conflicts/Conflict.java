@@ -114,9 +114,12 @@ public class Conflict {
 		
 	}
 
-	public void solveAgentOnAgent(Node node, Agent a1, Agent a2) {
-		Agent agentToMove = a1.getPriority() > a2.getPriority() ? a2 : a1;
-		Agent agentToStay = a1.getPriority() > a2.getPriority() ? a1 : a2;
+	public void solveAgentOnAgent(Conflict conflict,Node node, Agent a1, Agent a2) {
+		//Agent agentToMove = a1.getPriority() > a2.getPriority() ? a2 : a1;
+		//Agent agentToStay = a1.getPriority() > a2.getPriority() ? a1 : a2;
+		Agent agentToMove = conflict.receiver;
+		Agent agentToStay = conflict.sender;
+		
 		agentToMove.generateInitialState();
 		agentToMove.initialState.walls.add(new Position(agentToStay.getPosition()));
 		for (Box box : agentToMove.initialState.boxes.values()) {
@@ -132,16 +135,17 @@ public class Conflict {
 		Node noOp = agentToStay.initialState;
 		noOp.action = new Command();
 		newPlanAgentToStay.add(0, noOp);
+		
 		if (newPlanAgentToMove != null && !newPlanAgentToMove.isEmpty()) {
-			if(newPlanAgentToMove.size() < newPlanAgentToStay.size()) {
-				int noOpsToAdd = Math.abs(newPlanAgentToMove.size() - newPlanAgentToStay.size());
+				int noOpsToAdd = newPlanAgentToMove.size();
+				if (noOpsToAdd < 2)
+					noOpsToAdd = 4;
 				for (int i = 0; i < noOpsToAdd; i++) {
 					Node n = newPlanAgentToMove.getLast().childNode();
 					noOp = n;
 					noOp.action = new Command();
 					newPlanAgentToMove.add(noOp);
 				}
-			}
 		} else {
 			newPlanAgentToMove = new LinkedList<Node>();
 			agentToMove.generateInitialState();
@@ -150,6 +154,7 @@ public class Conflict {
 			noOp.action = new Command();
 			newPlanAgentToMove.add(noOp);
 		}
+
 		agentToMove.setPlan(newPlanAgentToMove);
 		agentToMove.setStepInPlan(0);
 		agentToStay.setPlan(newPlanAgentToStay);

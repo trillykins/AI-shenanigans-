@@ -89,7 +89,7 @@ public class Run {
 				switch (con.getConflictType()) {
 				case AGENT:
 					world.write("AGENT-ON-AGENT CONFLICT");
-					con.solveAgentOnAgent(con.getNode(), con.getSender(), con.getReceiver());
+					con.solveAgentOnAgent(con,con.getNode(), con.getSender(), con.getReceiver());
 					break;
 				case SINGLE_AGENT_BOX:
 					world.write("BOX CONFLICT");
@@ -174,7 +174,7 @@ public class Run {
 				switch (con.getConflictType()) {
 				case AGENT:
 					world.write("AGENT-ON-AGENT CONFLICT");
-					con.solveAgentOnAgent(con.getNode(), con.getSender(), con.getReceiver());
+					con.solveAgentOnAgent(con,con.getNode(), con.getSender(), con.getReceiver());
 					break;
 				case SINGLE_AGENT_BOX:
 					world.write("BOX CONFLICT");
