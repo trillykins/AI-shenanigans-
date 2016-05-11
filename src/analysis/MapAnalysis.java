@@ -39,6 +39,9 @@ public class MapAnalysis {
 		Map<Position, FreeSpace> freeSpaces = new HashMap<Position,FreeSpace>();
 		for(int i=0;i<position.size();i++) {
 			Position posi = position.get(i);
+			if(posi.getX() == 0 || posi.getY() == 0) {
+				continue;
+			}
 			if(isSpaceFree(posi)) {
 				FreeSpace free = new FreeSpace();
 				free.setPosition(posi);
