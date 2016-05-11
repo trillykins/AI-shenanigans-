@@ -39,8 +39,6 @@ public class DetectConflict {
 			Node next = agent.getPlan().get(agent.getStepInPlan());
 			Box intentionBox = intention.getBox();
 			Box intentionBoxPositionInNext = next.boxes.get(intention.getBox().getId());
-			if(intentionBoxPositionInNext == null)
-				System.err.println("LORT");
 			switch (next.action.actType) {
 			case Move:
 				for (Box box : World.getInstance().getBoxes().values()) {
