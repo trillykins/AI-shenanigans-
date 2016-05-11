@@ -138,10 +138,11 @@ public class Conflict {
 		agentToStay.generateInitialState();
 		Node noOp = agentToStay.initialState;
 		noOp.action = new Command();
-		newPlanAgentToStay.add(0, noOp);
-		
+		/*Unessesary noOp*/
+//		newPlanAgentToStay.add(0, noOp);
+		int noOpsToAdd = 0;
 		if (newPlanAgentToMove != null && !newPlanAgentToMove.isEmpty()) {
-				int noOpsToAdd = newPlanAgentToMove.size();
+				noOpsToAdd = newPlanAgentToMove.size();
 				if (noOpsToAdd < 2)
 					noOpsToAdd = 4;
 				for (int i = 0; i < noOpsToAdd; i++) {
@@ -156,7 +157,10 @@ public class Conflict {
 			Node n = agentToMove.initialState;
 			noOp = n;
 			noOp.action = new Command();
-			newPlanAgentToMove.add(noOp);
+			noOpsToAdd = 2; /*if we only add 1 noOp we will most likely have an error. We add 2 noOps*/
+			for(int i = 0; i < noOpsToAdd;i++){
+				newPlanAgentToMove.add(noOp);
+			}
 		}
 
 		agentToMove.setPlan(newPlanAgentToMove);
@@ -164,6 +168,9 @@ public class Conflict {
 		agentToStay.setPlan(newPlanAgentToStay);
 		agentToStay.setStepInPlan(0);
 		world.getBeliefs().add(agentToMove.getIntention().getDesire().getBelief());
+		world.write("AgentToMove : " + agentToMove.getId()  + " newPlan : \n" +newPlanAgentToMove + " plan size " + newPlanAgentToMove.size());
+		world.write("agentToStay : " + agentToStay.getId());
+//		System.exit(0);
 	}
 
 	public void solveAgentOnBox(Node node, Agent agent, Box box) {
