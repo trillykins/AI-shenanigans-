@@ -184,7 +184,8 @@ public class MABoxConflicts {
 		if (newPlanForMovingBoxIndex < 2)
 			newPlanForMovingBoxIndex = 4;
 		for(int i = 0; i < newPlanForMovingBoxIndex; i++){
-			newPlanForMovingBox.add(createNoOpNode(oriAgent,null));
+			Node lastNode = newPlanForMovingBox.get(newPlanForMovingBoxIndex-1);
+			newPlanForMovingBox.add(createNoOpNode(ag,lastNode));
 		}
 		ag.setPlan(newPlanForMovingBox);
 		ag.setStepInPlan(0);
@@ -288,7 +289,16 @@ public class MABoxConflicts {
 		node.action = new Command();
 		node.agentCol = agent.getPosition().getY();
 		node.agentRow = agent.getPosition().getX();
-		node.boxes = agent.initialState.boxes;
+		if(parent != null) {
+			node.boxes = parent.boxes;
+			node.agentCol = parent.agentCol;
+			node.agentRow = parent.agentRow;
+		}else {
+			node.boxes = agent.initialState.boxes;
+			node.agentCol = agent.getPosition().getY();
+			node.agentRow = agent.getPosition().getX();
+		}
+		
 		node.goals = agent.initialState.goals;
 		return node;
 	}
@@ -322,6 +332,11 @@ public class MABoxConflicts {
 			agent.initialState.agentRow = currentNode.parent.agentRow;
 			agent.initialState.boxes = currentNode.parent.boxes;
 		}else {
+			Intention inten = agent.getIntention();
+			if(inten != null) {
+				agent.initialState.boxes.put(inten.getBox().getId(), inten.getBox());
+				agent.initialState.goals.put(inten.getDesire().getBelief().getGoal().getId(), inten.getDesire().getBelief().getGoal());
+			}
 			agent.initialState.agentCol = agent.getPosition().getY();
 			agent.initialState.agentRow = agent.getPosition().getX();
 		}
