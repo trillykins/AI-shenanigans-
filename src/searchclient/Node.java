@@ -271,7 +271,7 @@ public class Node {
 		return true;
 	}
 	
-	public Position getPosition() {
+	public Position getAgentPosition() {
 		return new Position(agentRow, agentCol);
 	}
 	
