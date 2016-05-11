@@ -35,7 +35,8 @@ public class SearchClient {
 		colors = new HashMap<>(0);
 		colorSet = new ArrayList<>(0);
 		in = new BufferedReader(new InputStreamReader(System.in));
-//		in = new BufferedReader(new FileReader("//Users//sunmengwei//Documents//levels//MAsampdoria.lvl"));
+		// in = new BufferedReader(new
+		// FileReader("//Users//sunmengwei//Documents//levels//MAsampdoria.lvl"));
 		world = World.getInstance();
 	}
 
@@ -85,15 +86,15 @@ public class SearchClient {
 		Map<Integer, Agent> agents = new HashMap<>(0);
 		List<Belief> beliefs = new ArrayList<>(0);
 		int row = 0, column = 0;
-		
+
 		List<Position> freeSpaces = new ArrayList<Position>();
 		while (line != null && !line.equals("")) {
 			for (int i = 0; i < line.length(); i++) {
 				boolean isWall = false;
 				char id = line.charAt(i);
 				if ('0' <= id && id <= '9') {
-					agents.put(Integer.parseInt("" + id),
-							new Agent(Integer.parseInt("" + id), colors.get(id), new Position(row, i), Integer.parseInt("" + id)));
+					agents.put(Integer.parseInt("" + id), new Agent(Integer.parseInt("" + id), colors.get(id),
+							new Position(row, i), Integer.parseInt("" + id)));
 				} else if ('A' <= id && id <= 'Z') { // Boxes
 					boxes.put(boxes.size() + 1,
 							new Box(boxes.size() + 1, new Position(row, i), id, Utils.determineColor(colors.get(id))));
@@ -103,8 +104,8 @@ public class SearchClient {
 				} else if (id == '+') {
 					walls.add(new Position(row, i));
 					isWall = true;
-				} 
-				if(!isWall) {
+				}
+				if (!isWall) {
 					freeSpaces.add(new Position(row, i));
 				}
 			}
@@ -142,9 +143,10 @@ public class SearchClient {
 		for (Integer id : world.getGoals().keySet()) {
 			Goal goal = world.getGoals().get(id);
 			Position gPos = goal.getPosition();
-			Byte[][] result = Utils.calculateDistanceValues(gPos.getX(), gPos.getY(), goal.getLetter(), MAX_ROW, MAX_COLUMN);
+			Byte[][] result = Utils.calculateDistanceValues(gPos.getX(), gPos.getY(), goal.getLetter(), MAX_ROW,
+					MAX_COLUMN);
 			precomputedGoalH.put(goal.getId(), result);
-			
+
 			/* calculate goalPriority : based on world elements */
 			goal.setPriority(levelAnalysis.calculateGoalPriority(goal));
 		}

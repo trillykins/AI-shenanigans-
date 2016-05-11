@@ -1,7 +1,5 @@
 package utils;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import FIPA.MessageType;
@@ -10,7 +8,6 @@ import atoms.Box;
 import atoms.Color;
 import atoms.Position;
 import atoms.World;
-import searchclient.Node;
 
 public class Utils {
 
@@ -82,40 +79,7 @@ public class Utils {
 				World.getInstance().getBoxes().put(boxId, boxes.get(boxId));
 			}
 		}
-		for(Agent agent : World.getInstance().getAgents().values())
+		for (Agent agent : World.getInstance().getAgents().values())
 			agent.setStepInPlan(agent.getStepInPlan() + 1);
-	}
-
-	public static boolean canMakeNextMove(int index, List<LinkedList<Node>> allSolutions) {
-		if (World.getInstance().getAgents().size() == 1) {
-			/* This for loop only contains one agent */
-			Agent a1 = World.getInstance().getAgents().get(0);
-			/*
-			 * as there is no other agents that can be in a1's way, the only
-			 * obsticle a1 can bump into is a box
-			 */
-			for (Box box : World.getInstance().getBoxes().values()) {
-				if (box.getPosition().equals(a1.getPosition()))
-					return false;
-			}
-		}
-		for (Agent a1 : World.getInstance().getAgents().values()) {
-			for (Agent a2 : World.getInstance().getAgents().values()) {
-				if (a2.getId() != a1.getId()) {
-					if (allSolutions.size() > a2.getId() && allSolutions.get(a2.getId()).size() > index) {
-						if (allSolutions.size() > a1.getId() && allSolutions.get(a1.getId()).size() > index) {
-							Node currAgentSol = allSolutions.get(a1.getId()).get(index);
-							Node agentSol = allSolutions.get(a2.getId()).get(index);
-							if (currAgentSol.agentRow == agentSol.agentRow && currAgentSol.agentCol == agentSol.agentCol
-									|| a1.getPosition().getX() == agentSol.agentRow
-											&& a1.getPosition().getY() == agentSol.agentCol) {
-								return false;
-							}
-						}
-					}
-				}
-			}
-		}
-		return true;
 	}
 }

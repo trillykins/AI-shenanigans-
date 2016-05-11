@@ -168,29 +168,6 @@ public class World {
 		}
 		return false;
 	}
-	public Agent generateSAPlan(Agent agent) {
-		agent.generateInitialState();
-		if (!agent.generateDesires()) {
-			return agent;
-		}
-		if (!agent.generateIntention()) {
-			return agent;
-		}
-		Intention intention = agent.getIntention();
-//		System.err.println(intention.getDesire() == null);
-		Goal goal = intention.getDesire().getBelief().getGoal();
-		Box intentionBox = intention.getBox();
-		World.getInstance().getBeliefs().remove(intention.getDesire().getBelief());
-		agent.initialState.goals.put(goal.getId(), goal);
-		agent.initialState.boxes.put(intentionBox.getId(), intentionBox);
-		
-		for(Box box : boxes.values()) {
-			if(box.isOnGoal())
-				agent.initialState.boxes.put(box.getId(), box);
-		}
-		return agent;
-	}
-	
 	public Agent generatePlan(Agent agent) {
 		agent.generateInitialState();
 		if (!agent.generateDesires()) {
@@ -200,7 +177,10 @@ public class World {
 			return agent;
 		}
 		Intention intention = agent.getIntention();
-		World.getInstance().beliefs.remove(intention.getDesire().getBelief());
+		write("World");
+		write("beliefs before removing: \n" + beliefs);
+		beliefs.remove(intention.getDesire().getBelief());
+		write("beliefs after removing: \n" + beliefs);
 		Goal goal = intention.getDesire().getBelief().getGoal();
 		Box intentionBox = intention.getBox();
 

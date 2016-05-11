@@ -23,10 +23,10 @@ import utils.Utils;
 
 public class Run {
 	private World world = World.getInstance();
+	public static int conflictHash = -1;
 
 	public static void main(String[] args) throws Exception {
-		// System.err.println("SearchClient initializing. I am sending this
-		// using the error output stream.");
+		// System.err.println("SearchClient initializing. I am sending this using the error output stream.");
 		SearchClient client = new SearchClient();
 		client.init();
 		SearchClient.TIME = args.length > 1 ? Integer.parseInt(args[1]) : 300;
@@ -53,6 +53,7 @@ public class Run {
 					Strategy strategy = new StrategyBestFirst(new AStar(agent.initialState));
 					Search s = new Search();
 					List<Node> solution = s.search(strategy, agent.initialState, SearchType.PATH);
+					world.write("Agent initstate:\n"+agent.initialState);
 					agent.setPlan(solution);
 					agent.setStepInPlan(0);
 					for (Box box : World.getInstance().getBoxes().values())
@@ -85,7 +86,8 @@ public class Run {
 			sb.append("]");
 			DetectConflict detectCon = new DetectConflict();
 			Conflict con = detectCon.checkConflict();
-			if (con != null && !replanned) {
+			if (con != null && !replanned && conflictHash != con.getSender().getPosition().hashCode()) {
+				conflictHash = con.getSender().getPosition().hashCode();
 				switch (con.getConflictType()) {
 				case AGENT:
 					world.write("AGENT-ON-AGENT CONFLICT");
@@ -118,7 +120,7 @@ public class Run {
 				}
 				Utils.performUpdates(updatedAgentPositions, updatedBoxes);
 			}
-			world.updateBeliefs();
+//			world.updateBeliefs();
 			world.write("World:\n" + world.toString());
 			world.write("Global goal state found = " + world.isGlobalGoalState());
 		}

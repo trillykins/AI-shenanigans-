@@ -24,7 +24,8 @@ public class Agent implements IMessage {
 	public Node initialState = null;
 	private int stepInPlan;
 	private List<Node> plan;
-
+	private static World world = World.getInstance();
+	
 	public Agent(int id, String color, Position pos, int priority) {
 		this(id, Utils.determineColor(color), pos, priority);
 	}
@@ -127,9 +128,10 @@ public class Agent implements IMessage {
 
 	public boolean generateDesires() {
 		desires = new ArrayList<>(0);
-		for (Belief belief : World.getInstance().getBeliefs()) {
+		for(int i = 0; i < world.getBeliefs().size(); i++) {
+			Belief belief = world.getBeliefs().get(i);
 			Goal g = belief.getGoal();
-			for (Box b : World.getInstance().getBoxes().values()) {
+			for (Box b : world.getBoxes().values()) {
 				if (Character.toLowerCase(b.getLetter()) == g.getLetter()) {
 					if (color.equals(b.getColor())) {
 						desires.add(new Desire(belief, this));
@@ -146,6 +148,8 @@ public class Agent implements IMessage {
 	 * This method also consider the closest box that can fulfill the goal
 	 */
 	public boolean generateIntention() {
+		world.write("generateIntention.");
+		world.write("Beliefs:\n"+ World.getInstance().getBeliefs());
 		if (desires.isEmpty())
 			return false;
 		Desire bestDesire = null;
@@ -153,9 +157,10 @@ public class Agent implements IMessage {
 		int bestTotal = Integer.MAX_VALUE;
 		int bestGoalPriority = 0;
 		Box closestBox = null;
-		for (Desire des : desires) {
+		for(int i = 0; i < desires.size(); i++) {
+			Desire des = desires.get(i);
 			Goal goal = des.getBelief().getGoal();
-
+//			World.getInstance().write(goal.toString());
 			/*
 			 * if a goal has been solved we do not want to consider it in our
 			 * calculations
@@ -173,7 +178,7 @@ public class Agent implements IMessage {
 			/* calculate current number of free spaces surrounding the goal */
 			LevelAnalysis levelAnalysis = new LevelAnalysis();
 			int numberOfFreeSpacesForGoal = levelAnalysis.calculateGoalPriority(goal);
-
+			
 			int currTotal = goalPriority + costOfClosestBoxToGoal + costOfAgentToClosestBox + numberOfFreeSpacesForGoal;
 
 			// System.err.println("Goal " +goal.getLetter()+" currTotal "
@@ -204,8 +209,6 @@ public class Agent implements IMessage {
 				}
 			}
 		}
-		// System.err.println("Best intention = " + bestDesire + ", " +
-		// bestBox);
 		intention = (bestDesire != null && bestBox != null ? new Intention(bestDesire, bestBox) : null);
 		return intention != null;
 	}
