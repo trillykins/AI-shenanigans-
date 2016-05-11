@@ -29,33 +29,45 @@ public class DetectConflict {
 	
 	private Conflict detectSignalAgentConflict() {
 		// System.exit(0); // TODO MA debug purpose
-		Agent a1 = World.getInstance().getAgents().get(0);
+		Agent agent = World.getInstance().getAgents().get(0);
 		/*
 		* as there is no other agents that can be in a1's way, the only
 		* obstacle a1 can bump into is a box
 		*/
-		Intention intention = a1.getIntention();
+		Intention intention = agent.getIntention();
 		if (intention != null) {
-			Node next = a1.getPlan().get(a1.getStepInPlan());
+			Node next = agent.getPlan().get(agent.getStepInPlan());
 			Box intentionBox = intention.getBox();
-			for (Box box : World.getInstance().getBoxes().values()) {
-				if (!box.equals(intentionBox)) {
-					if (box.getPosition().equals(next.getPosition())) {
-						if (next.action.actType.equals(Command.type.Move)  || next.action.actType.equals(Command.type.Pull)) {
-							return createConflict(a1,null,box,null,next,ConflictType.SINGLE_AGENT_BOX);
-						}
+			Box intentionBoxPositionInNext = next.boxes.get(intention.getBox().getId());
+			switch (next.action.actType) {
+			case Move:
+				for (Box box : World.getInstance().getBoxes().values()) {
+					if (box.getPosition().equals(next.getAgentPosition()) && !box.equals(intentionBox)) {
+						System.err.println("MOVE");
+						return createConflict(agent, null, box, null, next, ConflictType.SINGLE_AGENT_BOX);
 					}
-					/*Want to check if the next node (to the box we are "carring") is a box)*/
-					else {
-						for (Box nextNodeBox : next.boxes.values()) {
-							if(box.getPosition().equals(nextNodeBox.getPosition()) && next.action.actType.equals(Command.type.Push)){
-								return createConflict(a1,null,box,null,next,ConflictType.BOX_BOX);
-							}
-						}	
-
-					}
-
 				}
+				break;
+			case Push:
+				for (Box conflictingBox : World.getInstance().getBoxes().values()) {
+					if (conflictingBox.getPosition().equals(intentionBoxPositionInNext.getPosition()) && conflictingBox.getId() != intentionBox.getId() /*&& !conflictingBox.equals(intentionBox)*/) {
+						System.err.println("PUSH");
+						return createConflict(agent, null, conflictingBox, intentionBox, next, ConflictType.BOX_BOX);
+					}
+				}
+				break;
+			case Pull:
+				for (Box conflictingBox : World.getInstance().getBoxes().values()) {
+					if (conflictingBox.getPosition().equals(next.getAgentPosition()) && !conflictingBox.equals(intentionBox)) {
+						System.err.println("PULL");
+						return createConflict(agent, null, conflictingBox, intentionBox, next, ConflictType.SINGLE_AGENT_BOX);
+					}
+				}
+				break;
+			case NoOp:
+				System.err.println("!!!Agent is No-Op'ing in a single-agent level!!!".toUpperCase());
+				System.exit(-1);
+				break;
 			}
 		}
 		return null;
@@ -184,8 +196,8 @@ public class DetectConflict {
 						return createConflict(curAgent,otherAgent,receiverBox,senderBox,curAgentNode.parent,ConflictType.BOX_BOX);
 					}
 				}
-				if(curAgent.getPosition().equals(otherAgentNode.getPosition()) ||
-						(curAgentNode.getPosition().equals(otherAgent.getPosition()))) {
+				if(curAgent.getPosition().equals(otherAgentNode.getAgentPosition()) ||
+						(curAgentNode.getAgentPosition().equals(otherAgent.getPosition()))) {
 					return createConflict(curAgent,otherAgent,receiverBox,senderBox,curAgentNode.parent,ConflictType.AGENT);
 				}
 			}
@@ -197,7 +209,7 @@ public class DetectConflict {
 				}
 			}
 			
-			if(box.getPosition().equals(otherAgent.getPosition()) || box.getPosition().equals(otherAgentNode.getPosition())) {
+			if(box.getPosition().equals(otherAgent.getPosition()) || box.getPosition().equals(otherAgentNode.getAgentPosition())) {
 				return createConflict(curAgent,otherAgent,box,box,parent,ConflictType.SINGLE_AGENT_BOX);
 			}
 		}
@@ -208,7 +220,7 @@ public class DetectConflict {
 					return createConflict(curAgent,otherAgent,otherBox,box,curAgentNode,ConflictType.BOX_BOX);
 				}
 			}
-			if(box.getPosition().equals(otherAgent.getPosition()) || box.getPosition().equals(otherAgentNode.getPosition())) {
+			if(box.getPosition().equals(otherAgent.getPosition()) || box.getPosition().equals(otherAgentNode.getAgentPosition())) {
 				return createConflict(curAgent,otherAgent,box,box,curAgentNode,ConflictType.SINGLE_AGENT_BOX);
 			}
 		}
@@ -228,7 +240,7 @@ public class DetectConflict {
 	 * @return
 	 */
 	private Conflict currentPullingOrMoveConflictCheck(Node curAgentNode,Node otherAgentNode,Agent curAgent,Agent otherAgent) {
-		if (curAgentNode.getPosition().equals(otherAgent.getPosition()) || 
+		if (curAgentNode.getAgentPosition().equals(otherAgent.getPosition()) || 
 				curAgent.getPosition().equals(otherAgent.getPosition())) {
 			Box receiverBox = null;
 			for (Box box : curAgentNode.boxes.values()) {
@@ -238,8 +250,8 @@ public class DetectConflict {
 		}
 		
 		if(otherAgentNode != null) {
-			if (curAgentNode.getPosition().equals(otherAgentNode.getPosition()) || 
-					curAgent.getPosition().equals(otherAgentNode.getPosition())) {
+			if (curAgentNode.getAgentPosition().equals(otherAgentNode.getAgentPosition()) || 
+					curAgent.getPosition().equals(otherAgentNode.getAgentPosition())) {
 				Box receiverBox = null;
 				for (Box box : curAgentNode.boxes.values()) {
 					receiverBox = box;
@@ -252,7 +264,7 @@ public class DetectConflict {
 			Intention inten = curAgent.getIntention();
 			if(inten != null) {
 				Box intenBox = inten.getBox();
-				if(box.getPosition().equals(curAgentNode.getPosition()) && !box.equals(intenBox)) {
+				if(box.getPosition().equals(curAgentNode.getAgentPosition()) && !box.equals(intenBox)) {
 					receiverBox = box;
 					/*
 					 * if the conflict box is the same color of current agent, then sender and receiver should be the same.
