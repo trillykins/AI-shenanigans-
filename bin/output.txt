@@ -1,0 +1,7159 @@
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT
+BOX CONFLICT
+BOX CONFLICT
+[NoOp, NoOp, NoOp]
+World:
++++++++++++++++
++adg      0GEC+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++beh      1FDB+
+++++  +++  ++++
+   +  +++  +   
+   +  +++  +   
+++++  +++  ++++
++cfi      2IHA+
++++++++++++++++
+
+Global goal state found = false
+BOX CONFLICT

@@ -14,6 +14,7 @@ import atoms.Position;
 import atoms.World;
 import conflicts.Conflict;
 import conflicts.DetectConflict;
+import conflicts.MABoxConflicts;
 import heuristics.AStar;
 import searchclient.Search.SearchType;
 import strategies.Strategy;
@@ -86,6 +87,7 @@ public class Run {
 			sb.append("]");
 			DetectConflict detectCon = new DetectConflict();
 			Conflict con = detectCon.checkConflict();
+<<<<<<< HEAD
 			if (con != null && !replanned && conflictHash != con.getSender().getPosition().hashCode()) {
 				conflictHash = con.getSender().getPosition().hashCode();
 				world.write(world.getAgents().get(0).toString());
@@ -104,6 +106,21 @@ public class Run {
 					world.write("BOX_BOX CONFLICT");
 					world.write(con.toString());
 					con.solveBoxOnBox(con);
+=======
+			if (con != null && !replanned) {
+				switch (con.getConflictType()) {
+				case AGENT:
+					world.write("AGENT-ON-AGENT CONFLICT");
+					con.solveAgentOnAgent(con,con.getNode(), con.getSender(), con.getReceiver());
+					break;
+				case SINGLE_AGENT_BOX:
+					world.write("BOX CONFLICT");
+					con.solveAgentOnBox(con.getNode(), World.getInstance().getAgents().get(0), con.getReceiverBox());
+					break;
+				case BOX_BOX:
+					world.write("BOX_BOX CONFLICT");
+					con.SASolveBoxOnBox(con);
+>>>>>>> refs/remotes/origin/master
 					break;
 				default:
 					world.write("UNDEFINED CONFLICT");
@@ -181,6 +198,7 @@ public class Run {
 				switch (con.getConflictType()) {
 				case AGENT:
 					world.write("AGENT-ON-AGENT CONFLICT");
+<<<<<<< HEAD
 					con.solveAgentOnAgent(con.getNode(), con.getSender(), con.getReceiver());
 					break;
 				case SINGLE_AGENT_BOX:
@@ -194,6 +212,21 @@ public class Run {
 				default:
 					world.write("UNDEFINED CONFLICT");
 					System.exit(0);
+=======
+					con.solveAgentOnAgent(con,con.getNode(), con.getSender(), con.getReceiver());
+					break;
+				case SINGLE_AGENT_BOX:
+					world.write("BOX CONFLICT");
+					MABoxConflicts maBox = new MABoxConflicts();
+					maBox.solveMAgentBoxConflict(con);
+					break;
+				case BOX_BOX:
+					world.write("BOX_BOX CONFLICT");
+					con.MAsolveBoxOnBox(con);
+					break;
+				default:
+					world.write("UNDEFINED CONFLICT");
+>>>>>>> refs/remotes/origin/master
 					break;
 				}
 				replanned = true;
@@ -208,11 +241,19 @@ public class Run {
 						in.readLine();
 				} catch (IOException e) {
 					world.write(e.getMessage());
+<<<<<<< HEAD
+=======
+					
+>>>>>>> refs/remotes/origin/master
 				}
 				Utils.performUpdates(updatedAgentPositions, updatedBoxes);
 			}
 			world.updateBeliefs();
 			world.write("World:\n" + world.toString());
+<<<<<<< HEAD
+=======
+//			System.out.println("World:\n" + world.toString());
+>>>>>>> refs/remotes/origin/master
 			world.write("Global goal state found = " + world.isGlobalGoalState());
 		}
 	}

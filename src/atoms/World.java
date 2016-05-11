@@ -144,19 +144,30 @@ public class World {
 	}
 
 	public void updateBeliefs() {
+//		System.err.println(World.getInstance().getBeliefs().size());
 		for (Goal goal : World.getInstance().getGoals().values()) {
 			if (!goal.isSolved()) {
-				boolean contained = true;
+				boolean contained = false;
 				for (Belief b : World.getInstance().getBeliefs()) {
 					if (goal.equals(b.getGoal()))
 						contained = true;
 				}
-				if (!contained)
-					World.getInstance().getBeliefs().add(new Belief(goal));
+				/*if the goal is not full filled or another agent doesn't have it, 
+				 * we add the belief again*/
+				if (!contained && !agentHasGoalInBelief(goal))
+					World.getInstance().getBeliefs().add(new Belief(goal));					
 			}
 		}
+//		System.err.println(World.getInstance().getBeliefs().size());
 	}
 	
+	public boolean agentHasGoalInBelief(Goal goal){
+		for(Agent agent : World.getInstance().getAgents().values()){
+			if (agent.getIntention().getDesire().getBelief().getGoal().equals(goal))
+				return true;
+		}
+		return false;
+	}
 	public Agent generateSAPlan(Agent agent) {
 		agent.generateInitialState();
 		if (!agent.generateDesires()) {
@@ -198,11 +209,11 @@ public class World {
 		return agent;
 	}
 
-	public void generatePlans() {
-		for (Agent agent : World.getInstance().getAgents().values()) {
-			generatePlan(agent);
-		}
-	}
+//	public void generatePlans() {
+//		for (Agent agent : World.getInstance().getAgents().values()) {
+//			generatePlan(agent);
+//		}
+//	}
 
 	public String toString() {
 		StringBuilder s = new StringBuilder();

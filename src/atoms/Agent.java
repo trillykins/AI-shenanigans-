@@ -37,6 +37,10 @@ public class Agent implements IMessage {
 		this.stepInPlan = 0;
 		this.plan = new ArrayList<>(0);
 	}
+<<<<<<< HEAD
+=======
+	
+>>>>>>> refs/remotes/origin/master
 
 	public Agent(Agent agent) {
 		this.id = agent.getId();
@@ -63,7 +67,11 @@ public class Agent implements IMessage {
 	public List<Node> getPlan() {
 		return plan;
 	}
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> refs/remotes/origin/master
 	public void setPlan(List<Node> plan) {
 		this.plan = plan;
 	}

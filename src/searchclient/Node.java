@@ -92,14 +92,29 @@ public class Node {
 		return true;
 	}
 	
-	public boolean movedAwayWithBox(List<Node> otherPlan) {
-		Position aPos = new Position(agentRow, agentCol);
-		for (Node otherNode : otherPlan) {
-			if (otherNode.agentRow == agentRow && otherNode.agentCol == agentCol)
+//	public boolean movedAwayWithBox(List<Node> otherPlan) {
+//		Position aPos = new Position(agentRow, agentCol);
+//		for (Node otherNode : otherPlan) {
+//			if (otherNode.agentRow == agentRow && otherNode.agentCol == agentCol)
+//				return false;
+//			for (Box b : otherNode.boxes.values())
+//				if (b.getPosition().equals(aPos))
+//					return false;
+//		}
+//		return true;
+//	}
+	public boolean moveAgentAndBoxAway(List<Node> otherPlan){
+		for(int i = 0; i < otherPlan.size(); i++) {
+			Node otherNode = otherPlan.get(i);
+			if (getAgentPosition().equals(otherNode.getAgentPosition()))
 				return false;
-			for (Box b : otherNode.boxes.values())
-				if (b.getPosition().equals(aPos))
+			for(Box box : otherNode.boxes.values())
+				if(getAgentPosition().equals(box.getPosition()))
+					return false;			
+			for(Box box : boxes.values()) {
+				if(box.getPosition().equals(otherNode.getAgentPosition()))
 					return false;
+			}
 		}
 		return true;
 	}
@@ -258,7 +273,10 @@ public class Node {
 		return true;
 	}
 	
+<<<<<<< HEAD
 	/** Retrieves the agent's position for the current node **/
+=======
+>>>>>>> refs/remotes/origin/master
 	public Position getAgentPosition() {
 		return new Position(agentRow, agentCol);
 	}
