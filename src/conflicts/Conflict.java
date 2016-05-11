@@ -208,7 +208,7 @@ public class Conflict {
 		do {
 			planValid = true;
 
-			for (Node n : plan) {
+			outer: for (Node n : plan) {
 				for (Box nb : n.boxes.values()) {
 					for (Box wb : World.getInstance().getBoxes().values()) {
 						if (nb.getId() != wb.getId() && nb.getPosition().equals(wb.getPosition())
@@ -216,6 +216,9 @@ public class Conflict {
 								&& !tmp.initialState.walls.contains(wb.getPosition())) {
 							tmp.initialState.boxes.put(wb.getId(), wb);
 							planValid = false;
+							System.err.println(plan);
+							System.err.println(tmp.initialState);
+							break outer;
 						}
 					}
 				}
@@ -226,7 +229,6 @@ public class Conflict {
 			}
 		} while (!planValid);
 
-		tmp.initialState.walls.remove(conflictingBox.getPosition());
 
 		// remove all other boxes from agent except its own
 		for (Box box : tmp.initialState.boxes.values()) {

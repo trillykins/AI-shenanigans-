@@ -37,7 +37,6 @@ public class Agent implements IMessage {
 		this.stepInPlan = 0;
 		this.plan = new ArrayList<>(0);
 	}
-	
 
 	public Agent(Agent agent) {
 		this.id = agent.getId();
@@ -64,7 +63,7 @@ public class Agent implements IMessage {
 	public List<Node> getPlan() {
 		return plan;
 	}
-	
+
 	public void setPlan(List<Node> plan) {
 		this.plan = plan;
 	}
@@ -128,9 +127,8 @@ public class Agent implements IMessage {
 	public boolean generateDesires() {
 		desires = new ArrayList<>(0);
 		for (Belief belief : World.getInstance().getBeliefs()) {
-			Goal g = belief.getGoal();
 			for (Box b : World.getInstance().getBoxes().values()) {
-				if (Character.toLowerCase(b.getLetter()) == g.getLetter()) {
+				if (Character.toLowerCase(b.getLetter()) == belief.getGoal().getLetter()) {
 					if (color.equals(b.getColor())) {
 						desires.add(new Desire(belief, this));
 					}
@@ -163,7 +161,6 @@ public class Agent implements IMessage {
 			if (goal.isSolved())
 				continue;
 			int goalPriority = goal.getPriority();
-
 			/* compute distance from agent to the closest box. */
 			List<Object> result = findClosestBox(goal);
 			int costOfClosestBoxToGoal = (int) result.get(0);
@@ -204,8 +201,6 @@ public class Agent implements IMessage {
 				}
 			}
 		}
-		// System.err.println("Best intention = " + bestDesire + ", " +
-		// bestBox);
 		intention = (bestDesire != null && bestBox != null ? new Intention(bestDesire, bestBox) : null);
 		return intention != null;
 	}
