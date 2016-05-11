@@ -4,22 +4,19 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import searchclient.Command;
-import searchclient.Node;
-import searchclient.Search;
-import strategies.Strategy;
-import strategies.StrategyBFS;
 import analysis.FreeSpace;
 import atoms.Agent;
 import atoms.Box;
 import atoms.Goal;
 import atoms.Position;
 import atoms.World;
-import bdi.Belief;
-import bdi.Desire;
 import bdi.Intention;
+import searchclient.Command;
+import searchclient.Node;
+import searchclient.Search;
+import strategies.Strategy;
+import strategies.StrategyBFS;
 
 public class MABoxConflicts {
 	
@@ -200,8 +197,7 @@ public class MABoxConflicts {
 		Search s = new Search();
 		
 		int goalId = agent.initialState.goals.size()+1;
-		Goal newGoal = new Goal(goalId,
-				moveToPosition,Character.toLowerCase(moveBox.getLetter()),null,0);	
+		Goal newGoal = new Goal(goalId, moveToPosition,Character.toLowerCase(moveBox.getLetter()),null,0);	
 		agent.generateInitialState();
 		agent.initialState.agentCol = agent.getPosition().getY();
 		agent.initialState.agentRow = agent.getPosition().getX();

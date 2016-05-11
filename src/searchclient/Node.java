@@ -104,15 +104,17 @@ public class Node {
 //		return true;
 //	}
 	public boolean moveAgentAndBoxAway(List<Node> otherPlan){
-		Position aPos = new Position(agentRow, agentCol);
-		for (Node otherNode : otherPlan) {
-			if (otherNode.agentRow == agentRow && otherNode.agentCol == agentCol)
+		for(int i = 0; i < otherPlan.size(); i++) {
+			Node otherNode = otherPlan.get(i);
+			if (getPosition().equals(otherNode.getPosition()))
 				return false;
-			for (Box b : otherNode.boxes.values())
-				if (b.getPosition().equals(aPos))
+			for(Box box : otherNode.boxes.values())
+				if(getPosition().equals(box.getPosition()))
+					return false;			
+			for(Box box : boxes.values()) {
+				if(box.getPosition().equals(otherNode.getPosition()))
 					return false;
-			if(!isGoalState())
-				return false;
+			}
 		}
 		return true;
 	}
