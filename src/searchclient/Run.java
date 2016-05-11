@@ -97,6 +97,7 @@ public class Run {
 					break;
 				case BOX_BOX:
 					world.write("BOX_BOX CONFLICT");
+					con.SASolveBoxOnBox(con);
 					break;
 				default:
 					world.write("UNDEFINED CONFLICT");
@@ -183,7 +184,7 @@ public class Run {
 					break;
 				case BOX_BOX:
 					world.write("BOX_BOX CONFLICT");
-					con.solveMABoxOnBox(con);
+					con.MAsolveBoxOnBox(con);
 					break;
 				default:
 					world.write("UNDEFINED CONFLICT");
@@ -207,6 +208,7 @@ public class Run {
 			}
 			world.updateBeliefs();
 			world.write("World:\n" + world.toString());
+//			System.out.println("World:\n" + world.toString());
 			world.write("Global goal state found = " + world.isGlobalGoalState());
 		}
 	}

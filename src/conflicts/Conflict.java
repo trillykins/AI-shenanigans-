@@ -80,7 +80,7 @@ public class Conflict {
 	}
 
 	
-	public void solveMABoxOnBox(Conflict conflict/*, int index, List<List<Node>> allSolutions*/) {
+	public void MAsolveBoxOnBox(Conflict conflict/*, int index, List<List<Node>> allSolutions*/) {
 		
 		Agent agentToMove = null, agentToStay = null;
 		Box agentToMoveBox = null, agentToStayBox = null;
@@ -112,6 +112,10 @@ public class Conflict {
 //		
 //		BoxOnBoxConflict.AgentBoxBoxConflict(index,allSolutions,agentToMove,agentToStay,agentToMoveBox,agentToStayBox);
 		
+	}
+	
+	public void SASolveBoxOnBox(Conflict con){
+		SABoxOnBoxConflict.solveBoxOnBoxSA(con.getNode(), con.getSender(), con.getSenderBox(), con.getReceiverBox());
 	}
 
 	public void solveAgentOnAgent(Conflict conflict,Node node, Agent a1, Agent a2) {
