@@ -273,10 +273,6 @@ public class Node {
 		return true;
 	}
 	
-<<<<<<< HEAD
-	/** Retrieves the agent's position for the current node **/
-=======
->>>>>>> refs/remotes/origin/master
 	public Position getAgentPosition() {
 		return new Position(agentRow, agentCol);
 	}

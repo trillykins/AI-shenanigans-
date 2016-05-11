@@ -22,21 +22,10 @@ public class MapAnalysis {
 	 * @param Position
 	 * @return Map<Position, FreeSpace>
 	 */
-<<<<<<< HEAD
 	public Map<Position, FreeSpace> analysisFreeSpace(List<Position> positions) {
 		Map<Position, FreeSpace> freeSpaces = new HashMap<Position, FreeSpace>();
 		for (Position position : positions) {
 			if (isFree(position)) {
-=======
-	public Map<Position,FreeSpace> analysisFreeSpace(List<Position> position) {
-		Map<Position, FreeSpace> freeSpaces = new HashMap<Position,FreeSpace>();
-		for(int i=0;i<position.size();i++) {
-			Position posi = position.get(i);
-			if(posi.getX() == 0 || posi.getY() == 0) {
-				continue;
-			}
-			if(isSpaceFree(posi)) {
->>>>>>> refs/remotes/origin/master
 				FreeSpace free = new FreeSpace();
 				free.setPosition(position);
 				free.setPriority(calculateCellPriority(position));
@@ -72,9 +61,9 @@ public class MapAnalysis {
 	 * Calculate the narrow Corridor value if the next cell is narrow corridor,
 	 * then add one value.
 	 * 
-	 * Updated on 27th April: Feel it is not reliable to decide
-	 * the narrow corridor just based on the surrounding walls,can easily find
-	 * an example that has not been covered yet.
+	 * Updated on 27th April: Feel it is not reliable to decide the narrow
+	 * corridor just based on the surrounding walls,can easily find an example
+	 * that has not been covered yet.
 	 * 
 	 * @param Position
 	 * @return int

@@ -37,7 +37,7 @@ public class World {
 	}
 
 	public void write(String str) {
-//		files.write(str);
+		files.write(str);
 	}
 	
 	public Map<Integer, Box> getBoxesInGoals() {
@@ -152,7 +152,7 @@ public class World {
 					if (goal.equals(b.getGoal()))
 						contained = true;
 				}
-				/*if the goal is not full filled or another agent doesn't have it, 
+				/*if the goal is not fulfilled or another agent doesn't have it, 
 				 * we add the belief again*/
 				if (!contained && !agentHasGoalInBelief(goal))
 					World.getInstance().getBeliefs().add(new Belief(goal));					

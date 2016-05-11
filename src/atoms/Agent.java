@@ -37,10 +37,6 @@ public class Agent implements IMessage {
 		this.stepInPlan = 0;
 		this.plan = new ArrayList<>(0);
 	}
-<<<<<<< HEAD
-=======
-	
->>>>>>> refs/remotes/origin/master
 
 	public Agent(Agent agent) {
 		this.id = agent.getId();
@@ -67,11 +63,7 @@ public class Agent implements IMessage {
 	public List<Node> getPlan() {
 		return plan;
 	}
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> refs/remotes/origin/master
 	public void setPlan(List<Node> plan) {
 		this.plan = plan;
 	}
@@ -181,12 +173,10 @@ public class Agent implements IMessage {
 
 			int currTotal = goalPriority + costOfClosestBoxToGoal + costOfAgentToClosestBox + numberOfFreeSpacesForGoal;
 
-			// System.err.println("Goal " +goal.getLetter()+" currTotal "
-			// +currTotal+ "\tgoalP: "+ goalPriority + " costOfClosestBoxToG: "
-			// +costOfClosestBoxToGoal +
-			// " costOfAgentToClosestB: "+costOfAgentToClosestBox + "
-			// numberOfFreeSpacesForGoal: "+numberOfFreeSpacesForGoal);
-			//
+			System.err.println("Goal " + goal.getLetter() + " currTotal " + currTotal + "\tgoalP: " + goalPriority
+					+ " costOfClosestBoxToG: " + costOfClosestBoxToGoal + " costOfAgentToClosestB: "
+					+ costOfAgentToClosestBox + "numberOfFreeSpacesForGoal: " + numberOfFreeSpacesForGoal);
+
 			/*
 			 * we are looking for the smallest value possible, the optimal would
 			 * be a very close goal, which have 0 occupied neighbors.

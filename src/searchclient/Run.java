@@ -22,10 +22,10 @@ import strategies.StrategyBestFirst;
 import utils.Utils;
 
 public class Run {
-	public static int conflictHash = -1;
-
 	private World world = World.getInstance();
 
+	private static int conflictId = -1;
+	
 	public static void main(String[] args) throws Exception {
 		// System.err.println("SearchClient initializing. I am sending this
 		// using the error output stream.");
@@ -87,27 +87,8 @@ public class Run {
 			sb.append("]");
 			DetectConflict detectCon = new DetectConflict();
 			Conflict con = detectCon.checkConflict();
-<<<<<<< HEAD
-			if (con != null && !replanned && conflictHash != con.getSender().getPosition().hashCode()) {
-				conflictHash = con.getSender().getPosition().hashCode();
-				world.write(world.getAgents().get(0).toString());
-				System.err.println(con.getConflictType());
-				switch (con.getConflictType()) {
-				case AGENT:
-					world.write("AGENT-ON-AGENT CONFLICT");
-					con.solveAgentOnAgent(con.getNode(), con.getSender(), con.getReceiver());
-					break;
-				case SINGLE_AGENT_BOX:
-					world.write("BOX CONFLICT");
-					world.write(con.toString());
-					con.solveAgentOnBox(con.getNode(), con.getSender(), con.getReceiverBox());
-					break;
-				case BOX_BOX:
-					world.write("BOX_BOX CONFLICT");
-					world.write(con.toString());
-					con.solveBoxOnBox(con);
-=======
-			if (con != null && !replanned) {
+			if (con != null && !replanned && conflictId != con.getSender().getPosition().hashCode()) {
+				conflictId = con.getSender().getPosition().hashCode(); 
 				switch (con.getConflictType()) {
 				case AGENT:
 					world.write("AGENT-ON-AGENT CONFLICT");
@@ -120,7 +101,6 @@ public class Run {
 				case BOX_BOX:
 					world.write("BOX_BOX CONFLICT");
 					con.SASolveBoxOnBox(con);
->>>>>>> refs/remotes/origin/master
 					break;
 				default:
 					world.write("UNDEFINED CONFLICT");
@@ -198,21 +178,6 @@ public class Run {
 				switch (con.getConflictType()) {
 				case AGENT:
 					world.write("AGENT-ON-AGENT CONFLICT");
-<<<<<<< HEAD
-					con.solveAgentOnAgent(con.getNode(), con.getSender(), con.getReceiver());
-					break;
-				case SINGLE_AGENT_BOX:
-					world.write("SINGLE_AGENT_BOX_CONFLICT");
-					con.solveAgentOnBox(con.getNode(), World.getInstance().getAgents().get(0), con.getReceiverBox());
-					break;
-				case BOX_BOX:
-					world.write("BOX_BOX CONFLICT");
-					con.solveBoxOnBox(con);
-					break;
-				default:
-					world.write("UNDEFINED CONFLICT");
-					System.exit(0);
-=======
 					con.solveAgentOnAgent(con,con.getNode(), con.getSender(), con.getReceiver());
 					break;
 				case SINGLE_AGENT_BOX:
@@ -226,7 +191,6 @@ public class Run {
 					break;
 				default:
 					world.write("UNDEFINED CONFLICT");
->>>>>>> refs/remotes/origin/master
 					break;
 				}
 				replanned = true;
@@ -241,19 +205,13 @@ public class Run {
 						in.readLine();
 				} catch (IOException e) {
 					world.write(e.getMessage());
-<<<<<<< HEAD
-=======
 					
->>>>>>> refs/remotes/origin/master
 				}
 				Utils.performUpdates(updatedAgentPositions, updatedBoxes);
 			}
 			world.updateBeliefs();
 			world.write("World:\n" + world.toString());
-<<<<<<< HEAD
-=======
 //			System.out.println("World:\n" + world.toString());
->>>>>>> refs/remotes/origin/master
 			world.write("Global goal state found = " + world.isGlobalGoalState());
 		}
 	}
