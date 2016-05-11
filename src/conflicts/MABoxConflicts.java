@@ -41,7 +41,9 @@ public class MABoxConflicts {
 //			}else {
 //				moveReceiverAgentAway(receiver,sender, sender.getStepInPlan(),conflictBox);
 //			}
-			moveReceiverAgentAway(receiver,sender, sender.getStepInPlan(),conflictBox);
+			if(!checkCouldSolveWithoutReplan(node,sender, receiver)) {
+				moveReceiverAgentAway(receiver,sender, sender.getStepInPlan(),conflictBox);
+			}
 		}else {
 			List<Node> newPlan = findNewSolution(node,sender,conflictBox.getPosition());
 			if(newPlan != null && newPlan.size() >0) {
@@ -78,6 +80,56 @@ public class MABoxConflicts {
 		}
 	}
 	
+	private boolean checkCouldSolveWithoutReplan(Node node,Agent sender,Agent receiver) {
+		List<Node> plan = receiver.getPlan();
+		int conflictIndex = -1;
+		if(plan != null && plan.size() >1) {
+			
+			for(Box box:node.boxes.values()) {
+				for(int i=receiver.getStepInPlan();i<plan.size();i++) {
+					Node otherNode = plan.get(i);
+					if(box.getPosition().equals(otherNode.getPosition())) {
+						conflictIndex = i;
+						break;
+					}else if(box.getPosition().equals(receiver.getPosition())) {
+						conflictIndex = 0;
+						break;
+					}
+				}
+			}
+			if(conflictIndex != -1) {
+				List<Node> senderPlan = getCurrentLeftPlan(sender);
+				List<Node> newSenderPlan = new LinkedList<Node>();
+				for(int j=0;j<conflictIndex+1;j++) {
+					Node parent = null;
+					if(j !=0) {
+						parent = newSenderPlan.get(j-1);
+					}
+					Node noOp = createNoOpNode(sender,parent);
+					newSenderPlan.add(noOp);
+				}
+				newSenderPlan.addAll(senderPlan);
+				sender.setPlan(newSenderPlan);
+				sender.setStepInPlan(0);
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private List<Node> getCurrentLeftPlan(Agent agent) {
+		int stepInPlan = agent.getStepInPlan();
+		List<Node> plan = agent.getPlan();
+		if(plan != null && plan.size()>stepInPlan) {
+			for(int i=0; i<stepInPlan;i++) {
+				plan.remove(0);
+			}
+		}else {
+			plan = new LinkedList<Node>();
+		}
+		return plan;
+	}
+	
 	private void moveReceiverAgentAway(Agent agent,Agent agentToStay,int index,Box moveBox) {
 		Map<Position,FreeSpace> fresSp = World.getInstance().getFreeSpace();
 		Position moveToPosition = findPossiblePosition(fresSp,agent,index);
@@ -91,8 +143,8 @@ public class MABoxConflicts {
 			
 			agent.initialState.moveToPositionCol = moveToPosition.getY();
 			agent.initialState.moveToPositionRow = moveToPosition.getX();
-		
-			List<Node> newPlan = sear.search(strategy, agent.initialState, Search.SearchType.MOVE_TO_POSITION);
+		    sear.setPlanForAgentToStay(agentToStay.getPlan());
+			List<Node> newPlan = sear.search(strategy, agent.initialState, Search.SearchType.MOVE_AWAY);
 			//World.getInstance().getSolutionMap().put(agent.getId(), newPlan);
 			agent.setPlan(newPlan);
 			agent.setStepInPlan(0);
@@ -101,23 +153,18 @@ public class MABoxConflicts {
 	}
 	
 	private void updateOthersSolutions(Agent agent) {
-		int solutionSize = agent.getPlan().size();
 		for(Agent otherAgent: World.getInstance().getAgents().values()) {
 			if(otherAgent.getId() != agent.getId()) {
-				List<Node> otherSolution = otherAgent.getPlan();
-				if(otherSolution != null && otherSolution.size() > otherAgent.getStepInPlan()) {
-					for (int i=0;i<otherAgent.getStepInPlan()-1; i++) {
-						otherSolution.remove(0);
-					}
-					if(!(otherSolution.size() == 1 
-							&& otherSolution.get(0).action.actType.equals(Command.type.NoOp))) {
-						Node parent = createNoOpNode(otherAgent,null);
-						otherSolution.get(0).parent = parent;
-						otherSolution.add(0,parent);
-					}
-					otherAgent.setPlan(otherSolution);
-					otherAgent.setStepInPlan(0);
+				List<Node> otherSolution = getCurrentLeftPlan(otherAgent);
+				if(!(otherSolution.size() == 1 
+						&& otherSolution.get(0).action.actType.equals(Command.type.NoOp))) {
+					Node curNode = otherSolution.get(0);
+					Node parent = createNoOpNode(otherAgent,curNode);
+					otherSolution.get(0).parent = parent;
+					otherSolution.add(0,parent);
 				}
+				otherAgent.setPlan(otherSolution);
+				otherAgent.setStepInPlan(0);
 			}
 		}
 	}
