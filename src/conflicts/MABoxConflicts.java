@@ -27,7 +27,7 @@ public class MABoxConflicts {
 		Agent receiver = conflict.getReceiver();
 		Node node = conflict.getNode();
 		//Check is it same color of sender agent
-		if(sender.getColor().equals(conflictBox.getColor()) && sender.getIntention().getBox().getLetter() == conflictBox.getLetter()) {
+		if(sender.getColor().equals(conflictBox.getColor()) && sender.getIntention().getBox().equals(conflictBox)) {
 			//If the conflict box is the one sender is pushing
 			if(!checkCouldSolveWithoutReplan(node,sender, receiver)) {
 				moveReceiverAgentAway(receiver,sender, sender.getStepInPlan(),conflictBox);
@@ -85,6 +85,7 @@ public class MABoxConflicts {
 		oriAgent.initialState.agentCol = oriAgent.getPosition().getY();
 		oriAgent.initialState.agentRow = oriAgent.getPosition().getX();
 		oriAgent.initialState.boxes.put(moveBox.getId(),moveBox);
+
 		
 		/*wee need to set the other agents plan in order to compare in search*/
 		s.setPlanForAgentToStay(oriAgent.getPlan());
@@ -247,6 +248,12 @@ public class MABoxConflicts {
 			Node lastNode = newPlanForMovingBox.get(newPlanForMovingBoxIndex-1);
 			newPlanForMovingBox.add(createNoOpNode(ag,lastNode));
 		}
+		
+		/*
+		 * If the box is already on the goal, then add belief again
+		 */
+		World.getInstance().getBeliefs().add(ag.getIntention().getDesire().getBelief());
+		
 		ag.setPlan(newPlanForMovingBox);
 		ag.setStepInPlan(0);
 		
