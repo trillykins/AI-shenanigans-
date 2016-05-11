@@ -106,13 +106,13 @@ public class Node {
 	public boolean moveAgentAndBoxAway(List<Node> otherPlan){
 		for(int i = 0; i < otherPlan.size(); i++) {
 			Node otherNode = otherPlan.get(i);
-			if (getPosition().equals(otherNode.getPosition()))
+			if (getAgentPosition().equals(otherNode.getAgentPosition()))
 				return false;
 			for(Box box : otherNode.boxes.values())
-				if(getPosition().equals(box.getPosition()))
+				if(getAgentPosition().equals(box.getPosition()))
 					return false;			
 			for(Box box : boxes.values()) {
-				if(box.getPosition().equals(otherNode.getPosition()))
+				if(box.getPosition().equals(otherNode.getAgentPosition()))
 					return false;
 			}
 		}

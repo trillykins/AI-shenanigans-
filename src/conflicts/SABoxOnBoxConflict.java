@@ -2,11 +2,15 @@ package conflicts;
 
 import java.util.List;
 
-import atoms.*;
+import atoms.Agent;
+import atoms.Box;
+import atoms.World;
 import heuristics.AStar;
-import searchclient.*;
+import searchclient.Node;
+import searchclient.Search;
 import searchclient.Search.SearchType;
-import strategies.*;
+import strategies.Strategy;
+import strategies.StrategyBestFirst;
 
 public class SABoxOnBoxConflict {
 
