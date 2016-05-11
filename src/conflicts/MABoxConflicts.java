@@ -242,9 +242,14 @@ public class MABoxConflicts {
 		List<Node> newPlanForMovingBox = generateNewPlanForReceiverToMoveBox(ag,box,oriAgent,oriAgentPlan);
 		/*Add noOps (can be optimized)*/
 		int newPlanForMovingBoxIndex = newPlanForMovingBox.size();
-		if (newPlanForMovingBoxIndex < 2)
-			newPlanForMovingBoxIndex = 4;
-		for(int i = 0; i < newPlanForMovingBoxIndex; i++){
+		int newIndex = 0;
+		if (newPlanForMovingBoxIndex < 2) {
+			newIndex = 4;
+		}else {
+			newIndex = newPlanForMovingBoxIndex;
+		}
+			
+		for(int i = 0; i < newIndex; i++){
 			Node lastNode = newPlanForMovingBox.get(newPlanForMovingBoxIndex-1);
 			newPlanForMovingBox.add(createNoOpNode(ag,lastNode));
 		}
