@@ -24,7 +24,8 @@ public class Agent implements IMessage {
 	public Node initialState = null;
 	private int stepInPlan;
 	private List<Node> plan;
-
+	private List<Integer> unreachableBoxIds;
+	
 	public Agent(int id, String color, Position pos, int priority) {
 		this(id, Utils.determineColor(color), pos, priority);
 	}
@@ -36,6 +37,7 @@ public class Agent implements IMessage {
 		this.priority = priority;
 		this.stepInPlan = 0;
 		this.plan = new ArrayList<>(0);
+		this.unreachableBoxIds = new ArrayList<Integer>(0);
 	}
 
 	public Agent(Agent agent) {
@@ -47,6 +49,7 @@ public class Agent implements IMessage {
 		this.intention = agent.getIntention();
 		this.initialState = agent.initialState;
 		this.stepInPlan = agent.getStepInPlan();
+		this.unreachableBoxIds = agent.unreachableBoxIds;
 	}
 
 	public void generateInitialState() {
@@ -58,8 +61,17 @@ public class Agent implements IMessage {
 		this.initialState.goals = new HashMap<Integer, Goal>(0);
 		this.initialState.walls = World.getInstance().getWalls();
 		this.desires = new ArrayList<>(0);
+//		this.unreachableBoxIds = new ArrayList<Integer>(0);
 	}
 
+	public void addUnreachableBoxId(int boxId){
+		this.unreachableBoxIds.add(boxId);
+	}
+	
+	public List<Integer> getUnreachableBoxIds(){
+		return unreachableBoxIds;
+	}
+	
 	public List<Node> getPlan() {
 		return plan;
 	}
@@ -128,7 +140,7 @@ public class Agent implements IMessage {
 		desires = new ArrayList<>(0);
 		for (Belief belief : World.getInstance().getBeliefs()) {
 			for (Box b : World.getInstance().getBoxes().values()) {
-				if (Character.toLowerCase(b.getLetter()) == belief.getGoal().getLetter()) {
+				if (Character.toLowerCase(b.getLetter()) == belief.getGoal().getLetter() && !unreachableBoxIds.contains(b.getId())) {
 					if (color.equals(b.getColor())) {
 						desires.add(new Desire(belief, this));
 					}

@@ -72,10 +72,10 @@ public class Run {
 	private void singleAgentPlanner() {
 		boolean replanned = false;
 		for (int i = 0; i < world.getBoxes().size(); i++) {
-			System.err.println(
-					world.getBoxes().get(i) + ": " + isBoxReachable(world.getAgents().get(0), world.getBoxes().get(i)));
+			if(!isBoxReachable(world.getAgents().get(0), world.getBoxes().get(i)) && world.getBoxes().get(i) != null){
+				world.getAgents().get(0).addUnreachableBoxId(world.getBoxes().get(i).getId());
+			}
 		}
-		System.exit(0);
 		mainLoop: while (!world.isGlobalGoalState()) {
 			if (!replanned) {
 				Agent agent = world.getAgents().get(0);
