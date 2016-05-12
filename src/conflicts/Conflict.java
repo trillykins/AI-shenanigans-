@@ -78,56 +78,71 @@ public class Conflict {
 		this.receiverBox = box;
 	}
 
-	
-	public void MAsolveBoxOnBox(Conflict conflict/*, int index, List<List<Node>> allSolutions*/) {
-		
+	public void MAsolveBoxOnBox(
+			Conflict conflict/* , int index, List<List<Node>> allSolutions */) {
+
 		Agent agentToMove = null, agentToStay = null;
 		Box agentToMoveBox = null, agentToStayBox = null;
 		agentToMove = conflict.getReceiver();
-		/*we need to fetch the box where it is at in the moment, therefore we retrieve the box from world*/
-		//agentToMoveBox = conflict.getReceiverBox();
+		/*
+		 * we need to fetch the box where it is at in the moment, therefore we
+		 * retrieve the box from world
+		 */
+		// agentToMoveBox = conflict.getReceiverBox();
 		agentToMoveBox = World.getInstance().getBoxes().get(conflict.getReceiverBox().getId());
 		agentToStay = conflict.getSender();
-		/*HERE we need some code to differantiate beetween agen-box-other-agent-box conflict and agent-box-box conflict*/
-//		for(Agent agent : World.getInstance().getAgents().values()){
-//			if(agent.getIntention().getBox().equals(agentToMoveBox)){
-//				//if the agent did a pull or push the last time, we is touchking the box
-//				World.getInstance().write(""+index);
-//				if(allSolutions.get(agentToMove.getId()).get(index).action.actType.equals(Command.type.Pull)){
-//					World.getInstance().write(agent.getId() + " and box : " +agent.getIntention().getBox().getLetter() + " moveBox " + agentToMoveBox.getLetter());
-					MABoxOnBoxConflict.AgentWithBoxOnAgentWithBoxConflict(agentToMove,agentToStay,agentToMoveBox);					
-//				}else{
-//					World.getInstance().write("HER SKAL DER SKE NOGET 1");
-//				}
-//			}else{				
-//				World.getInstance().write("HER SKAL DER SKE NOGET 2 " + agent.toString() + " agentToMoveBox : " +agentToMoveBox.getLetter());
-//			}
-//		}
-		/*in this case we first want to make the sender move his box another way*/
-//		agentToMove = conflict.getSender();
-//		agentToMoveBox = conflict.getSenderBox();
-//		agentToStay = conflict.getReceiver();
-//		agentToStayBox = conflict.getReceiverBox();
-//		
-//		BoxOnBoxConflict.AgentBoxBoxConflict(index,allSolutions,agentToMove,agentToStay,agentToMoveBox,agentToStayBox);
-		
-	}
-	
-	public void SASolveBoxOnBox(Conflict con){
-		SABoxOnBoxConflict.solveBoxOnBoxSA(con.getNode(), con.getSender(), con.getSenderBox(), con.getReceiverBox());
+		/*
+		 * HERE we need some code to differantiate beetween
+		 * agen-box-other-agent-box conflict and agent-box-box conflict
+		 */
+		// for(Agent agent : World.getInstance().getAgents().values()){
+		// if(agent.getIntention().getBox().equals(agentToMoveBox)){
+		// //if the agent did a pull or push the last time, we is touchking the
+		// box
+		// World.getInstance().write(""+index);
+		// if(allSolutions.get(agentToMove.getId()).get(index).action.actType.equals(Command.type.Pull)){
+		// World.getInstance().write(agent.getId() + " and box : "
+		// +agent.getIntention().getBox().getLetter() + " moveBox " +
+		// agentToMoveBox.getLetter());
+		MABoxOnBoxConflict.AgentWithBoxOnAgentWithBoxConflict(agentToMove, agentToStay, agentToMoveBox);
+		// }else{
+		// World.getInstance().write("HER SKAL DER SKE NOGET 1");
+		// }
+		// }else{
+		// World.getInstance().write("HER SKAL DER SKE NOGET 2 " +
+		// agent.toString() + " agentToMoveBox : " +agentToMoveBox.getLetter());
+		// }
+		// }
+		/*
+		 * in this case we first want to make the sender move his box another
+		 * way
+		 */
+		// agentToMove = conflict.getSender();
+		// agentToMoveBox = conflict.getSenderBox();
+		// agentToStay = conflict.getReceiver();
+		// agentToStayBox = conflict.getReceiverBox();
+		//
+		// BoxOnBoxConflict.AgentBoxBoxConflict(index,allSolutions,agentToMove,agentToStay,agentToMoveBox,agentToStayBox);
+
 	}
 
-	public void solveAgentOnAgent(Conflict conflict,Node node, Agent a1, Agent a2) {
+	public void SASolveBoxOnBox(Conflict con) {
+		SABoxOnBoxConflict.solveBoxOnBoxSA(con.getNode(), con.getSender(),
+				World.getInstance().getBoxes().get(con.getSenderBox().getId()),
+				World.getInstance().getBoxes().get(con.getReceiverBox().getId()));
+	}
+
+	public void solveAgentOnAgent(Conflict conflict, Node node, Agent a1, Agent a2) {
 		Agent agentToMove = conflict.receiver;
 		Agent agentToStay = conflict.sender;
 		Box boxToMove = conflict.senderBox;
-		
-		if(agentToMove.getPlan().get(agentToMove.getStepInPlan()).action.actType.equals(Command.type.Pull) ||
-				agentToMove.getPlan().get(agentToMove.getStepInPlan()).action.actType.equals(Command.type.Push)){
+
+		if (agentToMove.getPlan().get(agentToMove.getStepInPlan()).action.actType.equals(Command.type.Pull)
+				|| agentToMove.getPlan().get(agentToMove.getStepInPlan()).action.actType.equals(Command.type.Push)) {
 			MAAgentOnAgentConflict.moveAgentOnAgentWithBox(agentToMove, agentToStay, boxToMove);
-		}else{
+		} else {
 			MAAgentOnAgentConflict.moveAgentOnAgentNoBox(agentToMove, agentToStay, boxToMove);
-			
+
 		}
 	}
 
@@ -140,13 +155,18 @@ public class Conflict {
 		agentToMove.initialState.goals.put(agent.getIntention().getDesire().getBelief().getGoal().getId(),
 				agent.getIntention().getDesire().getBelief().getGoal());
 
-		Agent tmp = new Agent(agentToMove);
-		tmp.initialState.walls.add(box.getPosition());
-		Strategy strategy = new StrategyBestFirst(new AStar(tmp.initialState));
+//		Agent tmp = new Agent(agentToMove);
+		agentToMove.initialState.walls.add(box.getPosition());
+//		tmp.initialState.boxes.put(box.getId(), box);
+
+		Strategy strategy = new StrategyBFS();
+//		Strategy strategy = new StrategyBestFirst(new AStar(tmp.initialState));
 		Search s = new Search();
 
-		List<Node> plan = s.search(strategy, tmp.initialState, SearchType.PATH);
+		List<Node> plan = s.search(strategy, agentToMove.initialState, SearchType.PATH);
+		System.err.println("plan finished!");
 		if (plan == null || plan.isEmpty()) {
+			System.err.println("plan is empty!");
 			if (agentToMove.initialState.walls.contains(box.getPosition()))
 				agentToMove.initialState.walls.remove(box.getPosition());
 			agentToMove.initialState.boxes.put(box.getId(), box);

@@ -10,6 +10,7 @@ import java.util.Map;
 
 import atoms.Agent;
 import atoms.Box;
+import atoms.Goal;
 import atoms.Position;
 import atoms.World;
 import conflicts.Conflict;
@@ -18,6 +19,7 @@ import conflicts.MABoxConflicts;
 import heuristics.AStar;
 import searchclient.Search.SearchType;
 import strategies.Strategy;
+import strategies.StrategyBFS;
 import strategies.StrategyBestFirst;
 import utils.Utils;
 
@@ -25,7 +27,7 @@ public class Run {
 	private World world = World.getInstance();
 
 	private static int conflictId = -1;
-	
+
 	public static void main(String[] args) throws Exception {
 		// System.err.println("SearchClient initializing. I am sending this
 		// using the error output stream.");
@@ -45,8 +47,35 @@ public class Run {
 		}
 	}
 
+	private boolean isBoxReachable(Agent agent, Box box) {
+		if(box == null)
+			return false;
+		agent.generateInitialState();
+		agent.initialState.boxes = new HashMap<Integer, Box>();
+		agent.initialState.goals = new HashMap<Integer, Goal>();
+		agent.initialState.boxes.put(box.getId(), box);
+		for (Goal goal : World.getInstance().getGoals().values()) {
+			if (goal.getLetter() == Character.toLowerCase(box.getLetter())) {
+				agent.initialState.goals.put(goal.getId(), goal);
+				Strategy strategy = new StrategyBestFirst(new AStar(agent.initialState));
+				Search s = new Search();
+				LinkedList<Node> plan = s.search(strategy, agent.initialState, SearchType.PATH);
+				if (plan != null) {
+					return true;
+				} 
+				agent.initialState.goals.remove(goal.getId());
+			}
+		}
+		return false;
+	}
+
 	private void singleAgentPlanner() {
 		boolean replanned = false;
+		for (int i = 0; i < world.getBoxes().size(); i++) {
+			System.err.println(
+					world.getBoxes().get(i) + ": " + isBoxReachable(world.getAgents().get(0), world.getBoxes().get(i)));
+		}
+		System.exit(0);
 		mainLoop: while (!world.isGlobalGoalState()) {
 			if (!replanned) {
 				Agent agent = world.getAgents().get(0);
@@ -88,15 +117,15 @@ public class Run {
 			DetectConflict detectCon = new DetectConflict();
 			Conflict con = detectCon.checkConflict();
 			if (con != null && !replanned && conflictId != con.getSender().getPosition().hashCode()) {
-				conflictId = con.getSender().getPosition().hashCode(); 
 				switch (con.getConflictType()) {
 				case AGENT:
 					world.write("AGENT-ON-AGENT CONFLICT");
-					con.solveAgentOnAgent(con,con.getNode(), con.getSender(), con.getReceiver());
+					con.solveAgentOnAgent(con, con.getNode(), con.getSender(), con.getReceiver());
 					break;
 				case SINGLE_AGENT_BOX:
 					world.write("BOX CONFLICT");
-					con.solveAgentOnBox(con.getNode(), World.getInstance().getAgents().get(0), con.getReceiverBox());
+					con.solveAgentOnBox(con.getNode(), World.getInstance().getAgents().get(0),
+							World.getInstance().getBoxes().get(con.getReceiverBox().getId()));
 					break;
 				case BOX_BOX:
 					world.write("BOX_BOX CONFLICT");
@@ -134,7 +163,7 @@ public class Run {
 				for (Agent agent : world.getAgents().values()) {
 					if (agent.getPlan().size() == 0 || (agent.getPlan().size() == agent.getStepInPlan())) {
 						world.generatePlan(agent);
-						Strategy strategy = new StrategyBestFirst(new AStar(agent.initialState));
+						Strategy strategy = new StrategyBFS();
 						Search s = new Search();
 						List<Node> solution = s.search(strategy, agent.initialState, SearchType.PATH);
 						agent.setPlan(solution);
@@ -178,7 +207,7 @@ public class Run {
 				switch (con.getConflictType()) {
 				case AGENT:
 					world.write("AGENT-ON-AGENT CONFLICT");
-					con.solveAgentOnAgent(con,con.getNode(), con.getSender(), con.getReceiver());
+					con.solveAgentOnAgent(con, con.getNode(), con.getSender(), con.getReceiver());
 					break;
 				case SINGLE_AGENT_BOX:
 					world.write("BOX CONFLICT");
@@ -205,13 +234,13 @@ public class Run {
 						in.readLine();
 				} catch (IOException e) {
 					world.write(e.getMessage());
-					
+
 				}
 				Utils.performUpdates(updatedAgentPositions, updatedBoxes);
 			}
 			world.updateBeliefs();
 			world.write("World:\n" + world.toString());
-//			System.out.println("World:\n" + world.toString());
+			// System.out.println("World:\n" + world.toString());
 			world.write("Global goal state found = " + world.isGlobalGoalState());
 		}
 	}

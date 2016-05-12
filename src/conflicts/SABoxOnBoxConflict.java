@@ -1,40 +1,34 @@
 package conflicts;
 
 import java.util.LinkedList;
-import java.util.List;
 
 import atoms.Agent;
 import atoms.Box;
-import atoms.Goal;
-import atoms.Position;
 import atoms.World;
-import bdi.Belief;
-import heuristics.AStar;
 import searchclient.Node;
 import searchclient.Search;
 import searchclient.Search.SearchType;
-import strategies.Strategy;
 import strategies.StrategyBFS;
-import strategies.StrategyBestFirst;
 
 public class SABoxOnBoxConflict {
 
 	public static void solveBoxOnBoxSA(Node node, Agent agent, Box intentionBox, Box conflictingBox) {
-		System.err.println("intention: " + intentionBox.getLetter());
-		System.err.println("conflict: " + conflictingBox.getLetter());
 
 		agent.generateInitialState();
 		agent.initialState.agentRow = agent.getPosition().getX();
 		agent.initialState.agentCol = agent.getPosition().getY();
 		agent.initialState.boxes.put(intentionBox.getId(), intentionBox);
 		agent.initialState.boxes.put(conflictingBox.getId(), conflictingBox);
+		
 		Search s = new Search();
 		s.setPlanForAgentToStay(Conflict.updatePlan(agent));
 		LinkedList<Node> plan = s.search(new StrategyBFS(), agent.initialState, SearchType.MOVE_OWN_BOX);
-		System.err.println(plan);
+
 		agent.setPlan(plan);
 		agent.setStepInPlan(0);
-		
+//		if (!World.getInstance().getBeliefs().contains(agent.getIntention().getDesire().getBelief())) {
+//			World.getInstance().getBeliefs().add(agent.getIntention().getDesire().getBelief());
+//		}
 		// Agent agentToMove = agent;
 		// agentToMove.generateInitialState();
 		// agentToMove.initialState.setPosition(World.getInstance().getAgents().get(0).getPosition());
