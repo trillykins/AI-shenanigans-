@@ -24,19 +24,26 @@ public class MAAgentOnAgentConflict {
 		}
 		Strategy strategy = new StrategyBFS();
 		Search s = new Search();
+		
+		/*we add one no op to the newPlanAgentToStay*/
 		List<Node> newPlanAgentToStay = Conflict.updatePlan(agentToStay);
+		Node noOp = createNoOpNode(agentToStay,newPlanAgentToStay.get(0));
+		newPlanAgentToStay.remove(0);
+		newPlanAgentToStay.add(noOp);
 		s.setPlanForAgentToStay(newPlanAgentToStay);
+		
 		LinkedList<Node> newPlanAgentToMove = s.search(strategy, agentToMove.initialState, SearchType.MOVE_AWAY);
 		agentToMove.initialState.walls.remove(new Position(agentToStay.getPosition()));
 		agentToStay.generateInitialState();
 		
+		/*afterwards we insert noops*/
 		newPlanAgentToMove = insertNoOps(newPlanAgentToMove,agentToMove);
 
 		agentToMove.setPlan(newPlanAgentToMove);
 		agentToMove.setStepInPlan(0);
 		agentToStay.setPlan(newPlanAgentToStay);
 		agentToStay.setStepInPlan(0);
-		World.getInstance().getBeliefs().add(agentToMove.getIntention().getDesire().getBelief());		
+		World.getInstance().getBeliefs().add(agentToMove.getIntention().getDesire().getBelief());	
 	}
 
 	public static void moveAgentOnAgentWithBox(Agent agentToMove, Agent agentToStay, Box boxToMove){
@@ -50,12 +57,18 @@ public class MAAgentOnAgentConflict {
 
 		Strategy strategy = new StrategyBFS();
 		Search s = new Search();
+		
+		/*we add one no op to the newPlanAgentToStay*/
 		List<Node> newPlanAgentToStay = Conflict.updatePlan(agentToStay);
+		Node noOp = createNoOpNode(agentToStay,newPlanAgentToStay.get(0));
+		newPlanAgentToStay.remove(0);
+		newPlanAgentToStay.add(noOp);
+		
 		s.setPlanForAgentToStay(newPlanAgentToStay);
+		
 		LinkedList<Node> newPlanAgentToMove = s.search(strategy, agentToMove.initialState, SearchType.MOVE_OWN_BOX);
 		agentToMove.initialState.walls.remove(new Position(agentToStay.getPosition()));
-		agentToStay.generateInitialState();
-		
+				
 		newPlanAgentToMove = insertNoOps(newPlanAgentToMove,agentToMove);
 
 		agentToMove.setPlan(newPlanAgentToMove);
@@ -66,8 +79,7 @@ public class MAAgentOnAgentConflict {
 	}
 	
 	public static LinkedList<Node> insertNoOps(LinkedList<Node> newPlanAgentToMove, Agent agentToMove){
-		Node noOp = agentToMove.initialState;
-		noOp.action = new Command();
+		Node noOp = createNoOpNode(agentToMove,newPlanAgentToMove.peekLast());//agentToMove.initialState;
 		int noOpsToAdd = 0;
 		if (newPlanAgentToMove != null && !newPlanAgentToMove.isEmpty()) {
 				noOpsToAdd = newPlanAgentToMove.size();
@@ -91,5 +103,23 @@ public class MAAgentOnAgentConflict {
 			}
 		}
 		return newPlanAgentToMove;
+	}
+	
+	private static Node createNoOpNode(Agent agent, Node parent) {
+		Node node = new Node(parent,agent.getId());
+		node.action = new Command();
+		if(parent != null) {
+			node.boxes = parent.boxes;
+			node.agentCol = parent.agentCol;
+			node.agentRow = parent.agentRow;
+		}else {
+			node.boxes = agent.initialState.boxes;
+			node.agentCol = agent.getPosition().getY();
+			node.agentRow = agent.getPosition().getX();
+		}
+		
+		node.goals = agent.initialState.goals;
+		node.walls = agent.initialState.walls;
+		return node;
 	}
 }
