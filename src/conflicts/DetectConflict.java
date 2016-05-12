@@ -205,7 +205,7 @@ public class DetectConflict {
 		for(Box box: parent.boxes.values()) {//if the previous step would like to move to a box position or other agent's next step
 			for(Box otherBox:World.getInstance().getBoxes().values()) {
 				if(box.getPosition().equals(otherBox.getPosition()) && (box.getId() != otherBox.getId())) {
-					return createConflict(curAgent,otherAgent,box,box,curAgentNode,ConflictType.BOX_BOX);
+					return createConflict(curAgent,curAgent,box,box,curAgentNode,ConflictType.BOX_BOX);
 				}
 			}
 			
@@ -215,9 +215,20 @@ public class DetectConflict {
 		}
 		
 		for(Box box: curAgentNode.boxes.values()) {//if current step would like to move to a box position or other agent's next step
+			Agent receiverAgent = null;
 			for(Box otherBox : World.getInstance().getBoxes().values()) {
 				if(box.getPosition().equals(otherBox.getPosition()) && (box.getId() != otherBox.getId())) {
-					return createConflict(curAgent,otherAgent,otherBox,box,curAgentNode,ConflictType.BOX_BOX);
+					for(Agent receiver: World.getInstance().getAgents().values()) {
+						Intention inten = receiver.getIntention();
+						if(inten != null) {
+							Box intenBox = receiver.getIntention().getBox();
+							if(intenBox.getId() == otherBox.getId()) {
+								receiverAgent = receiver;
+								break;
+							}
+						}
+					}
+					return createConflict(curAgent,receiverAgent,otherBox,box,curAgentNode,ConflictType.BOX_BOX);
 				}
 			}
 			if(box.getPosition().equals(otherAgent.getPosition()) || box.getPosition().equals(otherAgentNode.getAgentPosition())) {
@@ -262,6 +273,14 @@ public class DetectConflict {
 		
 		for(Box box:World.getInstance().getBoxes().values()) {
 			Intention inten = curAgent.getIntention();
+			
+			Box carryIngBox = null;
+			if(curAgentNode.action.actType.equals(Command.type.Pull)) {
+				for(Box carryBox: curAgentNode.boxes.values()) {
+					carryIngBox = carryBox;
+				}
+			}
+			
 			if(inten != null) {
 				Box intenBox = inten.getBox();
 				if(box.getPosition().equals(curAgentNode.getAgentPosition()) && !box.equals(intenBox)) {
@@ -274,9 +293,18 @@ public class DetectConflict {
 					}
 					return createConflict(curAgent,otherAgent,receiverBox,senderBox,curAgentNode,ConflictType.SINGLE_AGENT_BOX);
 				}
+				if(carryIngBox != null && box.getPosition().equals(curAgentNode.getAgentPosition()) && box.equals(intenBox)) {
+					receiverBox = box;
+					/*
+					 * if the conflict box is the same color of current agent, then sender and receiver should be the same.
+					 */
+					if(box.getColor().equals(curAgent.getColor())) {
+						otherAgent = curAgent;
+					}
+					return createConflict(curAgent,otherAgent,receiverBox,senderBox,curAgentNode,ConflictType.SINGLE_AGENT_BOX);
+				}
 			}	
 		}
-		
 		return null;
 	}
 
