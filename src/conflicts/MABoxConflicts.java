@@ -139,11 +139,11 @@ public class MABoxConflicts {
 				List<Node> senderPlan = getCurrentLeftPlan(sender);
 				List<Node> newSenderPlan = new LinkedList<Node>();
 				for(int j=0;j<conflictIndex+1;j++) {
-					Node parent = null;
-					if(j !=0) {
-						parent = newSenderPlan.get(j-1);
+					Node curNode = null;
+					if(senderPlan != null && senderPlan.size()>0) {
+						curNode = senderPlan.get(0);
 					}
-					Node noOp = createNoOpNode(sender,parent);
+					Node noOp = createNoOpNode(sender,curNode.parent);
 					newSenderPlan.add(noOp);
 				}
 				newSenderPlan.addAll(senderPlan);
@@ -179,8 +179,11 @@ public class MABoxConflicts {
 			agent.initialState.agentCol = agent.getPosition().getY();
 			agent.initialState.agentRow = agent.getPosition().getX();
 			
-			agent.initialState.moveToPositionCol = moveToPosition.getY();
-			agent.initialState.moveToPositionRow = moveToPosition.getX();
+			Intention inten = agent.getIntention();
+			if(inten != null) {
+				Goal goal = inten.getDesire().getBelief().getGoal();
+				agent.initialState.walls.add(goal.getPosition());
+			}
 		    sear.setPlanForAgentToStay(agentToStay.getPlan());
 			List<Node> newPlan = sear.search(strategy, agent.initialState, Search.SearchType.MOVE_AWAY);
 			agent.setPlan(newPlan);
