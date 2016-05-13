@@ -42,23 +42,23 @@ public class MABoxConflicts {
 			if(!sender.equals(receiver)) {
 				if(checkCouldSolveWithoutReplan(node,sender, receiver)) {
 					updateOthersSolutions(sender);
-				}else {
-					List<Node> newPlan = findNewSolutionForSender(node,sender,conflictBox.getPosition(),receiver);
-					if(newPlan != null && newPlan.size() >0) {
-						sender.setPlan(newPlan);
-						sender.setStepInPlan(0);
-						sender.initialState.walls.remove(conflictBox.getPosition());
-						
-						updateOthersSolutions(sender);
-					}else {
-						//If there is no new solution for sender, then should move the conflict box away.
-						sender.initialState.walls.remove(conflictBox.getPosition());
-						if(receiver.equals(sender)) {
-							solveOwnBoxConflict(node,sender,conflictBox);
-						}else {// ask other agent to move the conflict box;
-							RequestOtherAgentToMoveBoxAway(sender,receiver,conflictBox,node);
-						}
-					}
+					return;
+				}
+			}
+			List<Node> newPlan = findNewSolutionForSender(node,sender,conflictBox.getPosition(),receiver);
+			if(newPlan != null && newPlan.size() >0) {
+				sender.setPlan(newPlan);
+				sender.setStepInPlan(0);
+				sender.initialState.walls.remove(conflictBox.getPosition());
+				
+				updateOthersSolutions(sender);
+			}else {
+				//If there is no new solution for sender, then should move the conflict box away.
+				sender.initialState.walls.remove(conflictBox.getPosition());
+				if(receiver.equals(sender)) {
+					solveOwnBoxConflict(node,sender,conflictBox);
+				}else {// ask other agent to move the conflict box;
+					RequestOtherAgentToMoveBoxAway(sender,receiver,conflictBox,node);
 				}
 			}
 		}
