@@ -84,7 +84,9 @@ public class Conflict {
 		Agent agentToMove = null, agentToStay = null;
 		Box agentToMoveBox = null, agentToStayBox = null;
 		
-		agentToMove = world.getAgents().get(conflict.getReceiver().getId());
+//		System.err.println(conflict.getReceiver());
+		if(conflict.getReceiver() != null)
+			agentToMove = world.getAgents().get(conflict.getReceiver().getId());
 		agentToMoveBox = world.getBoxes().get(conflict.getReceiverBox().getId());
 		agentToStay = world.getAgents().get(conflict.getSender().getId());
 		agentToStayBox = world.getBoxes().get(conflict.getSenderBox().getId());
