@@ -25,7 +25,7 @@ public class Agent implements IMessage {
 	private int stepInPlan;
 	private List<Node> plan;
 	private List<Integer> unreachableBoxIds;
-	
+
 	public Agent(int id, String color, Position pos, int priority) {
 		this(id, Utils.determineColor(color), pos, priority);
 	}
@@ -61,17 +61,17 @@ public class Agent implements IMessage {
 		this.initialState.goals = new HashMap<Integer, Goal>(0);
 		this.initialState.walls = World.getInstance().getWalls();
 		this.desires = new ArrayList<>(0);
-//		this.unreachableBoxIds = new ArrayList<Integer>(0);
+		// this.unreachableBoxIds = new ArrayList<Integer>(0);
 	}
 
-	public void addUnreachableBoxId(int boxId){
+	public void addUnreachableBoxId(int boxId) {
 		this.unreachableBoxIds.add(boxId);
 	}
-	
-	public List<Integer> getUnreachableBoxIds(){
+
+	public List<Integer> getUnreachableBoxIds() {
 		return unreachableBoxIds;
 	}
-	
+
 	public List<Node> getPlan() {
 		return plan;
 	}
@@ -140,7 +140,8 @@ public class Agent implements IMessage {
 		desires = new ArrayList<>(0);
 		for (Belief belief : World.getInstance().getBeliefs()) {
 			for (Box b : World.getInstance().getBoxes().values()) {
-				if (Character.toLowerCase(b.getLetter()) == belief.getGoal().getLetter() && !unreachableBoxIds.contains(b.getId())) {
+				if (Character.toLowerCase(b.getLetter()) == belief.getGoal().getLetter()
+						&& !unreachableBoxIds.contains(b.getId())) {
 					if (color.equals(b.getColor())) {
 						desires.add(new Desire(belief, this));
 					}
@@ -165,6 +166,12 @@ public class Agent implements IMessage {
 		Box closestBox = null;
 		for (Desire des : desires) {
 			Goal goal = des.getBelief().getGoal();
+//			for (Box box : World.getInstance().getBoxes().values()) {
+//				if (goal.getLetter() == 'y' && box.getLetter() == 'Y' && !unreachableBoxIds.contains(box.getId())) {
+//					intention = new Intention(des, box);
+//					return true;
+//				}
+//			}
 
 			/*
 			 * if a goal has been solved we do not want to consider it in our
@@ -177,7 +184,12 @@ public class Agent implements IMessage {
 			List<Object> result = findClosestBox(goal);
 			int costOfClosestBoxToGoal = (int) result.get(0);
 			closestBox = (Box) result.get(1);
-			int costOfAgentToClosestBox = Utils.manhattenDistance(position, closestBox.getPosition());
+			int costOfAgentToClosestBox = 0;
+			// if (unreachableBoxIds.contains(closestBox.getId())) {
+			// costOfAgentToClosestBox = 100000;
+			// } else {
+			costOfAgentToClosestBox = Utils.manhattenDistance(position, closestBox.getPosition());
+			// }
 
 			/* calculate current number of free spaces surrounding the goal */
 			LevelAnalysis levelAnalysis = new LevelAnalysis();
@@ -185,9 +197,12 @@ public class Agent implements IMessage {
 
 			int currTotal = goalPriority + costOfClosestBoxToGoal + costOfAgentToClosestBox + numberOfFreeSpacesForGoal;
 
-//			System.err.println("Goal " + goal.getLetter() + " currTotal " + currTotal + "\tgoalP: " + goalPriority
-//					+ " costOfClosestBoxToG: " + costOfClosestBoxToGoal + " costOfAgentToClosestB: "
-//					+ costOfAgentToClosestBox + "numberOfFreeSpacesForGoal: " + numberOfFreeSpacesForGoal);
+			// System.err.println("Goal " + goal.getLetter() + " currTotal " +
+			// currTotal + "\tgoalP: " + goalPriority
+			// + " costOfClosestBoxToG: " + costOfClosestBoxToGoal + "
+			// costOfAgentToClosestB: "
+			// + costOfAgentToClosestBox + "numberOfFreeSpacesForGoal: " +
+			// numberOfFreeSpacesForGoal);
 
 			/*
 			 * we are looking for the smallest value possible, the optimal would
@@ -221,11 +236,13 @@ public class Agent implements IMessage {
 		World world = World.getInstance();
 		Integer smallestDistance = Integer.MAX_VALUE;
 		for (Box box : world.getBoxes().values()) {
-			if (!box.isOnGoal() && Character.toLowerCase(box.getLetter()) == goal.getLetter()) {
-				int currDistance = Utils.manhattenDistance(box.getPosition(), goal.getPosition());
-				if (smallestDistance > currDistance) {
-					smallestDistance = currDistance;
-					b = box;
+			if (!unreachableBoxIds.contains(box.getId())) {
+				if (!box.isOnGoal() && Character.toLowerCase(box.getLetter()) == goal.getLetter()) {
+					int currDistance = Utils.manhattenDistance(box.getPosition(), goal.getPosition());
+					if (smallestDistance > currDistance) {
+						smallestDistance = currDistance;
+						b = box;
+					}
 				}
 			}
 		}
