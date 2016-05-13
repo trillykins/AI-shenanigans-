@@ -66,7 +66,7 @@ public class MAAgentOnAgentConflict {
 		List<Node> newPlanAgentToStay = Conflict.updatePlan(agentToStay);
 		Node noOp = createNoOpNode(agentToStay,newPlanAgentToStay.get(0));
 		newPlanAgentToStay.remove(0);
-		newPlanAgentToStay.add(noOp);
+		newPlanAgentToStay.add(0,noOp);
 		
 		s.setPlanForAgentToStay(newPlanAgentToStay);
 		
