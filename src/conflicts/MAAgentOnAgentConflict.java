@@ -62,17 +62,16 @@ public class MAAgentOnAgentConflict {
 		Strategy strategy = new StrategyBFS();
 		Search s = new Search();
 		
-		/*we add one no op to the newPlanAgentToStay*/
 		List<Node> newPlanAgentToStay = Conflict.updatePlan(agentToStay);
-		Node noOp = createNoOpNode(agentToStay,newPlanAgentToStay.get(0));
-		newPlanAgentToStay.remove(0);
-		newPlanAgentToStay.add(0,noOp);
-		
 		s.setPlanForAgentToStay(newPlanAgentToStay);
-		
 		LinkedList<Node> newPlanAgentToMove = s.search(strategy, agentToMove.initialState, SearchType.MOVE_OWN_BOX);
 		agentToMove.initialState.walls.remove(new Position(agentToStay.getPosition()));
-				
+		
+		
+		/*we add one noOp to the newPlanAgentToStay*/
+		Node noOp = createNoOpNode(agentToStay,newPlanAgentToStay.get(newPlanAgentToStay.size()-1));
+		newPlanAgentToStay.remove(0);
+		newPlanAgentToStay.add(noOp);
 		newPlanAgentToMove = insertNoOps(newPlanAgentToMove,agentToMove);
 
 		agentToMove.setPlan(newPlanAgentToMove);
