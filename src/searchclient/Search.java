@@ -5,15 +5,25 @@ import java.util.List;
 
 import atoms.Agent;
 import atoms.Box;
+import atoms.Position;
 import atoms.World;
 import strategies.Strategy;
 
 public class Search {
 	public static int TIME = 300;
 	private List<Node> otherPlan;
+	private List<Box> futureBoxPositions;
 
 	public static enum SearchType {
-		PATH, MOVE_TO_POSITION, MOVE_AWAY, MOVE_OWN_BOX
+		PATH, MOVE_TO_POSITION, MOVE_AWAY, MOVE_OWN_BOX, MOVE_BOXES
+	}
+
+	public List<Box> getFutureBoxPositions() {
+		return futureBoxPositions;
+	}
+
+	public void setFutureBoxPositions(List<Box> futureBoxPositions) {
+		this.futureBoxPositions = futureBoxPositions;
 	}
 
 	public void setPlanForAgentToStay(List<Node> otherPlan) {
@@ -61,6 +71,11 @@ public class Search {
 				break;
 			case MOVE_OWN_BOX:
 				if(leafNode.moveAgentAndBoxAway(otherPlan)){
+					return leafNode.extractPlan();
+				}
+				break;
+			case MOVE_BOXES:
+				if(leafNode.moveBoxesAway(futureBoxPositions, otherPlan)){
 					return leafNode.extractPlan();
 				}
 				break;

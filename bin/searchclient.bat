@@ -8,4 +8,4 @@ javac FIPA/*.java
 javac heuristics/*.java
 javac strategies/*.java
 javac utils/*.java
-java -jar server.jar -l levels/%1.lvl -c "java searchclient.Run" -g
+java -jar server.jar -l levels/%1.lvl -c "java searchclient.Run" -g %2

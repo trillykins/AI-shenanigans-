@@ -48,7 +48,7 @@ public class Run {
 	}
 
 	private boolean isBoxReachable(Agent agent, Box box) {
-		if(box == null)
+		if (box == null)
 			return false;
 		agent.generateInitialState();
 		agent.initialState.boxes = new HashMap<Integer, Box>();
@@ -62,7 +62,7 @@ public class Run {
 				LinkedList<Node> plan = s.search(strategy, agent.initialState, SearchType.PATH);
 				if (plan != null) {
 					return true;
-				} 
+				}
 				agent.initialState.goals.remove(goal.getId());
 			}
 		}
@@ -71,9 +71,10 @@ public class Run {
 
 	private void singleAgentPlanner() {
 		boolean replanned = false;
-		for (int i = 0; i < world.getBoxes().size(); i++) {
-			if(!isBoxReachable(world.getAgents().get(0), world.getBoxes().get(i)) && world.getBoxes().get(i) != null){
-				world.getAgents().get(0).addUnreachableBoxId(world.getBoxes().get(i).getId());
+		for (Box box : world.getBoxes().values()) {
+			System.err.println(box + ": " + isBoxReachable(world.getAgents().get(0), box));
+			if(!isBoxReachable(world.getAgents().get(0), box)){
+				world.getAgents().get(0).addUnreachableBoxId(box.getId());
 			}
 		}
 		mainLoop: while (!world.isGlobalGoalState()) {
