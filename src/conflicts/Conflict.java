@@ -86,16 +86,15 @@ public class Conflict {
 		
 		agentToMove = conflict.getReceiver();
 		agentToMoveBox = World.getInstance().getBoxes().get(conflict.getReceiverBox().getId());
-		System.err.println("receiverbox " + conflict.getReceiverBox()+ " new box " + agentToMoveBox);
 		agentToStay = conflict.getSender();
 		agentToStayBox = conflict.getSenderBox();
-		System.err.println(agentToStay + " agent box :" +agentToStayBox);
-
-		if(agentToMove == null)
-			MABoxOnBoxConflict.AgentBoxBoxConflict(agentToStay,agentToStayBox,agentToMoveBox);
-		else
-			MABoxOnBoxConflict.AgentWithBoxOnAgentWithBoxConflict(agentToMove,agentToStay,agentToMoveBox);					
 		
+		System.err.println("agentToStay position : " +conflict.getSender() + ", pos :" +conflict.getSender().getPosition());
+		if(agentToMove == null){
+			MABoxOnBoxConflict.AgentBoxBoxConflict(agentToStay,agentToStayBox,agentToMoveBox);
+		}else{
+			MABoxOnBoxConflict.AgentWithBoxOnAgentWithBoxConflict(agentToMove,agentToStay,agentToMoveBox);					
+		}
 	}
 	
 	public void SASolveBoxOnBox(Conflict con){

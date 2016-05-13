@@ -15,13 +15,14 @@ import searchclient.Search;
 import searchclient.Search.SearchType;
 import strategies.Strategy;
 import strategies.StrategyBFS;
+import utils.Utils;
 
 public class MABoxOnBoxConflict {
 
 	public static void AgentBoxBoxConflict(Agent agentToStay, Box agentToStayBox, Box agentToMoveBox) {
-		System.err.println("We had a agent-with-box on box conflict");
-		
 		/* No other agent have the box as an intention, and we know that the box is same color as our agent*/
+		System.err.println("agentToStay position : " +agentToStay + ", pos :" +agentToStay.getPosition());
+		System.exit(0);
 		
 		/*First we try to replan for agentToStay*/
 		agentToStay.generateInitialState();
@@ -33,18 +34,58 @@ public class MABoxOnBoxConflict {
 		Search s = new Search();
 		LinkedList<Node> newPlanAgentToStay = s.search(strategy, agentToStay.initialState, SearchType.PATH);
 		
-		/*if the replan is null we first want to move the agentToStayBox away*/
-		if(newPlanAgentToStay == null)
-			System.err.println("plan is null");
-		else{
+		if(newPlanAgentToStay == null){
+			if (agentToMoveBox.getColor().equals(agentToStayBox.getColor()))
+				moveAgentBoxAndConflictBox(agentToStay,agentToStayBox,agentToMoveBox);
+			else
+				getAnotherAgentToMoveConflictBox(agentToStay,agentToStayBox,agentToMoveBox);
+		}else{
+			/*we just want the agent to run the new plan*/
 			System.err.println(newPlanAgentToStay);
 		}
-		/*then we move the agentToMoveBox away*/
-		
 		System.exit(0);
-
 	}
-
+	
+	public static void moveAgentBoxAndConflictBox(Agent agentToStay, Box agentToStayBox, Box agentToMoveBox){
+		System.err.println("plan is null, we get the agent to move first his own box, then the other box");
+		/*if the replan is null we first want to move the agentToStayBox away*/
+		/*then we move the agentToMoveBox away*/
+		System.exit(0);
+	}
+	public static void getAnotherAgentToMoveConflictBox(Agent agentToStay, Box agentToStayBox, Box agentToMoveBox){
+		System.err.println("plan is null and the receiver box does not have same color as sender box");
+		/*find closets agent that can move the box*/
+		int bestDistance = Integer.MAX_VALUE;
+		Agent agentToMove = null;
+		for(Agent agent : World.getInstance().getAgents().values()){
+			if(agent.getColor().equals(agentToMoveBox.getColor())){
+				int currDistance = Utils.manhattenDistance(agent.getPosition(), agentToMoveBox.getPosition());
+				if(currDistance < bestDistance){
+					bestDistance = currDistance;
+					agentToMove = agent;
+				}
+			}
+		}
+		/*find path for him to move the box*/
+		System.err.println("agentToStay " + agentToStay.getId());
+		agentToMove.generateInitialState();
+		agentToMove.initialState.walls.add(new Position(World.getInstance().getAgents().get(agentToStay.getId()).getPosition()));
+		System.err.println(agentToStay.getPosition());
+		agentToMove.initialState.walls.add(new Position(agentToStayBox.getPosition()));
+		agentToMove.initialState.agentRow = agentToStay.getPosition().getX();
+		agentToMove.initialState.agentCol = agentToStay.getPosition().getY();
+		agentToMove.initialState.boxes.put(agentToMoveBox.getId(), agentToMoveBox);
+		System.err.println(agentToMove.initialState);
+		System.exit(0);
+		Strategy strategy = new StrategyBFS();
+		Search s = new Search();
+		LinkedList<Node> newPlanAgentToMove = s.search(strategy, agentToMove.initialState, SearchType.PATH);
+		
+		if (newPlanAgentToMove != null)
+			System.err.println("new plan \n" + newPlanAgentToMove);
+		/*update beliefs with his intention*/
+	}
+	
 	public static void AgentWithBoxOnAgentWithBoxConflict(Agent agentToMove, Agent agentToStay, Box boxToMove) {
 		agentToMove.generateInitialState();
 		agentToMove.initialState.walls.add(new Position(agentToStay.getPosition()));
@@ -108,11 +149,11 @@ public class MABoxOnBoxConflict {
 			/* if not then we just move the box and don't do anything else */
 		}
 //		System.err.println("newAgentPlan \n" + newPlanAgentToMove);
+//		System.err.println(newPlanAgentToMove.getLast().getAgentPosition());
 //		System.err.println("agentToStayPlan \n" + newPlanAgentToStay);
+//		System.err.println(newPlanAgentToStay.get(0).getAgentPosition());
 //		System.exit(0);
 //		System.err.println("new plan 'with no ops' \n"+newPlanAgentToMove);
-		
-//		System.exit(0);
 	}
 	
 	private static Node createNoOpNode(Agent agent, Node parent) {
@@ -129,6 +170,7 @@ public class MABoxOnBoxConflict {
 		}
 		
 		node.goals = agent.initialState.goals;
+		node.walls = agent.initialState.walls;
 		return node;
 	}
 }
