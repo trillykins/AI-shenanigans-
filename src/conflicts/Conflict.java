@@ -110,13 +110,17 @@ public class Conflict {
 	public void solveAgentOnAgent(Conflict conflict,Node node, Agent a1, Agent a2) {
 		Agent agentToMove = conflict.receiver;
 		Agent agentToStay = conflict.sender;
-		Box boxToMove = conflict.senderBox;
+		Box agentToMoveBox = conflict.senderBox;
 		
 		if(agentToMove.getPlan().get(agentToMove.getStepInPlan()).action.actType.equals(Command.type.Pull) ||
 				agentToMove.getPlan().get(agentToMove.getStepInPlan()).action.actType.equals(Command.type.Push)){
-			MAAgentOnAgentConflict.moveAgentOnAgentWithBox(agentToMove, agentToStay, boxToMove);
+			System.err.println("AA 1");
+//			System.exit(0);
+			MAAgentOnAgentConflict.moveAgentOnAgentWithBox(agentToMove, agentToStay, agentToMoveBox);
 		}else{
-			MAAgentOnAgentConflict.moveAgentOnAgentNoBox(agentToMove, agentToStay, boxToMove);
+			System.err.println("AA 2");
+//			System.exit(0);
+			MAAgentOnAgentConflict.moveAgentOnAgentNoBox(agentToMove, agentToStay, agentToMoveBox);
 			
 		}
 	}

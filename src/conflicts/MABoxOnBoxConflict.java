@@ -35,19 +35,19 @@ public class MABoxOnBoxConflict {
 		
 		if(newPlanAgentToStay == null){
 			if (agentToMoveBox.getColor().equals(agentToStayBox.getColor())){
-//				System.err.println("1");
-//				System.exit(0);
+				System.err.println("1");
+				System.exit(0);
 				moveAgentBoxAndConflictBox(agentToStay,agentToStayBox,agentToMove,agentToMoveBox);
 			}else{
-//				System.err.println("2");
+				System.err.println("2");
 //				System.err.println("agentToMove " + agentToMove + " agentToMoveBOx"+ agentToMoveBox.getLetter()+ " agentToStay " + agentToStay.getId());
-//				System.exit(0);
+				System.exit(0);
 				getAnotherAgentToMoveConflictBox(agentToStay,agentToStayBox,agentToMove,agentToMoveBox);
 			}
 		}else{
 			/*we just want the agent to run the new plan*/
-//			System.err.println("3");
-//			System.exit(0);
+			System.err.println("3");
+			System.exit(0);
 			System.err.println("run the new plan of the agentToStay");
 		}
 	}
@@ -167,7 +167,7 @@ public class MABoxOnBoxConflict {
 		
 	}
 	public static void replanAgentToMove(Agent agentToStay,Box agentToStayBox,Agent agentToMove,Box agentToMoveBox){
-		/*else we replan for agentToMove (with his box)*/
+		/* we replan for agentToMove (with his box)*/
 		agentToMove.generateInitialState();
 		agentToMove.initialState.walls.add(new Position(agentToStay.getPosition()));
 		agentToMove.initialState.agentRow = agentToMove.getPosition().getX();
