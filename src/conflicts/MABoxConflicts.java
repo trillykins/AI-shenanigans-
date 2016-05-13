@@ -124,9 +124,22 @@ public class MABoxConflicts {
 		oriAgent.initialState.agentCol = oriAgent.getPosition().getY();
 		oriAgent.initialState.agentRow = oriAgent.getPosition().getX();
 		oriAgent.initialState.boxes.put(box.getId(),box);
+
 		Goal oriGoal = oriAgent.getIntention().getDesire().getBelief().getGoal();
-		oriAgent.initialState.goals.put(oriGoal.getId(), oriGoal);
-		List<Node> newPlan = s.search(strategy, oriAgent.initialState, Search.SearchType.PATH);
+		List<Node> newPlan = new LinkedList<Node>();
+		if(box.getPosition().equals(oriGoal.getPosition())) {//if sender box on goal
+			for(Agent otherAgent:World.getInstance().getAgents().values()) {
+				if(otherAgent.getId() != oriAgent.getId()) {
+					oriAgent.initialState.walls.add(otherAgent.getPosition());
+					s.setPlanForAgentToStay(otherAgent.getPlan());
+				}
+			}
+			newPlan = s.search(strategy, oriAgent.initialState, Search.SearchType.MOVE_OWN_BOX);
+			World.getInstance().getBeliefs().add(oriAgent.getIntention().getDesire().getBelief());
+		}else {
+			oriAgent.initialState.goals.put(oriGoal.getId(), oriGoal);
+			newPlan = s.search(strategy, oriAgent.initialState, Search.SearchType.PATH);
+		}
 		
 		oriAgent.setPlan(newPlan);
 		oriAgent.setStepInPlan(0);
@@ -190,37 +203,44 @@ public class MABoxConflicts {
 		agent.initialState.agentCol = agent.getPosition().getY();
 		agent.initialState.agentRow = agent.getPosition().getX();
 		
-		Position goalPosition = null;
-		Intention inten = agent.getIntention();
-		if(inten != null) {
-			Goal goal = inten.getDesire().getBelief().getGoal();
-			goalPosition = goal.getPosition();
-			agent.initialState.walls.add(goalPosition);
-		}
-		
-		Position agentStaygoalPosition = null;
-		Intention agentStayInten = agent.getIntention();
-		if(agentStayInten != null) {
-			Goal agentStayGoal = agentStayInten.getDesire().getBelief().getGoal();
-			agentStaygoalPosition = agentStayGoal.getPosition();
-			agent.initialState.walls.add(agentStaygoalPosition);
-			
-		}
+//		Position goalPosition = null;
+//		Intention inten = agent.getIntention();
+//		if(inten != null) {
+//			Goal goal = inten.getDesire().getBelief().getGoal();
+//			goalPosition = goal.getPosition();
+//			agent.initialState.walls.add(goalPosition);
+//		}
+//		
+//		Position agentStaygoalPosition = null;
+//		Intention agentStayInten = agent.getIntention();
+//		if(agentStayInten != null) {
+//			Goal agentStayGoal = agentStayInten.getDesire().getBelief().getGoal();
+//			agentStaygoalPosition = agentStayGoal.getPosition();
+//			agent.initialState.walls.add(agentStaygoalPosition);
+//			
+//		}
 		
 		agent.initialState.walls.add(agentToStay.getPosition());
 		
 	    sear.setPlanForAgentToStay(agentToStay.getPlan());
 		List<Node> newPlan = sear.search(strategy, agent.initialState, Search.SearchType.MOVE_AWAY);
+		if(newPlan != null) {//assume that it is next its own box
+			
+		}
 		agent.setPlan(newPlan);
 		agent.setStepInPlan(0);
-		if(agentStaygoalPosition != null) {
-			agent.initialState.walls.remove(agentStaygoalPosition);
-		}
-		if(goalPosition != null) {
-			agent.initialState.walls.remove(goalPosition);
-		}
+//		if(agentStaygoalPosition != null) {
+//			agent.initialState.walls.remove(agentStaygoalPosition);
+//		}
+//		if(goalPosition != null) {
+//			agent.initialState.walls.remove(goalPosition);
+//		}
 		agent.initialState.walls.remove(agentToStay.getPosition());
 		updateOthersSolutions(agent);
+	}
+	
+	private void pushOwnBoxOnTheWay(Agent agent) {
+		
 	}
 	
 	private void updateOthersSolutions(Agent agent) {
