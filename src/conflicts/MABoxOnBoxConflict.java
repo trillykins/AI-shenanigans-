@@ -18,10 +18,29 @@ import strategies.StrategyBFS;
 
 public class MABoxOnBoxConflict {
 
-	public static void AgentBoxBoxConflict(int index, List<List<Node>> allSolutions, Agent agentToMove,
-			Agent agentToStay, Box agentToMoveBox, Box agentToStayBox) {
-		World.getInstance().write("We had a agent-with-box on box conflict : system exit");
-		System.err.println("We had a agent-with-box on box conflict : system exit");
+	public static void AgentBoxBoxConflict(Agent agentToStay, Box agentToStayBox, Box agentToMoveBox) {
+		System.err.println("We had a agent-with-box on box conflict");
+		
+		/* No other agent have the box as an intention, and we know that the box is same color as our agent*/
+		
+		/*First we try to replan for agentToStay*/
+		agentToStay.generateInitialState();
+		agentToStay.initialState.walls.add(new Position(agentToMoveBox.getPosition()));
+		agentToStay.initialState.agentRow = agentToStay.getPosition().getX();
+		agentToStay.initialState.agentCol = agentToStay.getPosition().getY();
+		agentToStay.initialState.boxes.put(agentToStayBox.getId(), agentToStayBox);
+		Strategy strategy = new StrategyBFS();
+		Search s = new Search();
+		LinkedList<Node> newPlanAgentToStay = s.search(strategy, agentToStay.initialState, SearchType.PATH);
+		
+		/*if the replan is null we first want to move the agentToStayBox away*/
+		if(newPlanAgentToStay == null)
+			System.err.println("plan is null");
+		else{
+			System.err.println(newPlanAgentToStay);
+		}
+		/*then we move the agentToMoveBox away*/
+		
 		System.exit(0);
 
 	}
