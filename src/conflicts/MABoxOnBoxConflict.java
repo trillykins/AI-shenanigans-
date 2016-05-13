@@ -53,21 +53,13 @@ public class MABoxOnBoxConflict {
 	}
 
 	public static void moveAgentBoxAndConflictBox(Agent agentToStay, Box agentToStayBox,Agent agentToMove, Box agentToMoveBox){
-//		System.err.println("plan is null, we get the agent to move first his own box, then the other box");
-		/*if the replan is null we first want to move the agentToStayBox away*/
-		/*then we move the agentToMoveBox away*/
+		/*first we try to replan, if that is not possible, we will make the agent move the box himself*/
 		if(replanAgentToStay(agentToStay,agentToStayBox,agentToMoveBox)){
-			System.err.println("1");
 			System.err.println("replan worked");
 		}else{
-//			System.err.println("2 " + agentToStay + " " + agentToStayBox);
-//			System.exit(0);
-			replanAgentToStayWithConflictBox(agentToStay,agentToStayBox,agentToMoveBox);
 			/*if it is not possible to replan, we have to move conflict box away first*/
-			/*if conflict box is in its goal - wee need to add the box as a new belief*/
-			
+			replanAgentToStayWithConflictBox(agentToStay,agentToStayBox,agentToMoveBox);
 		}
-//		System.exit(0);
 	}
 	public static void getAnotherAgentToMoveConflictBox(Agent agentToStay, Box agentToStayBox, Agent agentToMove,Box agentToMoveBox){
 		System.err.println("plan is null and the receiver box does not have same color as sender box");
