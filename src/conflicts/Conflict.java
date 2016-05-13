@@ -96,7 +96,7 @@ public class Conflict {
 			if(agentToMove.getPlan().get(agentToMove.getStepInPlan()).action.actType.equals(Command.type.Move)){ 
 				MABoxOnBoxConflict.AgentBoxBoxConflict(agentToStay,agentToStayBox,agentToMove,agentToMoveBox);
 			}else{
-				MABoxOnBoxConflict.AgentWithBoxOnAgentWithBoxConflict(agentToMove,agentToStay,agentToMoveBox);
+				MABoxOnBoxConflict.AgentWithBoxOnAgentWithBoxConflict(agentToMove,agentToMoveBox,agentToStay,agentToStayBox);
 			}
 		}
 	}
