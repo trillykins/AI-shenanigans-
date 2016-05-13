@@ -29,12 +29,13 @@ public class MAAgentOnAgentConflict {
 		List<Node> newPlanAgentToStay = Conflict.updatePlan(agentToStay);
 		Node noOp = createNoOpNode(agentToStay,newPlanAgentToStay.get(0));
 		newPlanAgentToStay.remove(0);
-		newPlanAgentToStay.add(noOp);
+		/*needs to be tested (add no op for)*/
+		newPlanAgentToStay.add(0,noOp);
 		s.setPlanForAgentToStay(newPlanAgentToStay);
 		
 		LinkedList<Node> newPlanAgentToMove = s.search(strategy, agentToMove.initialState, SearchType.MOVE_AWAY);
 		agentToMove.initialState.walls.remove(new Position(agentToStay.getPosition()));
-		agentToStay.generateInitialState();
+//		agentToStay.generateInitialState();
 		
 		/*afterwards we insert noops*/
 		newPlanAgentToMove = insertNoOps(newPlanAgentToMove,agentToMove);
@@ -44,6 +45,9 @@ public class MAAgentOnAgentConflict {
 		agentToStay.setPlan(newPlanAgentToStay);
 		agentToStay.setStepInPlan(0);
 		World.getInstance().getBeliefs().add(agentToMove.getIntention().getDesire().getBelief());	
+//		System.err.println(newPlanAgentToMove);
+//		System.err.println("newPlanAgentToMovePos :" + newPlanAgentToMove.getLast().getAgentPosition());
+//		System.exit(0);
 	}
 
 	public static void moveAgentOnAgentWithBox(Agent agentToMove, Agent agentToStay, Box boxToMove){

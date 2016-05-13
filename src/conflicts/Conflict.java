@@ -84,16 +84,20 @@ public class Conflict {
 		Agent agentToMove = null, agentToStay = null;
 		Box agentToMoveBox = null, agentToStayBox = null;
 		
-		agentToMove = conflict.getReceiver();
-		agentToMoveBox = World.getInstance().getBoxes().get(conflict.getReceiverBox().getId());
-		agentToStay = conflict.getSender();
-		agentToStayBox = conflict.getSenderBox();
+		agentToMove = world.getAgents().get(conflict.getReceiver().getId());
+		agentToMoveBox = world.getBoxes().get(conflict.getReceiverBox().getId());
+		agentToStay = world.getAgents().get(conflict.getSender().getId());
+		agentToStayBox = world.getBoxes().get(conflict.getSenderBox().getId());
 		
-		System.err.println("agentToStay position : " +conflict.getSender() + ", pos :" +conflict.getSender().getPosition());
+		
 		if(agentToMove == null){
-			MABoxOnBoxConflict.AgentBoxBoxConflict(agentToStay,agentToStayBox,agentToMoveBox);
+			MABoxOnBoxConflict.AgentBoxBoxConflict(agentToStay,agentToStayBox,agentToMove,agentToMoveBox);
 		}else{
-			MABoxOnBoxConflict.AgentWithBoxOnAgentWithBoxConflict(agentToMove,agentToStay,agentToMoveBox);					
+			if(agentToMove.getPlan().get(agentToMove.getStepInPlan()).action.actType.equals(Command.type.Move)){ 
+				MABoxOnBoxConflict.AgentBoxBoxConflict(agentToStay,agentToStayBox,agentToMove,agentToMoveBox);
+			}else{
+				MABoxOnBoxConflict.AgentWithBoxOnAgentWithBoxConflict(agentToMove,agentToStay,agentToMoveBox);
+			}
 		}
 	}
 	
