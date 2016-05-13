@@ -32,23 +32,42 @@ public class MABoxOnBoxConflict {
 		LinkedList<Node> newPlanAgentToStay = s.search(strategy, agentToStay.initialState, SearchType.PATH);
 
 		agentToStay.initialState.walls.remove(new Position(agentToMoveBox.getPosition()));
-
+		
 		if(newPlanAgentToStay == null){
-			if (agentToMoveBox.getColor().equals(agentToStayBox.getColor()))
-				moveAgentBoxAndConflictBox(agentToStay,agentToStayBox,agentToMoveBox);
-			else
+			if (agentToMoveBox.getColor().equals(agentToStayBox.getColor())){
+//				System.err.println("1");
+//				System.exit(0);
+				moveAgentBoxAndConflictBox(agentToStay,agentToStayBox,agentToMove,agentToMoveBox);
+			}else{
+//				System.err.println("2");
+//				System.err.println("agentToMove " + agentToMove + " agentToMoveBOx"+ agentToMoveBox.getLetter()+ " agentToStay " + agentToStay.getId());
+//				System.exit(0);
 				getAnotherAgentToMoveConflictBox(agentToStay,agentToStayBox,agentToMove,agentToMoveBox);
+			}
 		}else{
 			/*we just want the agent to run the new plan*/
+//			System.err.println("3");
+//			System.exit(0);
 			System.err.println("run the new plan of the agentToStay");
 		}
 	}
 
-	public static void moveAgentBoxAndConflictBox(Agent agentToStay, Box agentToStayBox, Box agentToMoveBox){
-		System.err.println("plan is null, we get the agent to move first his own box, then the other box");
+	public static void moveAgentBoxAndConflictBox(Agent agentToStay, Box agentToStayBox,Agent agentToMove, Box agentToMoveBox){
+//		System.err.println("plan is null, we get the agent to move first his own box, then the other box");
 		/*if the replan is null we first want to move the agentToStayBox away*/
 		/*then we move the agentToMoveBox away*/
-		System.exit(0);
+		if(replanAgentToStay(agentToStay,agentToStayBox,agentToMoveBox)){
+			System.err.println("1");
+			System.err.println("replan worked");
+		}else{
+//			System.err.println("2 " + agentToStay + " " + agentToStayBox);
+//			System.exit(0);
+			replanAgentToStayWithConflictBox(agentToStay,agentToStayBox,agentToMoveBox);
+			/*if it is not possible to replan, we have to move conflict box away first*/
+			/*if conflict box is in its goal - wee need to add the box as a new belief*/
+			
+		}
+//		System.exit(0);
 	}
 	public static void getAnotherAgentToMoveConflictBox(Agent agentToStay, Box agentToStayBox, Agent agentToMove,Box agentToMoveBox){
 		System.err.println("plan is null and the receiver box does not have same color as sender box");
@@ -89,7 +108,8 @@ public class MABoxOnBoxConflict {
 		}
 
 	}
-
+	
+	
 	public static void updatePlansSenderCanReplan(Agent agentToStay, Agent agentToMove,LinkedList<Node> newPlanAgentToStay){
 		/*update agent to move plan such that it waits for agentToStay to move away*/
 		List<Node> newPlanAgentToMove = agentToMove.getPlan();
@@ -124,7 +144,36 @@ public class MABoxOnBoxConflict {
 			World.getInstance().getBeliefs().add(agentToStay.getIntention().getDesire().getBelief());
 		}
 	}
+	
+	public static boolean replanAgentToStayWithConflictBox(Agent agentToStay,Box agentToStayBox,Box agentToMoveBox){
+		/*check if agentToStay is in the way of agent to move */
+		agentToStay.generateInitialState();
+		agentToStay.initialState.agentRow = agentToStay.getPosition().getX();
+		agentToStay.initialState.agentCol = agentToStay.getPosition().getY();
+		agentToStay.initialState.boxes.put(agentToStayBox.getId(), agentToStayBox);
+		agentToStay.initialState.boxes.put(agentToMoveBox.getId(), agentToMoveBox);
+		Goal agentToStayGoal = agentToStay.getIntention().getDesire().getBelief().getGoal();
+		agentToStay.initialState.goals.put(agentToStayGoal.getId(), agentToStayGoal);
+		Strategy strategy = new StrategyBFS();
+		Search s = new Search();
+		LinkedList<Node> newPlanAgentToStay = s.search(strategy, agentToStay.initialState, SearchType.PATH);
 
+		/*check if the agentToMoveBox was in a goal, if yes we need to add it to beliefs again*/
+		for(Goal goal : World.getInstance().getGoals().values()){
+			if(goal.getPosition().equals(agentToMoveBox.getPosition()) && 
+					goal.getLetter() == Character.toLowerCase(agentToMoveBox.getLetter())){
+				/*we have removed a box from its goal, we add the belief to the world again*/
+				Belief belief = new Belief(goal);
+				World.getInstance().getBeliefs().add(belief);
+			}
+		}
+		if(newPlanAgentToStay == null)
+			return false;
+		agentToStay.setPlan(newPlanAgentToStay);
+		agentToStay.setStepInPlan(0);
+		return true;
+		
+	}
 	public static void replanAgentToMove(Agent agentToStay,Box agentToStayBox,Agent agentToMove,Box agentToMoveBox){
 		/*else we replan for agentToMove (with his box)*/
 		agentToMove.generateInitialState();
@@ -199,7 +248,8 @@ public class MABoxOnBoxConflict {
 		//		System.exit(0);
 
 	}
-	public static boolean replanAgentToStay(Agent agentToStay,Box agentToStayBox,Agent agentToMove,Box agentToMoveBox){
+	
+	public static boolean replanAgentToStay(Agent agentToStay,Box agentToStayBox,Box agentToMoveBox){
 		/*check if agentToStay is in the way of agent to move */
 		agentToStay.generateInitialState();
 		agentToStay.initialState.walls.add(new Position(agentToMoveBox.getPosition()));
@@ -210,11 +260,9 @@ public class MABoxOnBoxConflict {
 		agentToStay.initialState.goals.put(agentToStayGoal.getId(), agentToStayGoal);
 		Strategy strategy = new StrategyBFS();
 		Search s = new Search();
-		s.setPlanForAgentToStay(Conflict.updatePlan(agentToMove));
 		LinkedList<Node> newPlanAgentToStay = s.search(strategy, agentToStay.initialState, SearchType.PATH);
 
 		agentToStay.initialState.walls.remove(agentToMoveBox.getPosition());
-		agentToStay.initialState.walls.remove(agentToMove.getPosition());
 
 		if(newPlanAgentToStay == null)
 			return false;
@@ -228,7 +276,7 @@ public class MABoxOnBoxConflict {
 		/*if the box to move is not on a goal try to replan */
 		if(agentToMoveBox.getPosition().equals(agentToMove.getIntention().getDesire().getBelief().getGoal().getPosition())){
 			/*check if agentToStay is in the way of agent to move */
-			if(!replanAgentToStay(agentToStay,agentToStayBox,agentToMove,agentToMoveBox)){
+			if(!replanAgentToStay(agentToStay,agentToStayBox,agentToMoveBox)){
 				/*it was not possible to replan - we move other agent */
 				replanAgentToMove(agentToStay,agentToStayBox,agentToMove,agentToMoveBox);
 			}
