@@ -98,7 +98,7 @@ public class DetectConflict {
 						if(conflict != null) {
 							return conflict;
 						}
-					}else {
+					}else if(!curAgentNode.action.actType.equals(Command.type.NoOp)){
 						conflict = currentPullingOrMoveConflictCheck(curAgentNode,otherAgentNode,curAgent,otherAgent);
 						if(conflict != null) {
 							return conflict;
