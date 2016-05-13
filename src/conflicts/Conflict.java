@@ -151,14 +151,8 @@ public class Conflict {
 		Agent agentToMove = agent;
 		agentToMove.generateInitialState();
 		agentToMove.initialState.setPosition(World.getInstance().getAgents().get(0).getPosition());
-		// agentToMove.initialState.boxes.put(agent.getIntention().getBox().getId(),
-		// World.getInstance().getBoxes().get(agent.getIntention().getBox().getId()));
-		// agentToMove.initialState.goals.put(agent.getIntention().getDesire().getBelief().getGoal().getId(),
-		// agent.getIntention().getDesire().getBelief().getGoal());
 
 		Search s = new Search();
-		// List<Node> plan = s.search(new StrategyBFS(),
-		// agentToMove.initialState, SearchType.PATH);
 		List<Box> boxesForReplanning = new LinkedList<>();
 		for (int i = 0; i < originalAgentPlan.size(); i++) {
 			for (Box b : World.getInstance().getBoxes().values()) {
@@ -174,8 +168,7 @@ public class Conflict {
 		for (int i = boxesForReplanning.size() - 1; i >= 0; i--) {
 			Agent boxieToMove = agent;
 			boxieToMove.generateInitialState();
-			boxieToMove.initialState.moveToPositionCol = agent.getPosition().getX();
-			boxieToMove.initialState.moveToPositionRow = agent.getPosition().getY();
+
 			boxieToMove.initialState.setPosition(World.getInstance().getAgents().get(0).getPosition());
 			boxieToMove.initialState.boxes.put(boxesForReplanning.get(i).getId(), boxesForReplanning.get(i));
 			for (Box wb : World.getInstance().getBoxes().values()) {
@@ -190,92 +183,105 @@ public class Conflict {
 			}
 			s.setFutureBoxPositions(futurePositions);
 			s.setPlanForAgentToStay(updatePlan(agentToMove));
+			boxieToMove.initialState.moveToPositionRow = s.getOtherPlan().get(0).agentRow;
+			boxieToMove.initialState.moveToPositionCol = s.getOtherPlan().get(0).agentCol;
+			System.err.println(boxieToMove.initialState.moveToPositionRow);
+			System.err.println(boxieToMove.initialState.moveToPositionCol);
 			LinkedList<Node> tmpPlan = s.search(new StrategyBFS(), boxieToMove.initialState, SearchType.MOVE_BOXES);
-			if(tmpPlan == null || tmpPlan.isEmpty()) {
-				for(Box box1 : futurePositions) {
+			if (tmpPlan == null || tmpPlan.isEmpty()) {
+				for (Box box1 : futurePositions) {
 					boxieToMove.initialState.boxes.put(box1.getId(), box1);
 				}
 			}
-//			System.err.println(tmpPlan);
-			for(Box b : tmpPlan.getLast().boxes.values()) {
-				futurePositions.add(b);	// TODO potential problem
+			for (Box wb : World.getInstance().getBoxes().values()) {
+				if (!boxesForReplanning.contains(wb)) {
+					agentToMove.initialState.walls.remove(wb.getPosition());
+				}
 			}
-//			futurePositions.add(tmpPlan.getLast().boxes.get(0));
+			for (Goal wg : World.getInstance().getGoals().values()) {
+				if (!boxesForReplanning.contains(wg)) {
+					agentToMove.initialState.walls.remove(wg.getPosition());
+				}
+			}
+
+			// System.err.println(tmpPlan);
+			for (Box b : tmpPlan.getLast().boxes.values()) {
+				futurePositions.add(b); // TODO potential problem
+			}
 			plans.add(tmpPlan);
 		}
-		for (
-
-		int i = 0; i < plans.size(); i++)
-
-		{
-			for (int j = 0; j < plans.get(i).size(); j++) {
-				System.err.println(plans.get(i).get(j));
-			}
+		List<Node> finalPlan = new LinkedList<>();
+		for (int i = plans.size() - 1; i >= 0; i--) {
+			finalPlan.addAll(plans.get(i));
 		}
-		System.exit(0);
-
-		// plans.add(plan);
+		finalPlan.addAll(updatePlan(agent));
+		
+		
+		
+		agentToMove.setPlan(finalPlan);
+		agentToMove.setStepInPlan(0);
+		
 	}
 
 	public void solveAgentOnBox(Node node, Agent agent, Box box) {
 		superPlanner(agent, box);
-		Agent agentToMove = agent;
-		agentToMove.generateInitialState();
-		agentToMove.initialState.setPosition(World.getInstance().getAgents().get(0).getPosition());
-		agentToMove.initialState.boxes.put(agent.getIntention().getBox().getId(),
-				World.getInstance().getBoxes().get(agent.getIntention().getBox().getId()));
-		agentToMove.initialState.goals.put(agent.getIntention().getDesire().getBelief().getGoal().getId(),
-				agent.getIntention().getDesire().getBelief().getGoal());
-
-		// Agent tmp = new Agent(agentToMove);
-		// agentToMove.initialState.walls.add(box.getPosition());
-		// tmp.initialState.boxes.put(box.getId(), box);
-
-		Strategy strategy = new StrategyBFS();
-		// Strategy strategy = new StrategyBestFirst(new
-		// AStar(tmp.initialState));
-		Search s = new Search();
-
-		List<Node> plan = s.search(new StrategyBFS(), agentToMove.initialState, SearchType.PATH);
-		List<String> splat = new ArrayList<String>();
-		// for(Node n : plan){
-		// for(Box b : World.getInstance().getBoxes().values()){
-		// if(n.getAgentPosition().equals(b.getPosition()) && !splat.contains(""
-		// + b.getLetter())){
-		// splat.add("" + b.getLetter());
-		// }
-		// }
-		// }
-		// System.err.println(plan);
-		// System.err.println(splat);
-
-		System.err.println("plan finished!");
-		if (plan == null || plan.isEmpty()) {
-			System.err.println("plan is empty!");
-			if (agentToMove.initialState.walls.contains(box.getPosition()))
-				agentToMove.initialState.walls.remove(box.getPosition());
-			agentToMove.initialState.boxes.put(box.getId(), box);
-			strategy = new StrategyBestFirst(new AStar(agentToMove.initialState));
-			s = new Search();
-			plan = s.search(strategy, agentToMove.initialState, SearchType.PATH);
-		} else {
-			agentToMove.initialState.walls.remove(box.getPosition());
-		}
-		agentToMove.setPlan(plan);
-		agentToMove.setStepInPlan(0);
-		World.getInstance().getBeliefs().add(agentToMove.getIntention().getDesire().getBelief());
+//		Agent agentToMove = agent;
+//		agentToMove.generateInitialState();
+//		agentToMove.initialState.setPosition(World.getInstance().getAgents().get(0).getPosition());
+//		agentToMove.initialState.boxes.put(agent.getIntention().getBox().getId(),
+//				World.getInstance().getBoxes().get(agent.getIntention().getBox().getId()));
+//		agentToMove.initialState.goals.put(agent.getIntention().getDesire().getBelief().getGoal().getId(),
+//				agent.getIntention().getDesire().getBelief().getGoal());
+//
+//		// Agent tmp = new Agent(agentToMove);
+//		// agentToMove.initialState.walls.add(box.getPosition());
+//		// tmp.initialState.boxes.put(box.getId(), box);
+//
+//		Strategy strategy = new StrategyBFS();
+//		// Strategy strategy = new StrategyBestFirst(new
+//		// AStar(tmp.initialState));
+//		Search s = new Search();
+//
+//		List<Node> plan = s.search(new StrategyBFS(), agentToMove.initialState, SearchType.PATH);
+//		List<String> splat = new ArrayList<String>();
+//		// for(Node n : plan){
+//		// for(Box b : World.getInstance().getBoxes().values()){
+//		// if(n.getAgentPosition().equals(b.getPosition()) && !splat.contains(""
+//		// + b.getLetter())){
+//		// splat.add("" + b.getLetter());
+//		// }
+//		// }
+//		// }
+//		// System.err.println(plan);
+//		// System.err.println(splat);
+//
+//		System.err.println("plan finished!");
+//		if (plan == null || plan.isEmpty()) {
+//			System.err.println("plan is empty!");
+//			if (agentToMove.initialState.walls.contains(box.getPosition()))
+//				agentToMove.initialState.walls.remove(box.getPosition());
+//			agentToMove.initialState.boxes.put(box.getId(), box);
+//			strategy = new StrategyBestFirst(new AStar(agentToMove.initialState));
+//			s = new Search();
+//			plan = s.search(strategy, agentToMove.initialState, SearchType.PATH);
+//		} else {
+//			agentToMove.initialState.walls.remove(box.getPosition());
+//		}
+//		agentToMove.setPlan(plan);
+//		agentToMove.setStepInPlan(0);
+//		World.getInstance().getBeliefs().add(agentToMove.getIntention().getDesire().getBelief());
 	}
 
 	public static List<Node> updatePlan(Agent agent) {
-		  List<Node> updPlan = new LinkedList<Node>();
-		  List<Node> oldPlan = agent.getPlan();
-		  for (int i = 0; i < oldPlan.size(); i++) {
-		   if (i >= agent.getStepInPlan() - 1) {
-		    updPlan.add(oldPlan.get(i));
-		   }
-		  }
-		  return updPlan;
-		 }
+		List<Node> updPlan = new LinkedList<Node>();
+		List<Node> oldPlan = agent.getPlan();
+		for (int i = 0; i < oldPlan.size(); i++) {
+			if (i >= agent.getStepInPlan() - 1) {
+				updPlan.add(oldPlan.get(i));
+			}
+		}
+		return updPlan;
+	}
 
 	@Override
 	public String toString() {

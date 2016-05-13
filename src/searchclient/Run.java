@@ -118,6 +118,7 @@ public class Run {
 			DetectConflict detectCon = new DetectConflict();
 			Conflict con = detectCon.checkConflict();
 			if (con != null && !replanned && conflictId != con.getSender().getPosition().hashCode()) {
+				conflictId = con.getSender().getPosition().hashCode();
 				switch (con.getConflictType()) {
 				case AGENT:
 					world.write("AGENT-ON-AGENT CONFLICT");
