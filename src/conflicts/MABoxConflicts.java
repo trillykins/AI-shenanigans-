@@ -176,7 +176,11 @@ public class MABoxConflicts {
 				}
 			}else {
 				for(Box box:node.boxes.values()) {//if current sender agent is pushing
-					for(int i=receiver.getStepInPlan()-1;i<plan.size();i++) {
+					int startIndex = 0;
+					if(receiver.getStepInPlan() != 0) {
+						startIndex = receiver.getStepInPlan()-1;
+					}
+					for(int i=startIndex;i<plan.size();i++) {
 						Node otherNode = plan.get(i);
 						if(box.getPosition().equals(otherNode.getAgentPosition())) {
 							conflictIndex = i;
