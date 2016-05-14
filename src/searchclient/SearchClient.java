@@ -85,8 +85,7 @@ public class SearchClient {
 		Map<Integer, Agent> agents = new HashMap<>(0);
 		List<Belief> beliefs = new ArrayList<>(0);
 		int row = 0, column = 0;
-		
-		List<Position> freeSpaces = new ArrayList<Position>();
+		List<Position> freeSpaces = new ArrayList<Position>(0);
 		while (line != null && !line.equals("")) {
 			for (int i = 0; i < line.length(); i++) {
 				boolean isWall = false;
@@ -103,7 +102,7 @@ public class SearchClient {
 				} else if (id == '+') {
 					walls.add(new Position(row, i));
 					isWall = true;
-				} 
+				}
 				if(!isWall) {
 					freeSpaces.add(new Position(row, i));
 				}
@@ -127,8 +126,6 @@ public class SearchClient {
 			beliefs.add(new Belief(goal));
 		}
 		world.setBeliefs(beliefs);
-		world.setBoxesInGoals(new HashMap<Integer, Box>(0));
-		world.setSolvedGoals(new HashMap<Integer, Goal>(0));
 		MapAnalysis mapAn = new MapAnalysis();
 		world.setFreeSpace(mapAn.analysisFreeSpace(freeSpaces));
 	}
