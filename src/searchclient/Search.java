@@ -83,8 +83,9 @@ public class Search {
 			}
 
 			strategy.addToExplored(leafNode);
-			for (int i = 0; i < leafNode.getExpandedNodes().size(); i++) {
-				Node n = leafNode.getExpandedNodes().get(i);
+			List<Node> expNodes = leafNode.getExpandedNodes();
+			for (int i = 0; i < expNodes.size(); i++) {
+				Node n = expNodes.get(i);
 				if (!strategy.isExplored(n) && !strategy.inFrontier(n)) {
 					strategy.addToFrontier(n);
 				}
