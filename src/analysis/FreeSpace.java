@@ -10,6 +10,12 @@ public class FreeSpace implements Comparable<Object>{
 	
 	private int narrowCorValue;
 
+	public FreeSpace(Position position, int priority, int narrowCorValue) {
+		this.position = position;
+		this.priority = priority;
+		this.narrowCorValue = narrowCorValue;
+	}
+
 	public Position getPosition() {
 		return position;
 	}

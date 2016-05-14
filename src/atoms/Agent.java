@@ -138,12 +138,12 @@ public class Agent implements IMessage {
 
 	public boolean generateDesires() {
 		desires = new ArrayList<>(0);
-		for(int i = 0; i < World.getInstance().getBeliefs().size(); i++) {
+		for (int i = 0; i < World.getInstance().getBeliefs().size(); i++) {
 			Belief belief = World.getInstance().getBeliefs().get(i);
 			for (Box b : World.getInstance().getBoxes().values()) {
 				if (Character.toLowerCase(b.getLetter()) == belief.getGoal().getLetter()
 						&& !unreachableBoxIds.contains(b.getId())) {
-					if (color.equals(b.getColor())) {
+					if (color.equals(b.getColor()) && !desires.contains(new Desire(belief, this))) {
 						desires.add(new Desire(belief, this));
 					}
 				}
@@ -158,6 +158,67 @@ public class Agent implements IMessage {
 	 * This method also consider the closest box that can fulfill the goal
 	 **/
 	public boolean generateIntention() {
+		if (World.getInstance().getAgents().size() == 1) {
+			return generationIntentionSA();
+		} else {
+			return generationIntentionMA();
+		}
+	}
+
+	public boolean generationIntentionSA() {
+		// Recalculate goal priority after goal has been solved
+		if (desires.isEmpty())
+			return false;
+		Desire bestDesire = null;
+		Box bestBox = null;
+		for (int i = 0; i < desires.size(); i++) {
+			Desire des = desires.get(i);
+			Goal goal = des.getBelief().getGoal();
+
+			/* calculate goalPriority : based on world elements */
+			LevelAnalysis la = new LevelAnalysis();
+			List<Position> fields = la.surroundingFields(goal.getPosition());
+			int numberOfOccupiedSpaces = 0;
+			for (int j = 0; j < fields.size(); j++) {
+				if (la.isSpaceWallOrSolvedGoal(fields.get(j))) {
+					numberOfOccupiedSpaces++;
+				} else if (la.isSpaceGoal(fields.get(j))) {
+					numberOfOccupiedSpaces += 3;
+				} else {
+					numberOfOccupiedSpaces += 10;
+				}
+
+			}
+			goal.setPriority(numberOfOccupiedSpaces);
+		}
+
+		int boxDistance = Integer.MAX_VALUE;
+		int desirePriority = Integer.MAX_VALUE;
+		bestDesire = null;
+		for (Desire d : desires) {
+			if (d.getBelief().getGoal().getPriority() < desirePriority) {
+				desirePriority = d.getBelief().getGoal().getPriority();
+				bestDesire = d;
+			}
+		}
+		for (Box b : World.getInstance().getBoxes().values()) {
+			if (bestDesire.getBelief().getGoal().getLetter() == Character.toLowerCase(b.getLetter())
+					&& !unreachableBoxIds.contains(b.getId())) {
+				if (boxDistance > Utils.manhattenDistance(bestDesire.getBelief().getGoal().getPosition(),
+						b.getPosition())) {
+					boxDistance = Utils.manhattenDistance(bestDesire.getBelief().getGoal().getPosition(),
+							b.getPosition());
+					bestBox = b;
+				}
+			}
+		}
+		intention = (bestDesire != null && bestBox != null ? new Intention(bestDesire, bestBox) : null);
+		return intention != null;
+	}
+
+	public boolean generationIntentionMA() {
+
+		// Recalculate goal priority after goal has been solved
 		if (desires.isEmpty())
 			return false;
 		Desire bestDesire = null;
@@ -169,6 +230,8 @@ public class Agent implements IMessage {
 			Desire des = desires.get(i);
 			Goal goal = des.getBelief().getGoal();
 
+			/* calculate goalPriority : based on world elements */
+			goal.setPriority(new LevelAnalysis().calculateGoalPriority(goal));
 			/*
 			 * if a goal has been solved we do not want to consider it in our
 			 * calculations
@@ -181,29 +244,24 @@ public class Agent implements IMessage {
 			int costOfClosestBoxToGoal = (int) result.get(0);
 			closestBox = (Box) result.get(1);
 			int costOfAgentToClosestBox = 0;
-			// if (unreachableBoxIds.contains(closestBox.getId())) {
-			// costOfAgentToClosestBox = 100000;
-			// } else {
 			costOfAgentToClosestBox = Utils.manhattenDistance(position, closestBox.getPosition());
-			// }
 
 			/* calculate current number of free spaces surrounding the goal */
 			LevelAnalysis levelAnalysis = new LevelAnalysis();
 			int numberOfFreeSpacesForGoal = levelAnalysis.calculateGoalPriority(goal);
 
-			int currTotal = goalPriority + costOfClosestBoxToGoal + costOfAgentToClosestBox + numberOfFreeSpacesForGoal;
+			int currTotal = goalPriority + numberOfFreeSpacesForGoal + costOfClosestBoxToGoal + costOfAgentToClosestBox
+					+ numberOfFreeSpacesForGoal;
 
-			// System.err.println("Goal " + goal.getLetter() + " currTotal " +
-			// currTotal + "\tgoalP: " + goalPriority
-			// + " costOfClosestBoxToG: " + costOfClosestBoxToGoal + "
-			// costOfAgentToClosestB: "
-			// + costOfAgentToClosestBox + "numberOfFreeSpacesForGoal: " +
-			// numberOfFreeSpacesForGoal);
+			System.err.println("Goal " + goal.getLetter() + " currTotal " + currTotal + "\tgoalP: " + goalPriority
+					+ " costOfClosestBoxToG: " + costOfClosestBoxToGoal + "costOfAgentToClosestB: "
+					+ costOfAgentToClosestBox + "numberOfFreeSpacesForGoal: " + numberOfFreeSpacesForGoal);
 
 			/*
 			 * we are looking for the smallest value possible, the optimal would
 			 * be a very close goal, which have 0 occupied neighbors.
 			 */
+
 			if (bestTotal > currTotal) {
 				bestGoalPriority = goalPriority;
 				bestTotal = currTotal;

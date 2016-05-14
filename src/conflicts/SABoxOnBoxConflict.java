@@ -4,7 +4,6 @@ import java.util.LinkedList;
 
 import atoms.Agent;
 import atoms.Box;
-import atoms.World;
 import searchclient.Node;
 import searchclient.Search;
 import searchclient.Search.SearchType;

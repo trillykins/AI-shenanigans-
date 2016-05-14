@@ -26,11 +26,7 @@ public class MapAnalysis {
 		Map<Position, FreeSpace> freeSpaces = new HashMap<Position, FreeSpace>();
 		for (Position position : positions) {
 			if (isFree(position)) {
-				FreeSpace free = new FreeSpace();
-				free.setPosition(position);
-				free.setPriority(calculateCellPriority(position));
-				free.setNarrowCorValue(calulateNarrowCorPriority(position));
-				freeSpaces.put(position, free);
+				freeSpaces.put(position, new FreeSpace(position, calculateCellPriority(position), calulateNarrowCorPriority(position)));
 			}
 		}
 		return freeSpaces;
@@ -211,6 +207,7 @@ public class MapAnalysis {
 		return positionList;
 	}
 
+	@SuppressWarnings("unused")
 	private Map<Integer, PriorityQueue<FreeSpace>> generatePriorityQueue(Map<Integer, List<FreeSpace>> spaces) {
 		Map<Integer, PriorityQueue<FreeSpace>> priorityMap = new HashMap<Integer, PriorityQueue<FreeSpace>>();
 		for (Integer aid : spaces.keySet()) {

@@ -1,7 +1,6 @@
 package conflicts;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,14 +8,11 @@ import atoms.Agent;
 import atoms.Box;
 import atoms.Goal;
 import atoms.World;
-import heuristics.AStar;
 import searchclient.Command;
 import searchclient.Node;
 import searchclient.Search;
 import searchclient.Search.SearchType;
-import strategies.Strategy;
 import strategies.StrategyBFS;
-import strategies.StrategyBestFirst;
 
 public class Conflict {
 	private ConflictType conflictType;
@@ -82,7 +78,7 @@ public class Conflict {
 			Conflict conflict/* , int index, List<List<Node>> allSolutions */) {
 
 		Agent agentToMove = null, agentToStay = null;
-		Box agentToMoveBox = null, agentToStayBox = null;
+		Box agentToMoveBox = null; /*agentToStayBox = null;*/
 		agentToMove = conflict.getReceiver();
 		/*
 		 * we need to fetch the box where it is at in the moment, therefore we
@@ -146,6 +142,14 @@ public class Conflict {
 		}
 	}
 
+	/*
+	 * Scribbles
+	 * If the plan returns null, remove all box- and goal-walls and recalculate plan.
+	 * Create a plan as done originally, but somehow include the boxes that have originally been put aside to make room.
+	 * If this isn't possible, then shit pants and give up. 
+	 * Cake!
+	 */
+	
 	public void superPlanner(Agent agent, Box box) {
 		List<Node> originalAgentPlan = agent.getPlan();
 		Agent agentToMove = agent;
@@ -185,15 +189,14 @@ public class Conflict {
 			s.setPlanForAgentToStay(updatePlan(agentToMove));
 			boxieToMove.initialState.moveToPositionRow = s.getOtherPlan().get(0).agentRow;
 			boxieToMove.initialState.moveToPositionCol = s.getOtherPlan().get(0).agentCol;
-			System.err.println(boxieToMove.initialState.moveToPositionRow);
-			System.err.println(boxieToMove.initialState.moveToPositionCol);
 			LinkedList<Node> tmpPlan = s.search(new StrategyBFS(), boxieToMove.initialState, SearchType.MOVE_BOXES);
 			if (tmpPlan == null || tmpPlan.isEmpty()) {
 				for (int j  = 0; j < futurePositions.size(); j++) {
 					Box box1 = futurePositions.get(j);
 					boxieToMove.initialState.boxes.put(box1.getId(), box1);
 				}
-			}
+			} 
+			
 			for (Box wb : World.getInstance().getBoxes().values()) {
 				if (!boxesForReplanning.contains(wb)) {
 					agentToMove.initialState.walls.remove(wb.getPosition());

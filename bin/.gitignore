@@ -1,15 +1,10 @@
-/levels/
 /FIPA/
 /analysis/
 /atoms/
 /bdi/
 /conflicts/
 /heuristics/
-/readme-server.txt
 /sampleclients/
 /searchclient/
-/searchclient.bat
-/server.jar
 /strategies/
 /utils/
-/output.txt
