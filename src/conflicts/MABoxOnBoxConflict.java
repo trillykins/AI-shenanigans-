@@ -204,7 +204,7 @@ public class MABoxOnBoxConflict {
 //		/*update agent to stay*/
 		List<Node> newPlanAgentToStay = agentToStay.getPlan();
 		int agentToStayCurrIndex = agentToStay.getStepInPlan();
-		for (int i = 0; i < agentToStayCurrIndex - 1; i++) {
+		for (int i = 0; i < agentToStayCurrIndex-1; i++) {
 			if (newPlanAgentToStay.size() == 0)
 				break;
 			newPlanAgentToStay.remove(0);
@@ -221,6 +221,10 @@ public class MABoxOnBoxConflict {
 			/* We add noOps acc. to how many steps the new plan is */
 			noOp = createNoOpNode(agentToStay,newPlanAgentToStay.get(0));
 			noOp.action = new Command();
+			/*if the agentToStay id is smaller than the agent to move, we need to remove the node first
+			 * (else plan will be out of order)*/
+			if(agentToStay.getId() < agentToMove.getId())
+				newPlanAgentToStay.remove(0);
 			for(int j = 0; j<newPlanAgentToMove.size();j++){
 				newPlanAgentToStay.add(0, noOp);
 			}

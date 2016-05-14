@@ -356,7 +356,8 @@ public class MABoxConflicts {
 			/*
 			 * If the box is already on the goal, then add belief again
 			 */
-			World.getInstance().getBeliefs().add(ag.getIntention().getDesire().getBelief());
+			if(ag.getIntention() != null)
+				World.getInstance().getBeliefs().add(ag.getIntention().getDesire().getBelief());
 			
 			ag.setPlan(newPlanForMovingBox);
 			ag.setStepInPlan(0);
