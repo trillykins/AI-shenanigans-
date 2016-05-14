@@ -290,6 +290,8 @@ public class DetectConflict {
 					 */
 					if(box.getColor().equals(curAgent.getColor())) {
 						otherAgent = curAgent;
+					}else {
+						otherAgent = findAgentForBox(box,curAgent);
 					}
 					return createConflict(curAgent,otherAgent,receiverBox,senderBox,curAgentNode,ConflictType.SINGLE_AGENT_BOX);
 				}
@@ -300,10 +302,27 @@ public class DetectConflict {
 					 */
 					if(box.getColor().equals(curAgent.getColor())) {
 						otherAgent = curAgent;
+					}else {
+						otherAgent = findAgentForBox(box,curAgent);
 					}
 					return createConflict(curAgent,otherAgent,receiverBox,senderBox,curAgentNode,ConflictType.SINGLE_AGENT_BOX);
 				}
 			}	
+		}
+		return null;
+	}
+	
+	private Agent findAgentForBox(Box box,Agent curAgent) {
+		for(Agent agent:World.getInstance().getAgents().values()) {
+			if(agent.getId() != curAgent.getId()) {
+				Intention intention = agent.getIntention();
+				if(intention != null) {
+					Box intenBox = intention.getBox();
+					if(box.getId() == intenBox.getId()) {
+						return agent;
+					}
+				}
+			}
 		}
 		return null;
 	}
