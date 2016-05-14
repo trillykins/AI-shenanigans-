@@ -18,11 +18,11 @@ public class MAAgentOnAgentConflict {
 
 	public static void moveAgentOnAgentNoBox(Agent agentToMove, Agent agentToStay, Box agentToMoveBox){
 		agentToMove.generateInitialState();
-		agentToMove.initialState.walls.add(new Position(agentToStay.getPosition()));
 		agentToMove.initialState.agentRow = agentToMove.getPosition().getX();
 		agentToMove.initialState.agentCol = agentToMove.getPosition().getY();
-		
-		for (Box box : agentToMove.initialState.boxes.values()) {
+		agentToMove.initialState.walls.add(new Position(agentToStay.getPosition()));
+//		for (Box box : agentToMove.initialState.boxes.values()) {
+		for(Box box : World.getInstance().getBoxes().values()){
 			agentToMove.initialState.walls.add(new Position(box.getPosition()));
 		}
 		Strategy strategy = new StrategyBFS();
@@ -33,11 +33,29 @@ public class MAAgentOnAgentConflict {
 		s.setPlanForAgentToStay(newPlanAgentToStay);
 		LinkedList<Node> newPlanAgentToMove = s.search(strategy, agentToMove.initialState, SearchType.MOVE_AWAY);
 		/*remember to move all walls away*/
-		for (Box box : agentToMove.initialState.boxes.values()) {
+		agentToMove.initialState.walls.remove(new Position(agentToStay.getPosition()));
+//		for (Box box : agentToMove.initialState.boxes.values()) {
+		for(Box box : World.getInstance().getBoxes().values()){
 			agentToMove.initialState.walls.remove(new Position(box.getPosition()));
 		}
-		agentToMove.initialState.walls.remove(new Position(agentToStay.getPosition()));
-
+		/*the agentToMove is locked in a narrow corridor by boxes and the agentToStay*/
+		/*we try to do a new plan for the agentToStay instead*/
+		if(newPlanAgentToMove == null){
+			newPlanAgentToMove = (LinkedList<Node>) Conflict.updatePlan(agentToMove);
+			agentToStay.generateInitialState();
+			agentToStay.initialState.agentRow = agentToStay.getPosition().getX();
+			agentToStay.initialState.agentCol = agentToStay.getPosition().getY();
+			agentToStay.initialState.walls.add(new Position(agentToMove.getPosition()));
+			for(Box box : World.getInstance().getBoxes().values()){
+				agentToStay.initialState.walls.add(new Position(box.getPosition()));
+			}
+			s.setPlanForAgentToStay(newPlanAgentToMove);
+			newPlanAgentToStay = s.search(strategy, agentToStay.initialState, SearchType.MOVE_AWAY);
+			agentToStay.initialState.walls.remove(new Position(agentToMove.getPosition()));
+			for(Box box : World.getInstance().getBoxes().values()){
+				agentToStay.initialState.walls.remove(new Position(box.getPosition()));
+			}
+		}
 		/*afterwards we insert noops*/
 		if(newPlanAgentToMove != null && !newPlanAgentToMove.isEmpty()){
 			newPlanAgentToMove = insertNoOps(newPlanAgentToMove,agentToMove);

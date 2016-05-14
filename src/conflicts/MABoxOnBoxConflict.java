@@ -42,11 +42,11 @@ public class MABoxOnBoxConflict {
 		LinkedList<Node> newPlanAgentToStay = s.search(strategy, agentToStay.initialState, SearchType.PATH);
 
 		/*we remember to remove all walls we have inputed*/
+		agentToStay.initialState.walls.remove(new Position(agentToMoveBox.getPosition()));
 		for(Box box : World.getInstance().getBoxes().values()){
 			if(box.getColor().equals(agentToStayBox.getColor()) && !box.equals(agentToStayBox))
 				agentToStay.initialState.walls.remove(new Position(box.getPosition()));
 		}
-		agentToStay.initialState.walls.remove(new Position(agentToMoveBox.getPosition()));
 		
 		if(newPlanAgentToStay == null){
 			if (agentToMoveBox.getColor().equals(agentToStayBox.getColor())){
@@ -108,8 +108,8 @@ public class MABoxOnBoxConflict {
 		s.setPlanForAgentToStay(Conflict.updatePlan(agentToMove));
 		LinkedList<Node> newPlanAgentToStay = s.search(strategy, agentToStay.initialState, SearchType.MOVE_OWN_BOX);
 
-		agentToStay.initialState.walls.remove(agentToMoveBox.getPosition());
 		agentToStay.initialState.walls.remove(agentToMove.getPosition());
+		agentToStay.initialState.walls.remove(agentToMoveBox.getPosition());
 		if(newPlanAgentToStay != null){
 			updatePlansSenderCanReplan(agentToStay,agentToMove,newPlanAgentToStay);
 		}else{
@@ -201,6 +201,7 @@ public class MABoxOnBoxConflict {
 
 		agentToMove.initialState.walls.remove(new Position(agentToStay.getPosition()));
 
+//		/*update agent to stay*/
 		List<Node> newPlanAgentToStay = agentToStay.getPlan();
 		int agentToStayCurrIndex = agentToStay.getStepInPlan();
 		for (int i = 0; i < agentToStayCurrIndex - 1; i++) {
@@ -208,34 +209,43 @@ public class MABoxOnBoxConflict {
 				break;
 			newPlanAgentToStay.remove(0);
 		}
-
-		/* For the agent to stay we add a noop according to the agentToMovePlan */
-		Node noOp = createNoOpNode(agentToStay,newPlanAgentToStay.get(0));
-		noOp.action = new Command();
-		newPlanAgentToStay.add(0, noOp);
-		for(int j = 0; j<newPlanAgentToMove.size();j++){
-			newPlanAgentToStay.add(0, noOp);
-		}
-
-		/* We add noOps acc. to how many steps the new plan is */
 		/*
 		 * If the agent to move is only moving the box 1 step, then we assume
 		 * the other agent want to pass (which takes at least 2 steps). If we
 		 * dont do this check we might end up with dead lock
 		 */
-		int newPlanAgentToMoveSize = newPlanAgentToMove.size();
-		if (newPlanAgentToMoveSize < 2)
-			newPlanAgentToMoveSize = 4;
-		noOp = createNoOpNode(agentToMove,newPlanAgentToMove.peekLast());
-		for (int i = 0; i < newPlanAgentToMoveSize; i++) {
-			newPlanAgentToMove.add(newPlanAgentToMove.size(), noOp);
+		Node noOp = null;
+		boolean planHasChanged = false;
+		if(newPlanAgentToMove != null && !newPlanAgentToMove.isEmpty()){
+			/* For the agent to stay we add a noop according to the agentToMovePlan */
+			/* We add noOps acc. to how many steps the new plan is */
+			noOp = createNoOpNode(agentToStay,newPlanAgentToStay.get(0));
+			noOp.action = new Command();
+			for(int j = 0; j<newPlanAgentToMove.size();j++){
+				newPlanAgentToStay.add(0, noOp);
+			}
+			/*then a add the same number of no ops in the end of agentToMove path*/
+			int newPlanAgentToMoveSize = newPlanAgentToMove.size();
+			if (newPlanAgentToMoveSize < 2)
+				newPlanAgentToMoveSize = 4;
+			noOp = createNoOpNode(agentToMove,newPlanAgentToMove.peekLast());
+			for (int i = 0; i < newPlanAgentToMoveSize; i++) {
+				newPlanAgentToMove.add(newPlanAgentToMove.size(), noOp);
+			}
+			planHasChanged = true;
+		}else{
+			/*we just want to use his current plan, but insert a noOp in the begginning of it*/
+			newPlanAgentToMove = (LinkedList<Node>) Conflict.updatePlan(agentToMove);
+			noOp = createNoOpNode(agentToMove,newPlanAgentToMove.get(0));
+			newPlanAgentToMove.add(0,noOp);
 		}
-
+		
+		
 		agentToMove.setPlan(newPlanAgentToMove);
 		agentToMove.setStepInPlan(0);
 		agentToStay.setPlan(newPlanAgentToStay);
 		agentToStay.setStepInPlan(0);
-		if (agentToMove.getIntention() != null){
+		if (agentToMove.getIntention() != null && planHasChanged){
 			World.getInstance().getBeliefs().add(agentToMove.getIntention().getDesire().getBelief());
 		}else {
 			/* we check if the box is in a goal that matches his */
