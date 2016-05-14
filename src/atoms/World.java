@@ -138,7 +138,7 @@ public class World {
 
 	public int findLongestPlan() {
 		int size = 0;
-		for (List<Node> solution : World.getInstance().getSolutionMap().values())
+		for (List<Node> solution : solutionMap.values())
 			size = (size < solution.size() ? solution.size() : size);
 		return size;
 	}

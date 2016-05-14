@@ -138,7 +138,8 @@ public class Agent implements IMessage {
 
 	public boolean generateDesires() {
 		desires = new ArrayList<>(0);
-		for (Belief belief : World.getInstance().getBeliefs()) {
+		for(int i = 0; i < World.getInstance().getBeliefs().size(); i++) {
+			Belief belief = World.getInstance().getBeliefs().get(i);
 			for (Box b : World.getInstance().getBoxes().values()) {
 				if (Character.toLowerCase(b.getLetter()) == belief.getGoal().getLetter()
 						&& !unreachableBoxIds.contains(b.getId())) {
@@ -164,14 +165,9 @@ public class Agent implements IMessage {
 		int bestTotal = Integer.MAX_VALUE;
 		int bestGoalPriority = 0;
 		Box closestBox = null;
-		for (Desire des : desires) {
+		for (int i = 0; i < desires.size(); i++) {
+			Desire des = desires.get(i);
 			Goal goal = des.getBelief().getGoal();
-//			for (Box box : World.getInstance().getBoxes().values()) {
-//				if (goal.getLetter() == 'y' && box.getLetter() == 'Y' && !unreachableBoxIds.contains(box.getId())) {
-//					intention = new Intention(des, box);
-//					return true;
-//				}
-//			}
 
 			/*
 			 * if a goal has been solved we do not want to consider it in our

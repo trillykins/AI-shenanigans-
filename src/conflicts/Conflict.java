@@ -189,7 +189,8 @@ public class Conflict {
 			System.err.println(boxieToMove.initialState.moveToPositionCol);
 			LinkedList<Node> tmpPlan = s.search(new StrategyBFS(), boxieToMove.initialState, SearchType.MOVE_BOXES);
 			if (tmpPlan == null || tmpPlan.isEmpty()) {
-				for (Box box1 : futurePositions) {
+				for (int j  = 0; j < futurePositions.size(); j++) {
+					Box box1 = futurePositions.get(j);
 					boxieToMove.initialState.boxes.put(box1.getId(), box1);
 				}
 			}

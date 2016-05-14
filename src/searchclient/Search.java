@@ -5,7 +5,6 @@ import java.util.List;
 
 import atoms.Agent;
 import atoms.Box;
-import atoms.Position;
 import atoms.World;
 import strategies.Strategy;
 
@@ -29,7 +28,7 @@ public class Search {
 	public void setPlanForAgentToStay(List<Node> otherPlan) {
 		this.otherPlan = otherPlan;
 	}
-	
+
 	public List<Node> getOtherPlan() {
 		return this.otherPlan;
 	}
@@ -40,7 +39,7 @@ public class Search {
 		int iterations = 0;
 		while (true) {
 			if (iterations % 200 == 0) {
-//				 System.err.println(strategy.searchStatus());
+				// System.err.println(strategy.searchStatus());
 			}
 			if (Memory.shouldEnd()) {
 				System.err.format("Memory limit almost reached, terminating search %s\n", Memory.stringRep());
@@ -70,12 +69,12 @@ public class Search {
 				}
 				break;
 			case MOVE_OWN_BOX:
-				if(leafNode.moveAgentAndBoxAway(otherPlan)){
+				if (leafNode.moveAgentAndBoxAway(otherPlan)) {
 					return leafNode.extractPlan();
 				}
 				break;
 			case MOVE_BOXES:
-				if(leafNode.moveBoxesAway(futureBoxPositions, otherPlan)){
+				if (leafNode.moveBoxesAway(futureBoxPositions, otherPlan)) {
 					return leafNode.extractPlan();
 				}
 				break;
@@ -84,7 +83,8 @@ public class Search {
 			}
 
 			strategy.addToExplored(leafNode);
-			for (Node n : leafNode.getExpandedNodes()) {
+			for (int i = 0; i < leafNode.getExpandedNodes().size(); i++) {
+				Node n = leafNode.getExpandedNodes().get(i);
 				if (!strategy.isExplored(n) && !strategy.inFrontier(n)) {
 					strategy.addToFrontier(n);
 				}

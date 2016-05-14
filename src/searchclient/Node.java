@@ -81,7 +81,8 @@ public class Node {
 
 	public boolean movedAway(List<Node> otherPlan) {
 		Position aPos = new Position(agentRow, agentCol);
-		for (Node otherNode : otherPlan) {
+		for(int i = 0; i < otherPlan.size(); i++) {
+			Node otherNode = otherPlan.get(i);
 			if (otherNode.agentRow == agentRow && otherNode.agentCol == agentCol)
 				return false;
 			for (Box b : otherNode.boxes.values())
@@ -128,20 +129,20 @@ public class Node {
 		}
 		for (int i = 0; i < agentPlan.size(); i++) {
 			Node otherNode = agentPlan.get(i);
-//			for (Box box : otherNode.boxes.values()) {
-//				// if (printshit) {
-//				// System.err.println("box in othernode: " + box);
-//				// }
-//				if (getAgentPosition().equals(box.getPosition()))
-//					return false;
-//			}
+			// for (Box box : otherNode.boxes.values()) {
+			// // if (printshit) {
+			// // System.err.println("box in othernode: " + box);
+			// // }
+			// if (getAgentPosition().equals(box.getPosition()))
+			// return false;
+			// }
 			for (Box box : boxes.values()) {
 				if (box.getPosition().equals(otherNode.getAgentPosition()))
 					return false;
 			}
 		}
-//		System.err.println(this);
-		if(!agentAtMovePosition())
+		// System.err.println(this);
+		if (!agentAtMovePosition())
 			return false;
 		return true;
 	}
