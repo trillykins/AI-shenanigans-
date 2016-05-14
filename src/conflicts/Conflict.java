@@ -108,15 +108,28 @@ public class Conflict {
 	}
 
 	public void solveAgentOnAgent(Conflict conflict,Node node, Agent a1, Agent a2) {
-		Agent agentToMove = conflict.receiver;
-		Agent agentToStay = conflict.sender;
-		Box boxToMove = conflict.senderBox;
+//		Agent agentToMove = conflict.receiver;
+//		Agent agentToStay = conflict.sender;
+//		Box agentToMoveBox = conflict.senderBox;
+		Agent agentToMove = null, agentToStay = null;
+		Box agentToMoveBox = null;
+		
+//		System.err.println(conflict.getReceiver());
+		if(conflict.getReceiver() != null)
+			agentToMove = world.getAgents().get(conflict.getReceiver().getId());
+		if(conflict.getSenderBox() != null)
+			agentToMoveBox = world.getBoxes().get(conflict.getSenderBox().getId());
+		agentToStay = world.getAgents().get(conflict.getSender().getId());
 		
 		if(agentToMove.getPlan().get(agentToMove.getStepInPlan()).action.actType.equals(Command.type.Pull) ||
 				agentToMove.getPlan().get(agentToMove.getStepInPlan()).action.actType.equals(Command.type.Push)){
-			MAAgentOnAgentConflict.moveAgentOnAgentWithBox(agentToMove, agentToStay, boxToMove);
+			System.err.println("AA 1");
+//			System.exit(0);
+			MAAgentOnAgentConflict.moveAgentOnAgentWithBox(agentToMove, agentToStay, agentToMoveBox);
 		}else{
-			MAAgentOnAgentConflict.moveAgentOnAgentNoBox(agentToMove, agentToStay, boxToMove);
+			System.err.println("AA 2");
+//			System.exit(0);
+			MAAgentOnAgentConflict.moveAgentOnAgentNoBox(agentToMove, agentToStay, agentToMoveBox);
 			
 		}
 	}
