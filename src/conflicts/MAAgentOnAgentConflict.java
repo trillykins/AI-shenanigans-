@@ -31,7 +31,6 @@ public class MAAgentOnAgentConflict {
 		/*we add one no op to the newPlanAgentToStay*/
 		List<Node> newPlanAgentToStay = Conflict.updatePlan(agentToStay);
 		s.setPlanForAgentToStay(newPlanAgentToStay);
-//		System.err.println(agentToMove);
 		LinkedList<Node> newPlanAgentToMove = s.search(strategy, agentToMove.initialState, SearchType.MOVE_AWAY);
 		/*remember to move all walls away*/
 		for (Box box : agentToMove.initialState.boxes.values()) {
@@ -41,16 +40,13 @@ public class MAAgentOnAgentConflict {
 
 		/*afterwards we insert noops*/
 		if(newPlanAgentToMove != null && !newPlanAgentToMove.isEmpty()){
-//			System.err.println(newPlanAgentToMove);
 			newPlanAgentToMove = insertNoOps(newPlanAgentToMove,agentToMove);
 			/*in pacman it was nessesary for to add a no op for the agentToStay, else our detection would detect conflicts in a loop*/
 			Node noOp = createNoOpNode(agentToStay,newPlanAgentToStay.get(0));
 			noOp.action = new Command();
 			newPlanAgentToStay.add(0,noOp);
-			
 			World.getInstance().getBeliefs().add(agentToMove.getIntention().getDesire().getBelief());	
 			System.err.println("1:");
-//			System.exit(0);
 		}else{
 			/*the newplan is empty we just add a no op to existing plan*/
 			newPlanAgentToMove = (LinkedList<Node>) Conflict.updatePlan(agentToMove);
@@ -66,12 +62,10 @@ public class MAAgentOnAgentConflict {
 			newPlanAgentToMove.add(0,noOp);
 			System.err.println("2");
 		}
-//		System.err.println(newPlanAgentToStay);
 		agentToMove.setPlan(newPlanAgentToMove);
 		agentToMove.setStepInPlan(0);
 		agentToStay.setPlan(newPlanAgentToStay);
 		agentToStay.setStepInPlan(0);
-//		System.exit(0);
 	}
 
 	public static void moveAgentOnAgentWithBox(Agent agentToMove, Agent agentToStay, Box boxToMove){
@@ -120,22 +114,6 @@ public class MAAgentOnAgentConflict {
 				noOp.action = new Command();
 				newPlanAgentToMove.add(noOp);
 			}
-//		} else {
-//			/*if the new plan is zero, then we just want to add a noOp to the new agent*/
-//			System.err.println("found the error");
-////			System.exit(0);
-//			newPlanAgentToMove = Conflict.updatePlan(agentToMove.getPlan());
-////						agentToMove.generateInitialState();
-//			Node n = agentToMove.getPlan().get(agentToMove.getStepInPlan());//;agentToMove.initialState;
-//			noOp = createNoOpNode(agentToMove,n);
-////			noOp = n;
-////			noOp.action = new Command();
-////			noOpsToAdd = 2; /*if we only add 1 noOp we will most likely have an error. We add 2 noOps*/
-////			for(int i = 0; i < noOpsToAdd;i++){
-//				newPlanAgentToMove.add(0,noOp);
-////			}
-//			System.err.println(newPlanAgentToMove);
-////			System.exit(0);
 		}
 		return newPlanAgentToMove;
 	}
