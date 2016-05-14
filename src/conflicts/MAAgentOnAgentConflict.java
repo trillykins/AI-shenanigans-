@@ -15,39 +15,75 @@ import strategies.Strategy;
 import strategies.StrategyBFS;
 
 public class MAAgentOnAgentConflict {
-	
-	public static void moveAgentOnAgentNoBox(Agent agentToMove, Agent agentToStay, Box boxToMove){
+
+	public static void moveAgentOnAgentNoBox(Agent agentToMove, Agent agentToStay, Box agentToMoveBox){
 		agentToMove.generateInitialState();
+		agentToMove.initialState.agentRow = agentToMove.getPosition().getX();
+		agentToMove.initialState.agentCol = agentToMove.getPosition().getY();
 		agentToMove.initialState.walls.add(new Position(agentToStay.getPosition()));
-		for (Box box : agentToMove.initialState.boxes.values()) {
+//		for (Box box : agentToMove.initialState.boxes.values()) {
+		for(Box box : World.getInstance().getBoxes().values()){
 			agentToMove.initialState.walls.add(new Position(box.getPosition()));
 		}
 		Strategy strategy = new StrategyBFS();
 		Search s = new Search();
-		
+
 		/*we add one no op to the newPlanAgentToStay*/
 		List<Node> newPlanAgentToStay = Conflict.updatePlan(agentToStay);
-		Node noOp = createNoOpNode(agentToStay,newPlanAgentToStay.get(0));
-		newPlanAgentToStay.remove(0);
-		/*needs to be tested (add no op for)*/
-		newPlanAgentToStay.add(0,noOp);
 		s.setPlanForAgentToStay(newPlanAgentToStay);
-		
 		LinkedList<Node> newPlanAgentToMove = s.search(strategy, agentToMove.initialState, SearchType.MOVE_AWAY);
+		/*remember to move all walls away*/
 		agentToMove.initialState.walls.remove(new Position(agentToStay.getPosition()));
-//		agentToStay.generateInitialState();
-		
+//		for (Box box : agentToMove.initialState.boxes.values()) {
+		for(Box box : World.getInstance().getBoxes().values()){
+			agentToMove.initialState.walls.remove(new Position(box.getPosition()));
+		}
+		/*the agentToMove is locked in a narrow corridor by boxes and the agentToStay*/
+		/*we try to do a new plan for the agentToStay instead*/
+		if(newPlanAgentToMove == null){
+			newPlanAgentToMove = (LinkedList<Node>) Conflict.updatePlan(agentToMove);
+			agentToStay.generateInitialState();
+			agentToStay.initialState.agentRow = agentToStay.getPosition().getX();
+			agentToStay.initialState.agentCol = agentToStay.getPosition().getY();
+			agentToStay.initialState.walls.add(new Position(agentToMove.getPosition()));
+			for(Box box : World.getInstance().getBoxes().values()){
+				agentToStay.initialState.walls.add(new Position(box.getPosition()));
+			}
+			s.setPlanForAgentToStay(newPlanAgentToMove);
+			newPlanAgentToStay = s.search(strategy, agentToStay.initialState, SearchType.MOVE_AWAY);
+			agentToStay.initialState.walls.remove(new Position(agentToMove.getPosition()));
+			for(Box box : World.getInstance().getBoxes().values()){
+				agentToStay.initialState.walls.remove(new Position(box.getPosition()));
+			}
+		}
 		/*afterwards we insert noops*/
-		newPlanAgentToMove = insertNoOps(newPlanAgentToMove,agentToMove);
-
+		if(newPlanAgentToMove != null && !newPlanAgentToMove.isEmpty()){
+			newPlanAgentToMove = insertNoOps(newPlanAgentToMove,agentToMove);
+			/*in pacman it was nessesary for to add a no op for the agentToStay, else our detection would detect conflicts in a loop*/
+			Node noOp = createNoOpNode(agentToStay,newPlanAgentToStay.get(0));
+			noOp.action = new Command();
+			newPlanAgentToStay.add(0,noOp);
+			World.getInstance().getBeliefs().add(agentToMove.getIntention().getDesire().getBelief());	
+			System.err.println("1:");
+		}else{
+			/*the newplan is empty we just add a no op to existing plan*/
+			newPlanAgentToMove = (LinkedList<Node>) Conflict.updatePlan(agentToMove);
+			if (agentToMove.getStepInPlan() == 0){
+				/*need to create a node where the agent is at current position*/
+				Node noOp = createNoOpNode(agentToMove,agentToMove.initialState);
+				newPlanAgentToMove.add(0,noOp);
+			}
+			Node noOp = createNoOpNode(agentToMove,newPlanAgentToMove.get(0));
+			noOp.action = new Command();
+			newPlanAgentToMove.add(0,noOp);
+			newPlanAgentToMove.add(0,noOp);
+			newPlanAgentToMove.add(0,noOp);
+			System.err.println("2");
+		}
 		agentToMove.setPlan(newPlanAgentToMove);
 		agentToMove.setStepInPlan(0);
 		agentToStay.setPlan(newPlanAgentToStay);
 		agentToStay.setStepInPlan(0);
-		World.getInstance().getBeliefs().add(agentToMove.getIntention().getDesire().getBelief());	
-//		System.err.println(newPlanAgentToMove);
-//		System.err.println("newPlanAgentToMovePos :" + newPlanAgentToMove.getLast().getAgentPosition());
-//		System.exit(0);
 	}
 
 	public static void moveAgentOnAgentWithBox(Agent agentToMove, Agent agentToStay, Box boxToMove){
@@ -61,17 +97,18 @@ public class MAAgentOnAgentConflict {
 
 		Strategy strategy = new StrategyBFS();
 		Search s = new Search();
-		
+
 		List<Node> newPlanAgentToStay = Conflict.updatePlan(agentToStay);
 		s.setPlanForAgentToStay(newPlanAgentToStay);
 		LinkedList<Node> newPlanAgentToMove = s.search(strategy, agentToMove.initialState, SearchType.MOVE_OWN_BOX);
 		agentToMove.initialState.walls.remove(new Position(agentToStay.getPosition()));
-		
-		
+
+
 		/*we add one noOp to the newPlanAgentToStay*/
-		Node noOp = createNoOpNode(agentToStay,newPlanAgentToStay.get(newPlanAgentToStay.size()-1));
-		newPlanAgentToStay.remove(0);
-		newPlanAgentToStay.add(noOp);
+//		Node noOp = createNoOpNode(agentToStay,newPlanAgentToStay.get(newPlanAgentToStay.size()-1));
+		Node noOp = createNoOpNode(agentToStay,newPlanAgentToStay.get(0));		
+//		newPlanAgentToStay.remove(0);
+		newPlanAgentToStay.add(0,noOp);
 		newPlanAgentToMove = insertNoOps(newPlanAgentToMove,agentToMove);
 
 		agentToMove.setPlan(newPlanAgentToMove);
@@ -80,34 +117,25 @@ public class MAAgentOnAgentConflict {
 		agentToStay.setStepInPlan(0);
 		World.getInstance().getBeliefs().add(agentToMove.getIntention().getDesire().getBelief());
 	}
-	
+
 	public static LinkedList<Node> insertNoOps(LinkedList<Node> newPlanAgentToMove, Agent agentToMove){
-		Node noOp = createNoOpNode(agentToMove,newPlanAgentToMove.peekLast());//agentToMove.initialState;
+		Node noOp = null;
 		int noOpsToAdd = 0;
 		if (newPlanAgentToMove != null && !newPlanAgentToMove.isEmpty()) {
-				noOpsToAdd = newPlanAgentToMove.size();
-				if (noOpsToAdd < 2)
-					noOpsToAdd = 4;
-				for (int i = 0; i < noOpsToAdd; i++) {
-					Node n = newPlanAgentToMove.getLast().childNode();
-					noOp = n;
-					noOp.action = new Command();
-					newPlanAgentToMove.add(noOp);
-				}
-		} else {
-			newPlanAgentToMove = new LinkedList<Node>();
-			agentToMove.generateInitialState();
-			Node n = agentToMove.initialState;
-			noOp = n;
-			noOp.action = new Command();
-			noOpsToAdd = 2; /*if we only add 1 noOp we will most likely have an error. We add 2 noOps*/
-			for(int i = 0; i < noOpsToAdd;i++){
+			noOp = createNoOpNode(agentToMove,newPlanAgentToMove.peekLast());//agentToMove.initialState;
+			noOpsToAdd = newPlanAgentToMove.size();
+			if (noOpsToAdd < 2)
+				noOpsToAdd = 4;
+			for (int i = 0; i < noOpsToAdd; i++) {
+				Node n = newPlanAgentToMove.getLast().childNode();
+				noOp = n;
+				noOp.action = new Command();
 				newPlanAgentToMove.add(noOp);
 			}
 		}
 		return newPlanAgentToMove;
 	}
-	
+
 	private static Node createNoOpNode(Agent agent, Node parent) {
 		Node node = new Node(parent,agent.getId());
 		node.action = new Command();
@@ -120,7 +148,7 @@ public class MAAgentOnAgentConflict {
 			node.agentCol = agent.getPosition().getY();
 			node.agentRow = agent.getPosition().getX();
 		}
-		
+
 		node.goals = agent.initialState.goals;
 		node.walls = agent.initialState.walls;
 		return node;

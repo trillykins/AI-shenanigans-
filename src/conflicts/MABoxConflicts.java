@@ -134,13 +134,17 @@ public class MABoxConflicts {
 		Goal oriGoal = oriAgent.getIntention().getDesire().getBelief().getGoal();
 		List<Node> newPlan = new LinkedList<Node>();
 		if(box.getPosition().equals(oriGoal.getPosition())) {//if sender box on goal, then set other agent's position as wall, and replan 
+			Agent oAgent = null;
 			for(Agent otherAgent:World.getInstance().getAgents().values()) {
 				if(otherAgent.getId() != oriAgent.getId()) {
-					oriAgent.initialState.walls.add(otherAgent.getPosition());
+					oAgent = otherAgent;
+					oriAgent.initialState.walls.add(oAgent.getPosition());
 					s.setPlanForAgentToStay(otherAgent.getPlan());
 				}
 			}
 			newPlan = s.search(strategy, oriAgent.initialState, Search.SearchType.MOVE_OWN_BOX);
+			if(oAgent != null)
+				oriAgent.initialState.walls.remove(oAgent.getPosition());
 			World.getInstance().getBeliefs().add(oriAgent.getIntention().getDesire().getBelief());
 		}else {
 			oriAgent.initialState.goals.put(oriGoal.getId(), oriGoal);
@@ -352,7 +356,8 @@ public class MABoxConflicts {
 			/*
 			 * If the box is already on the goal, then add belief again
 			 */
-			World.getInstance().getBeliefs().add(ag.getIntention().getDesire().getBelief());
+			if(ag.getIntention() != null)
+				World.getInstance().getBeliefs().add(ag.getIntention().getDesire().getBelief());
 			
 			ag.setPlan(newPlanForMovingBox);
 			ag.setStepInPlan(0);
@@ -510,8 +515,10 @@ public class MABoxConflicts {
 			agent.initialState.agentCol = agent.getPosition().getY();
 			agent.initialState.agentRow = agent.getPosition().getX();
 		}
-		
 		newPlan = sear.search(strategy, agent.initialState, Search.SearchType.PATH);
+		agent.initialState.walls.remove(posi);
+		agent.initialState.walls.remove(receiver.getPosition());
+		
 		return newPlan;
 	}
 

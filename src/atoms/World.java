@@ -163,8 +163,9 @@ public class World {
 	
 	public boolean agentHasGoalInBelief(Goal goal){
 		for(Agent agent : World.getInstance().getAgents().values()){
-			if (agent.getIntention().getDesire().getBelief().getGoal().equals(goal))
-				return true;
+			if(agent.getIntention() != null)
+				if (agent.getIntention().getDesire().getBelief().getGoal().equals(goal))
+					return true;
 		}
 		return false;
 	}
