@@ -37,7 +37,7 @@ public class World {
 	}
 
 	public void write(String str) {
-//		files.write(str);
+		files.write(str);
 	}
 	
 	public Map<Integer, Box> getBoxesInGoals() {

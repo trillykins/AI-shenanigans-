@@ -15,6 +15,7 @@ import atoms.Position;
 import atoms.World;
 import searchclient.Command.dir;
 import searchclient.Command.type;
+import searchclient.Search.SearchType;
 
 public class Node {
 	private static Random rnd = new Random(1);
@@ -24,9 +25,12 @@ public class Node {
 	public int agentCol;
 	public int moveToPositionRow;
 	public int moveToPositionCol;
+	public int boxToPosRow, boxToPosCol;
+	public Position boxToPosition;
 	public Map<Integer, Box> boxes;
 	public Map<Integer, Goal> goals;
 	public List<Position> walls;
+	public SearchType sType;
 
 	public Node parent;
 	public Command action;
@@ -50,6 +54,22 @@ public class Node {
 
 	public boolean isInitialState() {
 		return this.parent == null;
+	}
+
+	public SearchType getSearchType() {
+		return this.sType;
+	}
+	
+	public void setSearchType(SearchType type) {
+		this.sType = type;
+	}
+	
+	public Position getBoxToPosition() {
+		return boxToPosition;
+	}
+
+	public void setBoxToPosition(Position boxToPosition) {
+		this.boxToPosition = boxToPosition;
 	}
 
 	public boolean isGoalState() {
@@ -76,6 +96,14 @@ public class Node {
 	public boolean agentAtMovePosition() {
 		if (agentRow == moveToPositionRow && agentCol == moveToPositionCol)
 			return true;
+		return false;
+	}
+
+	public boolean movedBoxToPosition() {
+		for (Box b : boxes.values()) {
+			if (b.getPosition().equals(boxToPosition))
+				return true;
+		}
 		return false;
 	}
 
@@ -119,7 +147,6 @@ public class Node {
 	}
 
 	public boolean moveBoxesAway(List<Box> futureBoxPlans, List<Node> agentPlan) {
-		boolean printshit = boxes.containsKey(11);
 		for (int i = 0; i < futureBoxPlans.size(); i++) {
 			for (Box b : boxes.values()) {
 				if (futureBoxPlans.get(i).getPosition().equals(b.getPosition())) {
@@ -130,9 +157,6 @@ public class Node {
 		for (int i = 0; i < agentPlan.size(); i++) {
 			Node otherNode = agentPlan.get(i);
 			for (Box box : otherNode.boxes.values()) {
-				// if (printshit) {
-				// System.err.println("box in othernode: " + box);
-				// }
 				if (getAgentPosition().equals(box.getPosition()))
 					return false;
 			}
@@ -142,7 +166,7 @@ public class Node {
 			}
 		}
 
-		return agentAtMovePosition();
+		return true;
 	}
 
 	public ArrayList<Node> getExpandedNodes() {
@@ -258,6 +282,7 @@ public class Node {
 		copy.moveToPositionCol = this.moveToPositionCol;
 		copy.agentRow = this.agentRow;
 		copy.agentCol = this.agentCol;
+		copy.boxToPosition = this.boxToPosition;
 		return copy;
 	}
 

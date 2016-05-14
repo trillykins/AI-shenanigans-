@@ -1,7 +1,6 @@
 package conflicts;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -169,14 +168,12 @@ public class Conflict {
 			}
 		}
 		List<Box> futurePositions = new ArrayList<>(boxesForReplanning.size());
-		List<List<Node>> plans = new ArrayList<>(boxesForReplanning.size());
+		LinkedList<LinkedList<Node>> plans = new LinkedList<>();
 		// reverse order
 		for (int i = boxesForReplanning.size() - 1; i >= 0; i--) {
 			Agent boxieToMove = agent;
 			boxieToMove.generateInitialState();
-			boxieToMove.initialState.moveToPositionCol = agent.getPosition().getX();
-			boxieToMove.initialState.moveToPositionRow = agent.getPosition().getY();
-			boxieToMove.initialState.setPosition(World.getInstance().getAgents().get(0).getPosition());
+			boxieToMove.initialState.setPosition(boxieToMove.getPosition());
 			boxieToMove.initialState.boxes.put(boxesForReplanning.get(i).getId(), boxesForReplanning.get(i));
 			for (Box wb : World.getInstance().getBoxes().values()) {
 				if (!boxesForReplanning.contains(wb)) {
@@ -191,27 +188,47 @@ public class Conflict {
 			s.setFutureBoxPositions(futurePositions);
 			s.setPlanForAgentToStay(updatePlan(agentToMove));
 			LinkedList<Node> tmpPlan = s.search(new StrategyBFS(), boxieToMove.initialState, SearchType.MOVE_BOXES);
-			if(tmpPlan == null || tmpPlan.isEmpty()) {
-				for(Box box1 : futurePositions) {
+			if (tmpPlan == null || tmpPlan.isEmpty()) {
+				for (Box box1 : futurePositions) {
 					boxieToMove.initialState.boxes.put(box1.getId(), box1);
 				}
 			}
-//			System.err.println(tmpPlan);
-			for(Box b : tmpPlan.getLast().boxes.values()) {
-				futurePositions.add(b);	// TODO potential problem
+			// System.err.println(tmpPlan);
+			for (Box b : tmpPlan.getLast().boxes.values()) {
+				futurePositions.add(b); // TODO potential problem
 			}
-//			futurePositions.add(tmpPlan.getLast().boxes.get(0));
-			plans.add(tmpPlan);
+//			plans.add(tmpPlan);
 		}
-		for (
-
-		int i = 0; i < plans.size(); i++)
-
-		{
-			for (int j = 0; j < plans.get(i).size(); j++) {
-				System.err.println(plans.get(i).get(j));
+		for (int i = futurePositions.size() - 1; i >= 0; i--) {
+			if(plans.size() > 0) {
+				LinkedList<Node> plan = plans.getLast();
+				agent.initialState.setPosition(plan.getLast().getAgentPosition());
+				
+			}
+			agent.generateInitialState();
+			agent.initialState.setSearchType(SearchType.MOVE_BOX);
+			agent.initialState.setPosition(World.getInstance().getAgents().get(0).getPosition());
+			agent.initialState.boxes.put(futurePositions.get(i).getId(), World.getInstance().getBoxes().get(futurePositions.get(i).getId()));
+ 			agent.initialState.setBoxToPosition(futurePositions.get(i).getPosition());
+			s = new Search();
+			LinkedList<Node> plan = s.search(new StrategyBestFirst(new AStar(agent.initialState)), agent.initialState, SearchType.MOVE_BOX);
+			
+			if(plan != null && !plan.isEmpty()) {
+				plans.addLast(plan);
+				System.err.println("Success!");
 			}
 		}
+		World.getInstance().write("MASTER PLAN:\n");
+		for(LinkedList<Node> plan : plans) {
+			for(Node node : plan) {
+				World.getInstance().write(node.toString());
+			}
+		}
+		// for (int i = 0; i < plans.size(); i++) {
+		// for (int j = 0; j < plans.get(i).size(); j++) {
+		// System.err.println(plans.get(i).get(j));
+		// }
+		// }
 		System.exit(0);
 
 		// plans.add(plan);
@@ -267,15 +284,15 @@ public class Conflict {
 	}
 
 	public static List<Node> updatePlan(Agent agent) {
-		  List<Node> updPlan = new LinkedList<Node>();
-		  List<Node> oldPlan = agent.getPlan();
-		  for (int i = 0; i < oldPlan.size(); i++) {
-		   if (i >= agent.getStepInPlan() - 1) {
-		    updPlan.add(oldPlan.get(i));
-		   }
-		  }
-		  return updPlan;
-		 }
+		List<Node> updPlan = new LinkedList<Node>();
+		List<Node> oldPlan = agent.getPlan();
+		for (int i = 0; i < oldPlan.size(); i++) {
+			if (i >= agent.getStepInPlan() - 1) {
+				updPlan.add(oldPlan.get(i));
+			}
+		}
+		return updPlan;
+	}
 
 	@Override
 	public String toString() {

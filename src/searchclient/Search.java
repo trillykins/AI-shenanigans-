@@ -5,7 +5,6 @@ import java.util.List;
 
 import atoms.Agent;
 import atoms.Box;
-import atoms.Position;
 import atoms.World;
 import strategies.Strategy;
 
@@ -15,7 +14,7 @@ public class Search {
 	private List<Box> futureBoxPositions;
 
 	public static enum SearchType {
-		PATH, MOVE_TO_POSITION, MOVE_AWAY, MOVE_OWN_BOX, MOVE_BOXES
+		PATH, MOVE_TO_POSITION, MOVE_AWAY, MOVE_OWN_BOX, MOVE_BOXES, MOVE_BOX
 	}
 
 	public List<Box> getFutureBoxPositions() {
@@ -79,6 +78,9 @@ public class Search {
 					return leafNode.extractPlan();
 				}
 				break;
+			case MOVE_BOX:
+				if(leafNode.movedBoxToPosition())
+					return leafNode.extractPlan();
 			default:
 				break;
 			}

@@ -4,7 +4,6 @@ import java.util.LinkedList;
 
 import atoms.Agent;
 import atoms.Box;
-import atoms.World;
 import searchclient.Node;
 import searchclient.Search;
 import searchclient.Search.SearchType;
@@ -23,7 +22,6 @@ public class SABoxOnBoxConflict {
 		Search s = new Search();
 		s.setPlanForAgentToStay(Conflict.updatePlan(agent));
 		LinkedList<Node> plan = s.search(new StrategyBFS(), agent.initialState, SearchType.MOVE_OWN_BOX);
-
 		agent.setPlan(plan);
 		agent.setStepInPlan(0);
 //		if (!World.getInstance().getBeliefs().contains(agent.getIntention().getDesire().getBelief())) {

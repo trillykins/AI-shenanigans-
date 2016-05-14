@@ -4,6 +4,7 @@ import java.util.Comparator;
 
 import atoms.Box;
 import atoms.Goal;
+import atoms.Position;
 import atoms.World;
 import searchclient.Node;
 import searchclient.SearchClient;
@@ -37,5 +38,15 @@ public abstract class Heuristic implements Comparator<Node> {
 			}
 		}
 		return sum;
+	}
+	
+	public int moveBox(Node n) {
+		Position p1 = n.getBoxToPosition();
+		int ax = 0, ay = 0;
+		for(Box b : n.boxes.values()) {
+			ax = Math.abs(p1.getX() - b.getPosition().getX());
+			ay = Math.abs(p1.getY() - b.getPosition().getY());
+		}
+		return ax + ay;
 	}
 }
