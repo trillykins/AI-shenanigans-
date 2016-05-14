@@ -25,6 +25,7 @@ public class Agent implements IMessage {
 	private int stepInPlan;
 	private List<Node> plan;
 	private List<Integer> unreachableBoxIds;
+	private List<Integer> previouslyMovedBoxLocations;
 
 	public Agent(int id, String color, Position pos, int priority) {
 		this(id, Utils.determineColor(color), pos, priority);
@@ -37,7 +38,8 @@ public class Agent implements IMessage {
 		this.priority = priority;
 		this.stepInPlan = 0;
 		this.plan = new ArrayList<>(0);
-		this.unreachableBoxIds = new ArrayList<Integer>(0);
+		this.unreachableBoxIds = new ArrayList<>(0);
+		this.previouslyMovedBoxLocations = new ArrayList<>(0);
 	}
 
 	public Agent(Agent agent) {
@@ -50,6 +52,7 @@ public class Agent implements IMessage {
 		this.initialState = agent.initialState;
 		this.stepInPlan = agent.getStepInPlan();
 		this.unreachableBoxIds = agent.unreachableBoxIds;
+		this.previouslyMovedBoxLocations = agent.previouslyMovedBoxLocations;
 	}
 
 	public void generateInitialState() {
@@ -62,6 +65,15 @@ public class Agent implements IMessage {
 		this.initialState.walls = World.getInstance().getWalls();
 		this.desires = new ArrayList<>(0);
 		// this.unreachableBoxIds = new ArrayList<Integer>(0);
+	}
+
+	public List<Integer> getPreviouslyMovedBoxLocations() {
+		return previouslyMovedBoxLocations;
+	}
+
+	public void addPreviouslyMovedBoxLocations(Integer id) {
+		if (!this.previouslyMovedBoxLocations.contains(id))
+			this.previouslyMovedBoxLocations.add(id);
 	}
 
 	public void addUnreachableBoxId(int boxId) {

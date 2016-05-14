@@ -148,6 +148,18 @@ public class Conflict {
 	 * Create a plan as done originally, but somehow include the boxes that have originally been put aside to make room.
 	 * If this isn't possible, then shit pants and give up. 
 	 * Cake!
+	 * 
+	 * keep track of previously moved boxes (that are not used to solve goals)
+	 * 
+	 * if plan is null for moving boxes out of the way:
+	 * - plan new route to place boxes
+	 * 		if previously moved box in the way,
+	 * 			- make plan to move box to a spot where it is possible for agent other boxes (new search, to check that the box spot isn't on the previously moved box position)
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
 	 */
 	
 	public void superPlanner(Agent agent, Box box) {
@@ -163,6 +175,7 @@ public class Conflict {
 				if (originalAgentPlan.get(i).getAgentPosition().equals(b.getPosition())
 						&& !boxesForReplanning.contains(b)) {
 					boxesForReplanning.add(b);
+					agentToMove.addPreviouslyMovedBoxLocations(b.getId());
 				}
 			}
 		}
@@ -196,7 +209,6 @@ public class Conflict {
 					boxieToMove.initialState.boxes.put(box1.getId(), box1);
 				}
 			} 
-			
 			for (Box wb : World.getInstance().getBoxes().values()) {
 				if (!boxesForReplanning.contains(wb)) {
 					agentToMove.initialState.walls.remove(wb.getPosition());
