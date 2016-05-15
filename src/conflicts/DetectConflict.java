@@ -51,26 +51,18 @@ public class DetectConflict {
 			case Push:
 				for (Box conflictingBox : World.getInstance().getBoxes().values()) {
 					if (intentionBoxPositionInNext != null) {
-						if (conflictingBox.getPosition().equals(intentionBoxPositionInNext.getPosition())
-								&& conflictingBox.getId() != intentionBox
-										.getId() /*
-													 * && !conflictingBox.equals(
-													 * intentionBox)
-													 */) {
+						if (conflictingBox.getPosition().equals(intentionBoxPositionInNext.getPosition()) && conflictingBox.getId() != intentionBox.getId()) {
 							System.err.println("PUSH");
-							return createConflict(agent, null, conflictingBox, intentionBox, next,
-									ConflictType.BOX_BOX);
+							return createConflict(agent, null, conflictingBox, intentionBox, next, ConflictType.BOX_BOX);
 						}
 					}
 				}
 				break;
 			case Pull:
 				for (Box conflictingBox : World.getInstance().getBoxes().values()) {
-					if (conflictingBox.getPosition().equals(next.getAgentPosition())
-							&& !conflictingBox.equals(intentionBox)) {
+					if (conflictingBox.getPosition().equals(next.getAgentPosition()) && !conflictingBox.equals(intentionBox)) {
 						System.err.println("PULL");
-						return createConflict(agent, null, conflictingBox, intentionBox, next,
-								ConflictType.SINGLE_AGENT_BOX);
+						return createConflict(agent, null, conflictingBox, intentionBox, next, ConflictType.SINGLE_AGENT_BOX);
 					}
 				}
 				break;
@@ -113,8 +105,7 @@ public class DetectConflict {
 							return conflict;
 						}
 					} else {
-						conflict = currentPullingOrMoveConflictCheck(curAgentNode, otherAgentNode, curAgent,
-								otherAgent);
+						conflict = currentPullingOrMoveConflictCheck(curAgentNode, otherAgentNode, curAgent, otherAgent);
 						if (conflict != null) {
 							return conflict;
 						}
@@ -154,8 +145,7 @@ public class DetectConflict {
 	 * @param type
 	 * @return
 	 */
-	private Conflict createConflict(Agent sender, Agent receiver, Box receBox, Box senderBox, Node currNode,
-			ConflictType type) {
+	private Conflict createConflict(Agent sender, Agent receiver, Box receBox, Box senderBox, Node currNode, ConflictType type) {
 		Conflict conflict = new Conflict();
 		conflict.setConflictType(type);
 		conflict.setSender(sender);
@@ -184,8 +174,7 @@ public class DetectConflict {
 	 * @param isPush
 	 * @return
 	 */
-	private Conflict currentPushingConflictCheck(Node curAgentNode, Node otherAgentNode, Agent curAgent,
-			Agent otherAgent) {
+	private Conflict currentPushingConflictCheck(Node curAgentNode, Node otherAgentNode, Agent curAgent, Agent otherAgent) {
 		/*
 		 * If other agent also pushing, then get other agent parent node, and
 		 * check In replan part, you need to go back the parent code to replan.
@@ -205,11 +194,9 @@ public class DetectConflict {
 				for (Box curBox : parent.boxes.values()) {// check could achieve
 															// previous node or
 															// not
-					if (curBox.getPosition().equals(otherBoxPosition)
-							|| curBox.getPosition().equals(otherAgent.getPosition())) {
+					if (curBox.getPosition().equals(otherBoxPosition) || curBox.getPosition().equals(otherAgent.getPosition())) {
 						senderBox = curBox;
-						return createConflict(curAgent, otherAgent, receiverBox, senderBox, parent.parent,
-								ConflictType.BOX_BOX);
+						return createConflict(curAgent, otherAgent, receiverBox, senderBox, parent.parent, ConflictType.BOX_BOX);
 					}
 				}
 				for (Box curBox : curAgentNode.boxes.values()) {// check could
@@ -221,18 +208,16 @@ public class DetectConflict {
 					// curBox.getPosition().equals(otherAgent.getPosition())){
 					if (curBox.getPosition().equals(
 							otherBoxPosition) /*
-												 * || curBox.getPosition().equals(
+												 * ||
+												 * curBox.getPosition().equals(
 												 * otherAgent.getPosition())
 												 */) {
 						senderBox = curBox;
-						return createConflict(curAgent, otherAgent, receiverBox, senderBox, curAgentNode.parent,
-								ConflictType.BOX_BOX);
+						return createConflict(curAgent, otherAgent, receiverBox, senderBox, curAgentNode.parent, ConflictType.BOX_BOX);
 					}
 				}
-				if (curAgent.getPosition().equals(otherAgentNode.getAgentPosition())
-						|| (curAgentNode.getAgentPosition().equals(otherAgent.getPosition()))) {
-					return createConflict(curAgent, otherAgent, receiverBox, senderBox, curAgentNode.parent,
-							ConflictType.AGENT);
+				if (curAgent.getPosition().equals(otherAgentNode.getAgentPosition()) || (curAgentNode.getAgentPosition().equals(otherAgent.getPosition()))) {
+					return createConflict(curAgent, otherAgent, receiverBox, senderBox, curAgentNode.parent, ConflictType.AGENT);
 				}
 			}
 		}
@@ -246,8 +231,7 @@ public class DetectConflict {
 				}
 			}
 
-			if (box.getPosition().equals(otherAgent.getPosition())
-					|| box.getPosition().equals(otherAgentNode.getAgentPosition())) {
+			if (box.getPosition().equals(otherAgent.getPosition()) || box.getPosition().equals(otherAgentNode.getAgentPosition())) {
 				return createConflict(curAgent, otherAgent, box, box, parent, ConflictType.SINGLE_AGENT_BOX);
 			}
 		}
@@ -261,8 +245,7 @@ public class DetectConflict {
 					return createConflict(curAgent, otherAgent, otherBox, box, curAgentNode, ConflictType.BOX_BOX);
 				}
 			}
-			if (box.getPosition().equals(otherAgent.getPosition())
-					|| box.getPosition().equals(otherAgentNode.getAgentPosition())) {
+			if (box.getPosition().equals(otherAgent.getPosition()) || box.getPosition().equals(otherAgentNode.getAgentPosition())) {
 				return createConflict(curAgent, otherAgent, box, box, curAgentNode, ConflictType.SINGLE_AGENT_BOX);
 			}
 		}
@@ -281,10 +264,8 @@ public class DetectConflict {
 	 * @param otherAgent
 	 * @return
 	 */
-	private Conflict currentPullingOrMoveConflictCheck(Node curAgentNode, Node otherAgentNode, Agent curAgent,
-			Agent otherAgent) {
-		if (curAgentNode.getAgentPosition().equals(otherAgent.getPosition())
-				|| curAgent.getPosition().equals(otherAgent.getPosition())) {
+	private Conflict currentPullingOrMoveConflictCheck(Node curAgentNode, Node otherAgentNode, Agent curAgent, Agent otherAgent) {
+		if (curAgentNode.getAgentPosition().equals(otherAgent.getPosition()) || curAgent.getPosition().equals(otherAgent.getPosition())) {
 			Box receiverBox = null;
 			for (Box box : curAgentNode.boxes.values()) {
 				receiverBox = box;
@@ -293,8 +274,7 @@ public class DetectConflict {
 		}
 
 		if (otherAgentNode != null) {
-			if (curAgentNode.getAgentPosition().equals(otherAgentNode.getAgentPosition())
-					|| curAgent.getPosition().equals(otherAgentNode.getAgentPosition())) {
+			if (curAgentNode.getAgentPosition().equals(otherAgentNode.getAgentPosition()) || curAgent.getPosition().equals(otherAgentNode.getAgentPosition())) {
 				Box receiverBox = null;
 				for (Box box : curAgentNode.boxes.values()) {
 					receiverBox = box;
@@ -316,8 +296,7 @@ public class DetectConflict {
 					if (box.getColor().equals(curAgent.getColor())) {
 						otherAgent = curAgent;
 					}
-					return createConflict(curAgent, otherAgent, receiverBox, senderBox, curAgentNode,
-							ConflictType.SINGLE_AGENT_BOX);
+					return createConflict(curAgent, otherAgent, receiverBox, senderBox, curAgentNode, ConflictType.SINGLE_AGENT_BOX);
 				}
 			}
 		}

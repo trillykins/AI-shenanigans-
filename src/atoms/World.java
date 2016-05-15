@@ -1,13 +1,20 @@
 package atoms;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import analysis.FreeSpace;
 import bdi.Belief;
 import bdi.Intention;
+import heuristics.AStar;
 import searchclient.Node;
+import searchclient.Search;
+import searchclient.Search.SearchType;
 import searchclient.SearchClient;
+import strategies.Strategy;
+import strategies.StrategyBestFirst;
 import utils.FileUtils;
 
 public class World {
@@ -34,7 +41,7 @@ public class World {
 	}
 
 	public void write(String str) {
-		// files.write(str);
+		 files.write(str);
 	}
 
 	public Map<Integer, Agent> getAgents() {
@@ -59,14 +66,6 @@ public class World {
 
 	public void setGoals(Map<Integer, Goal> goals) {
 		this.goals = goals;
-	}
-
-	public Map<Integer, List<Node>> getSolutionMap() {
-		return solutionMap;
-	}
-
-	public void setSolutionMap(Map<Integer, List<Node>> solutionMap) {
-		this.solutionMap = solutionMap;
 	}
 
 	public Map<Position, FreeSpace> getFreeSpace() {
@@ -124,21 +123,6 @@ public class World {
 		return size;
 	}
 
-	public boolean cellIsOccupied(Position position) {
-		if (walls.contains(position))
-			return true;
-		for (Agent a : agents.values())
-			if (position.equals(a.getPosition()))
-				return true;
-		for (Box b : boxes.values())
-			if (position.equals(b.getPosition()))
-				return true;
-		for (Goal g : goals.values())
-			if (position.equals(g.getPosition()))
-				return true;
-		return false;
-	}
-
 	public void updateBeliefs() {
 		// System.err.println(World.getInstance().getBeliefs().size());
 		for (Goal goal : World.getInstance().getGoals().values()) {
@@ -152,8 +136,10 @@ public class World {
 				 * if the goal is not fulfilled or another agent doesn't have
 				 * it, we add the belief again
 				 */
-				if (!contained && !agentHasGoalInBelief(goal))
+				if (!contained && !agentHasGoalInBelief(goal)) {
+//					System.err.println("adding belief again: " + goal);
 					World.getInstance().getBeliefs().add(new Belief(goal));
+				}
 			}
 		}
 		// System.err.println(World.getInstance().getBeliefs().size());
@@ -208,12 +194,28 @@ public class World {
 		return agent;
 	}
 
-	// public void generatePlans() {
-	// for (Agent agent : World.getInstance().getAgents().values()) {
-	// generatePlan(agent);
-	// }
-	// }
-
+	public boolean isBoxReachable(Agent agent, Box box) {
+		if (box == null)
+			return false;
+		agent.generateInitialState();
+		agent.initialState.boxes = new HashMap<Integer, Box>();
+		agent.initialState.goals = new HashMap<Integer, Goal>();
+		agent.initialState.boxes.put(box.getId(), box);
+		for (Goal goal : World.getInstance().getGoals().values()) {
+			if (goal.getLetter() == Character.toLowerCase(box.getLetter())) {
+				agent.initialState.goals.put(goal.getId(), goal);
+				Strategy strategy = new StrategyBestFirst(new AStar(agent.initialState));
+				Search s = new Search();
+				LinkedList<Node> plan = s.search(strategy, agent.initialState, SearchType.PATH);
+				if (plan != null) {
+					return true;
+				}
+				agent.initialState.goals.remove(goal.getId());
+			}
+		}
+		return false;
+	}
+	
 	public String toString2() {
 		StringBuilder sb = new StringBuilder();
 		for (int row = 0; row < SearchClient.MAX_ROW; row++) {

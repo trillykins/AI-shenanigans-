@@ -215,7 +215,6 @@ public class Conflict {
 				}
 			}
 
-			// System.err.println(tmpPlan);
 			if (tmpPlan != null && !tmpPlan.isEmpty()) {
 				for (Box b : tmpPlan.getLast().boxes.values()) {
 					futurePositions.add(b); // TODO potential problem
@@ -234,24 +233,7 @@ public class Conflict {
 	}
 
 	public void solveAgentOnBox(Node node, Agent agent, Box box) {
-		
-		// System.err.println("AGENT ON BOX\n" +
-		// World.getInstance().toString());
-		// Agent agentToMove = agent;
-		// agentToMove.initialState.walls.add(box.getPosition());
-		// Search s = new Search();
-		// LinkedList<Node> planWithWalls = s.search(new StrategyBFS(),
-		// agentToMove.initialState, SearchType.PATH);
-		// agentToMove.initialState.walls.remove(box.getPosition());
-		//
-		// if (planWithWalls != null) {
-		// agentToMove.setPlan(planWithWalls);
-		// agentToMove.setStepInPlan(0);
-		//
-		// } else {
-//		System.err.println("SUPERPLANENR!!");
 		superPlanner(agent, box);
-		// }
 	}
 
 	public static List<Node> updatePlan(Agent agent) {
