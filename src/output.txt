@@ -2564,23 +2564,6 @@ World:
 +++++++++++++++++++++++    
 
 Global goal state found = false
-[Move(W)]
-Did the agent solve his goal (a) false
-World:
-+++++++++++++++++++++++    
-+0     H              +    
-+ +C+i+FB             +    
-+ +E+h+               +    
-+ +G+g+     Jj        +    
-+ +I+f+               +    
-+ +D+e+               +    
-+ + +d+               +    
-+ + +c+               +    
-+ + +b+               +    
-+A+ +a+               +    
-+++++++++++++++++++++++    
-
-Global goal state found = false
 [Move(S)]
 Did the agent solve his goal (a) false
 World:
@@ -3366,23 +3349,6 @@ World:
 
 Global goal state found = false
 [Move(W)]
-Did the agent solve his goal (b) false
-World:
-+++++++++++++++++++++++    
-+     0  H            +    
-+ +C+i+ B             +    
-+ +E+h+F              +    
-+ +G+g+     Jj        +    
-+ +I+f+               +    
-+ +D+e+               +    
-+ + +d+               +    
-+ + +c+               +    
-+ + +b+               +    
-+ + +A+               +    
-+++++++++++++++++++++++    
-
-Global goal state found = false
-[Move(E)]
 Did the agent solve his goal (b) false
 World:
 +++++++++++++++++++++++    
@@ -4529,23 +4495,6 @@ Did the agent solve his goal (d) false
 World:
 +++++++++++++++++++++++    
 +GI      H            +    
-+E+0+i+               +    
-+ + +h+F              +    
-+ + +g+     Jj        +    
-+ + +f+               +    
-+ +D+e+               +    
-+ + +d+               +    
-+ + +C+               +    
-+ + +B+               +    
-+ + +A+               +    
-+++++++++++++++++++++++    
-
-Global goal state found = false
-[Move(S)]
-Did the agent solve his goal (d) false
-World:
-+++++++++++++++++++++++    
-+GI      H            +    
 +E+ +i+               +    
 + +0+h+F              +    
 + + +g+     Jj        +    
@@ -5142,23 +5091,6 @@ Global goal state found = false
 Did the agent solve his goal (e) false
 World:
 +++++++++++++++++++++++    
-+  0  I  H            +    
-+E+ +i+               +    
-+ +G+h+F              +    
-+ + +g+     Jj        +    
-+ + +f+               +    
-+ + +e+               +    
-+ + +D+               +    
-+ + +C+               +    
-+ + +B+               +    
-+ + +A+               +    
-+++++++++++++++++++++++    
-
-Global goal state found = false
-[Move(W)]
-Did the agent solve his goal (e) false
-World:
-+++++++++++++++++++++++    
 + 0   I  H            +    
 +E+ +i+               +    
 + +G+h+F              +    
@@ -5481,23 +5413,6 @@ World:
 
 Global goal state found = false
 [Move(W)]
-Did the agent solve his goal (f) false
-World:
-+++++++++++++++++++++++    
-+    0  IH            +    
-+ + +i+               +    
-+ +G+h+F              +    
-+ + +g+     Jj        +    
-+ + +f+               +    
-+ + +E+               +    
-+ + +D+               +    
-+ + +C+               +    
-+ + +B+               +    
-+ + +A+               +    
-+++++++++++++++++++++++    
-
-Global goal state found = false
-[Move(N)]
 Did the agent solve his goal (f) false
 World:
 +++++++++++++++++++++++    
@@ -6490,19 +6405,3 @@ World:
 
 Global goal state found = false
 [Push(E,E)]
-Did the agent solve his goal (j) true
-World:
-+++++++++++++++++++++++    
-+                     +    
-+ + +I+               +    
-+ + +H+               +    
-+ + +G+     0J        +    
-+ + +F+               +    
-+ + +E+               +    
-+ + +D+               +    
-+ + +C+               +    
-+ + +B+               +    
-+ + +A+               +    
-+++++++++++++++++++++++    
-
-Global goal state found = true
