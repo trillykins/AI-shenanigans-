@@ -39,7 +39,7 @@ public class SearchClient {
 //		in = new BufferedReader(new FileReader("//Users//sunmengwei//Documents//levels//MADeliRobot.lvl"));
 //		in = new BufferedReader(new FileReader("C://Users//Tjoe//Documents//levels//MAjasonfour.lvl"));
 //		in = new BufferedReader(new FileReader("C://Users//Tjoe//Documents//levels//MAbullfight.lvl"));
-//		in = new BufferedReader(new FileReader("C://Users//Tjoe//Documents//levels//MApacman.lvl"));
+//		in = new BufferedReader(new FileReader("C://Users//Tjoe//Documents//levels//MAdelirobot.lvl"));
 //		in = new BufferedReader(new FileReader("//Users//sunmengwei//Documents//levels//MABullFight.lvl"));
 		world = World.getInstance();
 	}

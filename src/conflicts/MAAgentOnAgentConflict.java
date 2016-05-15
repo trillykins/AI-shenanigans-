@@ -106,8 +106,10 @@ public class MAAgentOnAgentConflict {
 
 		/*we add one noOp to the newPlanAgentToStay*/
 //		Node noOp = createNoOpNode(agentToStay,newPlanAgentToStay.get(newPlanAgentToStay.size()-1));
+	
 		Node noOp = createNoOpNode(agentToStay,newPlanAgentToStay.get(0));		
-//		newPlanAgentToStay.remove(0);
+		if(agentToStay.getId() < agentToMove.getId())
+			newPlanAgentToStay.remove(0);
 		newPlanAgentToStay.add(0,noOp);
 		newPlanAgentToMove = insertNoOps(newPlanAgentToMove,agentToMove);
 
