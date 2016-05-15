@@ -26,7 +26,7 @@ public class Agent implements IMessage {
 	private List<Node> plan;
 	private List<Integer> unreachableBoxIds;
 	private List<Integer> previouslyMovedBoxLocations;
-
+	
 	public Agent(int id, String color, Position pos, int priority) {
 		this(id, Utils.determineColor(color), pos, priority);
 	}
@@ -64,7 +64,6 @@ public class Agent implements IMessage {
 		this.initialState.goals = new HashMap<Integer, Goal>(0);
 		this.initialState.walls = World.getInstance().getWalls();
 		this.desires = new ArrayList<>(0);
-		// this.unreachableBoxIds = new ArrayList<Integer>(0);
 	}
 
 	public List<Integer> getPreviouslyMovedBoxLocations() {
@@ -127,6 +126,14 @@ public class Agent implements IMessage {
 	public Intention getIntention() {
 		return intention;
 	}
+	
+	public Box getIntentionBox() {
+		return intention.getBox();
+	}
+	
+	public Goal getIntentionGoal() {
+		return intention.getDesire().getBelief().getGoal();
+	}
 
 	public void setIntention(Intention intention) {
 		this.intention = intention;
@@ -153,8 +160,7 @@ public class Agent implements IMessage {
 		for (int i = 0; i < World.getInstance().getBeliefs().size(); i++) {
 			Belief belief = World.getInstance().getBeliefs().get(i);
 			for (Box b : World.getInstance().getBoxes().values()) {
-				if (Character.toLowerCase(b.getLetter()) == belief.getGoal().getLetter()
-						&& !unreachableBoxIds.contains(b.getId())) {
+				if (Character.toLowerCase(b.getLetter()) == belief.getGoal().getLetter() && !unreachableBoxIds.contains(b.getId())) {
 					if (color.equals(b.getColor()) && !desires.contains(new Desire(belief, this))) {
 						desires.add(new Desire(belief, this));
 					}
@@ -199,7 +205,6 @@ public class Agent implements IMessage {
 				} else {
 					numberOfOccupiedSpaces += 10;
 				}
-
 			}
 			goal.setPriority(numberOfOccupiedSpaces);
 		}
@@ -214,12 +219,9 @@ public class Agent implements IMessage {
 			}
 		}
 		for (Box b : World.getInstance().getBoxes().values()) {
-			if (bestDesire.getBelief().getGoal().getLetter() == Character.toLowerCase(b.getLetter())
-					&& !unreachableBoxIds.contains(b.getId())) {
-				if (boxDistance > Utils.manhattenDistance(bestDesire.getBelief().getGoal().getPosition(),
-						b.getPosition())) {
-					boxDistance = Utils.manhattenDistance(bestDesire.getBelief().getGoal().getPosition(),
-							b.getPosition());
+			if (bestDesire.getBelief().getGoal().getLetter() == Character.toLowerCase(b.getLetter()) && !unreachableBoxIds.contains(b.getId())) {
+				if (boxDistance > Utils.manhattenDistance(bestDesire.getBelief().getGoal().getPosition(), b.getPosition())) {
+					boxDistance = Utils.manhattenDistance(bestDesire.getBelief().getGoal().getPosition(), b.getPosition());
 					bestBox = b;
 				}
 			}
@@ -229,7 +231,6 @@ public class Agent implements IMessage {
 	}
 
 	public boolean generationIntentionMA() {
-
 		// Recalculate goal priority after goal has been solved
 		if (desires.isEmpty())
 			return false;
@@ -262,12 +263,10 @@ public class Agent implements IMessage {
 			LevelAnalysis levelAnalysis = new LevelAnalysis();
 			int numberOfFreeSpacesForGoal = levelAnalysis.calculateGoalPriority(goal);
 
-			int currTotal = goalPriority + numberOfFreeSpacesForGoal + costOfClosestBoxToGoal + costOfAgentToClosestBox
-					+ numberOfFreeSpacesForGoal;
+			int currTotal = goalPriority + numberOfFreeSpacesForGoal + costOfClosestBoxToGoal + costOfAgentToClosestBox + numberOfFreeSpacesForGoal;
 
-			System.err.println("Goal " + goal.getLetter() + " currTotal " + currTotal + "\tgoalP: " + goalPriority
-					+ " costOfClosestBoxToG: " + costOfClosestBoxToGoal + "costOfAgentToClosestB: "
-					+ costOfAgentToClosestBox + "numberOfFreeSpacesForGoal: " + numberOfFreeSpacesForGoal);
+			System.err.println("Goal " + goal.getLetter() + " currTotal " + currTotal + "\tgoalP: " + goalPriority + " costOfClosestBoxToG: " + costOfClosestBoxToGoal
+					+ "costOfAgentToClosestB: " + costOfAgentToClosestBox + "numberOfFreeSpacesForGoal: " + numberOfFreeSpacesForGoal);
 
 			/*
 			 * we are looking for the smallest value possible, the optimal would
@@ -330,9 +329,8 @@ public class Agent implements IMessage {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Agent [id=").append(id).append(", col=").append(color).append(", pos=").append(position)
-				.append(", priority=").append(priority).append(", desires=").append(desires).append(", intention=")
-				.append(intention).append(", initialState=").append(initialState).append("]");
+		builder.append("Agent [id=").append(id).append(", col=").append(color).append(", pos=").append(position).append(", priority=").append(priority)
+				.append(", desires=").append(desires).append(", intention=").append(intention).append(", initialState=").append(initialState).append("]");
 		return builder.toString();
 	}
 

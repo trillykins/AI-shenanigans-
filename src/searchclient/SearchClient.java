@@ -90,19 +90,20 @@ public class SearchClient {
 			for (int i = 0; i < line.length(); i++) {
 				boolean isWall = false;
 				char id = line.charAt(i);
+				Position p = new Position(row, i);
 				if ('0' <= id && id <= '9') {
 					agents.put(Integer.parseInt("" + id),
-							new Agent(Integer.parseInt("" + id), colors.get(id), new Position(row, i), Integer.parseInt("" + id)));
+							new Agent(Integer.parseInt("" + id), colors.get(id), p, Integer.parseInt("" + id)));
 				} else if ('A' <= id && id <= 'Z') { // Boxes
 					boxes.put(boxes.size() + 1,
-							new Box(boxes.size() + 1, new Position(row, i), id, Utils.determineColor(colors.get(id))));
+							new Box(boxes.size() + 1, p, id, Utils.determineColor(colors.get(id))));
 				} else if ('a' <= id && id <= 'z') { // Goals
-					goals.put(goals.size() + 1, new Goal(goals.size() + 1, new Position(row, i), id,
+					goals.put(goals.size() + 1, new Goal(goals.size() + 1, p, id,
 							Utils.determineColor(colors.get(id)), 0));
 				} else if (id == '+') {
-					walls.add(new Position(row, i));
+					walls.add(p);
 					isWall = true;
-				}
+				} 
 				if(!isWall) {
 					freeSpaces.add(new Position(row, i));
 				}
