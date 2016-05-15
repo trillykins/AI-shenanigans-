@@ -37,6 +37,8 @@ public class DetectConflict {
 		Intention intention = agent.getIntention();
 		if (intention != null) {
 			Node next = agent.getPlan().get(agent.getStepInPlan());
+			if(agent.getStepInPlan() >= agent.getPlan().size() - 1)
+				agent.setExecutingSuperPlan(false);
 			Box intentionBox = intention.getBox();
 			Box intentionBoxPositionInNext = next.boxes.get(intention.getBox().getId());
 			switch (next.action.actType) {
@@ -44,6 +46,7 @@ public class DetectConflict {
 				for (Box box : World.getInstance().getBoxes().values()) {
 					if (box.getPosition().equals(next.getAgentPosition()) && !box.equals(intentionBox)) {
 						System.err.println("MOVE");
+//						System.err.println(agent.initialState);
 						return createConflict(agent, null, box, null, next, ConflictType.SINGLE_AGENT_BOX);
 					}
 				}
@@ -67,6 +70,7 @@ public class DetectConflict {
 				}
 				break;
 			case NoOp:
+				System.err.println("Detect conflict");
 				System.err.println(agent.initialState);
 				System.err.println("!!!Agent is No-Op'ing in a single-agent level!!!".toUpperCase());
 				System.exit(-1);

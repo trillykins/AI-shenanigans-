@@ -16,6 +16,7 @@ import utils.Utils;
 
 public class Agent implements IMessage {
 	private int id;
+	private boolean executingSuperPlan = false;
 	private Color color;
 	private Position position;
 	private int priority;
@@ -66,6 +67,14 @@ public class Agent implements IMessage {
 		this.desires = new ArrayList<>(0);
 	}
 
+	public boolean isExecutingSuperPlan() {
+		return executingSuperPlan;
+	}
+
+	public void setExecutingSuperPlan(boolean executingSuperPlan) {
+		this.executingSuperPlan = executingSuperPlan;
+	}
+	
 	public List<Integer> getPreviouslyMovedBoxLocations() {
 		return previouslyMovedBoxLocations;
 	}
@@ -207,6 +216,7 @@ public class Agent implements IMessage {
 				}
 			}
 			goal.setPriority(numberOfOccupiedSpaces);
+			System.err.println(goal.getLetter() + ":  " + goal.getPriority());
 		}
 
 		int boxDistance = Integer.MAX_VALUE;
@@ -219,7 +229,7 @@ public class Agent implements IMessage {
 			}
 		}
 		for (Box b : World.getInstance().getBoxes().values()) {
-			if (bestDesire.getBelief().getGoal().getLetter() == Character.toLowerCase(b.getLetter()) && !unreachableBoxIds.contains(b.getId())) {
+			if (bestDesire.getBelief().getGoal().getLetter() == Character.toLowerCase(b.getLetter()) && !unreachableBoxIds.contains(b.getId()) && !b.isOnGoal()) {
 				if (boxDistance > Utils.manhattenDistance(bestDesire.getBelief().getGoal().getPosition(), b.getPosition())) {
 					boxDistance = Utils.manhattenDistance(bestDesire.getBelief().getGoal().getPosition(), b.getPosition());
 					bestBox = b;

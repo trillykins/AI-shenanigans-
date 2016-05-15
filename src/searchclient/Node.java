@@ -119,10 +119,13 @@ public class Node {
 		return true;
 	}
 
-	public boolean moveBoxesAway(List<Box> futureBoxPlans, List<Node> agentPlan) {
-		for (int i = 0; i < futureBoxPlans.size(); i++) {
+	public boolean moveBoxesAway(List<Box> futureBoxPositions, List<Node> agentPlan) {
+		for (int i = 0; i < futureBoxPositions.size(); i++) {
+			if (futureBoxPositions.get(i).getPosition().equals(getAgentPosition())){
+				return false;
+			}
 			for (Box b : boxes.values()) {
-				if (futureBoxPlans.get(i).getPosition().equals(b.getPosition())) {
+				if (futureBoxPositions.get(i).getPosition().equals(b.getPosition())) {
 					return false;
 				}
 			}
