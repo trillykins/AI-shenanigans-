@@ -144,6 +144,10 @@ public class MABoxConflicts {
 //		}
 		oriAgent.setPlan(newPlan);
 		oriAgent.setStepInPlan(0);
+		
+		if(oriAgent.getIntention() != null) {
+			World.getInstance().getBeliefs().add(oriAgent.getIntention().getDesire().getBelief());
+		}
 	}
 	
 	private void moveSenderIntentionBox(Box box, Agent oriAgent) {
@@ -175,6 +179,10 @@ public class MABoxConflicts {
 			oriAgent.initialState.goals.put(oriGoal.getId(), oriGoal);
 			newPlan = s.search(strategy, oriAgent.initialState, Search.SearchType.PATH);
 		}
+
+		if(oriAgent.getIntention() != null) {
+			World.getInstance().getBeliefs().add(oriAgent.getIntention().getDesire().getBelief());
+		}
 		
 		oriAgent.setPlan(newPlan);
 		oriAgent.setStepInPlan(0);
@@ -185,7 +193,7 @@ public class MABoxConflicts {
 			List<Node> plan = receiver.getPlan();
 			int conflictIndex = -1;
 			if(plan != null && plan.size() >1) {
-				if(node.action.actType.equals(Command.type.Move)) {//if current sender agent is moving
+				if(node.action != null && node.action.actType.equals(Command.type.Move)) {//if current sender agent is moving
 					int startIndex = 0;
 					for(int i=startIndex;i<plan.size();i++) {
 						Node otherNode = plan.get(i);
@@ -316,6 +324,9 @@ public class MABoxConflicts {
 						agent.initialState.walls.remove(box.getPosition());
 					}
 				}
+				if(agent.getIntention() != null) {
+					World.getInstance().getBeliefs().add(agent.getIntention().getDesire().getBelief());
+				}
 			}
 		}
 		agent.initialState.walls.remove(agentToStay.getPosition());
@@ -359,7 +370,10 @@ public class MABoxConflicts {
 		    newPlanForMovingBox = sear.search(strategy, agent.initialState, Search.SearchType.MOVE_TO_POSITION);
 		    agent.setPlan(newPlanForMovingBox);
 		    agent.setStepInPlan(0);
-		    
+
+			if(agent.getIntention() != null) {
+				World.getInstance().getBeliefs().add(agent.getIntention().getDesire().getBelief());
+			}
 		    updateOthersSolutions(agent);
 		}
 		
@@ -435,6 +449,9 @@ public class MABoxConflicts {
 			removeBoxAg.initialState.walls.remove(oriAgent.getPosition());
 			removeBoxAg.setPlan(newPlan);
 			removeBoxAg.setStepInPlan(0);
+			if(removeBoxAg.getIntention() != null) {
+				World.getInstance().getBeliefs().add(removeBoxAg.getIntention().getDesire().getBelief());
+			}
 			
 			Node noOp = createNoOpNode(oriAgent,null);
 			oriAgent.getPlan().add(0, noOp);
@@ -579,6 +596,8 @@ public class MABoxConflicts {
 		if(receiver != null && agent.getId() != receiver.getId()) {
 			agent.initialState.walls.remove(receiver.getPosition());
 		}
+		if(agent.getIntention() != null)
+			World.getInstance().getBeliefs().add(agent.getIntention().getDesire().getBelief());
 		return newPlan;
 	}
 
