@@ -282,8 +282,7 @@ public class Agent implements IMessage {
 			 * we are looking for the smallest value possible, the optimal would
 			 * be a very close goal, which have 0 occupied neighbors.
 			 */
-
-			if (bestTotal > currTotal) {
+			if (bestTotal > currTotal && !unreachableBoxIds.contains(closestBox.getId())) {
 				bestGoalPriority = goalPriority;
 				bestTotal = currTotal;
 				bestDesire = des;

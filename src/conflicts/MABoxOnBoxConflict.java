@@ -198,7 +198,7 @@ public class MABoxOnBoxConflict {
 	public static void replanAgentToMove(Agent agentToStay,Box agentToStayBox,Agent agentToMove,Box agentToMoveBox){
 		/* we replan for agentToMove (with his box)*/
 		agentToMove.generateInitialState();
-		agentToMove.initialState.walls.add(new Position(agentToStay.getPosition()));
+		agentToMove.initialState.walls.add(agentToStay.getPosition());
 		agentToMove.initialState.agentRow = agentToMove.getPosition().getX();
 		agentToMove.initialState.agentCol = agentToMove.getPosition().getY();
 		agentToMove.initialState.boxes.put(agentToMoveBox.getId(), agentToMoveBox);
@@ -209,16 +209,16 @@ public class MABoxOnBoxConflict {
 
 		LinkedList<Node> newPlanAgentToMove = s.search(strategy, agentToMove.initialState, SearchType.MOVE_OWN_BOX);
 
-		agentToMove.initialState.walls.remove(new Position(agentToStay.getPosition()));
+		agentToMove.initialState.walls.remove(agentToStay.getPosition());
 
 //		/*update agent to stay*/
-		List<Node> newPlanAgentToStay = agentToStay.getPlan();
-		int agentToStayCurrIndex = agentToStay.getStepInPlan();
-		for (int i = 0; i < agentToStayCurrIndex-1; i++) {
-			if (newPlanAgentToStay.size() == 0)
-				break;
-			newPlanAgentToStay.remove(0);
-		}
+		List<Node> newPlanAgentToStay = Conflict.updatePlan(agentToStay);
+//		int agentToStayCurrIndex = agentToStay.getStepInPlan();
+//		for (int i = 0; i < agentToStayCurrIndex-1; i++) {
+//			if (newPlanAgentToStay.size() == 0)
+//				break;
+//			newPlanAgentToStay.remove(0);
+//		}
 		/*
 		 * If the agent to move is only moving the box 1 step, then we assume
 		 * the other agent want to pass (which takes at least 2 steps). If we
@@ -251,6 +251,13 @@ public class MABoxOnBoxConflict {
 			/*we just want to use his current plan, but insert a noOp in the begginning of it*/
 			newPlanAgentToMove = (LinkedList<Node>) Conflict.updatePlan(agentToMove);
 			noOp = createNoOpNode(agentToMove,newPlanAgentToMove.get(0));
+			if(agentToStay.getId() < agentToMove.getId()){
+				newPlanAgentToMove.remove(0);
+				newPlanAgentToStay.remove(0);
+			}
+			/*we add three noOps as this is the maximum it takes for an agent to move out of the way with box*/
+			newPlanAgentToMove.add(0,noOp);
+			newPlanAgentToMove.add(0,noOp);
 			newPlanAgentToMove.add(0,noOp);
 		}
 		
