@@ -35,10 +35,10 @@ public class SearchClient {
 		precomputedGoalH = new HashMap<>(0);
 		colors = new HashMap<>(0);
 		colorSet = new ArrayList<>(0);
-		in = new BufferedReader(new InputStreamReader(System.in));
+//		in = new BufferedReader(new InputStreamReader(System.in));
 //		in = new BufferedReader(new FileReader("//Users//sunmengwei//Documents//levels//MARageQuit.lvl"));
 //		in = new BufferedReader(new FileReader("//Users//sunmengwei//Documents//levels//MAschwenke.lvl"));
-//		in = new BufferedReader(new FileReader("C://Users//Tjoe//Documents//levels//MAtbsAppartment.lvl"));
+		in = new BufferedReader(new FileReader("C://Users//Tjoe//Documents//levels//MARageQuit.lvl"));
 		world = World.getInstance();
 	}
 
