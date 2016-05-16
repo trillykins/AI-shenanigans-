@@ -235,7 +235,7 @@ public class Run {
 			}
 			world.updateBeliefs();
 			world.write("World:\n" + world.toString());
-			// System.out.println("World:\n" + world.toString());
+//			System.out.println("World:\n" + world.toString());
 			world.write("Global goal state found = " + world.isGlobalGoalState());
 		}
 	}

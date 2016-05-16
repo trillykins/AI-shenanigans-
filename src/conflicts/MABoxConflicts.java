@@ -96,7 +96,7 @@ public class MABoxConflicts {
 			if(intention != null) {
 				Box intBox = intention.getBox();
 				if(conflictBox.getId() == intBox.getId() && !conflictBox.isOnGoal()) {//The intention is the same box
-					moveReceiverIntentionBox(conflictBox,sender,receiver);
+					moveReceiverIntentionBox(node,conflictBox,sender,receiver);
 					return;
 				}
 			}
@@ -191,7 +191,8 @@ public class MABoxConflicts {
 						Node otherNode = plan.get(i);
 						for(Box box:otherNode.boxes.values()) {//if current sender agent is pushing
 							if(node.getAgentPosition().equals(box.getPosition()) && 
-									!(otherNode.action.actType.equals(Command.type.NoOp) || (otherNode.action.actType.equals(Command.type.Move)))) {
+									!(otherNode.action.actType.equals(Command.type.NoOp) 
+											|| (otherNode.action.actType.equals(Command.type.Move)))) {
 										conflictIndex = i;
 							}
 						}
@@ -331,8 +332,8 @@ public class MABoxConflicts {
 		}else {//If current agent can not move anywhere, then sender should move
 			Strategy strategy = new StrategyBFS();
 			Search sear = new Search();
-			Node currentNode = agentToStay.getPlan().get(agentToStay.getStepInPlan());
-			agentToStay.generateInitialState();
+			//Node currentNode = agentToStay.getPlan().get(agentToStay.getStepInPlan());
+			agent.generateInitialState();
 			
 			int closetsCorner = 10000;
 			Position position = null;
@@ -348,24 +349,18 @@ public class MABoxConflicts {
 				}
 			}
 			
-			agentToStay.initialState.agentCol = agentToStay.getPosition().getY();
-			agentToStay.initialState.agentRow = agentToStay.getPosition().getX();
-			Box moveBox = null;
-			for(Box box:currentNode.parent.boxes.values()) {
-				moveBox = box;
-			}
-			int goalId = World.getInstance().getGoals().size()+1;
-			Goal newFakeGoal = new Goal(goalId,position,Character.toLowerCase(moveBox.getLetter()),null, 1);
-			agentToStay.initialState.boxes = currentNode.parent.boxes;
-			agentToStay.initialState.goals.put(goalId, newFakeGoal);
+			agent.initialState.agentCol = agent.getPosition().getY();
+			agent.initialState.agentRow = agent.getPosition().getX();
 
-			agentToStay.initialState.walls.add(agent.getPosition());
+			agent.initialState.moveToPositionCol = position.getY();
+			agent.initialState.moveToPositionRow = position.getX();
 			
 		    sear.setPlanForAgentToStay(agent.getPlan());
-		    newPlanForMovingBox = sear.search(strategy, agentToStay.initialState, Search.SearchType.PATH);
-		    agentToStay.setPlan(newPlanForMovingBox);
-		    agentToStay.setStepInPlan(0);
-		    agentToStay.initialState.walls.remove(agent.getPosition());
+		    newPlanForMovingBox = sear.search(strategy, agent.initialState, Search.SearchType.MOVE_TO_POSITION);
+		    agent.setPlan(newPlanForMovingBox);
+		    agent.setStepInPlan(0);
+		    
+		    updateOthersSolutions(agent);
 		}
 		
 	}
@@ -387,37 +382,65 @@ public class MABoxConflicts {
 		}
 	}
 	
-	private void moveReceiverIntentionBox(Box box, Agent oriAgent,Agent removeBoxAg) {
-		List<Node> plan = removeBoxAg.getPlan();
-		
-		List<Node> oriAgentPlan = oriAgent.getPlan();
-		if(plan != null && plan.size()>1) {
-			for (int i = 0; i < oriAgent.getStepInPlan() - 1; i++) {
-				plan.remove(0);
+	private void moveReceiverIntentionBox(Node node,Box box, Agent oriAgent,Agent removeBoxAg) {
+		if(checkCouldSolveWithoutReplan(node, oriAgent,removeBoxAg)) {
+			List<Node> plan = removeBoxAg.getPlan();
+			
+			List<Node> oriAgentPlan = oriAgent.getPlan();
+			if(plan != null && plan.size()>1) {
+				for (int i = 0; i < oriAgent.getStepInPlan() - 1; i++) {
+					plan.remove(0);
+				}
 			}
+			
+			List<Node> newOriAgentPlan = new LinkedList<Node>();
+			for(int i = 0; i<plan.size();i++) {
+				Node parent = null;
+				if(i != 0) {
+					int size = newOriAgentPlan.size();
+					parent = newOriAgentPlan.get(size-1);
+				}
+				newOriAgentPlan.add(createNoOpNode(oriAgent,parent));
+			}
+			
+			for(int j=oriAgent.getStepInPlan();j<oriAgentPlan.size();j++) {
+				Node nod = oriAgentPlan.get(j);
+				if(j==oriAgent.getStepInPlan()) {
+					nod.parent = newOriAgentPlan.get(newOriAgentPlan.size()-1);
+				}
+				newOriAgentPlan.add(nod);
+			}
+			oriAgent.setPlan(newOriAgentPlan);
+			oriAgent.setStepInPlan(0);
+			removeBoxAg.setPlan(plan);
+			removeBoxAg.setStepInPlan(0);
+		}else {//the sender is on the receiver's route, need receiver replan
+			Strategy strategy = new StrategyBFS();
+			Search sear = new Search();
+			
+			removeBoxAg.generateInitialState();
+			removeBoxAg.initialState.agentCol = removeBoxAg.getPosition().getY();
+			removeBoxAg.initialState.agentRow = removeBoxAg.getPosition().getX();
+
+			removeBoxAg.initialState.walls.add(oriAgent.getPosition());
+			Intention removerInten = removeBoxAg.getIntention();
+			if(removerInten != null) {
+				Goal goal = removerInten.getDesire().getBelief().getGoal();
+				
+				removeBoxAg.initialState.boxes.put(box.getId(), box);
+				removeBoxAg.initialState.goals.put(goal.getId(), goal);
+			}
+		    sear.setPlanForAgentToStay(oriAgent.getPlan());
+			List<Node> newPlan = sear.search(strategy, removeBoxAg.initialState, Search.SearchType.MOVE_OWN_BOX);
+			removeBoxAg.initialState.walls.remove(oriAgent.getPosition());
+			removeBoxAg.setPlan(newPlan);
+			removeBoxAg.setStepInPlan(0);
+			
+			Node noOp = createNoOpNode(oriAgent,null);
+			oriAgent.getPlan().add(0, noOp);
+			oriAgent.setStepInPlan(0);
 		}
 		
-		List<Node> newOriAgentPlan = new LinkedList<Node>();
-		for(int i = 0; i<plan.size();i++) {
-			Node parent = null;
-			if(i != 0) {
-				int size = newOriAgentPlan.size();
-				parent = newOriAgentPlan.get(size-1);
-			}
-			newOriAgentPlan.add(createNoOpNode(oriAgent,parent));
-		}
-		
-		for(int j=oriAgent.getStepInPlan();j<oriAgentPlan.size();j++) {
-			Node nod = oriAgentPlan.get(j);
-			if(j==oriAgent.getStepInPlan()) {
-				nod.parent = newOriAgentPlan.get(newOriAgentPlan.size()-1);
-			}
-			newOriAgentPlan.add(nod);
-		}
-		oriAgent.setPlan(newOriAgentPlan);
-		oriAgent.setStepInPlan(0);
-		removeBoxAg.setPlan(plan);
-		removeBoxAg.setStepInPlan(0);
 	}
 	
 	private void solveBoxOnGoalConflict(Node node,Agent oriAgent,Agent ag,Box box) {

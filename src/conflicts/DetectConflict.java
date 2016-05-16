@@ -292,8 +292,9 @@ public class DetectConflict {
 			return createConflict(curAgent, otherAgent, receiverBox, null, curAgentNode, ConflictType.AGENT);
 		}
 
-		if (otherAgentNode != null) {
-			if (curAgentNode.getAgentPosition().equals(otherAgentNode.getAgentPosition()) || curAgent.getPosition().equals(otherAgentNode.getAgentPosition())) {
+		if (otherAgentNode != null && !otherAgentNode.action.actType.equals(Command.type.NoOp)) {
+			if (curAgentNode.getAgentPosition().equals(otherAgentNode.getAgentPosition()) 
+					|| curAgent.getPosition().equals(otherAgentNode.getAgentPosition())) {
 				Box receiverBox = null;
 				for (Box box : curAgentNode.boxes.values()) {
 					receiverBox = box;
