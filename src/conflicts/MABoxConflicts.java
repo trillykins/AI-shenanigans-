@@ -43,7 +43,7 @@ public class MABoxConflicts {
 			if(receiver != null) {
 				if(sender.getId() != receiver.getId()) {
 					if(receiver != null && checkCouldSolveWithoutReplan(node,sender, receiver)) {
-						//updateOthersSolutions(sender);
+						updateOthersSolutions(sender);
 						return;
 					}
 				}
@@ -55,7 +55,7 @@ public class MABoxConflicts {
 					sender.setStepInPlan(0);
 					sender.initialState.walls.remove(conflictBox.getPosition());
 					
-					//updateOthersSolutions(sender);
+					updateOthersSolutions(sender);
 				}else {
 					//If there is no new solution for sender, then should move the conflict box away.
 					sender.initialState.walls.remove(conflictBox.getPosition());
@@ -332,7 +332,7 @@ public class MABoxConflicts {
 			}
 			agent.setPlan(newPlanForMovingBox);
 			agent.setStepInPlan(0);
-			//updateOthersSolutions(agent);
+			updateOthersSolutions(agent);
 		}else {//If current agent can not move anywhere, then sender should move
 			Strategy strategy = new StrategyBFS();
 			Search sear = new Search();
@@ -370,7 +370,7 @@ public class MABoxConflicts {
 			Node noOp = createNoOpNode(agentToStay,null);
 			agentToStay.getPlan().add(0, noOp);
 			agentToStay.setStepInPlan(0);
-		   // updateOthersSolutions(agent);
+		    updateOthersSolutions(agent);
 		}
 		
 	}
