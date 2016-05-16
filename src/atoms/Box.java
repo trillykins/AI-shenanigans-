@@ -5,7 +5,7 @@ public class Box {
 	private Position position;
 	private char letter;
 	private Color color;
-	
+
 	public Box(int id, Position p, char l, Color c) {
 		this.id = id;
 		this.position = p;
@@ -40,14 +40,14 @@ public class Box {
 	public int getId() {
 		return id;
 	}
-	
+
 	public void setId(int id) {
 		this.id = id;
 	}
 
 	public boolean isOnGoal() {
-		for(Goal goal : World.getInstance().getGoals().values()) {
-			if(position.equals(goal.getPosition()) && goal.getLetter() == Character.toLowerCase(letter)) {
+		for (Goal goal : World.getInstance().getGoals().values()) {
+			if (position.equals(goal.getPosition()) && goal.getLetter() == Character.toLowerCase(letter)) {
 				return true;
 			}
 		}
