@@ -229,16 +229,12 @@ public class MABoxOnBoxConflict {
 		if(newPlanAgentToMove != null && !newPlanAgentToMove.isEmpty()){
 			/* For the agent to stay we add a noop according to the agentToMovePlan */
 			/* We add noOps acc. to how many steps the new plan is */
-			if(agentToStay.getId() < agentToMove.getId())
-				noOp = createNoOpNode(agentToStay,agentToStay.initialState);
-			else{
-				noOp = createNoOpNode(agentToStay,newPlanAgentToStay.get(0));
-				/*if the agentToStay id is smaller than the agent to move, we need to remove the node first
-				 * (else plan will be out of order)*/
-				if(agentToStay.getId() < agentToMove.getId())
-					newPlanAgentToStay.remove(0);
-			}
+			noOp = createNoOpNode(agentToStay,newPlanAgentToStay.get(0));
 			noOp.action = new Command();
+			/*if the agentToStay id is smaller than the agent to move, we need to remove the node first
+			 * (else plan will be out of order)*/
+			if(agentToStay.getId() < agentToMove.getId())
+				newPlanAgentToStay.remove(0);
 			for(int j = 0; j<newPlanAgentToMove.size();j++){
 				newPlanAgentToStay.add(0, noOp);
 			}
@@ -285,55 +281,16 @@ public class MABoxOnBoxConflict {
 			/* if not then we just move the box and don't do anything else */
 		}		
 
+		//		System.err.println("newAgentPlan \n" + newPlanAgentToMove);
+		//		System.err.println(newPlanAgentToMove.getLast().getAgentPosition());
+		//		System.err.println("agentToStayPlan \n" + newPlanAgentToStay);
+		//		System.err.println(newPlanAgentToStay.get(0).getAgentPosition());
+		//		System.exit(0);
+		//		System.err.println("new plan 'with no ops' \n"+newPlanAgentToMove);
+		//		System.exit(0);
+
 	}
 	
-	public static void moveBoxAwayFromGoal(Agent agentToMove, Box agentToMoveBox, Agent agentToStay, Box agentToStayBox){
-		/*first we generate a plan for the agentToMove - to move his box away*/
-		/*here we compare with the agentToStay current plan*/
-		
-		agentToMove.generateInitialState();
-		agentToMove.initialState.boxes.put(agentToMoveBox.getId(), agentToMoveBox);
-		agentToMove.initialState.agentRow = agentToMove.getPosition().getX();
-		agentToMove.initialState.agentCol = agentToMove.getPosition().getY();
-		Strategy strategy = new StrategyBFS();
-		Search s = new Search();
-		s.setPlanForAgentToStay(agentToStay.getPlan());
-		LinkedList<Node> newPlanAgentToMove = s.search(strategy, agentToMove.initialState, SearchType.MOVE_OWN_BOX);
-		
-		/*then we move the agentToStay out of the way for the agentToMove*/
-		agentToStay.generateInitialState();
-		agentToStay.initialState.boxes.put(agentToStayBox.getId(),agentToStayBox);
-		agentToStay.initialState.agentRow = agentToStay.getPosition().getX();
-		agentToStay.initialState.agentCol = agentToStay.getPosition().getY();
-		strategy = new StrategyBFS();
-		s = new Search();
-		s.setPlanForAgentToStay(newPlanAgentToMove);
-		LinkedList<Node> newPlanAgentToStay = s.search(strategy, agentToStay.initialState, SearchType.MOVE_OWN_BOX);
-		
-		/*add noOps such that agentToStay can move out of agentToMoves way*/
-		Node noOp = createNoOpNode(agentToMove,agentToMove.initialState);
-		for(int i = 0; i < newPlanAgentToStay.size();i++){
-			newPlanAgentToMove.add(0,noOp);
-		}
-		noOp = createNoOpNode(agentToStay,newPlanAgentToStay.getLast());
-		for(int j = 0; j < newPlanAgentToMove.size();j++){
-			newPlanAgentToStay.add(newPlanAgentToStay.size(),noOp);
-		}
-		
-		agentToMove.setPlan(newPlanAgentToMove);
-		agentToMove.setStepInPlan(0);
-		agentToStay.setPlan(newPlanAgentToStay);
-		agentToStay.setStepInPlan(0);
-		
-		Goal goal = null;
-		for(Goal g : World.getInstance().getGoals().values()){
-			if(g.getPosition().equals(agentToMoveBox.getPosition()))
-				goal = g;
-		}
-		Belief belief = new Belief(goal);
-		World.getInstance().getBeliefs().add(belief);
-		World.getInstance().getBeliefs().add(agentToStay.getIntention().getDesire().getBelief());
-	}
 	public static boolean replanAgentToStay(Agent agentToStay,Box agentToStayBox,Box agentToMoveBox){
 		/*check if agentToStay is in the way of agent to move */
 		agentToStay.generateInitialState();
