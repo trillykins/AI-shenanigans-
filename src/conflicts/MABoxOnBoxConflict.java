@@ -25,11 +25,14 @@ public class MABoxOnBoxConflict {
 		agentToStay.generateInitialState();
 		
 		/*we add the conflict box*/
-		agentToStay.initialState.walls.add(new Position(agentToMoveBox.getPosition()));
+		agentToStay.initialState.walls.add(agentToMoveBox.getPosition());
+		
 		/*trying to add the boxes that belongs to the agent*/
 		for(Box box : World.getInstance().getBoxes().values()){
-			if(box.getColor().equals(agentToStayBox.getColor()) && !box.equals(agentToStayBox))
+			if(box.getColor().equals(agentToStayBox.getColor()) && !box.equals(agentToStayBox)){
 				agentToStay.initialState.walls.add(new Position(box.getPosition()));
+//				agentToStay.initialState.boxes.put(box.getId(),box);
+			}
 		}
 		agentToStay.initialState.agentRow = agentToStay.getPosition().getX();
 		agentToStay.initialState.agentCol = agentToStay.getPosition().getY();
@@ -40,29 +43,36 @@ public class MABoxOnBoxConflict {
 		Strategy strategy = new StrategyBFS();
 		Search s = new Search();
 		LinkedList<Node> newPlanAgentToStay = s.search(strategy, agentToStay.initialState, SearchType.PATH);
-
+		
 		/*we remember to remove all walls we have inputed*/
 		agentToStay.initialState.walls.remove(new Position(agentToMoveBox.getPosition()));
 		for(Box box : World.getInstance().getBoxes().values()){
 			if(box.getColor().equals(agentToStayBox.getColor()) && !box.equals(agentToStayBox))
 				agentToStay.initialState.walls.remove(new Position(box.getPosition()));
 		}
+		/*if the newplan was null, we try to add the boxes of the agent instead*/
+		if(newPlanAgentToStay == null){
+			for(Box box : World.getInstance().getBoxes().values()){
+				if(box.getColor().equals(agentToStayBox.getColor()) && !box.equals(agentToStayBox)){
+					agentToStay.initialState.boxes.put(box.getId(),box);
+				}
+			}
+			strategy = new StrategyBFS();
+			s = new Search();
+			newPlanAgentToStay = s.search(strategy, agentToStay.initialState, SearchType.PATH);
+		}
 		
 		if(newPlanAgentToStay == null){
 			if (agentToMoveBox.getColor().equals(agentToStayBox.getColor())){
 				System.err.println("1");
-//				System.exit(0);
 				moveAgentBoxAndConflictBox(agentToStay,agentToStayBox,agentToMove,agentToMoveBox);
 			}else{
 				System.err.println("2");
-//				System.err.println("agentToMove " + agentToMove + " agentToMoveBOx"+ agentToMoveBox.getLetter()+ " agentToStay " + agentToStay.getId());
-//				System.exit(0);
 				getAnotherAgentToMoveConflictBox(agentToStay,agentToStayBox,agentToMove,agentToMoveBox);
 			}
 		}else{
 			/*we just want the agent to run the new plan*/
 			System.err.println("3");
-//			System.exit(0);
 			/*update beliefs with his intention*/
 			agentToStay.setPlan(newPlanAgentToStay);
 			agentToStay.setStepInPlan(0);
