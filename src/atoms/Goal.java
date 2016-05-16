@@ -5,18 +5,18 @@ public class Goal {
 	private Position position;
 	private char letter;
 	private int priority;
-	
+
 	public Goal(int id, Position position, char letter, Color color, int priority) {
 		this.id = id;
 		this.position = position;
 		this.letter = letter;
 		this.priority = priority;
 	}
-	
+
 	public Goal(int id, int x, int y, char letter, Color color, int priority) {
 		this(id, new Position(x, y), letter, color, priority);
 	}
-	
+
 	public int getPriority() {
 		return priority;
 	}
@@ -28,12 +28,15 @@ public class Goal {
 	public Position getPosition() {
 		return position;
 	}
+
 	public void setPosition(Position position) {
 		this.position = position;
 	}
+
 	public char getLetter() {
 		return letter;
 	}
+
 	public void setLetter(char letter) {
 		this.letter = letter;
 	}
@@ -45,10 +48,10 @@ public class Goal {
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
 	public boolean isSolved() {
-		for(Box box : World.getInstance().getBoxes().values()) {
-			if(position.equals(box.getPosition()) && Character.toLowerCase(box.getLetter()) == letter) {
+		for (Box box : World.getInstance().getBoxes().values()) {
+			if (position.equals(box.getPosition()) && Character.toLowerCase(box.getLetter()) == letter) {
 				return true;
 			}
 		}
