@@ -149,6 +149,14 @@ public class Run {
 
 	private void multiAgentPlanner() {
 		boolean replanned = false;
+		/*Testing*/
+		for(Agent agent : world.getAgents().values()){
+			for (Box box : world.getBoxes().values()) {
+				if (!world.isBoxReachable(agent, box)) {
+					world.getAgents().get(agent.getId()).addUnreachableBoxId(box.getId());
+				}
+			}
+		}
 		mainLoop: while (!world.isGlobalGoalState()) {
 			if (!replanned) {
 				for (Agent agent : world.getAgents().values()) {
@@ -235,7 +243,7 @@ public class Run {
 			}
 			world.updateBeliefs();
 			world.write("World:\n" + world.toString());
-			// System.out.println("World:\n" + world.toString());
+//			System.out.println("World:\n" + world.toString());
 			world.write("Global goal state found = " + world.isGlobalGoalState());
 		}
 	}

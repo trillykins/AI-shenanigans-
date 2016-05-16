@@ -79,12 +79,10 @@ public class Conflict {
 		this.receiverBox = box;
 	}
 
-	public void MAsolveBoxOnBox(
-			Conflict conflict/* , int index, List<List<Node>> allSolutions */) {
+	public void MAsolveBoxOnBox(Conflict conflict) {
 		Agent agentToMove = null, agentToStay = null;
 		Box agentToMoveBox = null, agentToStayBox = null;
 
-		// System.err.println(conflict.getReceiver());
 		if (conflict.getReceiver() != null)
 			agentToMove = world.getAgents().get(conflict.getReceiver().getId());
 		agentToMoveBox = world.getBoxes().get(conflict.getReceiverBox().getId());
