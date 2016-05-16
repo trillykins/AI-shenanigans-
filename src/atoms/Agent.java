@@ -275,8 +275,8 @@ public class Agent implements IMessage {
 
 			int currTotal = goalPriority + numberOfFreeSpacesForGoal + costOfClosestBoxToGoal + costOfAgentToClosestBox + numberOfFreeSpacesForGoal;
 
-			System.err.println("Goal " + goal.getLetter() + " currTotal " + currTotal + "\tgoalP: " + goalPriority + " costOfClosestBoxToG: " + costOfClosestBoxToGoal
-					+ "costOfAgentToClosestB: " + costOfAgentToClosestBox + "numberOfFreeSpacesForGoal: " + numberOfFreeSpacesForGoal);
+//			System.err.println("Goal " + goal.getLetter() + " currTotal " + currTotal + "\tgoalP: " + goalPriority + " costOfClosestBoxToG: " + costOfClosestBoxToGoal
+//					+ "costOfAgentToClosestB: " + costOfAgentToClosestBox + "numberOfFreeSpacesForGoal: " + numberOfFreeSpacesForGoal);
 
 			/*
 			 * we are looking for the smallest value possible, the optimal would

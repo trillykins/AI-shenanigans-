@@ -41,7 +41,7 @@ public class World {
 	}
 
 	public void write(String str) {
-		 files.write(str);
+		files.write(str);
 	}
 
 	public Map<Integer, Agent> getAgents() {
@@ -137,7 +137,7 @@ public class World {
 				 * it, we add the belief again
 				 */
 				if (!contained && !agentHasGoalInBelief(goal)) {
-//					System.err.println("adding belief again: " + goal);
+					// System.err.println("adding belief again: " + goal);
 					World.getInstance().getBeliefs().add(new Belief(goal));
 				}
 			}
@@ -147,8 +147,9 @@ public class World {
 
 	public boolean agentHasGoalInBelief(Goal goal) {
 		for (Agent agent : World.getInstance().getAgents().values()) {
-			if (agent.getIntention().getDesire().getBelief().getGoal().equals(goal))
-				return true;
+			if (agent.getIntention() != null)
+				if (agent.getIntention().getDesire().getBelief().getGoal().equals(goal))
+					return true;
 		}
 		return false;
 	}
@@ -215,7 +216,7 @@ public class World {
 		}
 		return false;
 	}
-	
+
 	public String toString2() {
 		StringBuilder sb = new StringBuilder();
 		for (int row = 0; row < SearchClient.MAX_ROW; row++) {

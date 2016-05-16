@@ -9,6 +9,15 @@ public class FreeSpace implements Comparable<Object>{
 	private int priority;
 	
 	private int narrowCorValue;
+	private boolean surroundedByTreeWalls;
+	
+	public boolean isSurroundedByTreeWalls() {
+		return surroundedByTreeWalls;
+	}
+
+	public void setSurroundedByTreeWalls(boolean surroundedByTreeWalls) {
+		this.surroundedByTreeWalls = surroundedByTreeWalls;
+	}
 
 	public FreeSpace(Position position, int priority, int narrowCorValue) {
 		this.position = position;
