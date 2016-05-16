@@ -154,7 +154,9 @@ public class Run {
 				for (Agent agent : world.getAgents().values()) {
 					if (agent.getPlan().size() == 0 || (agent.getPlan().size() == agent.getStepInPlan())) {
 						world.generatePlan(agent);
-						Strategy strategy = new StrategyBFS();
+//						Strategy strategy = new StrategyBFS();
+						Strategy strategy = new StrategyBestFirst(new AStar(agent.initialState));
+						
 						Search s = new Search();
 						List<Node> solution = s.search(strategy, agent.initialState, SearchType.PATH);
 						agent.setPlan(solution);
