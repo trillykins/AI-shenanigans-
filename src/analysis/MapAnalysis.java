@@ -43,10 +43,7 @@ public class MapAnalysis {
 				continue;
 			}
 			if(isSpaceFree(posi)) {
-				FreeSpace free = new FreeSpace();
-				free.setPosition(posi);
-				free.setPriority(calculateCellPriority(posi));
-				free.setNarrowCorValue(calulateNarrowCorPriority(posi));
+				FreeSpace free = new FreeSpace(posi, calculateCellPriority(posi), calulateNarrowCorPriority(posi));
 				if(findCorners(posi) == 3)
 					free.setSurroundedByTreeWalls(true);
 				else

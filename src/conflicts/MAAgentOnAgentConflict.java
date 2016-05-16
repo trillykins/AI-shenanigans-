@@ -15,7 +15,6 @@ import searchclient.Search;
 import searchclient.Search.SearchType;
 import strategies.Strategy;
 import strategies.StrategyBFS;
-import strategies.StrategyBestFirst;
 import utils.Utils;
 
 public class MAAgentOnAgentConflict {

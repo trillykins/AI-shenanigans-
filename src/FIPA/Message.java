@@ -20,6 +20,10 @@ public class Message {
 		this.sender = sender;
 	}
 
+	public Agent getSender() {
+		return sender;
+	}
+
 	public Agent getReceiver() {
 		return receiver;
 	}

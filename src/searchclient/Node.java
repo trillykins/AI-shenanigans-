@@ -79,10 +79,10 @@ public class Node {
 		return false;
 	}
 
-
 	public boolean movedAway(List<Node> otherPlan) {
 		Position aPos = new Position(agentRow, agentCol);
-		for (Node otherNode : otherPlan) {
+		for (int i = 0; i < otherPlan.size(); i++) {
+			Node otherNode = otherPlan.get(i);
 			if (otherNode.agentRow == agentRow && otherNode.agentCol == agentCol)
 				return false;
 			for (Box b : otherNode.boxes.values())
@@ -91,30 +91,19 @@ public class Node {
 		}
 		return true;
 	}
-	
-//	public boolean movedAwayWithBox(List<Node> otherPlan) {
-//		Position aPos = new Position(agentRow, agentCol);
-//		for (Node otherNode : otherPlan) {
-//			if (otherNode.agentRow == agentRow && otherNode.agentCol == agentCol)
-//				return false;
-//			for (Box b : otherNode.boxes.values())
-//				if (b.getPosition().equals(aPos))
-//					return false;
-//		}
-//		return true;
-//	}
-	public boolean moveAgentAndBoxAway(List<Node> otherPlan){
-		for(int i = 0; i < otherPlan.size(); i++) {
+
+	public boolean moveAgentAndBoxAway(List<Node> otherPlan) {
+		for (int i = 0; i < otherPlan.size(); i++) {
 			Node otherNode = otherPlan.get(i);
 			if (getAgentPosition().equals(otherNode.getAgentPosition()))
 				return false;
-			for(Box box : otherNode.boxes.values())
-				if(getAgentPosition().equals(box.getPosition()))
-					return false;			
-			for(Box box : boxes.values()) {
-				if(box.getPosition().equals(otherNode.getAgentPosition()))
+			for (Box box : otherNode.boxes.values())
+				if (getAgentPosition().equals(box.getPosition()))
 					return false;
-				for(Box otherBox : otherNode.boxes.values()){
+			for (Box box : boxes.values()) {
+				if (box.getPosition().equals(otherNode.getAgentPosition()))
+					return false;
+				for (Box otherBox : otherNode.boxes.values()) {
 					if (box.getPosition().equals(otherBox.getPosition()))
 						return false;
 				}
@@ -122,7 +111,32 @@ public class Node {
 		}
 		return true;
 	}
-	
+
+	public boolean moveBoxesAway(List<Box> futureBoxPositions, List<Node> agentPlan) {
+		if (futureBoxPositions != null && !futureBoxPositions.isEmpty()) {
+			for (int i = 0; i < futureBoxPositions.size(); i++) {
+				if (futureBoxPositions.get(i).getPosition().equals(getAgentPosition())) {
+					return false;
+				}
+				for (Box b : boxes.values()) {
+					if (futureBoxPositions.get(i).getPosition().equals(b.getPosition())) {
+						return false;
+					}
+				}
+			}
+		}
+		for (int i = 0; i < agentPlan.size(); i++) {
+			Node otherNode = agentPlan.get(i);
+			for (Box box : boxes.values()) {
+				if (box.getPosition().equals(otherNode.getAgentPosition()))
+					return false;
+			}
+		}
+		if (!agentAtMovePosition())
+			return false;
+		return true;
+	}
+
 	public ArrayList<Node> getExpandedNodes() {
 		ArrayList<Node> expandedNodes = new ArrayList<Node>(Command.every.length);
 		for (Command c : Command.every) {
@@ -158,8 +172,7 @@ public class Node {
 							}
 						}
 						if (foundBox.getColor().equals(agentColor)) {
-							n.boxes.put(foundBox.getId(), new Box(foundBox.getId(), new Position(newBoxRow, newBoxCol),
-									foundBox.getLetter(), foundBox.getColor()));
+							n.boxes.put(foundBox.getId(), new Box(foundBox.getId(), new Position(newBoxRow, newBoxCol), foundBox.getLetter(), foundBox.getColor()));
 							expandedNodes.add(n);
 						}
 					}
@@ -184,8 +197,7 @@ public class Node {
 								break;
 							}
 						}
-						n.boxes.put(foundBox.getId(), new Box(foundBox.getId(), new Position(agentRow, agentCol),
-								foundBox.getLetter(), foundBox.getColor()));
+						n.boxes.put(foundBox.getId(), new Box(foundBox.getId(), new Position(agentRow, agentCol), foundBox.getLetter(), foundBox.getColor()));
 						expandedNodes.add(n);
 					}
 				}
@@ -198,7 +210,7 @@ public class Node {
 	private boolean cellIsFree(int row, int col) {
 		Position pos = new Position(row, col);
 		for (Box b : boxes.values()) {
-//		for(Box b : World.getInstance().getBoxes().values()) {
+			// for(Box b : World.getInstance().getBoxes().values()) {
 			if (b.getPosition().equals(pos))
 				return false;
 		}
@@ -276,11 +288,11 @@ public class Node {
 			return false;
 		return true;
 	}
-	
+
 	public Position getAgentPosition() {
 		return new Position(agentRow, agentCol);
 	}
-	
+
 	public void setPosition(Position pos) {
 		this.agentRow = pos.getX();
 		this.agentCol = pos.getY();

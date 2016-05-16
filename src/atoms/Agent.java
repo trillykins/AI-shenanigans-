@@ -16,6 +16,7 @@ import utils.Utils;
 
 public class Agent implements IMessage {
 	private int id;
+	private boolean executingSuperPlan = false;
 	private Color color;
 	private Position position;
 	private int priority;
@@ -24,7 +25,9 @@ public class Agent implements IMessage {
 	public Node initialState = null;
 	private int stepInPlan;
 	private List<Node> plan;
-
+	private List<Integer> unreachableBoxIds;
+	private List<Integer> previouslyMovedBoxLocations;
+	
 	public Agent(int id, String color, Position pos, int priority) {
 		this(id, Utils.determineColor(color), pos, priority);
 	}
@@ -36,8 +39,9 @@ public class Agent implements IMessage {
 		this.priority = priority;
 		this.stepInPlan = 0;
 		this.plan = new ArrayList<>(0);
+		this.unreachableBoxIds = new ArrayList<>(0);
+		this.previouslyMovedBoxLocations = new ArrayList<>(0);
 	}
-	
 
 	public Agent(Agent agent) {
 		this.id = agent.getId();
@@ -48,6 +52,8 @@ public class Agent implements IMessage {
 		this.intention = agent.getIntention();
 		this.initialState = agent.initialState;
 		this.stepInPlan = agent.getStepInPlan();
+		this.unreachableBoxIds = agent.unreachableBoxIds;
+		this.previouslyMovedBoxLocations = agent.previouslyMovedBoxLocations;
 	}
 
 	public void generateInitialState() {
@@ -61,10 +67,35 @@ public class Agent implements IMessage {
 		this.desires = new ArrayList<>(0);
 	}
 
+	public boolean isExecutingSuperPlan() {
+		return executingSuperPlan;
+	}
+
+	public void setExecutingSuperPlan(boolean executingSuperPlan) {
+		this.executingSuperPlan = executingSuperPlan;
+	}
+	
+	public List<Integer> getPreviouslyMovedBoxLocations() {
+		return previouslyMovedBoxLocations;
+	}
+
+	public void addPreviouslyMovedBoxLocations(Integer id) {
+		if (!this.previouslyMovedBoxLocations.contains(id))
+			this.previouslyMovedBoxLocations.add(id);
+	}
+
+	public void addUnreachableBoxId(int boxId) {
+		this.unreachableBoxIds.add(boxId);
+	}
+
+	public List<Integer> getUnreachableBoxIds() {
+		return unreachableBoxIds;
+	}
+
 	public List<Node> getPlan() {
 		return plan;
 	}
-	
+
 	public void setPlan(List<Node> plan) {
 		this.plan = plan;
 	}
@@ -104,6 +135,14 @@ public class Agent implements IMessage {
 	public Intention getIntention() {
 		return intention;
 	}
+	
+	public Box getIntentionBox() {
+		return intention.getBox();
+	}
+	
+	public Goal getIntentionGoal() {
+		return intention.getDesire().getBelief().getGoal();
+	}
 
 	public void setIntention(Intention intention) {
 		this.intention = intention;
@@ -127,11 +166,11 @@ public class Agent implements IMessage {
 
 	public boolean generateDesires() {
 		desires = new ArrayList<>(0);
-		for (Belief belief : World.getInstance().getBeliefs()) {
-			Goal g = belief.getGoal();
+		for (int i = 0; i < World.getInstance().getBeliefs().size(); i++) {
+			Belief belief = World.getInstance().getBeliefs().get(i);
 			for (Box b : World.getInstance().getBoxes().values()) {
-				if (Character.toLowerCase(b.getLetter()) == g.getLetter()) {
-					if (color.equals(b.getColor())) {
+				if (Character.toLowerCase(b.getLetter()) == belief.getGoal().getLetter() && !unreachableBoxIds.contains(b.getId())) {
+					if (color.equals(b.getColor()) && !desires.contains(new Desire(belief, this))) {
 						desires.add(new Desire(belief, this));
 					}
 				}
@@ -140,12 +179,69 @@ public class Agent implements IMessage {
 		return desires.size() == 0 ? false : true;
 	}
 
-	/*
+	/**
 	 * Generate intention finds intentions based on cost and goal priority goal
 	 * priority reflects how many occupied surrounding spaces a goal have maybe
 	 * This method also consider the closest box that can fulfill the goal
-	 */
+	 **/
 	public boolean generateIntention() {
+		if (World.getInstance().getAgents().size() == 1) {
+			return generationIntentionSA();
+		} else {
+			return generationIntentionMA();
+		}
+	}
+
+	public boolean generationIntentionSA() {
+		// Recalculate goal priority after goal has been solved
+		if (desires.isEmpty())
+			return false;
+		Desire bestDesire = null;
+		Box bestBox = null;
+		for (int i = 0; i < desires.size(); i++) {
+			Desire des = desires.get(i);
+			Goal goal = des.getBelief().getGoal();
+
+			/* calculate goalPriority : based on world elements */
+			LevelAnalysis la = new LevelAnalysis();
+			List<Position> fields = la.surroundingFields(goal.getPosition());
+			int numberOfOccupiedSpaces = 0;
+			for (int j = 0; j < fields.size(); j++) {
+				if (la.isSpaceWallOrSolvedGoal(fields.get(j))) {
+					numberOfOccupiedSpaces++;
+				} else if (la.isSpaceGoal(fields.get(j))) {
+					numberOfOccupiedSpaces += 3;
+				} else {
+					numberOfOccupiedSpaces += 10;
+				}
+			}
+			goal.setPriority(numberOfOccupiedSpaces);
+			System.err.println(goal.getLetter() + ":  " + goal.getPriority());
+		}
+
+		int boxDistance = Integer.MAX_VALUE;
+		int desirePriority = Integer.MAX_VALUE;
+		bestDesire = null;
+		for (Desire d : desires) {
+			if (d.getBelief().getGoal().getPriority() < desirePriority) {
+				desirePriority = d.getBelief().getGoal().getPriority();
+				bestDesire = d;
+			}
+		}
+		for (Box b : World.getInstance().getBoxes().values()) {
+			if (bestDesire.getBelief().getGoal().getLetter() == Character.toLowerCase(b.getLetter()) && !unreachableBoxIds.contains(b.getId()) && !b.isOnGoal()) {
+				if (boxDistance > Utils.manhattenDistance(bestDesire.getBelief().getGoal().getPosition(), b.getPosition())) {
+					boxDistance = Utils.manhattenDistance(bestDesire.getBelief().getGoal().getPosition(), b.getPosition());
+					bestBox = b;
+				}
+			}
+		}
+		intention = (bestDesire != null && bestBox != null ? new Intention(bestDesire, bestBox) : null);
+		return intention != null;
+	}
+
+	public boolean generationIntentionMA() {
+		// Recalculate goal priority after goal has been solved
 		if (desires.isEmpty())
 			return false;
 		Desire bestDesire = null;
@@ -153,9 +249,12 @@ public class Agent implements IMessage {
 		int bestTotal = Integer.MAX_VALUE;
 		int bestGoalPriority = 0;
 		Box closestBox = null;
-		for (Desire des : desires) {
+		for (int i = 0; i < desires.size(); i++) {
+			Desire des = desires.get(i);
 			Goal goal = des.getBelief().getGoal();
 
+			/* calculate goalPriority : based on world elements */
+			goal.setPriority(new LevelAnalysis().calculateGoalPriority(goal));
 			/*
 			 * if a goal has been solved we do not want to consider it in our
 			 * calculations
@@ -163,29 +262,27 @@ public class Agent implements IMessage {
 			if (goal.isSolved())
 				continue;
 			int goalPriority = goal.getPriority();
-
 			/* compute distance from agent to the closest box. */
 			List<Object> result = findClosestBox(goal);
 			int costOfClosestBoxToGoal = (int) result.get(0);
 			closestBox = (Box) result.get(1);
-			int costOfAgentToClosestBox = Utils.manhattenDistance(position, closestBox.getPosition());
+			int costOfAgentToClosestBox = 0;
+			costOfAgentToClosestBox = Utils.manhattenDistance(position, closestBox.getPosition());
 
 			/* calculate current number of free spaces surrounding the goal */
 			LevelAnalysis levelAnalysis = new LevelAnalysis();
 			int numberOfFreeSpacesForGoal = levelAnalysis.calculateGoalPriority(goal);
 
-			int currTotal = goalPriority + costOfClosestBoxToGoal + costOfAgentToClosestBox + numberOfFreeSpacesForGoal;
+			int currTotal = goalPriority + numberOfFreeSpacesForGoal + costOfClosestBoxToGoal + costOfAgentToClosestBox + numberOfFreeSpacesForGoal;
 
-			// System.err.println("Goal " +goal.getLetter()+" currTotal "
-			// +currTotal+ "\tgoalP: "+ goalPriority + " costOfClosestBoxToG: "
-			// +costOfClosestBoxToGoal +
-			// " costOfAgentToClosestB: "+costOfAgentToClosestBox + "
-			// numberOfFreeSpacesForGoal: "+numberOfFreeSpacesForGoal);
-			//
+//			System.err.println("Goal " + goal.getLetter() + " currTotal " + currTotal + "\tgoalP: " + goalPriority + " costOfClosestBoxToG: " + costOfClosestBoxToGoal
+//					+ "costOfAgentToClosestB: " + costOfAgentToClosestBox + "numberOfFreeSpacesForGoal: " + numberOfFreeSpacesForGoal);
+
 			/*
 			 * we are looking for the smallest value possible, the optimal would
 			 * be a very close goal, which have 0 occupied neighbors.
 			 */
+
 			if (bestTotal > currTotal) {
 				bestGoalPriority = goalPriority;
 				bestTotal = currTotal;
@@ -204,8 +301,6 @@ public class Agent implements IMessage {
 				}
 			}
 		}
-		// System.err.println("Best intention = " + bestDesire + ", " +
-		// bestBox);
 		intention = (bestDesire != null && bestBox != null ? new Intention(bestDesire, bestBox) : null);
 		return intention != null;
 	}
@@ -216,11 +311,13 @@ public class Agent implements IMessage {
 		World world = World.getInstance();
 		Integer smallestDistance = Integer.MAX_VALUE;
 		for (Box box : world.getBoxes().values()) {
-			if (!box.isOnGoal() && Character.toLowerCase(box.getLetter()) == goal.getLetter()) {
-				int currDistance = Utils.manhattenDistance(box.getPosition(), goal.getPosition());
-				if (smallestDistance > currDistance) {
-					smallestDistance = currDistance;
-					b = box;
+			if (!unreachableBoxIds.contains(box.getId())) {
+				if (!box.isOnGoal() && Character.toLowerCase(box.getLetter()) == goal.getLetter()) {
+					int currDistance = Utils.manhattenDistance(box.getPosition(), goal.getPosition());
+					if (smallestDistance > currDistance) {
+						smallestDistance = currDistance;
+						b = box;
+					}
 				}
 			}
 		}
@@ -242,9 +339,8 @@ public class Agent implements IMessage {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Agent [id=").append(id).append(", col=").append(color).append(", pos=").append(position)
-				.append(", priority=").append(priority).append(", desires=").append(desires).append(", intention=")
-				.append(intention).append(", initialState=").append(initialState).append("]");
+		builder.append("Agent [id=").append(id).append(", col=").append(color).append(", pos=").append(position).append(", priority=").append(priority)
+				.append(", desires=").append(desires).append(", intention=").append(intention).append(", initialState=").append(initialState).append("]");
 		return builder.toString();
 	}
 
