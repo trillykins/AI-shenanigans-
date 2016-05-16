@@ -367,6 +367,9 @@ public class MABoxConflicts {
 			if(agent.getIntention() != null) {
 				World.getInstance().getBeliefs().add(agent.getIntention().getDesire().getBelief());
 			}
+			Node noOp = createNoOpNode(agentToStay,null);
+			agentToStay.getPlan().add(0, noOp);
+			agentToStay.setStepInPlan(0);
 		   // updateOthersSolutions(agent);
 		}
 		
@@ -440,6 +443,11 @@ public class MABoxConflicts {
 		    sear.setPlanForAgentToStay(oriAgent.getPlan());
 			List<Node> newPlan = sear.search(strategy, removeBoxAg.initialState, Search.SearchType.MOVE_OWN_BOX);
 			removeBoxAg.initialState.walls.remove(oriAgent.getPosition());
+			for(int i=0;i<2;i++) {
+				Node lastNode = newPlan.get(newPlan.size()-1);
+				Node noOp = createNoOpNode(removeBoxAg,lastNode);
+				newPlan.add(noOp);
+			}
 			removeBoxAg.setPlan(newPlan);
 			removeBoxAg.setStepInPlan(0);
 			if(removeBoxAg.getIntention() != null) {
