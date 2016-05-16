@@ -175,15 +175,18 @@ public class Run {
 				switch (con.getConflictType()) {
 				case AGENT:
 					world.write("AGENT-ON-AGENT CONFLICT");
+//					System.out.println("AGENT-ON-AGENT CONFLICT");
 					con.solveAgentOnAgent(con,con.getNode(), con.getSender(), con.getReceiver());
 					break;
 				case SINGLE_AGENT_BOX:
-					world.write("BOX CONFLICT");
+					world.write("AGENT-ON-BOX CONFLICT");
+//					System.out.println("AGENT-ON-BOX CONFLICT");
 					MABoxConflicts maBox = new MABoxConflicts();
 					maBox.solveMAgentBoxConflict(con);
 					break;
 				case BOX_BOX:
 					world.write("BOX_BOX CONFLICT");
+//					System.out.println("BOX_BOX CONFLICT");
 					con.MAsolveBoxOnBox(con);
 					break;
 				default:

@@ -114,6 +114,10 @@ public class Node {
 			for(Box box : boxes.values()) {
 				if(box.getPosition().equals(otherNode.getAgentPosition()))
 					return false;
+				for(Box otherBox : otherNode.boxes.values()){
+					if (box.getPosition().equals(otherBox.getPosition()))
+						return false;
+				}
 			}
 		}
 		return true;
