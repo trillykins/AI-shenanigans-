@@ -185,9 +185,6 @@ public class MABoxConflicts {
 			if(plan != null && plan.size() >1) {
 				if(node.action.actType.equals(Command.type.Move)) {//if current sender agent is moving
 					int startIndex = 0;
-					if(receiver.getStepInPlan() != 0) {
-						startIndex = receiver.getStepInPlan()-1;
-					}
 					for(int i=startIndex;i<plan.size();i++) {
 						Node otherNode = plan.get(i);
 						for(Box box:otherNode.boxes.values()) {//if current sender agent is pushing

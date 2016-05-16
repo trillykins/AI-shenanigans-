@@ -1,7 +1,6 @@
 package searchclient;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -37,8 +36,6 @@ public class SearchClient {
 		colorSet = new ArrayList<>(0);
 		in = new BufferedReader(new InputStreamReader(System.in));
 //		in = new BufferedReader(new FileReader("//Users//sunmengwei//Documents//levels//MAsimple4.lvl"));
-//		in = new BufferedReader(new FileReader("C://Users//Tjoe//Documents//levels//MAjasonfour.lvl"));
-//		in = new BufferedReader(new FileReader("//Users//sunmengwei//Documents//levels//MApacman.lvl"));
 		world = World.getInstance();
 	}
 
@@ -88,23 +85,23 @@ public class SearchClient {
 		Map<Integer, Agent> agents = new HashMap<>(0);
 		List<Belief> beliefs = new ArrayList<>(0);
 		int row = 0, column = 0;
-		
-		List<Position> freeSpaces = new ArrayList<Position>();
+		List<Position> freeSpaces = new ArrayList<Position>(0);
 		while (line != null && !line.equals("")) {
 			for (int i = 0; i < line.length(); i++) {
 				boolean isWall = false;
 				char id = line.charAt(i);
+				Position p = new Position(row, i);
 				if ('0' <= id && id <= '9') {
 					agents.put(Integer.parseInt("" + id),
-							new Agent(Integer.parseInt("" + id), colors.get(id), new Position(row, i), Integer.parseInt("" + id)));
+							new Agent(Integer.parseInt("" + id), colors.get(id), p, Integer.parseInt("" + id)));
 				} else if ('A' <= id && id <= 'Z') { // Boxes
 					boxes.put(boxes.size() + 1,
-							new Box(boxes.size() + 1, new Position(row, i), id, Utils.determineColor(colors.get(id))));
+							new Box(boxes.size() + 1, p, id, Utils.determineColor(colors.get(id))));
 				} else if ('a' <= id && id <= 'z') { // Goals
-					goals.put(goals.size() + 1, new Goal(goals.size() + 1, new Position(row, i), id,
+					goals.put(goals.size() + 1, new Goal(goals.size() + 1, p, id,
 							Utils.determineColor(colors.get(id)), 0));
 				} else if (id == '+') {
-					walls.add(new Position(row, i));
+					walls.add(p);
 					isWall = true;
 				} 
 				if(!isWall) {
@@ -130,8 +127,6 @@ public class SearchClient {
 			beliefs.add(new Belief(goal));
 		}
 		world.setBeliefs(beliefs);
-		world.setBoxesInGoals(new HashMap<Integer, Box>(0));
-		world.setSolvedGoals(new HashMap<Integer, Goal>(0));
 		MapAnalysis mapAn = new MapAnalysis();
 		world.setFreeSpace(mapAn.analysisFreeSpace(freeSpaces));
 	}

@@ -43,16 +43,27 @@ public class MapAnalysis {
 				continue;
 			}
 			if(isSpaceFree(posi)) {
-				FreeSpace free = new FreeSpace();
-				free.setPosition(posi);
-				free.setPriority(calculateCellPriority(posi));
-				free.setNarrowCorValue(calulateNarrowCorPriority(posi));
+				FreeSpace free = new FreeSpace(posi, calculateCellPriority(posi), calulateNarrowCorPriority(posi));
+				if(findCorners(posi) == 3)
+					free.setSurroundedByTreeWalls(true);
+				else
+					free.setSurroundedByTreeWalls(false);
 				freeSpaces.put(posi, free);
 			}
 		}
 		return freeSpaces;
 	}
 	
+	public int findCorners(Position position){
+		List<Position> allFields = surroundingDirectCells(position);
+		
+		int numberOfOccupiedSpaces = 0;
+		for(Position surrPos : allFields){
+			if(isWallPosi(surrPos)) 
+				numberOfOccupiedSpaces++;
+		}
+		return numberOfOccupiedSpaces;
+	}
 	/**
 	 * Calculate cell priority 
 	 * if it is wall surrounding, then priority +1
