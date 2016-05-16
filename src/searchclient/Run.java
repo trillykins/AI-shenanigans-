@@ -204,13 +204,13 @@ public class Run {
 					break;
 				case SINGLE_AGENT_BOX:
 					world.write("AGENT-ON-BOX CONFLICT");
-//					System.out.println("AGENT-ON-BOX CONFLICT");
+//					System.out.println("AGENT-ON-BOX CONFLICT"+"Receiver agent:"+con.getReceiver().getId() +"Sender agent:"+ con.getSender().getId());
 					MABoxConflicts maBox = new MABoxConflicts();
 					maBox.solveMAgentBoxConflict(con);
 					break;
 				case BOX_BOX:
 					world.write("BOX_BOX CONFLICT");
-//					System.out.println("BOX_BOX CONFLICT");
+//					System.out.println("BOX_BOX CONFLICT" + "Receiver agent:"+con.getReceiver().getId()+"Sender agent:"+ con.getSender().getId());
 					con.MAsolveBoxOnBox(con);
 					break;
 				default:

@@ -1,4 +1,3 @@
-/FIPA/
 /analysis/
 /atoms/
 /bdi/
@@ -7,6 +6,7 @@
 /sampleclients/
 /searchclient/
 /strategies/
-/utils/
 /levels/
+/out.txt
+/utils/
 /output.txt
