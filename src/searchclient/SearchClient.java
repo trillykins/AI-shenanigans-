@@ -38,7 +38,7 @@ public class SearchClient {
 		in = new BufferedReader(new InputStreamReader(System.in));
 //		in = new BufferedReader(new FileReader("//Users//sunmengwei//Documents//levels//MAsimple4.lvl"));
 //		in = new BufferedReader(new FileReader("C://Users//Tjoe//Documents//levels//MAjasonfour.lvl"));
-//		in = new BufferedReader(new FileReader("//Users//sunmengwei//Documents//levels//MAsimple8.lvl"));
+//		in = new BufferedReader(new FileReader("//Users//sunmengwei//Documents//levels//MApacman.lvl"));
 		world = World.getInstance();
 	}
 

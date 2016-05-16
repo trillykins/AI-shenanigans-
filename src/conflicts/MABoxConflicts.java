@@ -40,28 +40,51 @@ public class MABoxConflicts {
 			//If the sender's box or other agent's box
 			//Try to find a new plan for sender
 			if(!sender.equals(receiver)) {
-				if(checkCouldSolveWithoutReplan(node,sender, receiver)) {
+				if(receiver != null && checkCouldSolveWithoutReplan(node,sender, receiver)) {
 					updateOthersSolutions(sender);
 					return;
 				}
 			}
-			List<Node> newPlan = findNewSolutionForSender(node,sender,conflictBox.getPosition(),receiver);
-			if(newPlan != null && newPlan.size() >0) {
-				sender.setPlan(newPlan);
-				sender.setStepInPlan(0);
-				sender.initialState.walls.remove(conflictBox.getPosition());
-				
-				updateOthersSolutions(sender);
+			if(checkIsIntentionMoving(sender)) {
+				List<Node> newPlan = findNewSolutionForSender(node,sender,conflictBox.getPosition(),receiver);
+				if(newPlan != null && newPlan.size() >0) {
+					sender.setPlan(newPlan);
+					sender.setStepInPlan(0);
+					sender.initialState.walls.remove(conflictBox.getPosition());
+					
+					updateOthersSolutions(sender);
+				}else {
+					//If there is no new solution for sender, then should move the conflict box away.
+					sender.initialState.walls.remove(conflictBox.getPosition());
+					if(receiver.equals(sender)) {
+						solveOwnBoxConflict(node,sender,conflictBox);
+					}else {// ask other agent to move the conflict box;
+						RequestOtherAgentToMoveBoxAway(sender,receiver,conflictBox,node);
+					}
+				}
 			}else {
-				//If there is no new solution for sender, then should move the conflict box away.
-				sender.initialState.walls.remove(conflictBox.getPosition());
-				if(receiver.equals(sender)) {
-					solveOwnBoxConflict(node,sender,conflictBox);
-				}else {// ask other agent to move the conflict box;
-					RequestOtherAgentToMoveBoxAway(sender,receiver,conflictBox,node);
+				RequestOtherAgentToMoveBoxAway(sender,receiver,conflictBox,node);
+			}
+		}
+	}
+	
+	private boolean checkIsIntentionMoving(Agent sender) {
+		List<Node> senderPlan = sender.getPlan();
+		Node lastStep = senderPlan.get(senderPlan.size()-1);
+		
+		Intention inten = sender.getIntention();
+		if(inten != null) {
+			Goal goal = inten.getDesire().getBelief().getGoal();
+			Position goalPosi = goal.getPosition();
+			
+			for(Box box:lastStep.boxes.values()) {
+				Position boxPosi = box.getPosition();
+				if(boxPosi.equals(goalPosi)) {
+					return true;
 				}
 			}
 		}
+		return false;
 	}
 	
 	private void RequestOtherAgentToMoveBoxAway(Agent sender,Agent receiver,Box conflictBox,Node node) {
@@ -156,60 +179,62 @@ public class MABoxConflicts {
 	}
 	
 	private boolean checkCouldSolveWithoutReplan(Node node,Agent sender,Agent receiver) {
-		List<Node> plan = receiver.getPlan();
-		int conflictIndex = -1;
-		if(plan != null && plan.size() >1) {
-			if(node.action.actType.equals(Command.type.Move)) {//if current sender agent is moving
-				int startIndex = 0;
-				if(receiver.getStepInPlan() != 0) {
-					startIndex = receiver.getStepInPlan()-1;
-				}
-				for(int i=startIndex;i<plan.size();i++) {
-					Node otherNode = plan.get(i);
-					for(Box box:otherNode.boxes.values()) {//if current sender agent is pushing
-						if(node.getAgentPosition().equals(box.getPosition()) && 
-								!(otherNode.action.actType.equals(Command.type.NoOp) || (otherNode.action.actType.equals(Command.type.Move)))) {
-									conflictIndex = i;
-						}
-					}
-					
-				}
-			}else {
-				for(Box box:node.boxes.values()) {//if current sender agent is pushing
+		if(receiver != null) {
+			List<Node> plan = receiver.getPlan();
+			int conflictIndex = -1;
+			if(plan != null && plan.size() >1) {
+				if(node.action.actType.equals(Command.type.Move)) {//if current sender agent is moving
 					int startIndex = 0;
 					if(receiver.getStepInPlan() != 0) {
 						startIndex = receiver.getStepInPlan()-1;
 					}
-					if(checkReceiverCouldReplan(sender,receiver)) {
-						for(int i=startIndex;i<plan.size();i++) {
-							Node otherNode = plan.get(i);
-							if(box.getPosition().equals(otherNode.getAgentPosition())) {
-								conflictIndex = i;
-								break;
-							}else if(box.getPosition().equals(receiver.getPosition())) {
-								conflictIndex = 0;
-								break;
+					for(int i=startIndex;i<plan.size();i++) {
+						Node otherNode = plan.get(i);
+						for(Box box:otherNode.boxes.values()) {//if current sender agent is pushing
+							if(node.getAgentPosition().equals(box.getPosition()) && 
+									!(otherNode.action.actType.equals(Command.type.NoOp) || (otherNode.action.actType.equals(Command.type.Move)))) {
+										conflictIndex = i;
+							}
+						}
+						
+					}
+				}else {
+					for(Box box:node.boxes.values()) {//if current sender agent is pushing
+						int startIndex = 0;
+						if(receiver.getStepInPlan() != 0) {
+							startIndex = receiver.getStepInPlan()-1;
+						}
+						if(checkReceiverCouldReplan(sender,receiver)) {
+							for(int i=startIndex;i<plan.size();i++) {
+								Node otherNode = plan.get(i);
+								if(box.getPosition().equals(otherNode.getAgentPosition())) {
+									conflictIndex = i;
+									break;
+								}else if(box.getPosition().equals(receiver.getPosition())) {
+									conflictIndex = 0;
+									break;
+								}
 							}
 						}
 					}
 				}
-			}
-			int stepInSenderPlan = sender.getStepInPlan();
-			if(conflictIndex != -1) {
-				List<Node> senderPlan = getCurrentLeftPlan(sender);
-				List<Node> newSenderPlan = new LinkedList<Node>();
-				for(int j=0;j<(conflictIndex-stepInSenderPlan)+1;j++) {
-					Node curNode = null;
-					if(senderPlan != null && senderPlan.size()>0) {
-						curNode = senderPlan.get(0);
+				int stepInSenderPlan = sender.getStepInPlan();
+				if(conflictIndex != -1) {
+					List<Node> senderPlan = getCurrentLeftPlan(sender);
+					List<Node> newSenderPlan = new LinkedList<Node>();
+					for(int j=0;j<(conflictIndex-stepInSenderPlan)+1;j++) {
+						Node curNode = null;
+						if(senderPlan != null && senderPlan.size()>0) {
+							curNode = senderPlan.get(0);
+						}
+						Node noOp = createNoOpNode(sender,curNode.parent);
+						newSenderPlan.add(noOp);
 					}
-					Node noOp = createNoOpNode(sender,curNode.parent);
-					newSenderPlan.add(noOp);
+					newSenderPlan.addAll(senderPlan);
+					sender.setPlan(newSenderPlan);
+					sender.setStepInPlan(0);
+					return true;
 				}
-				newSenderPlan.addAll(senderPlan);
-				sender.setPlan(newSenderPlan);
-				sender.setStepInPlan(0);
-				return true;
 			}
 		}
 		return false;
@@ -355,14 +380,16 @@ public class MABoxConflicts {
 		if(oriAgentPlan.size()>index) {
 			for(int i=index;i<oriAgentPlan.size();i++) {
 				Node stepNo=oriAgentPlan.get(i);
-				if(i == index) {
-					Node parent = createNoOpNode(oriAgent,null);
-					//Node node2 = createNoOpNode(oriAgent,parent);
-					stepNo.parent = parent;
+				if(i==index) {//Add one NoOp before new Plan
+					Node parent = createNoOpNode(oriAgent,stepNo);
 					refreshOriPlan.add(parent);
-					//refreshOriPlan.add(node2);
 				}
 				refreshOriPlan.add(stepNo);
+			}
+			for(int j=0;j<1;j++) {//Add one noOp after new Plan
+				Node lastNode = refreshOriPlan.get(refreshOriPlan.size()-1);
+				Node parent = createNoOpNode(oriAgent,lastNode);
+				refreshOriPlan.add(parent);
 			}
 		}
 		oriAgent.setPlan(refreshOriPlan);
@@ -371,16 +398,25 @@ public class MABoxConflicts {
 		List<Node> newPlanForMovingBox = generateNewPlanForReceiverToMoveBox(ag,box,oriAgent,oriAgentPlan);
 		if(newPlanForMovingBox != null) {
 			/*Add noOps (can be optimized)*/
+			int oriAgentPlanSize = refreshOriPlan.size();
 			int newPlanForMovingBoxIndex = newPlanForMovingBox.size();
 			int newIndex = 0;
-			if (newPlanForMovingBoxIndex < 2) {
-				newIndex = 4;
-			}else {
-				newIndex = newPlanForMovingBoxIndex;
-			}
-				
-			for(int i = 0; i < newIndex; i++){
+//			if (newPlanForMovingBoxIndex < 2) {
+//				newIndex = 4;
+//			}else {
+//				newIndex = newPlanForMovingBoxIndex;
+//			}
+			int indexSize = oriAgentPlanSize - newPlanForMovingBoxIndex;
+			if(indexSize < 2) {
+				indexSize = 5;
+			}	
+			for(int i = 0; i < indexSize+1; i++){
 				Node lastNode = newPlanForMovingBox.get(newPlanForMovingBoxIndex-1);
+//				if(newPlanForMovingBox.size() == 1 && !lastNode.action.actType.equals(Command.type.NoOp)) {
+//					newPlanForMovingBox.add(createNoOpNode(ag,null));
+//				}else {
+//					newPlanForMovingBox.add(createNoOpNode(ag,lastNode));
+//				}
 				newPlanForMovingBox.add(createNoOpNode(ag,lastNode));
 			}
 			
@@ -443,7 +479,7 @@ public class MABoxConflicts {
 		//Add a wall to box position
 		agent.generateInitialState();
 		agent.initialState.walls.add(posi);
-		if(!agent.equals(receiver)) {
+		if(receiver != null && !agent.equals(receiver)) {
 			agent.initialState.walls.add(receiver.getPosition());
 		}
 		List<Node> newPlan = new LinkedList<Node>();
@@ -469,7 +505,7 @@ public class MABoxConflicts {
 		}
 		newPlan = sear.search(strategy, agent.initialState, Search.SearchType.PATH);
 		agent.initialState.walls.remove(posi);
-		if(!agent.equals(receiver)) {
+		if(receiver != null && !agent.equals(receiver)) {
 			agent.initialState.walls.remove(receiver.getPosition());
 		}
 		return newPlan;
