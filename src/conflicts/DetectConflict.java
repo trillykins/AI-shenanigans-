@@ -1,6 +1,9 @@
 package conflicts;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import atoms.Agent;
 import atoms.Box;
@@ -10,6 +13,7 @@ import bdi.Intention;
 import conflicts.Conflict.ConflictType;
 import searchclient.Command;
 import searchclient.Node;
+import utils.Utils;
 
 public class DetectConflict {
 
@@ -288,8 +292,9 @@ public class DetectConflict {
 			return createConflict(curAgent, otherAgent, receiverBox, null, curAgentNode, ConflictType.AGENT);
 		}
 
-		if (otherAgentNode != null) {
-			if (curAgentNode.getAgentPosition().equals(otherAgentNode.getAgentPosition()) || curAgent.getPosition().equals(otherAgentNode.getAgentPosition())) {
+		if (otherAgentNode != null && !otherAgentNode.action.actType.equals(Command.type.NoOp)) {
+			if (curAgentNode.getAgentPosition().equals(otherAgentNode.getAgentPosition()) 
+					|| curAgent.getPosition().equals(otherAgentNode.getAgentPosition())) {
 				Box receiverBox = null;
 				for (Box box : curAgentNode.boxes.values()) {
 					receiverBox = box;
@@ -342,18 +347,48 @@ public class DetectConflict {
 	}
 
 	private Agent findAgentForBox(Box box,Agent curAgent) {
+		Agent receiverAgent = null;
+		List<Agent> potentialAgentList = new ArrayList<Agent>();
 		for(Agent agent:World.getInstance().getAgents().values()) {
 			if(agent.getId() != curAgent.getId()) {
+				if(agent.getColor().equals(box.getColor())) {
+					potentialAgentList.add(agent);
+				}
 				Intention intention = agent.getIntention();
 				if(intention != null) {
 					Box intenBox = intention.getBox();
 					if(box.getId() == intenBox.getId()) {
-						return agent;
+						receiverAgent =  agent;
 					}
 				}
 			}
 		}
-		return null;
+		if(receiverAgent == null) {
+			if(potentialAgentList != null && potentialAgentList.size() > 0) {
+				if(potentialAgentList.size() == 1) {
+					receiverAgent = potentialAgentList.get(0);
+				}else {
+					receiverAgent = pickReceiverAgent(box,potentialAgentList);
+				}
+			}
+		}
+		return receiverAgent;
+	}
+	
+	private Agent pickReceiverAgent(Box box, List<Agent> agentList) {
+		Agent agent1 = agentList.get(0);
+		Map<Integer,Agent> distanceAgent = new HashMap<Integer,Agent>();
+		int distance = Utils.manhattenDistance(box.getPosition(), agent1.getPosition());
+		distanceAgent.put(distance, agent1);
+		for(int i=1;i<agentList.size();i++) {
+			Agent otherAgent = agentList.get(i);
+			int otherDist = Utils.manhattenDistance(box.getPosition(), otherAgent.getPosition());
+			distanceAgent.put(otherDist, otherAgent);
+			if(distance > otherDist) {
+				distance = otherDist;
+			}
+		}
+		return distanceAgent.get(distance);
 	}
 
 }
