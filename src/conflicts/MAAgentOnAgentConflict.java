@@ -213,6 +213,11 @@ public class MAAgentOnAgentConflict {
 					//					s = new Search();
 					//					newPlanAgentToMove = s.search(strategy, agentToMove.initialState, SearchType.PATH);
 					//					agentToMove.initialState.walls.remove(position);
+				}else{
+					agentToStay.setPlan(newPlanAgentToStay);
+					agentToStay.setStepInPlan(0);
+					World.getInstance().getBeliefs().add(agentToStay.getIntention().getDesire().getBelief());
+					
 				}
 			}else{
 				/*we add one noOp to the newPlanAgentToStay*/
