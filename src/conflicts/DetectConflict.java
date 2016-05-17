@@ -233,14 +233,20 @@ public class DetectConflict {
 												// like to move to a box
 												// position or other agent's
 												// next step
-			for (Box otherBox : World.getInstance().getBoxes().values()) {
-				if (box.getPosition().equals(otherBox.getPosition()) && (box.getId() != otherBox.getId())) {
-					return createConflict(curAgent, curAgent, box, box, curAgentNode, ConflictType.BOX_BOX);
-				}
-			}
+			Intention inten = curAgent.getIntention();
+			if(inten != null) {
+				Box curAgentBox = inten.getBox();
+				if(box.getId() == curAgentBox.getId()) {
+					for (Box otherBox : World.getInstance().getBoxes().values()) {
+						if (box.getPosition().equals(otherBox.getPosition()) && (box.getId() != otherBox.getId())) {
+							return createConflict(curAgent, curAgent, box, box, curAgentNode, ConflictType.BOX_BOX);
+						}
+					}
 
-			if (box.getPosition().equals(otherAgent.getPosition()) || box.getPosition().equals(otherAgentNode.getAgentPosition())) {
-				return createConflict(curAgent, otherAgent, box, box, parent, ConflictType.SINGLE_AGENT_BOX);
+					if (box.getPosition().equals(otherAgent.getPosition()) || box.getPosition().equals(otherAgentNode.getAgentPosition())) {
+						return createConflict(curAgent, otherAgent, box, box, parent, ConflictType.SINGLE_AGENT_BOX);
+					}
+				}
 			}
 		}
 
@@ -248,25 +254,32 @@ public class DetectConflict {
 														// like to move to a box
 														// position or other
 														// agent's next step
-			Agent receiverAgent = null;
-			for (Box otherBox : World.getInstance().getBoxes().values()) {
-				if (box.getPosition().equals(otherBox.getPosition()) && (box.getId() != otherBox.getId())) {
-					for (Agent receiver : World.getInstance().getAgents().values()) {
-						Intention inten = receiver.getIntention();
-						if (inten != null) {
-							Box intenBox = receiver.getIntention().getBox();
-							if (intenBox.getId() == otherBox.getId()) {
-								receiverAgent = receiver;
-								break;
+			Intention inten = curAgent.getIntention();
+			if(inten != null) {
+				Box curAgentBox = inten.getBox();
+				if(box.getId() == curAgentBox.getId()) {
+					Agent receiverAgent = null;
+					for (Box otherBox : World.getInstance().getBoxes().values()) {
+						if (box.getPosition().equals(otherBox.getPosition()) && (box.getId() != otherBox.getId())) {
+							for (Agent receiver : World.getInstance().getAgents().values()) {
+								Intention receiverInten = receiver.getIntention();
+								if (receiverInten != null) {
+									Box intenBox = receiver.getIntention().getBox();
+									if (intenBox.getId() == otherBox.getId()) {
+										receiverAgent = receiver;
+										break;
+									}
+								}
 							}
+							return createConflict(curAgent, receiverAgent, otherBox, box, curAgentNode, ConflictType.BOX_BOX);
 						}
 					}
-					return createConflict(curAgent, receiverAgent, otherBox, box, curAgentNode, ConflictType.BOX_BOX);
+					if (box.getPosition().equals(otherAgent.getPosition()) || box.getPosition().equals(otherAgentNode.getAgentPosition())) {
+						return createConflict(curAgent, otherAgent, box, box, curAgentNode, ConflictType.SINGLE_AGENT_BOX);
+					}
 				}
 			}
-			if (box.getPosition().equals(otherAgent.getPosition()) || box.getPosition().equals(otherAgentNode.getAgentPosition())) {
-				return createConflict(curAgent, otherAgent, box, box, curAgentNode, ConflictType.SINGLE_AGENT_BOX);
-			}
+			
 		}
 		return null;
 	}
