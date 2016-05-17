@@ -95,7 +95,9 @@ public class MAAgentOnAgentConflict {
 						noOp.action = new Command();
 						newPlanAgentToStay.add(0,noOp);
 					}
-					World.getInstance().getBeliefs().add(agentToMove.getIntention().getDesire().getBelief());	
+					if(agentToMove.getIntention() != null) {
+						World.getInstance().getBeliefs().add(agentToMove.getIntention().getDesire().getBelief());
+					}
 					System.err.println("1:");
 				}else{
 					/*the newplan is empty we just add a no op to existing plan*/
