@@ -375,7 +375,7 @@ public class MABoxConflicts {
 						&& otherSolution.get(0).action.actType.equals(Command.type.NoOp))) {
 					Node parentNode = null;
 					if(otherAgent.getStepInPlan() != 0) {
-						parentNode = otherSolution.get(0);
+						parentNode = otherSolution.get(0).parent;
 					}
 					parentNode = createNoOpNode(otherAgent,parentNode);
 					
