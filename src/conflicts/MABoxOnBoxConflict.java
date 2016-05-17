@@ -51,7 +51,7 @@ public class MABoxOnBoxConflict {
 				agentToStay.initialState.walls.remove(new Position(box.getPosition()));
 		}
 		/*if the newplan was null, we try to add the boxes of the agent instead*/
-		if(newPlanAgentToStay == null){
+		if(newPlanAgentToStay == null && agentToMoveBox.getColor().equals(agentToStay.getColor())){
 			for(Box box : World.getInstance().getBoxes().values()){
 				if(box.getColor().equals(agentToStayBox.getColor()) || box.equals(agentToStayBox)){
 					agentToStay.initialState.boxes.put(box.getId(),box);
@@ -100,6 +100,7 @@ public class MABoxOnBoxConflict {
 			replanAgentToStayWithConflictBox(agentToStay,agentToStayBox,agentToMoveBox);
 		}
 	}
+
 	public static void getAnotherAgentToMoveConflictBox(Agent agentToStay, Box agentToStayBox, Agent agentToMove,Box agentToMoveBox){
 		System.err.println("plan is null and the receiver box does not have same color as sender box");
 
@@ -116,57 +117,57 @@ public class MABoxOnBoxConflict {
 				}
 			}
 		}
-		if(agentToMove.getStepInPlan() != 0 && agentToMove.getPlan().get(0).action.equals(Command.type.NoOp)){
-			/*check if agentToStay is in the way of agent to move */
-			agentToStay.generateInitialState();
-			agentToStay.initialState.walls.add(agentToMove.getPosition());
-			agentToStay.initialState.walls.add(agentToMoveBox.getPosition());
-			agentToStay.initialState.agentRow = agentToStay.getPosition().getX();
-			agentToStay.initialState.agentCol = agentToStay.getPosition().getY();
-			agentToStay.initialState.boxes.put(agentToStayBox.getId(), agentToStayBox);
-			Strategy strategy = new StrategyBFS();
-			Search s = new Search();
-			s.setPlanForAgentToStay(Conflict.updatePlan(agentToMove));
-			LinkedList<Node> newPlanAgentToStay = s.search(strategy, agentToStay.initialState, SearchType.MOVE_OWN_BOX);
+		/*create the plan for the agentToMove the box*/
+		agentToMove.generateInitialState();
+		agentToMove.initialState.agentRow = agentToMove.getPosition().getX();
+		agentToMove.initialState.agentCol = agentToMove.getPosition().getY();
+		agentToMove.initialState.boxes.put(agentToMoveBox.getId(), agentToMoveBox);
+		Strategy strategy = new StrategyBFS();
+		Search s = new Search();
+		s.setPlanForAgentToStay(Conflict.updatePlan(agentToStay));
+		LinkedList<Node> newPlanAgentToMove = s.search(strategy, agentToMove.initialState, SearchType.MOVE_OWN_BOX);
 
-			agentToStay.initialState.walls.remove(agentToMove.getPosition());
-			agentToStay.initialState.walls.remove(agentToMoveBox.getPosition());
-			if(newPlanAgentToStay != null){
-				updatePlansSenderCanReplan(agentToStay,agentToMove,newPlanAgentToStay);
+		/*create a new plan for the agent to stay where it removes its own box away*/
+		agentToStay.generateInitialState();
+		//		agentToStay.initialState.walls.add(agentToMove.getPosition());
+		//		agentToStay.initialState.walls.add(agentToMoveBox.getPosition());
+		agentToStay.initialState.agentRow = agentToStay.getPosition().getX();
+		agentToStay.initialState.agentCol = agentToStay.getPosition().getY();
+		agentToStay.initialState.boxes.put(agentToStayBox.getId(), agentToStayBox);
+		strategy = new StrategyBFS();
+		s = new Search();
+		s.setPlanForAgentToStay(newPlanAgentToMove);
+		LinkedList<Node> newPlanAgentToStay = s.search(strategy, agentToStay.initialState, SearchType.MOVE_OWN_BOX);
+//		agentToStay.initialState.walls.remove(agentToMove.getPosition());
+//		agentToStay.initialState.walls.remove(agentToMoveBox.getPosition());
+
+		//		if(newPlanAgentToStay != null){
+		//			updatePlansSenderCanReplan(agentToStay,agentToMove,newPlanAgentToStay);
+		//		}
+		if(newPlanAgentToMove != null){
+			//			newPlanAgentToStay = (LinkedList<Node>) Conflict.updatePlan(agentToStay);
+			//			Node noOp = null;
+			//			if(agentToStay.getStepInPlan() == 0){
+			//				noOp = createNoOpNode(agentToStay,agentToStay.initialState);
+			//			}else
+			Node noOp = createNoOpNode(agentToStay,newPlanAgentToStay.getLast());
+			for(int i = 0; i<newPlanAgentToMove.size();i++){
+				newPlanAgentToStay.add(newPlanAgentToStay.size(),noOp);
 			}
-//			else{
-//				/*find path for agent to move to move the box*/
-//				System.err.println("narrow corridor or something");
-//				System.exit(0);
-//			}
-		}else{
-			/*we make agentToMove move his box away*/
-			agentToMove.generateInitialState();
-			agentToMove.initialState.agentRow = agentToMove.getPosition().getX();
-			agentToMove.initialState.agentCol = agentToMove.getPosition().getY();
-			agentToMove.initialState.boxes.put(agentToMoveBox.getId(), agentToMoveBox);
-			Strategy strategy = new StrategyBFS();
-			Search s = new Search();
-			s.setPlanForAgentToStay(Conflict.updatePlan(agentToStay));
-			LinkedList<Node> newPlanAgentToMove = s.search(strategy, agentToMove.initialState, SearchType.MOVE_OWN_BOX);
+			agentToMove.setPlan(newPlanAgentToMove);
+			agentToMove.setStepInPlan(0);
+			agentToStay.setPlan(newPlanAgentToStay);
+			agentToStay.setStepInPlan(0);
 			
-			if(newPlanAgentToMove != null){
-				LinkedList<Node> newPlanAgentToStay = (LinkedList<Node>) Conflict.updatePlan(agentToStay);
-				Node noOp = null;
-				if(agentToStay.getStepInPlan() == 0){
-					noOp = createNoOpNode(agentToStay,agentToStay.initialState);
-				}else
-					noOp = createNoOpNode(agentToStay,newPlanAgentToStay.getFirst());
-				for(int i = 0; i<newPlanAgentToMove.size();i++){
-					newPlanAgentToStay.add(0,noOp);
-				}
-				agentToMove.setPlan(newPlanAgentToMove);
-				agentToMove.setStepInPlan(0);
-				agentToStay.setPlan(newPlanAgentToStay);
-				agentToStay.setStepInPlan(0);
+			if (agentToStay.getIntention() != null){
+				World.getInstance().getBeliefs().add(agentToStay.getIntention().getDesire().getBelief());
 			}
-			
+			if (agentToMove.getIntention() != null){
+				World.getInstance().getBeliefs().add(agentToMove.getIntention().getDesire().getBelief());
+			}
 		}
+
+		//		}
 
 	}
 
