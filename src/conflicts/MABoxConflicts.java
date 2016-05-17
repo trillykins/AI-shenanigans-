@@ -49,7 +49,7 @@ public class MABoxConflicts {
 				}
 			}
 			if(checkIsIntentionMoving(sender)) {
-				List<Node> newPlan = findNewSolutionForSender(node,sender,conflictBox.getPosition(),receiver);
+				List<Node> newPlan = findNewSolutionForSender(node,sender,conflictBox.getPosition(),receiver,conflictBox);
 				if(newPlan != null && newPlan.size() >0) {
 					sender.setPlan(newPlan);
 					sender.setStepInPlan(0);
@@ -185,7 +185,7 @@ public class MABoxConflicts {
 			List<Node> plan = receiver.getPlan();
 			int conflictIndex = -1;
 			if(plan != null && plan.size() >1) {
-				if(node.action.actType.equals(Command.type.Move)) {//if current sender agent is moving
+				if(node.action != null && node.action.actType.equals(Command.type.Move)) {//if current sender agent is moving
 					int startIndex = 0;
 					for(int i=startIndex;i<plan.size();i++) {
 						Node otherNode = plan.get(i);
@@ -476,11 +476,20 @@ public class MABoxConflicts {
 		
 		int index = oriAgent.getStepInPlan();
 		if(oriAgentPlan.size()>index) {
+			boolean isAddNo = false;
 			for(int i=index;i<oriAgentPlan.size();i++) {
 				Node stepNo=oriAgentPlan.get(i);
-				if(i==index) {//Add one NoOp before new Plan
-					Node parent = createNoOpNode(oriAgent,stepNo);
+				if(index == 0 && !isAddNo) {
+					Node parent = createNoOpNode(oriAgent,null);
 					refreshOriPlan.add(parent);
+					isAddNo = true;
+				}else {
+					if(i==index) {//Add one NoOp before new Plan
+						//Remember current node is not supposed to execute, so add noOp
+						//based on parent node
+						Node parent = createNoOpNode(oriAgent,stepNo.parent);
+						refreshOriPlan.add(parent);
+					}
 				}
 				refreshOriPlan.add(stepNo);
 			}
@@ -508,15 +517,12 @@ public class MABoxConflicts {
 			if(indexSize < 2) {
 				indexSize = 5;
 			}	
-			for(int i = 0; i < indexSize+1; i++){
-				Node lastNode = newPlanForMovingBox.get(newPlanForMovingBoxIndex-1);
-//				if(newPlanForMovingBox.size() == 1 && !lastNode.action.actType.equals(Command.type.NoOp)) {
-//					newPlanForMovingBox.add(createNoOpNode(ag,null));
-//				}else {
-//					newPlanForMovingBox.add(createNoOpNode(ag,lastNode));
-//				}
-				newPlanForMovingBox.add(createNoOpNode(ag,lastNode));
-			}
+//			for(int i = 0; i < indexSize+1; i++){
+//				Node lastNode = newPlanForMovingBox.get(newPlanForMovingBoxIndex-1);
+//				newPlanForMovingBox.add(createNoOpNode(ag,lastNode));
+//				
+//			}
+			addNoOpToSenderPlan(indexSize+1, oriAgent);
 			
 			/*
 			 * If the box is already on the goal, then add belief again
@@ -570,7 +576,7 @@ public class MABoxConflicts {
 		return node;
 	}
 
-	private List<Node> findNewSolutionForSender(Node currentNode,Agent agent,Position posi,Agent receiver) {
+	private List<Node> findNewSolutionForSender(Node currentNode,Agent agent,Position posi,Agent receiver,Box conflictBox) {
 		Strategy strategy = new StrategyBFS();
 		Search sear = new Search();
 	
@@ -598,6 +604,11 @@ public class MABoxConflicts {
 				Goal goal = inten.getDesire().getBelief().getGoal();
 				agent.initialState.goals.put(goal.getId(), goal);
 			}
+//			for(Box otherBox:World.getInstance().getBoxes().values()) {
+//				if(otherBox.getColor().equals(agent.getColor())) {
+//					agent.initialState.boxes.put(otherBox.getId(), otherBox);
+//				}
+//			}
 			agent.initialState.agentCol = agent.getPosition().getY();
 			agent.initialState.agentRow = agent.getPosition().getX();
 		}
@@ -605,6 +616,14 @@ public class MABoxConflicts {
 		agent.initialState.walls.remove(posi);
 		if(receiver != null && agent.getId() != receiver.getId()) {
 			agent.initialState.walls.remove(receiver.getPosition());
+		}
+//		for(Box otherBox:World.getInstance().getBoxes().values()) {
+//			if(otherBox.getId() != conflictBox.getId()) {
+//				agent.initialState.walls.remove(otherBox.getPosition());
+//			}
+//		}
+		if(agent.getIntention() != null) {
+			World.getInstance().getBeliefs().add(agent.getIntention().getDesire().getBelief());
 		}
 		return newPlan;
 	}
