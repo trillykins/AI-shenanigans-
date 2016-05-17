@@ -10,9 +10,9 @@ import java.util.Map;
 
 import atoms.Agent;
 import atoms.Box;
+import atoms.Goal;
 import atoms.Position;
 import atoms.World;
-import bdi.Belief;
 import conflicts.Conflict;
 import conflicts.DetectConflict;
 import conflicts.MABoxConflicts;
@@ -29,14 +29,8 @@ public class Run {
 	private static int conflictId = -1;
 
 	public static void main(String[] args) throws Exception {
-		// System.err.println("SearchClient initializing. I am sending this
-		// using the error output stream.");
 		SearchClient client = new SearchClient();
 		client.init();
-		for (Belief b : World.getInstance().getBeliefs()) {
-			System.err.println(b);
-		}
-
 		SearchClient.TIME = args.length > 1 ? Integer.parseInt(args[1]) : 300;
 		Run run = new Run();
 		run.runSolution(client);
@@ -63,11 +57,12 @@ public class Run {
 				Agent agent = world.getAgents().get(0);
 				if (agent.getPlan().size() == 0 || (agent.getPlan().size() == agent.getStepInPlan())) {
 					world.generatePlan(agent);
-					world.write("Agent 0 chose intention: goal: " + agent.getIntentionGoal().getLetter() + " box: "
-							+ agent.getIntentionBox().getLetter());
 					Strategy strategy = new StrategyBestFirst(new AStar(agent.initialState));
 					Search s = new Search();
 					List<Node> solution = s.search(strategy, agent.initialState, SearchType.PATH);
+					for (Goal g : World.getInstance().getGoals().values())
+						if (g.isSolved())
+							agent.initialState.walls.remove(g.getPosition());
 					agent.setPlan(solution);
 					agent.setStepInPlan(0);
 					for (Box box : World.getInstance().getBoxes().values())
@@ -112,8 +107,7 @@ public class Run {
 						break;
 					case SINGLE_AGENT_BOX:
 						world.write("BOX CONFLICT");
-						con.solveAgentOnBox(con.getNode(), World.getInstance().getAgents().get(0),
-								World.getInstance().getBoxes().get(con.getReceiverBox().getId()));
+						con.solveAgentOnBox(con.getNode(), World.getInstance().getAgents().get(0), World.getInstance().getBoxes().get(con.getReceiverBox().getId()));
 						break;
 					case BOX_BOX:
 						world.write("BOX_BOX CONFLICT");
@@ -139,8 +133,8 @@ public class Run {
 				}
 				Utils.performUpdates(updatedAgentPositions, updatedBoxes);
 			}
-			world.write("Did the agent solve his goal (" + world.getAgents().get(0).getIntentionGoal().getLetter()
-					+ ") " + world.getAgents().get(0).getIntentionGoal().isSolved());
+			world.write("Did the agent solve his goal (" + world.getAgents().get(0).getIntentionGoal().getLetter() + ") "
+					+ world.getAgents().get(0).getIntentionGoal().isSolved());
 			world.updateBeliefs();
 			world.write("World:\n" + world.toString());
 			world.write("Global goal state found = " + world.isGlobalGoalState());
@@ -198,17 +192,17 @@ public class Run {
 				switch (con.getConflictType()) {
 				case AGENT:
 					world.write("AGENT-ON-AGENT CONFLICT");
-					con.solveAgentOnAgent(con,con.getNode(), con.getSender(), con.getReceiver());
+					con.solveAgentOnAgent(con, con.getNode(), con.getSender(), con.getReceiver());
 					break;
 				case SINGLE_AGENT_BOX:
 					world.write("AGENT-ON-BOX CONFLICT");
-//					System.out.println("AGENT-ON-BOX CONFLICT");
+					// System.out.println("AGENT-ON-BOX CONFLICT");
 					MABoxConflicts maBox = new MABoxConflicts();
 					maBox.solveMAgentBoxConflict(con);
 					break;
 				case BOX_BOX:
 					world.write("BOX_BOX CONFLICT");
-//					System.out.println("BOX_BOX CONFLICT");
+					// System.out.println("BOX_BOX CONFLICT");
 					con.MAsolveBoxOnBox(con);
 					break;
 				default:

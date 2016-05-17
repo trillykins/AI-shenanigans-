@@ -41,7 +41,7 @@ public class World {
 	}
 
 	public void write(String str) {
-		files.write(str);
+//		files.write(str);
 	}
 
 	public Map<Integer, Agent> getAgents() {
@@ -124,7 +124,6 @@ public class World {
 	}
 
 	public void updateBeliefs() {
-		// System.err.println(World.getInstance().getBeliefs().size());
 		for (Goal goal : World.getInstance().getGoals().values()) {
 			if (!goal.isSolved()) {
 				boolean contained = false;
@@ -137,12 +136,10 @@ public class World {
 				 * it, we add the belief again
 				 */
 				if (!contained && !agentHasGoalInBelief(goal)) {
-					// System.err.println("adding belief again: " + goal);
 					World.getInstance().getBeliefs().add(new Belief(goal));
 				}
 			}
 		}
-		// System.err.println(World.getInstance().getBeliefs().size());
 	}
 
 	public boolean agentHasGoalInBelief(Goal goal) {
@@ -163,7 +160,6 @@ public class World {
 			return agent;
 		}
 		Intention intention = agent.getIntention();
-		// System.err.println(intention.getDesire() == null);
 		Goal goal = intention.getDesire().getBelief().getGoal();
 		Box intentionBox = intention.getBox();
 		World.getInstance().getBeliefs().remove(intention.getDesire().getBelief());
@@ -190,6 +186,10 @@ public class World {
 		Goal goal = intention.getDesire().getBelief().getGoal();
 		Box intentionBox = intention.getBox();
 
+		for(Goal g : World.getInstance().getGoals().values())
+			if(g.isSolved())
+				agent.initialState.walls.add(g.getPosition());
+				
 		agent.initialState.goals.put(goal.getId(), goal);
 		agent.initialState.boxes.put(intentionBox.getId(), intentionBox);
 		return agent;

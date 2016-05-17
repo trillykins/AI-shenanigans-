@@ -27,9 +27,6 @@ public class LevelAnalysis {
 			}
 		}
 		numberOfOccupiedSpaces += 10 * World.getInstance().getFreeSpace().get(goal.getPosition()).getNarrowCorValue();
-		// System.err.println(goal.toString() + ", occ : " +
-		// numberOfOccupiedSpaces + " narrow :
-		// "+freespace.get(goal.getPosition()).getNarrowCorValue());
 		return 2 * numberOfOccupiedSpaces;
 	}
 
@@ -57,12 +54,15 @@ public class LevelAnalysis {
 		return true;
 	}
 
-	public boolean isSpaceWallOrSolvedGoal(Position position) {
-		/* is there a wall */
+	public boolean isSpaceWall(Position position) {
 		for (Position wallPosition : World.getInstance().getWalls()) {
 			if (wallPosition.equals(position))
 				return true;
 		}
+		return false;
+	}
+	
+	public boolean isSpaceSolvedGoal(Position position) {
 		/* check for solved goal */
 		for (Goal goal : World.getInstance().getGoals().values()) {
 			if (goal.getPosition().equals(position) && goal.isSolved())
