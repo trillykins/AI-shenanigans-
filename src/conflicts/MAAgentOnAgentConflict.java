@@ -125,6 +125,14 @@ public class MAAgentOnAgentConflict {
 		}
 	}
 
+	private static boolean checkIfNoOpPlan(List<Node> agentsPath){
+		for(Node node : agentsPath){
+			if(node.action.actType != Command.type.NoOp)
+				return true;
+		}
+		return false;
+	}
+
 	public static void addNoOpToAgentToStay(Agent agentToMove, Agent agentToStay){
 		List<Node> newPlanAgentToStay = Conflict.updatePlan(agentToStay);
 		newPlanAgentToStay.add(0,agentToStay.initialState);
