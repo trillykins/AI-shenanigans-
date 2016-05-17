@@ -354,6 +354,20 @@ public class DetectConflict {
 					}
 					return createConflict(curAgent, otherAgent, receiverBox, senderBox, curAgentNode, ConflictType.SINGLE_AGENT_BOX);
 				}
+			}else {
+				if (box.getPosition().equals(curAgentNode.getAgentPosition())) {
+					receiverBox = box;
+					/*
+					 * if the conflict box is the same color of current agent,
+					 * then sender and receiver should be the same.
+					 */
+					if (box.getColor().equals(curAgent.getColor())) {
+						otherAgent = curAgent;
+					}else {
+						otherAgent = findAgentForBox(box,curAgent);
+					}
+					return createConflict(curAgent, otherAgent, receiverBox, senderBox, curAgentNode, ConflictType.SINGLE_AGENT_BOX);
+				}
 			}
 		}
 		return null;
