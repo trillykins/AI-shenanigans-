@@ -56,7 +56,7 @@ public class Run {
 			if (!replanned) {
 				Agent agent = world.getAgents().get(0);
 				if (agent.getPlan().size() == 0 || (agent.getPlan().size() == agent.getStepInPlan())) {
-					world.generatePlan(agent);
+					world.generateSAPlan(agent);
 					Strategy strategy = new StrategyBestFirst(new AStar(agent.initialState));
 					Search s = new Search();
 					List<Node> solution = s.search(strategy, agent.initialState, SearchType.PATH);
@@ -143,12 +143,22 @@ public class Run {
 
 	private void multiAgentPlanner() {
 		boolean replanned = false;
+		/*Testing*/
+		for(Agent agent : world.getAgents().values()){
+			for (Box box : world.getBoxes().values()) {
+				if (!world.isBoxReachable(agent, box)) {
+					world.getAgents().get(agent.getId()).addUnreachableBoxId(box.getId());
+				}
+			}
+		}
 		mainLoop: while (!world.isGlobalGoalState()) {
 			if (!replanned) {
 				for (Agent agent : world.getAgents().values()) {
 					if (agent.getPlan().size() == 0 || (agent.getPlan().size() == agent.getStepInPlan())) {
 						world.generatePlan(agent);
-						Strategy strategy = new StrategyBFS();
+//						Strategy strategy = new StrategyBFS();
+						Strategy strategy = new StrategyBestFirst(new AStar(agent.initialState));
+						
 						Search s = new Search();
 						List<Node> solution = s.search(strategy, agent.initialState, SearchType.PATH);
 						agent.setPlan(solution);
@@ -196,13 +206,11 @@ public class Run {
 					break;
 				case SINGLE_AGENT_BOX:
 					world.write("AGENT-ON-BOX CONFLICT");
-					// System.out.println("AGENT-ON-BOX CONFLICT");
 					MABoxConflicts maBox = new MABoxConflicts();
 					maBox.solveMAgentBoxConflict(con);
 					break;
 				case BOX_BOX:
 					world.write("BOX_BOX CONFLICT");
-					// System.out.println("BOX_BOX CONFLICT");
 					con.MAsolveBoxOnBox(con);
 					break;
 				default:
@@ -210,6 +218,25 @@ public class Run {
 					break;
 				}
 				replanned = true;
+				/*TESTING : adding noOp for all other agents but the two conflicting ones*/
+//				for(Agent agent : world.getAgents().values()){
+//					/*if the Receiver is null, then - find the closest agent and e
+//					 * xclude him from theupdate*/
+//					if(agent != con.getSender() && agent != con.getReceiver()){
+//						Node previousNode = null;
+//						if(agent.getStepInPlan() > 0)
+//							previousNode = agent.getPlan().get(agent.getStepInPlan()-1);
+//						else
+//							previousNode = agent.initialState;
+//						
+//						List<Node> newPlanAgentNoOp = Conflict.updatePlan(agent);
+//						Node noOp = Conflict.createNoOpNode(agent, previousNode);
+//						newPlanAgentNoOp.remove(0);
+//						newPlanAgentNoOp.add(0, noOp);
+//						agent.setPlan(newPlanAgentNoOp);
+//						agent.setStepInPlan(0);
+//					}
+//				}
 				continue mainLoop;
 			} else {
 				replanned = false;
@@ -227,7 +254,7 @@ public class Run {
 			}
 			world.updateBeliefs();
 			world.write("World:\n" + world.toString());
-			// System.out.println("World:\n" + world.toString());
+//			System.out.println("World:\n" + world.toString());
 			world.write("Global goal state found = " + world.isGlobalGoalState());
 		}
 	}
