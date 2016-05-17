@@ -401,4 +401,22 @@ public class Conflict {
 				.append("\n").append(node).append("]");
 		return builder.toString();
 	}
+	
+	public static Node createNoOpNode(Agent agent, Node parent) {
+		Node node = new Node(parent,agent.getId());
+		node.action = new Command();
+		if(parent != null) {
+			node.boxes = parent.boxes;
+			node.agentCol = parent.agentCol;
+			node.agentRow = parent.agentRow;
+		}else {
+			node.boxes = agent.initialState.boxes;
+			node.agentCol = agent.getPosition().getY();
+			node.agentRow = agent.getPosition().getX();
+		}
+
+		node.goals = agent.initialState.goals;
+		node.walls = agent.initialState.walls;
+		return node;
+	}
 }
