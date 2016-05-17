@@ -79,12 +79,10 @@ public class Conflict {
 		this.receiverBox = box;
 	}
 
-	public void MAsolveBoxOnBox(
-			Conflict conflict/* , int index, List<List<Node>> allSolutions */) {
+	public void MAsolveBoxOnBox(Conflict conflict) {
 		Agent agentToMove = null, agentToStay = null;
 		Box agentToMoveBox = null, agentToStayBox = null;
 
-		// System.err.println(conflict.getReceiver());
 		if (conflict.getReceiver() != null)
 			agentToMove = world.getAgents().get(conflict.getReceiver().getId());
 		agentToMoveBox = world.getBoxes().get(conflict.getReceiverBox().getId());
@@ -249,11 +247,6 @@ public class Conflict {
 					futurePositions.add(b); // TODO potential problem
 				}
 				plans.add(tmpPlan);
-				// printPlan(tmpPlan, "plan_extra2_" +
-				// agent.getIntentionBox().getLetter() +"_" + i);
-				// if (agent.getIntentionGoal().getLetter() == 'b')
-				// printPlan(tmpPlan, "goal_b" + i);
-
 			}
 		}
 		// List<Box> boxPositions = new ArrayList<>(0);
@@ -301,8 +294,6 @@ public class Conflict {
 
 		finalPlan.addAll(originalPlanFromRightIndex);
 		finalPlan = verifyPlan(finalPlan);
-
-		// printPlan(finalPlan, "goal_" + agent.getIntentionGoal().getLetter());
 
 		agentToMove.setPlan(finalPlan);
 		agentToMove.setStepInPlan(0);
@@ -425,5 +416,23 @@ public class Conflict {
 		builder.append("Conflict [conflictType=").append(conflictType).append(", sender=").append(sender).append(", receiver=").append(receiver).append(", node=")
 				.append("\n").append(node).append("]");
 		return builder.toString();
+	}
+	
+	public static Node createNoOpNode(Agent agent, Node parent) {
+		Node node = new Node(parent,agent.getId());
+		node.action = new Command();
+		if(parent != null) {
+			node.boxes = parent.boxes;
+			node.agentCol = parent.agentCol;
+			node.agentRow = parent.agentRow;
+		}else {
+			node.boxes = agent.initialState.boxes;
+			node.agentCol = agent.getPosition().getY();
+			node.agentRow = agent.getPosition().getX();
+		}
+
+		node.goals = agent.initialState.goals;
+		node.walls = agent.initialState.walls;
+		return node;
 	}
 }
