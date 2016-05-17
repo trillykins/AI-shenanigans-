@@ -9,6 +9,7 @@ import atoms.Box;
 import atoms.Goal;
 import atoms.Position;
 import atoms.World;
+import bdi.Intention;
 import searchclient.Command;
 import searchclient.Node;
 import searchclient.Search;
@@ -131,6 +132,28 @@ public class MAAgentOnAgentConflict {
 			newPlanAgentToStay.add(0,noOp);
 		agentToStay.setPlan(newPlanAgentToStay);
 		agentToStay.setStepInPlan(0);
+
+		/*try to replan for agentToMove*/
+//		if(agentToMove.getIntention() != null){
+//			agentToMove.generateInitialState();
+//			agentToMove.initialState.walls.add(agentToStay.getPosition());
+//			agentToMove.initialState.agentRow = agentToMove.getPosition().getX();
+//			agentToMove.initialState.agentCol = agentToMove.getPosition().getY();
+//			
+//			Intention intention = agentToMove.getIntention();
+//			Box intentionBox = intention.getBox();
+//			Goal intentionGoal = intention.getDesire().getBelief().getGoal();
+//			agentToMove.initialState.boxes.put(intentionBox.getId(), intentionBox);
+//			agentToMove.initialState.goals.put(intentionGoal.getId(),intentionGoal);
+//			Strategy strategy = new StrategyBFS();
+//			Search s = new Search();
+//			LinkedList<Node> newPlanAgentToMove = s.search(strategy, agentToMove.initialState, SearchType.PATH);
+//			
+////			System.err.println("");
+//			agentToMove.setPlan(newPlanAgentToMove);
+//			agentToMove.setStepInPlan(0);
+//
+//		}
 	}
 	public static void moveAgentOnAgentWithBox(Agent agentToMove, Agent agentToStay, Box boxToMove){
 		if(agentToStay.getStepInPlan() == 0)
@@ -192,7 +215,7 @@ public class MAAgentOnAgentConflict {
 					newPlanAgentToStay.remove(0);
 				newPlanAgentToStay.add(0,noOp);
 				newPlanAgentToStay.add(0,noOp);
-				
+
 				newPlanAgentToMove = insertNoOps(newPlanAgentToMove,agentToMove);
 				agentToStay.setPlan(newPlanAgentToStay);
 				agentToStay.setStepInPlan(0);
