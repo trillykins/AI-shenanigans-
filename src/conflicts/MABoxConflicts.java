@@ -269,12 +269,14 @@ public class MABoxConflicts {
 	private List<Node> getCurrentLeftPlan(Agent agent) {
 		int stepInPlan = agent.getStepInPlan();
 		List<Node> plan = agent.getPlan();
-		if(plan != null && plan.size()>stepInPlan) {
-			for(int i=0; i<stepInPlan;i++) {
-				plan.remove(0);
+		if(stepInPlan != 0) {
+			if(plan != null && plan.size()>stepInPlan) {
+				for(int i=0; i<stepInPlan;i++) {
+					plan.remove(0);
+				}
+			}else {
+				plan = new LinkedList<Node>();
 			}
-		}else {
-			plan = new LinkedList<Node>();
 		}
 		return plan;
 	}
@@ -371,10 +373,14 @@ public class MABoxConflicts {
 				List<Node> otherSolution = getCurrentLeftPlan(otherAgent);
 				if(!(otherSolution.size() == 1 
 						&& otherSolution.get(0).action.actType.equals(Command.type.NoOp))) {
-					Node curNode = otherSolution.get(0);
-					Node parent = createNoOpNode(otherAgent,curNode);
-					otherSolution.get(0).parent = parent;
-					otherSolution.add(0,parent);
+					Node parentNode = null;
+					if(otherAgent.getStepInPlan() != 0) {
+						parentNode = otherSolution.get(0);
+					}
+					parentNode = createNoOpNode(otherAgent,parentNode);
+					
+					otherSolution.get(0).parent = parentNode;
+					otherSolution.add(0,parentNode);
 				}
 				otherAgent.setPlan(otherSolution);
 				otherAgent.setStepInPlan(0);
@@ -604,11 +610,6 @@ public class MABoxConflicts {
 				Goal goal = inten.getDesire().getBelief().getGoal();
 				agent.initialState.goals.put(goal.getId(), goal);
 			}
-//			for(Box otherBox:World.getInstance().getBoxes().values()) {
-//				if(otherBox.getColor().equals(agent.getColor())) {
-//					agent.initialState.boxes.put(otherBox.getId(), otherBox);
-//				}
-//			}
 			agent.initialState.agentCol = agent.getPosition().getY();
 			agent.initialState.agentRow = agent.getPosition().getX();
 		}
@@ -617,11 +618,6 @@ public class MABoxConflicts {
 		if(receiver != null && agent.getId() != receiver.getId()) {
 			agent.initialState.walls.remove(receiver.getPosition());
 		}
-//		for(Box otherBox:World.getInstance().getBoxes().values()) {
-//			if(otherBox.getId() != conflictBox.getId()) {
-//				agent.initialState.walls.remove(otherBox.getPosition());
-//			}
-//		}
 		if(agent.getIntention() != null) {
 			World.getInstance().getBeliefs().add(agent.getIntention().getDesire().getBelief());
 		}
