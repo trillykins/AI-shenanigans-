@@ -63,8 +63,6 @@ public class Run {
 				Agent agent = world.getAgents().get(0);
 				if (agent.getPlan().size() == 0 || (agent.getPlan().size() == agent.getStepInPlan())) {
 					world.generatePlan(agent);
-					world.write("Agent 0 chose intention: goal: " + agent.getIntentionGoal().getLetter() + " box: "
-							+ agent.getIntentionBox().getLetter());
 					Strategy strategy = new StrategyBestFirst(new AStar(agent.initialState));
 					Search s = new Search();
 					List<Node> solution = s.search(strategy, agent.initialState, SearchType.PATH);
@@ -129,7 +127,7 @@ public class Run {
 			} else {
 				replanned = false;
 				System.out.println(sb.toString());
-				world.write(sb.toString());
+//				world.write(sb.toString());
 				try {
 					BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 					if (in.ready())
@@ -139,10 +137,10 @@ public class Run {
 				}
 				Utils.performUpdates(updatedAgentPositions, updatedBoxes);
 			}
-			world.write("Did the agent solve his goal (" + world.getAgents().get(0).getIntentionGoal().getLetter()
-					+ ") " + world.getAgents().get(0).getIntentionGoal().isSolved());
+//			world.write("Did the agent solve his goal (" + world.getAgents().get(0).getIntentionGoal().getLetter()
+//					+ ") " + world.getAgents().get(0).getIntentionGoal().isSolved());
 			world.updateBeliefs();
-			world.write("World:\n" + world.toString());
+//			world.write("World:\n" + world.toString());
 			world.write("Global goal state found = " + world.isGlobalGoalState());
 		}
 	}
@@ -242,7 +240,7 @@ public class Run {
 				Utils.performUpdates(updatedAgentPositions, updatedBoxes);
 			}
 			world.updateBeliefs();
-			world.write("World:\n" + world.toString());
+//			world.write("World:\n" + world.toString());
 //			System.out.println("World:\n" + world.toString());
 			world.write("Global goal state found = " + world.isGlobalGoalState());
 		}
