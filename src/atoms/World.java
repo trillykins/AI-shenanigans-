@@ -160,16 +160,16 @@ public class World {
 			return agent;
 		}
 		Intention intention = agent.getIntention();
+		World.getInstance().beliefs.remove(intention.getDesire().getBelief());
 		Goal goal = intention.getDesire().getBelief().getGoal();
 		Box intentionBox = intention.getBox();
-		World.getInstance().getBeliefs().remove(intention.getDesire().getBelief());
+
+		for(Goal g : World.getInstance().getGoals().values())
+			if(g.isSolved())
+				agent.initialState.walls.add(g.getPosition());
+				
 		agent.initialState.goals.put(goal.getId(), goal);
 		agent.initialState.boxes.put(intentionBox.getId(), intentionBox);
-
-		for (Box box : boxes.values()) {
-			if (box.isOnGoal())
-				agent.initialState.boxes.put(box.getId(), box);
-		}
 		return agent;
 	}
 
@@ -186,10 +186,6 @@ public class World {
 		Goal goal = intention.getDesire().getBelief().getGoal();
 		Box intentionBox = intention.getBox();
 
-		for(Goal g : World.getInstance().getGoals().values())
-			if(g.isSolved())
-				agent.initialState.walls.add(g.getPosition());
-				
 		agent.initialState.goals.put(goal.getId(), goal);
 		agent.initialState.boxes.put(intentionBox.getId(), intentionBox);
 		return agent;
