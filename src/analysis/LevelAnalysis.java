@@ -57,12 +57,15 @@ public class LevelAnalysis {
 		return true;
 	}
 
-	public boolean isSpaceWallOrSolvedGoal(Position position) {
-		/* is there a wall */
+	public boolean isSpaceWall(Position position) {
 		for (Position wallPosition : World.getInstance().getWalls()) {
 			if (wallPosition.equals(position))
 				return true;
 		}
+		return false;
+	}
+	
+	public boolean isSpaceSolvedGoal(Position position) {
 		/* check for solved goal */
 		for (Goal goal : World.getInstance().getGoals().values()) {
 			if (goal.getPosition().equals(position) && goal.isSolved())
