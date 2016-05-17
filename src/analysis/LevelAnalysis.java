@@ -27,9 +27,6 @@ public class LevelAnalysis {
 			}
 		}
 		numberOfOccupiedSpaces += 10 * World.getInstance().getFreeSpace().get(goal.getPosition()).getNarrowCorValue();
-		// System.err.println(goal.toString() + ", occ : " +
-		// numberOfOccupiedSpaces + " narrow :
-		// "+freespace.get(goal.getPosition()).getNarrowCorValue());
 		return 2 * numberOfOccupiedSpaces;
 	}
 

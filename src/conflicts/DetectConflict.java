@@ -45,8 +45,7 @@ public class DetectConflict {
 			case Move:
 				for (Box box : World.getInstance().getBoxes().values()) {
 					if (box.getPosition().equals(next.getAgentPosition()) && !box.equals(intentionBox)) {
-						System.err.println("MOVE");
-						// System.err.println(agent.initialState);
+//						System.err.println("MOVE");
 						return createConflict(agent, null, box, null, next, ConflictType.SINGLE_AGENT_BOX);
 					}
 				}
@@ -55,7 +54,7 @@ public class DetectConflict {
 				for (Box conflictingBox : World.getInstance().getBoxes().values()) {
 					if (intentionBoxPositionInNext != null) {
 						if (conflictingBox.getPosition().equals(intentionBoxPositionInNext.getPosition()) && conflictingBox.getId() != intentionBox.getId()) {
-							System.err.println("PUSH");
+//							System.err.println("PUSH");
 							return createConflict(agent, null, conflictingBox, intentionBox, next, ConflictType.BOX_BOX);
 						}
 					}
@@ -64,15 +63,15 @@ public class DetectConflict {
 			case Pull:
 				for (Box conflictingBox : World.getInstance().getBoxes().values()) {
 					if (conflictingBox.getPosition().equals(next.getAgentPosition()) && !conflictingBox.equals(intentionBox)) {
-						System.err.println("PULL");
+//						System.err.println("PULL");
 						return createConflict(agent, null, conflictingBox, intentionBox, next, ConflictType.SINGLE_AGENT_BOX);
 					}
 				}
 				break;
 			case NoOp:
-				System.err.println("Detect conflict");
-				System.err.println(agent.initialState);
-				System.err.println("!!!Agent is No-Op'ing in a single-agent level!!!".toUpperCase());
+//				System.err.println("Detect conflict");
+//				System.err.println(agent.initialState);
+//				System.err.println("!!!Agent is No-Op'ing in a single-agent level!!!".toUpperCase());
 				System.exit(-1);
 				break;
 			}
