@@ -12,6 +12,7 @@ import utils.Utils;
 import analysis.FreeSpace;
 import atoms.Agent;
 import atoms.Box;
+import atoms.Color;
 import atoms.Goal;
 import atoms.Position;
 import atoms.World;
@@ -510,21 +511,11 @@ public class MABoxConflicts {
 			/*Add noOps (can be optimized)*/
 			int oriAgentPlanSize = refreshOriPlan.size();
 			int newPlanForMovingBoxIndex = newPlanForMovingBox.size();
-			int newIndex = 0;
-//			if (newPlanForMovingBoxIndex < 2) {
-//				newIndex = 4;
-//			}else {
-//				newIndex = newPlanForMovingBoxIndex;
-//			}
+
 			int indexSize = oriAgentPlanSize - newPlanForMovingBoxIndex;
 			if(indexSize < 2) {
 				indexSize = 5;
 			}	
-//			for(int i = 0; i < indexSize+1; i++){
-//				Node lastNode = newPlanForMovingBox.get(newPlanForMovingBoxIndex-1);
-//				newPlanForMovingBox.add(createNoOpNode(ag,lastNode));
-//				
-//			}
 			addNoOpToSenderPlan(indexSize+1, oriAgent);
 			
 			/*
@@ -555,8 +546,24 @@ public class MABoxConflicts {
 		/*we call move-own-box : it compares with the other agents path and moves both agent and box :) */
 		List<Node> newPlan = s.search(strategy, agent.initialState, Search.SearchType.MOVE_OWN_BOX);
 		agent.initialState.walls.remove(oriAgent.getPosition());
-		
+		if(newPlan == null) {
+			newPlan = createFakeGoalToMoveBoxAway(moveBox,agent);
+		}
 		World.getInstance().getBeliefs().add(agent.getIntention().getDesire().getBelief());
+		return newPlan;
+	}
+	
+	private List<Node> createFakeGoalToMoveBoxAway(Box moveBox, Agent agent) {
+		Strategy strategy = new StrategyBFS();
+		Search s = new Search();
+		
+		Position newPosi = findPossiblePosition(agent);
+		int goalId = World.getInstance().getGoals().size();
+		
+		Goal fakeGoal = new Goal(goalId, newPosi, Character.toLowerCase(moveBox.getLetter()), null,1);
+		agent.initialState.goals.put(goalId, fakeGoal);
+		
+		List<Node> newPlan = s.search(strategy, agent.initialState, Search.SearchType.PATH);
 		return newPlan;
 	}
 	
@@ -577,6 +584,23 @@ public class MABoxConflicts {
 		
 		node.goals = agent.initialState.goals;
 		return node;
+	}
+	
+	private Position findPossiblePosition(Agent agentToStay) {
+		int closetsCorner = 10000;
+		Position position = null;
+		for(FreeSpace freespace : World.getInstance().getFreeSpace().values()){
+			if(freespace.isSurroundedByTreeWalls()){
+				int currDistance = Utils.manhattenDistance(agentToStay.getPosition(), freespace.getPosition());
+				if(currDistance < closetsCorner){
+					for(Box box: World.getInstance().getBoxes().values()){
+						if(!freespace.getPosition().equals(box.getPosition()))
+							position = freespace.getPosition();
+					}
+				}
+			}
+		}
+		return position;
 	}
 
 	private List<Node> findNewSolutionForSender(Node currentNode,Agent agent,Position posi,Agent receiver,Box conflictBox) {

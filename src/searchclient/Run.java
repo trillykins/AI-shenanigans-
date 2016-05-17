@@ -207,17 +207,18 @@ public class Run {
 				switch (con.getConflictType()) {
 				case AGENT:
 					world.write("AGENT-ON-AGENT CONFLICT");
+					System.err.println("AGENT-ON-AGENT CONFLICT");
 					con.solveAgentOnAgent(con,con.getNode(), con.getSender(), con.getReceiver());
 					break;
 				case SINGLE_AGENT_BOX:
 					world.write("AGENT-ON-BOX CONFLICT");
-//					System.out.println("AGENT-ON-BOX CONFLICT"+"Receiver agent:"+con.getReceiver().getId() +"Sender agent:"+ con.getSender().getId());
+					System.err.println("AGENT-ON-BOX CONFLICT");
 					MABoxConflicts maBox = new MABoxConflicts();
 					maBox.solveMAgentBoxConflict(con);
 					break;
 				case BOX_BOX:
 					world.write("BOX_BOX CONFLICT");
-//					System.out.println("BOX_BOX CONFLICT" + "Receiver agent:"+con.getReceiver().getId()+"Sender agent:"+ con.getSender().getId());
+					System.err.println("BOX_BOX CONFLICT");
 					con.MAsolveBoxOnBox(con);
 					break;
 				default:
@@ -242,7 +243,7 @@ public class Run {
 			}
 			world.updateBeliefs();
 //			world.write("World:\n" + world.toString());
-//			System.out.println("World:\n" + world.toString());
+//			System.err.println("World:\n" + world.toString());
 			world.write("Global goal state found = " + world.isGlobalGoalState());
 		}
 	}
