@@ -450,10 +450,7 @@ public class MABoxConflicts {
 			}else {
 				removeBoxAg.setPlan(newPlan);
 				removeBoxAg.setStepInPlan(0);
-				
-				Node noOp = createNoOpNode(oriAgent,null);
-				oriAgent.getPlan().add(0, noOp);
-				oriAgent.setStepInPlan(0);
+				addNoOpToSenderPlan(newPlan.size()+1,oriAgent);
 			}
 		}
 		
