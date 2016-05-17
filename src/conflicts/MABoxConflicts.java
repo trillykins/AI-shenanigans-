@@ -433,14 +433,41 @@ public class MABoxConflicts {
 		    sear.setPlanForAgentToStay(oriAgent.getPlan());
 			List<Node> newPlan = sear.search(strategy, removeBoxAg.initialState, Search.SearchType.MOVE_OWN_BOX);
 			removeBoxAg.initialState.walls.remove(oriAgent.getPosition());
-			removeBoxAg.setPlan(newPlan);
-			removeBoxAg.setStepInPlan(0);
-			
-			Node noOp = createNoOpNode(oriAgent,null);
-			oriAgent.getPlan().add(0, noOp);
-			oriAgent.setStepInPlan(0);
+			if(newPlan == null) {
+				//receiver could not replan, then let sender wait for receiver to move here
+				//receiver continue the previous plan
+				List<Node> prePlan = removeBoxAg.getPlan();
+				if(prePlan != null && prePlan.size() >0) {
+					int noOpsize = prePlan.size() - removeBoxAg.getStepInPlan();
+					addNoOpToSenderPlan(noOpsize, oriAgent);
+				}
+			}else {
+				removeBoxAg.setPlan(newPlan);
+				removeBoxAg.setStepInPlan(0);
+				
+				Node noOp = createNoOpNode(oriAgent,null);
+				oriAgent.getPlan().add(0, noOp);
+				oriAgent.setStepInPlan(0);
+			}
 		}
 		
+	}
+	
+	private void addNoOpToSenderPlan(int size, Agent agent) {
+		List<Node> agentPlan = getCurrentLeftPlan(agent);
+		List<Node> newPlan = new LinkedList<Node>();
+		if(agentPlan != null && agentPlan.size() > 0) {
+			Node firstNode = agentPlan.get(0);
+			for(int i=0;i<size+1;i++) {
+				//Remember the current node is the conflict node, it should not be execute
+				//so Noop should be created based on the parent node
+				Node noOp = createNoOpNode(agent,firstNode.parent);
+				newPlan.add(noOp);
+			}
+			newPlan.addAll(agentPlan);
+			agent.setPlan(newPlan);
+			agent.setStepInPlan(0);
+		}
 	}
 	
 	private void solveBoxOnGoalConflict(Node node,Agent oriAgent,Agent ag,Box box) {
