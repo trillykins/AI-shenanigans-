@@ -163,21 +163,32 @@ public class MAAgentOnAgentConflict {
 			agentToMove.initialState.walls.add(new Position(agentToStay.getPosition()));
 			agentToMove.initialState.agentRow = agentToMove.getPosition().getX();
 			agentToMove.initialState.agentCol = agentToMove.getPosition().getY();
-			if (boxToMove  == null )
+			Goal intentionGoal = null;
+			if (boxToMove  == null && agentToMove.getIntention() != null){
 				boxToMove = World.getInstance().getBoxes().get(agentToMove.getIntention().getBox().getId());
-
+				intentionGoal = agentToMove.getIntentionGoal();
+			}
 			agentToMove.initialState.boxes.put(boxToMove.getId(), boxToMove);
 			/*testing*/
 			for(Box boxOfSameColor : World.getInstance().getBoxes().values()){
 				if(boxOfSameColor.getColor() == boxToMove.getColor())
 					agentToMove.initialState.boxes.put(boxOfSameColor.getId(), boxOfSameColor);
 			}
+			agentToMove.initialState.goals.put(intentionGoal.getId(), intentionGoal);
+			
+			/*we first try to replan*/
 			Strategy strategy = new StrategyBFS();
 			Search s = new Search();
-
-			List<Node> newPlanAgentToStay = Conflict.updatePlan(agentToStay);
-			s.setPlanForAgentToStay(newPlanAgentToStay);
-			LinkedList<Node> newPlanAgentToMove = s.search(strategy, agentToMove.initialState, SearchType.MOVE_OWN_BOX);
+			LinkedList<Node> newPlanAgentToMove = null;
+			List<Node> newPlanAgentToStay = null;
+			newPlanAgentToMove = s.search(strategy, agentToMove.initialState, SearchType.PATH);
+			
+			newPlanAgentToStay = Conflict.updatePlan(agentToStay);
+			if(newPlanAgentToMove == null){
+				s.setPlanForAgentToStay(newPlanAgentToStay);
+				newPlanAgentToMove = s.search(strategy, agentToMove.initialState, SearchType.MOVE_OWN_BOX);
+				World.getInstance().getBeliefs().add(agentToMove.getIntention().getDesire().getBelief());
+			}
 			agentToMove.initialState.walls.remove(agentToStay.getPosition());
 			/*testing*/
 			for(Box boxOfSameColor : World.getInstance().getBoxes().values()){
@@ -220,7 +231,7 @@ public class MAAgentOnAgentConflict {
 				agentToStay.setPlan(newPlanAgentToStay);
 				agentToStay.setStepInPlan(0);
 			}
-			World.getInstance().getBeliefs().add(agentToMove.getIntention().getDesire().getBelief());
+//			World.getInstance().getBeliefs().add(agentToMove.getIntention().getDesire().getBelief());
 			if(!putAgentInACorner){
 				agentToMove.setPlan(newPlanAgentToMove);
 				agentToMove.setStepInPlan(0);
