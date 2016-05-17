@@ -242,8 +242,8 @@ public class Conflict {
 					futurePositions.add(b); // TODO potential problem
 				}
 				plans.add(tmpPlan);
-				if (agent.getIntentionGoal().getLetter() == 'b')
-					printPlan(tmpPlan, "goal_b" + i);
+//				if (agent.getIntentionGoal().getLetter() == 'b')
+//					printPlan(tmpPlan, "goal_b" + i);
 
 			}
 		}
@@ -257,7 +257,7 @@ public class Conflict {
 		finalPlan.addAll(originalPlanFromRightIndex);
 		finalPlan = verifyPlan(finalPlan);
 
-		printPlan(finalPlan, "goal_" + agent.getIntentionGoal().getLetter());
+//		printPlan(finalPlan, "goal_" + agent.getIntentionGoal().getLetter());
 
 		agentToMove.setPlan(finalPlan);
 		agentToMove.setStepInPlan(0);
