@@ -226,6 +226,25 @@ public class Run {
 					break;
 				}
 				replanned = true;
+				/*TESTING : adding noOp for all other agents but the two conflicting ones*/
+//				for(Agent agent : world.getAgents().values()){
+//					/*if the Receiver is null, then - find the closest agent and e
+//					 * xclude him from theupdate*/
+//					if(agent != con.getSender() && agent != con.getReceiver()){
+//						Node previousNode = null;
+//						if(agent.getStepInPlan() > 0)
+//							previousNode = agent.getPlan().get(agent.getStepInPlan()-1);
+//						else
+//							previousNode = agent.initialState;
+//						
+//						List<Node> newPlanAgentNoOp = Conflict.updatePlan(agent);
+//						Node noOp = Conflict.createNoOpNode(agent, previousNode);
+//						newPlanAgentNoOp.remove(0);
+//						newPlanAgentNoOp.add(0, noOp);
+//						agent.setPlan(newPlanAgentNoOp);
+//						agent.setStepInPlan(0);
+//					}
+//				}
 				continue mainLoop;
 			} else {
 				replanned = false;
