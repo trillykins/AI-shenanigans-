@@ -119,10 +119,8 @@ public class Conflict {
 
 		if (agentToMove.getPlan().get(agentToMove.getStepInPlan()).action.actType.equals(Command.type.Pull)
 				|| agentToMove.getPlan().get(agentToMove.getStepInPlan()).action.actType.equals(Command.type.Push)) {
-			System.err.println("AA 1");
 			MAAgentOnAgentConflict.moveAgentOnAgentWithBox(agentToMove, agentToStay, agentToMoveBox);
 		} else {
-			System.err.println("AA 2");
 			MAAgentOnAgentConflict.moveAgentOnAgentNoBox(agentToMove, agentToStay, agentToMoveBox);
 
 		}
@@ -247,6 +245,7 @@ public class Conflict {
 					futurePositions.add(b); // TODO potential problem
 				}
 				plans.add(tmpPlan);
+
 			}
 		}
 		// List<Box> boxPositions = new ArrayList<>(0);
@@ -294,6 +293,7 @@ public class Conflict {
 
 		finalPlan.addAll(originalPlanFromRightIndex);
 		finalPlan = verifyPlan(finalPlan);
+
 
 		agentToMove.setPlan(finalPlan);
 		agentToMove.setStepInPlan(0);
