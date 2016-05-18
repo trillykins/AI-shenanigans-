@@ -207,8 +207,10 @@ public class Agent implements IMessage {
 			List<Position> fields = la.surroundingFields(goal.getPosition());
 			int numberOfOccupiedSpaces = 0;
 			for (int j = 0; j < fields.size(); j++) {
-				if (la.isSpaceWallOrSolvedGoal(fields.get(j))) {
+				if (la.isSpaceSolvedGoal(fields.get(j))) {
 					numberOfOccupiedSpaces++;
+				} else if(la.isSpaceWall(fields.get(j))) {
+					numberOfOccupiedSpaces += 2;
 				} else if (la.isSpaceGoal(fields.get(j))) {
 					numberOfOccupiedSpaces += 3;
 				} else {
@@ -216,7 +218,6 @@ public class Agent implements IMessage {
 				}
 			}
 			goal.setPriority(numberOfOccupiedSpaces);
-			System.err.println(goal.getLetter() + ":  " + goal.getPriority());
 		}
 
 		int boxDistance = Integer.MAX_VALUE;
@@ -274,10 +275,6 @@ public class Agent implements IMessage {
 			int numberOfFreeSpacesForGoal = levelAnalysis.calculateGoalPriority(goal);
 
 			int currTotal = goalPriority + numberOfFreeSpacesForGoal + costOfClosestBoxToGoal + costOfAgentToClosestBox + numberOfFreeSpacesForGoal;
-
-//			System.err.println("Goal " + goal.getLetter() + " currTotal " + currTotal + "\tgoalP: " + goalPriority + " costOfClosestBoxToG: " + costOfClosestBoxToGoal
-//					+ "costOfAgentToClosestB: " + costOfAgentToClosestBox + "numberOfFreeSpacesForGoal: " + numberOfFreeSpacesForGoal);
-
 			/*
 			 * we are looking for the smallest value possible, the optimal would
 			 * be a very close goal, which have 0 occupied neighbors.

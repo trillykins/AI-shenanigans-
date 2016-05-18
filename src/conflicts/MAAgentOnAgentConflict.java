@@ -98,7 +98,6 @@ public class MAAgentOnAgentConflict {
 					if(agentToMove.getIntention() != null) {
 						World.getInstance().getBeliefs().add(agentToMove.getIntention().getDesire().getBelief());
 					}
-					System.err.println("1:");
 				}else{
 					/*the newplan is empty we just add a no op to existing plan*/
 					newPlanAgentToMove = (LinkedList<Node>) Conflict.updatePlan(agentToMove);

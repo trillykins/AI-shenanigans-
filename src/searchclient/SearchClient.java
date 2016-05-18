@@ -36,9 +36,10 @@ public class SearchClient {
 		colors = new HashMap<>(0);
 		colorSet = new ArrayList<>(0);
 		in = new BufferedReader(new InputStreamReader(System.in));
-//		in = new BufferedReader(new FileReader("//Users//sunmengwei//Documents//competition//MATheRedDot.lvl"));
+
+//		in = new BufferedReader(new FileReader("//Users//sunmengwei//Documents//competition//MASojourner.lvl"));
 //		in = new BufferedReader(new FileReader("//Users//sunmengwei//Documents//levels//MAschwenke.lvl"));
-//		in = new BufferedReader(new FileReader("C://Users//Tjoe//Documents//levels//MAthereddot.lvl"));
+//		in = new BufferedReader(new FileReader("C://Users//Tjoe//Documents//levels//MADangerbot.lvl"));
 		world = World.getInstance();
 	}
 

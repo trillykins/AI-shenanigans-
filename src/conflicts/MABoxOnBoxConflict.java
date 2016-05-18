@@ -74,19 +74,15 @@ public class MABoxOnBoxConflict {
 
 		if(newPlanAgentToStay == null){
 			if (agentToMoveBox.getColor().equals(agentToStayBox.getColor())){
-				System.err.println("1");
 				moveAgentBoxAndConflictBox(agentToStay,agentToStayBox,agentToMove,agentToMoveBox);
 			}else{
-				System.err.println("2");
 				getAnotherAgentToMoveConflictBox(agentToStay,agentToStayBox,agentToMove,agentToMoveBox);
 			}
 		}else{
 			/*we just want the agent to run the new plan*/
-			System.err.println("3");
 			/*update beliefs with his intention*/
 			agentToStay.setPlan(newPlanAgentToStay);
 			agentToStay.setStepInPlan(0);
-			System.err.println("run the new plan of the agentToStay");
 		}
 	}
 
@@ -94,7 +90,6 @@ public class MABoxOnBoxConflict {
 		/*first we try to replan, if that is not possible, we will make the agent move the box himself*/
 		/*TODO this check below is not nessesary - but code errors*/
 		if(replanAgentToStay(agentToStay,agentToStayBox,agentToMoveBox)){
-			System.err.println("replan worked");
 		}else{
 			/*if it is not possible to replan, we have to move conflict box away first*/
 			replanAgentToStayWithConflictBox(agentToStay,agentToStayBox,agentToMoveBox);
@@ -102,8 +97,6 @@ public class MABoxOnBoxConflict {
 	}
 
 	public static void getAnotherAgentToMoveConflictBox(Agent agentToStay, Box agentToStayBox, Agent agentToMove,Box agentToMoveBox){
-		System.err.println("plan is null and the receiver box does not have same color as sender box");
-
 		/*find closets agent that can move the box*/
 		int bestDistance = Integer.MAX_VALUE;
 		if (agentToMove == null){
