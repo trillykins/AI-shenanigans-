@@ -262,6 +262,7 @@ public class Agent implements IMessage {
 			 */
 			if (goal.isSolved())
 				continue;
+			
 			int goalPriority = goal.getPriority();
 			/* compute distance from agent to the closest box. */
 			List<Object> result = findClosestBox(goal);
@@ -270,11 +271,7 @@ public class Agent implements IMessage {
 			int costOfAgentToClosestBox = 0;
 			costOfAgentToClosestBox = Utils.manhattenDistance(position, closestBox.getPosition());
 
-			/* calculate current number of free spaces surrounding the goal */
-			LevelAnalysis levelAnalysis = new LevelAnalysis();
-			int numberOfFreeSpacesForGoal = levelAnalysis.calculateGoalPriority(goal);
-
-			int currTotal = goalPriority + numberOfFreeSpacesForGoal + costOfClosestBoxToGoal + costOfAgentToClosestBox + numberOfFreeSpacesForGoal;
+			int currTotal = goalPriority + costOfClosestBoxToGoal + costOfAgentToClosestBox;
 			/*
 			 * we are looking for the smallest value possible, the optimal would
 			 * be a very close goal, which have 0 occupied neighbors.
