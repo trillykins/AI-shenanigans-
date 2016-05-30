@@ -237,5 +237,6 @@ public class Run {
 //			System.out.println("World:\n" + world.toString());
 //			world.write("Global goal state found = " + world.isGlobalGoalState());
 		}
+		Memory.stringRep();
 	}
 }
