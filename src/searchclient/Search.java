@@ -33,11 +33,7 @@ public class Search {
 
 	public LinkedList<Node> search(Strategy strategy, Node initialState, SearchType searchType) {
 		strategy.addToFrontier(initialState);
-		int iterations = 0;
 		while (true) {
-			if (iterations % 200 == 0) {
-				 System.err.println(strategy.searchStatus());
-			}
 			if (Memory.shouldEnd()) {
 				System.err.format("Memory limit almost reached, terminating search %s\n", Memory.stringRep());
 				return null;
@@ -87,7 +83,6 @@ public class Search {
 					strategy.addToFrontier(n);
 				}
 			}
-			iterations++;
 		}
 	}
 }

@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import FIPA.IMessage;
-import FIPA.Message;
-import FIPA.MessageType;
 import analysis.LevelAnalysis;
 import bdi.Belief;
 import bdi.Desire;
@@ -14,7 +11,7 @@ import bdi.Intention;
 import searchclient.Node;
 import utils.Utils;
 
-public class Agent implements IMessage {
+public class Agent {
 	private int id;
 	private boolean executingSuperPlan = false;
 	private Color color;
@@ -317,16 +314,6 @@ public class Agent implements IMessage {
 		result.add(smallestDistance);
 		result.add(b);
 		return result;
-	}
-
-	@Override
-	public Message createMessage(Agent receiver, MessageType type, String content) {
-		return new Message(this, receiver, type, content);
-	}
-
-	@Override
-	public String receiveMessage(Message message) {
-		return message.getContent();
 	}
 
 	@Override
