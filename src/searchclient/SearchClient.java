@@ -1,7 +1,6 @@
 package searchclient;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -36,33 +35,7 @@ public class SearchClient {
 		colors = new HashMap<>(0);
 		colorSet = new ArrayList<>(0);
 		in = new BufferedReader(new InputStreamReader(System.in));
-
-//		in = new BufferedReader(new FileReader("//Users//sunmengwei//Documents//competition//MASojourner.lvl"));
-//		in = new BufferedReader(new FileReader("//Users//sunmengwei//Documents//levels//MAschwenke.lvl"));
-//		in = new BufferedReader(new FileReader("C://Users//Tjoe//Documents//levels//MADangerbot.lvl"));
 		world = World.getInstance();
-	}
-
-	public boolean update() throws IOException {
-		String jointAction = "[";
-		//
-		// for (int i = 0; i < agents.size() - 1; i++)
-		// jointAction += agents.get(i).act() + ",";
-		//
-		// jointAction += agents.get(agents.size() - 1).act() + "]";
-
-		// Place message in buffer
-		System.out.println(jointAction);
-		System.err.println(jointAction);
-		// Flush buffer
-		System.out.flush();
-
-		// Disregard these for now, but read or the server stalls when its
-		// output buffer gets filled!
-		String percepts = in.readLine();
-		if (percepts == null)
-			return false;
-		return true;
 	}
 
 	public String readLines() {

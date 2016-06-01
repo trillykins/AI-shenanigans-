@@ -2,15 +2,15 @@ package analysis;
 
 import atoms.Position;
 
-public class FreeSpace implements Comparable<Object>{
-	
+public class FreeSpace implements Comparable<Object> {
+
 	private Position position;
-	
+
 	private int priority;
-	
+
 	private int narrowCorValue;
 	private boolean surroundedByTreeWalls;
-	
+
 	public boolean isSurroundedByTreeWalls() {
 		return surroundedByTreeWalls;
 	}
@@ -51,12 +51,11 @@ public class FreeSpace implements Comparable<Object>{
 
 	@Override
 	public int compareTo(Object o) {
-		FreeSpace space = (FreeSpace)o;
-		if(this.getPriority() >= space.getPriority()) {
+		FreeSpace space = (FreeSpace) o;
+		if (this.getPriority() >= space.getPriority()) {
 			return 1;
-		}else {
+		} else {
 			return -1;
 		}
 	}
-
 }

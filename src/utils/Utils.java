@@ -79,7 +79,7 @@ public class Utils {
 				World.getInstance().getBoxes().put(boxId, boxes.get(boxId));
 			}
 		}
-		for(Agent agent : World.getInstance().getAgents().values())
+		for (Agent agent : World.getInstance().getAgents().values())
 			agent.setStepInPlan(agent.getStepInPlan() + 1);
 	}
 }
